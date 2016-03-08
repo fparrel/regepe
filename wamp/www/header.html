@@ -1,0 +1,35 @@
+<div id="header">
+    <div id="header_search">
+            <input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
+            <input type="button" value="Search" onclick="onSearchClick();"/>
+    <div id="header_lang">
+            <a href="<?php echo ((!strncmp($_SERVER['REQUEST_URI'],'/fr',3))?substr($_SERVER['REQUEST_URI'],3):$_SERVER['REQUEST_URI']); ?>"><img width="16" height="11" src="images/FlagEN.jpg" alt="English"/></a>
+            <a href="<?php echo ((strncmp($_SERVER['REQUEST_URI'],'/fr',3))?'/fr'.$_SERVER['REQUEST_URI']:$_SERVER['REQUEST_URI']); ?>"><img width="16" height="11" src="images/FlagFR.jpg" alt="Francais"/></a>
+    </div>
+    </div>
+    <div id="header_home">
+        <a href="index.php"><img src="images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+    </div>
+    <div id="header_mobile">
+        <a href="mobile.php"><img src="images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+    </div>
+    <div id="header_submit">
+        <a href="submitform.php"><img src="images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+    </div>
+    <div id="header_prepare">
+        <a href="prepare.php"><img src="images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+    </div>
+    <div id="header_mapofmaps">
+        <a href="mapofmaps.php"><img src="images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+    </div>
+    <div id="header_login">
+        <form action="">
+            <div>User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+            Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+            <input type="button" value="Login" onclick="onLoginClick();"/><br/>
+            <a href="register.php">Register</a> |
+            <a href="forgotpwd.php">Forgot password?</a>
+            </div>
+        </form>
+    </div>
+</div>

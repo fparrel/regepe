@@ -1,0 +1,389 @@
+www/activateaccount.php:Cookie set	Cookie install&eacute;
+www/activateaccount.php:Bad input parameters	Erreur dans les param&egrave;tres d'entr&eacute;e
+www/activateaccount.php:Database access error	Erreur d'acc&egrave;s &agrave; la base de donn&eacute;es
+www/activateaccount.php:Account activated	Compte activ&eacute;
+www/activateaccount.php:"en"	"fr"
+www/activateaccount.php:Activate account	Activer le compte
+www/forgotpwd.php:Replay your GPS Tracks with REGEPE - Forgotten password	Revivez vos traces GPS avec REGEPE - Mot de passe oubli&eacute;
+www/forgotpwd.php:Forgot password?	Mot de passe oubli&eacute;
+www/forgotpwd.php:User/Email:	Utilisateur/Email:
+www/forgotpwd.php:What is the name of the planet you live on? (Anti-Robot):	Quel est le nom de la plan&egrave;te dans laquelle vous vivez&nbsp;? (filtre Anti-Robots)&nbsp;:
+www/forgotpwd.php:Send me my password	Envoyez-moi mon mot de passe
+www/forgotpwd.php:resendpwd.py	resendpwdfr.py
+www/header.html:"Search"	"Rechercher"
+www/header.html:Submit a track	Ajouter une trace GPS
+www/header.html:Submit track	Ajouter une trace GPS
+www/header.html:Map of tracks	Carte des traces
+www/header.html:"Login"	"Connexion"
+www/header.html:Register	S'enregistrer
+www/header.html:Forgot password?	Mot de passe oubli&eacute;?
+www/header.html:User:	<small>Utilisateur:</small>
+www/header.html:Password:	<br/><small>Mot de passe:</small>
+www/header.html:Home	Accueil
+www/header.html:Prepare an itinerary	Pr&eacute;parer un itin&eacute;raire
+www/header.html:Prepare itinerary	Pr&eacute;parer un itin&eacute;raire
+www/header.html:Browse tracks	Carte des traces
+www/header.html:Get app	Application smartphone
+www/history.php:Date	Date
+www/history.php:User	Utilisateur
+www/history.php:Description	Description
+www/history.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/history.php:History	Historique
+www/history.php:Loading...	Chargement...
+www/history.php:Preview	Miniature
+www/index.php:All updates	Tout l'historique
+www/index.php:Last updates	Derni&egrave;res mises &agrave; jour
+www/index.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/index.php:Submit a track	Ajouter une trace GPS
+www/index.php:Map of tracks	Carte des traces
+www/index.php:Take tour	Pr&eacute;sentation
+www/index.php:by '.$user.'	par '.$user.'
+www/index.php:View	Voir
+www/indexall.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/indexall.php:All updates	Tout l'historique
+www/indexall.php:Last updates	Derniers ajouts
+www/indexall.php:by '.$user.'	par '.$user.'
+www/indexall.php:View	Voir
+www/indexall.php:Take tour	Pr&eacute;sentation
+www/javascript/db.js:Sending...	Envoi...
+www/javascript/db.js:Retrieving...	Chargement...
+www/javascript/db.js:/showuser.php?	showuser.php?
+www/javascript/header.js:Searching...	Recherche...
+www/javascript/header.js:<h1>Search results</h1><table id="search_results_table"><thead><tr><th id="sortby_date">Date</th><th id="sortby_desc">Description</th><th id="sortby_user">User</th><th>Preview</th></tr></thead><tbody id="search_tbody">	<h1>R&eacute;sultats de recherche</h1><table id="search_results_table"><thead><tr><th id="sortby_date">Date</th><th id="sortby_desc">Description</th><th id="sortby_user">Utilisateur</th><th>Miniature</th></tr></thead><tbody id="search_tbody">
+www/javascript/header.js:No map found	Aucune trace trouv&eacute;e
+www/javascript/header.js:Logged as 	Connect&eacute;&nbsp;: 
+www/javascript/header.js:"Logout"	"D&eacute;connection"
+www/javascript/header.js:Login failed (	Echec de la connexion (
+www/javascript/header.js:Session expired, please re-login<br/>	La session a expir&eacute;, merci de vous reconnecter
+www/javascript/header.js:Login... <img src="/images/loading.svg" width="16" height="16"/>	Connexion... <img src="/images/loading.svg" width="16" height="16"/>
+www/javascript/header.js:"Login"	"Connexion"
+www/javascript/header.js:<form>User: <input id="login_user" name="user" type="text"/>Password: <input id="login_password" name="password" type="password"/><input type="button" value="Login" onclick="onLoginClick();"/><br/><a href="register.php">Register</a> | <a href="forgotpwd.php">Forgot password?</a></form>	<form>Utilisateur: <input id="login_user" name="user" type="text"/>Mot de passe: <input id="login_password" name="password" type="password"/><input type="button" value="Connexion" onclick="onLoginClick();"/><br/><a href="register.php">S'enregistrer</a> | <a href="forgotpwd.php">Mot de passe oubli&eacute;?</a></form>
+www/javascript/jquery.flot.time.js:Jan	Jan
+www/javascript/jquery.flot.time.js:Feb	Fev
+www/javascript/jquery.flot.time.js:Mar	Mar
+www/javascript/jquery.flot.time.js:Apr	Avr
+www/javascript/jquery.flot.time.js:May	Mai
+www/javascript/jquery.flot.time.js:Jun	Juin
+www/javascript/jquery.flot.time.js:Jul	Juil
+www/javascript/jquery.flot.time.js:Aug	Aou
+www/javascript/jquery.flot.time.js:Sep	Sep
+www/javascript/jquery.flot.time.js:Oct	Oct
+www/javascript/jquery.flot.time.js:Nov	Nov
+www/javascript/jquery.flot.time.js:Dec	Dec
+www/javascript/jquery.flot.time.js:Sun	Dim
+www/javascript/jquery.flot.time.js:Mon	Lun
+www/javascript/jquery.flot.time.js:Tue	Mar
+www/javascript/jquery.flot.time.js:Wed	Mer
+www/javascript/jquery.flot.time.js:Thu	Jeu
+www/javascript/jquery.flot.time.js:Fri	Ven
+www/javascript/jquery.flot.time.js:Sat	Sam
+www/javascript/js-inflate.js:HufBuild error: 	Erreur HufBuild : 
+www/javascript/js-unzip.js:File is not a Zip file.	Le fichier n'est pas un fichier ZIP
+www/javascript/js-unzip.js:File contains encrypted entry. Not supported.	D&eacute;sol&eacute;, mais les fichier crypt&eacute;s ne sont pas support&eacute;s
+www/javascript/js-unzip.js:File is using UTF8. Not supported.	D&eacute;sol&eacute;, mais les fichiers encod&eacute; en UTF8 ne sont pas support&eacute;s
+www/javascript/js-unzip.js:File is using bit 3 trailing data descriptor. Not supported.	D&eacute;sol&eacute;, mais les fichiers utilisant le '3bits trailer data descriptor' ne sont pas support&eacute;s
+www/javascript/js-unzip.js:File is using Zip64 (4gb+ file size). Not supported	D&eacute;sol&eacute;, mais les fichiers utilisant zip64 (fichiers de plus de 4Go), ne sont pas support&eacute;s
+www/javascript/map.js:Center Map	Centrer
+www/javascript/map.js:"No"	"Non"
+www/javascript/map.js:"Yes"	"Oui"
+www/javascript/map.js:"Play"	"Lecture"
+www/javascript/map.js:Auto play	Lecture auto
+www/javascript/map.js:<b>Time:</b>	<b>Heure:</b>
+www/javascript/map.js:<b>Speed:</b>	<b>Vitesse:</b>
+www/javascript/map.js:Instant speed	Vitesse instantann&eacute;e
+www/javascript/map.js:'Elevation'	'D&eacute;nivel&eacute;'
+www/javascript/map.js:<b>Elevation:<b>	<b>D&eacute;nivel&eacute;:</b>
+www/javascript/map.js:<b>Course:</b>	<b>Direction:</b>
+www/javascript/map.js:<b>VMG:</b>	<b>VMG:</b>
+www/javascript/map.js:<b>Direct distance:</b>	<b>Dist. vol oiseau:</b>
+www/javascript/map.js:<b>Distance on path:</b>	<b>Dist. parcourue:</b>
+www/javascript/map.js:Speed on path	Vitesse sur parcours
+www/javascript/map.js:Direct speed	Vitesse point &agrave; point
+www/javascript/map.js:Height gain/loss	D&eacute;nivel&eacute;
+www/javascript/map.js:Slope	Pente
+www/javascript/map.js:<b>D:</b>	<b>D:</b>
+www/javascript/map.js:<b>Slope:</b>	<b>Pente:</b>
+www/javascript/map.js:<b>Vert. spd:</b>	<b>Vit. verticale:</b>
+www/javascript/map.js:Vert. speed	Vitesse verticale
+www/javascript/map.js:<b>Time delta:</b>	<b>Dur&eacute;e:</b>
+www/javascript/map.js:No selection	Pas de s&eacute;lection
+www/javascript/map.js:<a href="javscript:void(0);" onclick="toogleAddComment();">Add</a>	<a href="javscript:void(0);" onclick="toogleAddComment();">Ajouter</a>
+www/javascript/map.js:"Cancel"	"Annuler"
+www/javascript/map.js:Sending...	Envoi...
+www/javascript/map.js:<b>Error:</b> 	<b>Erreur:</b>
+www/javascript/map.js:</i> by <b>	</i> par <b>
+www/javascript/map.js:DEMize	Recalculer les altitudes
+www/javascript/map.js:Bad/noisy elevations? Get clean elevation from Digital Elevation Model	Altitude erron&eacute;e ou bruit&eacute;e? Demandez au serveur de les recalculer &agrave; partir de sa base de donn&eacute;es
+www/javascript/map-flot.js:Center Map	Centrer
+www/javascript/map-flot.js:"No"	"Non"
+www/javascript/map-flot.js:"Yes"	"Oui"
+www/javascript/map-flot.js:"Play"	"Lecture"
+www/javascript/map-flot.js:<b>Time:</b>	<b>Heure:</b>
+www/javascript/map-flot.js:<b>Speed:</b>	<b>Vitesse:</b>
+www/javascript/map-flot.js:Instant speed	Vitesse instantann&eacute;e
+www/javascript/map-flot.js:'Elevation'	'D&eacute;nivel&eacute;'
+www/javascript/map-flot.js:<b>Elevation:<b>	<b>D&eacute;nivel&eacute;:</b>
+www/javascript/map-flot.js:<b>Course:</b>	<b>Direction:</b>
+www/javascript/map-flot.js:<b>Course abs.:</b>	<b>Direction abs.:</b>
+www/javascript/map-flot.js:<b>Course rel.:</b>	<b>Direction rel.:</b>
+www/javascript/map-flot.js:<b>VMG:</b>	<b>VMG:</b>
+www/javascript/map-flot.js:<b>Direct distance:</b>	<b>Dist. vol oiseau:</b>
+www/javascript/map-flot.js:<b>Distance on path:</b>	<b>Dist. parcourue:</b>
+www/javascript/map-flot.js:Speed on path	Vitesse sur parcours
+www/javascript/map-flot.js:Direct speed	Vitesse point &agrave; point
+www/javascript/map-flot.js:Height gain/loss	D&eacute;nivel&eacute;
+www/javascript/map-flot.js:Slope	Pente
+www/javascript/map-flot.js:<b>D:</b>	<b>D:</b>
+www/javascript/map-flot.js:<b>Slope:</b>	<b>Pente:</b>
+www/javascript/map-flot.js:<b>Vert. spd:</b>	<b>Vit. verticale:</b>
+www/javascript/map-flot.js:Vert. speed	Vitesse verticale
+www/javascript/map-flot.js:<b>Time delta:</b>	<b>Dur&eacute;e:</b>
+www/javascript/map-flot.js:No selection	Pas de s&eacute;lection
+www/javascript/map-flot.js:<a href="javscript:void(0);" onclick="toogleAddComment();">Add</a>	<a href="javscript:void(0);" onclick="toogleAddComment();">Ajouter</a>
+www/javascript/map-flot.js:"Cancel"	"Annuler"
+www/javascript/map-flot.js:Sending...	Envoi...
+www/javascript/map-flot.js:<b>Error:</b> 	<b>Erreur:</b>
+www/javascript/map-flot.js:</i> by <b>	</i> par <b>
+www/javascript/map-flot.js:DEMize	Recalculer les altitudes
+www/javascript/map-flot.js:Bad/noisy elevations? Get clean elevation from Digital Elevation Model	Altitude erron&eacute;e ou bruit&eacute;e? Demandez au serveur de les recalculer &agrave; partir de sa base de donn&eacute;es
+www/javascript/map-flot.js:Heart rate:	Freq. cardiaque:
+www/javascript/mapdata.php:'../maps/'	'../../maps/'
+www/javascript/mapgeoportal.js:'Track'	'Trace'
+www/javascript/mapgeoportal.js:'Current'	'Point courant'
+www/javascript/mapgeoportal.js:'Selection'	'S&eacute;lection'
+www/javascript/mapgeoportal.js:'en'	'fr'
+www/javascript/mapgmaps.js:Start of Track	D&eacute;part de la trace
+www/javascript/mapgmaps.js:End of Track	Arriv&eacute;e de la trace
+www/javascript/mapgmaps.js:"End"	"Arriv&eacute;e"
+www/javascript/preparegeoportal.js:'en'	'fr'
+www/javascript/preparegeoportal2.js:'en'	'fr'
+www/javascript/tools.js:Remove selected part from the track?	Enlever la partie s&eacute;lectionn&eacute;e et la remplacer par une ligne droite?
+www/javascript/tools.js:Keep only the selected part of track?	Etes-vous sur de ne vouloir conserver que la partie s&eacute;lectionn&eacute;e?
+www/javascript/tools.js:Confirm deletion of this map?	Confirmez-vous la suppression de la trace?
+www/javascript/tools.js:Done	Fait
+www/javascript/tools.js:<b>Error:</b> 	<b>Erreur:</b>
+www/javascript/tools.js:Internal Error, please retry	Erreur interne, merci de réessayer
+www/javascript/tools.js:delmap.py?	delmap.py?lang=fr&
+www/javascript/tools.js:cutmap.py?	cutmap.py?lang=fr&
+www/javascript/tools.flot.js:Remove selected part from the track?	Enlever la partie s&eacute;lectionn&eacute;e et la remplacer par une ligne droite?
+www/javascript/tools.flot.js:Keep only the selected part of track?	Etes-vous sur de ne vouloir conserver que la partie s&eacute;lectionn&eacute;e?
+www/javascript/tools.flot.js:/cgi-bin/cutmap.py?type=json&mapid=	/cgi-bin/cutmap.py?lang=fr&type=json&mapid=
+www/javascript/tools.flot.js:/cgi-bin/delmap.py?type=json&mapid=	/cgi-bin/delmap.py?lang=fr&type=json&mapid=
+www/javascript/tools.flot.js:/cgi-bin/togpx.py?type=json&mapid=	/cgi-bin/togpx.py?lang=fr&type=json&mapid=
+www/javascript/tools.flot.js:/cgi-bin/demize.py?type=json&mapid=	/cgi-bin/demize.py?lang=fr&type=json&mapid=
+www/javascript/tools.flot.js:Confirm deletion of this map?	Confirmez-vous la suppression de la trace?
+www/javascript/tools.flot.js:Done	Fait
+www/javascript/tools.flot.js:<b>Error:</b>	<b>Erreur:</b>
+www/javascript/tools.flot.js:Internal Error, please retry	Erreur interne au serveur, veuillez r&eacute;essayer
+www/javascript/utils.js:'SSW'	'SSO'
+www/javascript/utils.js:'SW'	'SO'
+www/javascript/utils.js:'WSW'	'OSO'
+www/javascript/utils.js:'W'	'O'
+www/javascript/utils.js:'WNW'	'ONO'
+www/javascript/utils.js:'NW'	'NO'
+www/javascript/utils.js:'NNW'	'NNO'
+www/javascript/utils.js:'ERROR'	'ERREUR'
+www/javascript/xmlhttprequest.js:This browser does not support XMLHttpRequest.	Votre navigateur ne supporte pas l'objet XMLHttpRequest
+www/javascript/wind.js:Best VMG on 	Meilleure VMG sur 
+www/javascript/wind.js:Best VMG on 1 nautical mile	Meilleure VMG sur 1 mile nautique
+www/javascript/wind.js:' at 	' &agrave; 
+www/test_mapofmaps-highvolume.php:Map of maps	Carte des traces
+www/test_mapofmaps-highvolume.php:Go	Voir
+www/mapofmaps.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/mapofmaps.php:Map of tracks	Carte des traces
+www/mapofmaps.php:Loading...	Chargement...
+www/mapofmaps.php:Go	Voir
+www/mobile.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/mobile.php:Don't have a GPS device. No problem, download our application and use the builtin GPS of your smartphone.	Pas de GPS? Utilisez celui de votre t&eacute;l&eacute;phone.
+www/mobile.php:Mobile applications	Applications pour smartphones
+www/mobile.php:For biking, hiking, skiing...	Pour le v&eacute;lo, la randonn&eacute;e, le ski...
+www/mobile.php:Record your GPS track with your Android device. Display speed, slope, vertical speed, elapsed time...	Enregistrement des traces GPS. Affichage de la vitesse, pente, d&eacute;nivel&eacute;, temps &eacute;coul&eacute;...
+www/mobile.php:Download	T&eacute;l&eacute;charger (en Anglais)
+www/mobile.php:For sailing, windsurfing, kitesurfing...	Pour la voile, le kitesurf...
+www/mobile.php:Record your GPS track with your Android device. Display speed polar, max speed...	Enregistrement des traces GPS. Affichage de la polaire des vitesse, VMG, vitesse max...
+www/mobile.php:Still under development!	En cours de d&eacute;veloppement
+www/mobile.php:For snowkite, paragliding...	Pour le snowkite, le parapente...
+www/mobile.php:Record your GPS track with your Android device. Display speed polar, vertical speed...	Enregistrement des traces GPS. Affichage de la polaire des vitesse, de la vitesse verticale...
+www/prepare.php:Replay your GPS tracks with ReGePe	Revivez vos traces GPS avec REGEPE
+www/prepare.php:ReGePe's GPS Track replay	Trace GPS de ReGePe
+www/prepare.php:Click on map to add a point	Cliquez sur la carte pour ajouter un point
+www/prepare.php:Waypoints	Points
+www/prepare.php:Clear	Effacer
+www/prepare.php:Compute Profile	Calculer profile des altitudes
+www/prepare.php:Export to file:	Exporter en tant que fichier
+www/prepare.php:>Export<	>Exporter<
+www/prepare.php:Send as URL	Envoyer en tant qu'URL
+www/prepare.php:Clear track?	Effacer la trace?
+www/prepare.php:Elevation in meters against distance in meters	Altitude en m&egrave;tres en fonction de la distance en m&egrave;tres
+www/prepare.php:Delete selected point	Supprimer le point s&eacute;lection&eacute;
+www/prepare.php:Length:	Distance:
+www/prepare.php:All points	Tous les points
+www/prepare.php:Only labeled points	Seulement les points nomm&eacute;s
+www/prepare.php:Share:	Partager:
+www/prepare.php:Switch to:	Changer carte:
+www/prepare.php:<br/>Slope:	<br/>Pente:
+www/prepare.php:<b>Current point</b>	<b>Point courant</b>
+www/prepare.php:Left click and release to select - Right click to change current point	Click gauche pour selectioner un segment - Click droit pour modifier le point courant
+www/prepare.php:Track data	Profile
+www/prepare.php:Print Map	Carte imprimable
+www/prepare.php:/prepare.php?	/fr/prepare.php?
+www/register.php:Replay your GPS Tracks with REGEPE - Register	Revivez vos traces GPS avec REGEPE - S'enregister
+www/register.php:Register	S'enregistrer
+www/register.php:Mail:	E-mail&nbsp;:
+www/register.php:User:	Nom d'utilisateur&nbsp;:
+www/register.php:Generate from mail	G&eacute;n&eacute;rer &agrave; partir de l'email
+www/register.php:Password:	Mot de passe&nbsp;:
+www/register.php:Confirm password:	Ressaisissez votre mot de passe&nbsp;:
+www/register.php:What is the name of the planet you live on? (Anti-Robot):	Quel est le nom de la plan&egrave;te dans laquelle vous vivez&nbsp;? (filtre Anti-Robots)&nbsp;:
+www/register.php:doregister.py	doregisterfr.py
+www/showmap.php:/* translate here if needed */	include('translate.php');
+www/showmap.php:'./maps/'	'../maps/'
+www/showmap.php:Replay your GPS tracks with ReGePe	Revivez vos traces GPS avec REGEPE
+www/showmap.php:Click on track to change current point	Cliquez sur la carte pour s&eacute;lectionner le point courant
+www/showmap.php:Scroll one point	Point suivant/pr&eacute;c&eacute;dent
+www/showmap.php:Move current point	Changer le point courant
+www/showmap.php:>Play<	>Lecture<
+www/showmap.php:Playing speed	Vitesse de lecture
+www/showmap.php:Snake length:	Lg. surbrillance
+www/showmap.php:"Snake length"	"Longueur de surbrillance"
+www/showmap.php:Use WindDir	Utiliser la direction du vent
+www/showmap.php:Wind direction:	Direction du vent:
+www/showmap.php:Wind dir	Direction du vent
+www/showmap.php:Use Buoy	Utiliser la bou&eacute;e au vent
+www/showmap.php:Yes	Oui
+www/showmap.php:Map infos:	Infos trace
+www/showmap.php:User: 	Utilisateur:
+www/showmap.php:Loading...	Chargement...
+www/showmap.php:"Cancel"	"Annuler"
+www/showmap.php:Current point:	Point courant
+www/showmap.php:Current selection:	S&eacute;lection
+www/showmap.php:Tools:	Outils
+www/showmap.php:Selection:	S&eacute;lection&nbsp;:
+www/showmap.php:"Clear"	"Effacer"
+www/showmap.php:"Crop"	"Rogner"
+www/showmap.php:Map:	Trace&nbsp;:
+www/showmap.php:"Delete"	"Supprimer"
+www/showmap.php:Export as gpx	Exporter au format GPX
+www/showmap.php:Comments	Commentaires
+www/showmap.php:Add	Ajouter
+www/showmap.php:/showuser.php?	showuser.php?
+www/showmap.php:Center map :	Centrer la carte&nbsp;:
+www/showmap.php:Submit deleted points	Prendre en compte les points supprim&eacute;s
+www/showmap.php:Submit points deleted by pressing DEL key on map	Vous pouvez supprimer des points avec la touche 'Suppr.', puis cliquer sur le bouton ci contre pour sauvegarder les changements
+www/showmap.php:Switch to:	Fond de carte:
+www/showmap-flot.php:/* translate include if needed */	include('translate.php');
+www/showmap-flot.php:'./maps/'	'../maps/'
+www/showmap-flot.php:Replay your GPS tracks with ReGePe	Revivez vos traces GPS avec REGEPE
+www/showmap-flot.php:Click on track to change current point	Cliquez sur la carte pour s&eacute;lectionner le point courant
+www/showmap-flot.php:Scroll one point	Point suivant/pr&eacute;c&eacute;dent
+www/showmap-flot.php:Move current point	Changer le point courant
+www/showmap-flot.php:>Play<	>Lecture<
+www/showmap-flot.php:Playing speed	Vitesse de lecture
+www/showmap-flot.php:Snake length:	Lg. surbrillance
+www/showmap-flot.php:"Snake length"	"Longueur de surbrillance"
+www/showmap-flot.php:Use WindDir	Utiliser la direction du vent
+www/showmap-flot.php:Wind direction:	Direction du vent:
+www/showmap-flot.php:Wind dir	Direction du vent
+www/showmap-flot.php:Use Buoy	Utiliser la bou&eacute;e au vent
+www/showmap-flot.php:Yes	Oui
+www/showmap-flot.php:Map infos:	Infos trace
+www/showmap-flot.php:User: 	Utilisateur: 
+www/showmap-flot.php:Loading...	Chargement...
+www/showmap-flot.php:"Cancel"	"Annuler"
+www/showmap-flot.php:Current point:	Point courant
+www/showmap-flot.php:Current selection:	S&eacute;lection
+www/showmap-flot.php:Tools:	Outils
+www/showmap-flot.php:Selection:	S&eacute;lection&nbsp;:
+www/showmap-flot.php:"Clear"	"Effacer sel."
+www/showmap-flot.php:"Crop"	"Rogner"
+www/showmap-flot.php:Map:	Carte&nbsp;:
+www/showmap-flot.php:"Delete"	"Supprimer carte"
+www/showmap-flot.php:Export as gpx	Exporter fichier GPX
+www/showmap-flot.php:Comments	Commentaires
+www/showmap-flot.php:>Add<	>Ajouter<
+www/showmap-flot.php:/showuser.php?	showuser.php?
+www/showmap-flot.php:Center map :	Centrer&nbsp;:
+www/showmap-flot.php:Submit deleted points	Enr. points suppr.
+www/showmap-flot.php:Submit points deleted by pressing DEL key on map	Vous pouvez supprimer des points avec la touche 'Suppr.', puis cliquer sur le bouton ci contre pour sauvegarder les changements
+www/showmap-flot.php:Switch to:	Fond de carte:
+www/showmap-flot.php:Top10 speeds	Meilleures vitesses
+www/showmap-flot.php:Global figures	Statistiques
+www/showmap-flot.php:'Mean Speed'	'Vit. moy.'
+www/showmap-flot.php:'Mean speed in motion'	'Vit. moy. en mouvement'
+www/showmap-flot.php:Mean vert. spd. in motion:	Vit. vert. moy. en mouvement:
+www/showmap-flot.php:Length	Longueur
+www/showmap-flot.php:Min elevation	Alt. min
+www/showmap-flot.php:Max elevation	Alt. max
+www/showmap-flot.php:>Tools<	>Outils<
+www/showmap-flot.php:/showmap-flot.php?	/fr/showmap-flot.php?
+www/showmap-flot.php:Polar &amp; VMG	Polaire &amp; VMG
+www/showmap-flot.php:'.$js->title.'	'.translate($js->title).'
+www/showmap-flot.php:'Cannot decode '	'Impossible de d&eacute;coder '
+www/showmap-flot.php:Total duration	Dur&eacute;e totale
+www/showmap-flot.php:Reset Zoom	RAZ Zoom
+www/showmap-flot.php:' in '	' en '
+www/showmap-flot.php:' at 	' &agrave; 
+www/showmap-flot.php:$spdunit_disp='knots'	$spdunit_disp='n&oelig;uds'
+www/showmap-flot.php:Best speeds on distance	Meilleures vitesses / distances
+www/showmap-flot.php:Best speeds on time	Meilleures vitesses / temps
+www/showmap-flot.php:Best vertical speeds on distance	Meilleures vitesses ascentionelles / distances
+www/showmap-flot.php:Best vertical speeds on time	Meilleures vitesses ascentionelles / temps
+www/showmap-flot.php:Best nautical mile (1852m)	Sur 1 mille nautique
+www/showmap-flot.php:Climbing 	Mont&eacute;e 
+www/showmap-flot.php:Pause min. time:	Pause temps min.:
+www/showmap-flot.php:Pause max. distance:	Pause distance max.:
+www/showmap-flot.php:Pause max. speed:	Pause vitesse max.:
+www/showmap-flot.php:Computing...	Calcul en cours...
+www/showmap-flot.php:Other tracks nearby	Autres traces &agrave; proximit&eacute;
+www/showuser.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/showuser.php:User 	Nom d'utilisateur&nbsp;: 
+www/showuser.php:Loading...	Chargement...
+www/showuser.php:Preview	Miniature
+www/submitform.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/submitform.php:Submit a track	Ajouter une trace GPS
+www/submitform.php:Gpx/Kml/Nmea/Sbp file(s) to analyze:	Choisissez le ou les fichiers GPX/KML/NMEA/SBP &agrave; ajouter&nbsp;:
+www/submitform.php:You can select more than one file using Ctrl or Shift key (not available on all broswers), the files will be concatenated in a single track.	Si votre navigateur le permet, vous pouvez s&eacute;lectionner plusieurs fichiers avec la touche Ctrl ou Shift. Les fichiers seront concat&eacute;n&eacute;s par ordre chronologique pour former une seule trace.
+www/submitform.php:Preview of track start point:	Point(s) de d&eacute;part&nbsp;:
+www/submitform.php:>knots<	>noeuds<
+www/submitform.php:If selected, doesn't compute any figure related to elevation.	Si s&eacute;lectionn&eacute;, n'effectue aucun calcul relatif &agrave; l'altitude
+www/submitform.php:If selected, compute figures related to course. Usefull for any wind related activity.	Si s&eacute;lectionn&eacute;, effectue les calculs relatifs &agrave; la direction: Polaire, VMG... A cocher si l'activit&eacute; est li&eacute;e au vent
+www/submitform.php:Analyze Gpx file	Envoyer le fichier
+www/submitform.php:Geo Portal (France only)	Geo Portail (Uniquement pour la France)
+www/submitform.php:Hiking, Skitouring, Ski, Snowboard, Bike	Randonn&eacute;e, Ski de rando, Ski, Snowboard, VTT
+www/submitform.php:Surfing, Sea Kayak, Motor boat	Surf, Kayak de mer, Motonautisme
+www/submitform.php:Windsurf, Kite, Sailing	Windsurf, Kitesurf, Voile
+www/submitform.php:Snowkite, Free-flying, Air Balloon	Snowkite, Vol libre, Mongolfiere
+www/submitform.php:Map type:	Fond de carte:
+www/submitform.php:Activity profile:	Type d'activit&eacute;:
+www/submitform.php:Speed unit:	Unit&eacute;:
+www/submitform.php:Flat track:	Trac&eacute; plat:
+www/submitform.php:Draw polar:	Polaire et donn&eacute;es angulaires:
+www/submitform.php:"/cgi-bin/sendgpxfile2.py"	"/cgi-bin/sendgpxfile2.py?lang=fr"
+www/submitform.php:Import from URL:	Importer depuis une adresse URL:
+www/submitform.php:Max speeds analysis:	Analyse d&eacute;taill&eacute;e des vitesses maximales:
+www/submitform.php:Add max speed on 50,100,200,500 meters, and max speed on 2,5,10 seconds.	Ajoute la vitesse max sur 50, 100, 200 et 500 m&egrave;tres et sur 2, 5 et 10 secondes.
+www/submitform.php:>Send<	>Envoi<
+www/submitform.php:Build track analysis	Lancer l'analyse de la trace
+www/testphotos.php:Page contents...	Contenu de la page...
+www/thumbnail.php:'previews/'	'../previews/'
+www/thumbnail.php:'./maps/'	'../maps/'
+www/tour.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/tour.php:Tour	Visite
+www/tour.php:With your GPS device, record your GPS position track to a GPX/Kml/Nmea file	Avec votre appareil GPS, enregistrer votre trace dans un fichier au format GPX/KML/NMEA
+www/tour.php:Go to submit page by clicking on: 	Rendez-vous sur la page d'ajout en cliquant sur&nbsp;:
+www/tour.php:Submit a track	Ajouter une trace
+www/tour.php:Choose the file containing your track:	Choisissez le ou les fichiers contenant votre trace&nbsp;:
+www/tour.php:Choose an activity:	Choisissez une activit&eacute;&nbsp;:
+www/tour.php:Submit your track:	Envoyez votre trace&nbsp;:
+www/tour.php:If you selected a wind-related activity, you will get directional figures such as VMG, polar, ...	Si vous avez s&eacute;lectionn&eacute; une activit&eacute; li&eacute; au vent, vous obtiendrez des donn&eacute;s relatives &agrave; la direction, comme la courbe polaire des vitesses, la VMG, ...
+www/tour.php:Do not forget to check the wind direction detected by the software. It can be changed if it is wrong or in case of changing wind	N'oubliez pas de v&eacute;rifier la direction du vent d&eacute;tect&eacute;e par le serveur. Vous pouvez la changer en cas d'erreur ou si le vent a chang&eacute; de direction.
+www/tour.php:If you selected a ground or air activity, you will get vertical figures such as vertical speed, ...	Si vous avez s&eacute;lectionn&eacute; une activit&eacute; terrestre ou a&eacute;rienne, vous obtiendrez des donn&eacute;es relatives &agrave; l'altitude, comme la vitesse ascensionnelle, la pente...
+www/tour.php:Get a view of your track, and:	Visualisez votre trace et:
+www/userhome.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
+www/userhome.php:User 	Utilisateur
+www/userhome.php:My tracks	Mes traces
+www/userhome.php:Delete	Supprimer
+www/userhome.php:Merge	Fusionner
+www/userhome.php:View	Voir
+www/userhome.php:Confirm deletion of	Confirmez-vous la suppression de
+www/userhome.php:map(s)?	trace(s)?
