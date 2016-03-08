@@ -80,6 +80,8 @@ wamp/www/maps/*.php
 api_keys.txt
 
 #Generated files
+lamp-prod/
+lamp-test/
 wamp/www/fr/
 
 #work files
