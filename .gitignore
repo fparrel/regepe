@@ -60,3 +60,37 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+#Minified js code
+*.min.js
+
+#Data
+wamp/www/previews/*.png
+wamp/www/maps/*.gz
+wamp/cgi-bin/coords2tz/*.db
+wamp/cgi-bin/dem1/*.zip
+wamp/cgi-bin/dem3/*.zip
+wamp/cgi-bin/logs/*.log
+wamp/cgi-bin/maps/*.db
+wamp/cgi-bin/users/*.db
+wamp/cgi-bin/*.db
+wamp/www/maps/*.php
+
+#API Keys
+api_keys.txt
+
+#Generated files
+wamp/www/fr/
+
+#work files
+diff.txt
+
+#Garbage
+wamp/www/testwmts.php
+wamp/www/fr/testwmts.php
+wamp/www/showwpts.php
+wamp/www/fr/showwpts.php
+wamp/www/prepare-old.php
+wamp/www/fr/prepare-old.php
+wamp/www/test_mapofmaps-highvolume.php
+wamp/www/fr/test_mapofmaps-highvolume.php

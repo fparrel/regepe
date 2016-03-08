@@ -1,0 +1,30 @@
+<?php
+$map_type = 'GMaps';
+$figures = <<<EOD
+%(figures)s
+EOD;
+$charts = <<<EOD
+%(charts)s
+EOD;
+$map_data = <<<EOD
+nbpts = %(nbpts)d;
+spdunit = '%(spdunit)s';
+flat = %(flat)d;
+wind = %(wind)d;
+mapid = '%(mapid)s';
+centerlat=%(centerlat)f;
+centerlon=%(centerlon)f;
+minlat=%(minlat)f;
+minlon=%(minlon)f;
+maxlat=%(maxlat)f;
+maxlon=%(maxlon)f;
+
+track_points = [
+%(trackpoints)s
+];
+
+chart = [
+%(chartsnameandmarginsize)s
+];
+EOD;
+?>

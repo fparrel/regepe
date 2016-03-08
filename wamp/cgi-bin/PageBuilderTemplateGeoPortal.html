@@ -1,0 +1,24 @@
+<?php
+$map_type = 'GeoPortal';
+$figures = <<<EOD
+%(figures)s
+EOD;
+$charts = <<<EOD
+%(charts)s
+EOD;
+$map_data = <<<EOD
+nbpts = %(nbpts)d;
+spdunit = '%(spdunit)s';
+flat = %(flat)d;
+wind = %(wind)d;
+mapid = '%(mapid)s';
+
+track_points = [
+%(trackpoints)s
+];
+
+chart = [
+%(chartsnameandmarginsize)s
+];
+EOD;
+?>

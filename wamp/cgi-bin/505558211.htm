@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html class='logged-out responsive old-lightbox old-login' dir='ltr' lang='en-US' xmlns:fb='http://www.facebook.com/2008/fbml' xmlns:og='http://opengraphprotocol.org/schema/' xmlns='http://www.w3.org/TR/html5'>
+<head>
+<meta charset='UTF-8'>
+<meta content='i-a9bc662d' name='instance_id'>
+<meta content='yes' name='apple-mobile-web-app-capable'>
+<meta content='black' name='apple-mobile-web-app-status-bar-style'>
+<meta content='width = device-width, initial-scale = 1, maximum-scale = 1, user-scalable = yes' name='viewport'>
+<link href='/apple-touch-icon-180x180.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='180x180'>
+<link href='/apple-touch-icon-152x152.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='152x152'>
+<link href='/apple-touch-icon-144x144.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='144x144'>
+<link href='/apple-touch-icon-120x120.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='120x120'>
+<link href='/apple-touch-icon-114x114.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='114x114'>
+<link href='/apple-touch-icon-76x76.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='76x76'>
+<link href='/apple-touch-icon-72x72.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='72x72'>
+<link href='/apple-touch-icon-60x60.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='60x60'>
+<link href='/apple-touch-icon-57x57.png?v=dLlWydWlG6' rel='apple-touch-icon' sizes='57x57'>
+<link href='/favicon-32x32.png?v=dLlWydWlG6' rel='icon' sizes='32x32' type='image/png'>
+<link href='/android-chrome-192x192.png?v=dLlWydWlG6' rel='icon' sizes='192x192' type='image/png'>
+<link href='/favicon-96x96.png?v=dLlWydWlG6' rel='icon' sizes='96x96' type='image/png'>
+<link href='/favicon-16x16.png?v=dLlWydWlG6' rel='icon' sizes='16x16' type='image/png'>
+<link href='/manifest.json?v=dLlWydWlG6' rel='manifest'>
+<meta content='#fc4c02' name='msapplication-TileColor'>
+<meta content='/mstile-144x144.png?v=dLlWydWlG6' name='msapplication-TileImage'>
+<meta content='#fc4c02' name='theme-color'>
+<meta content='Strava' name='apple-mobile-web-app-title'>
+<meta content='Strava' name='application-name'>
+
+<style type='text/css'>
+<style>
+  .spinner, .spinner .status {
+    position: relative; }
+  
+  .spinner {
+    margin-top: 1em;
+    margin-bottom: 1em; }
+    .spinner .status {
+      top: 2px;
+      margin-left: 0.5em; }
+    .spinner.lg .graphic {
+      border-width: 3px;
+      height: 32px;
+      width: 32px; }
+    .spinner.tiny {
+      height: 10px;
+      width: 10px; }
+    .spinner.centered, .spinner.vcentered {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      width: 100%; }
+    .spinner.vcentered {
+      left: 0;
+      margin-top: -12px;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      top: 50%; }
+  
+  .spinner .graphic, .ajax-loading-image {
+    animation: spin 1.2s infinite linear;
+    -webkit-animation: spin 1.2s infinite linear;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-color: #eee;
+    border-radius: 50%;
+    border-style: solid;
+    border-top-color: #666;
+    border-top-style: solid;
+    border-width: 2px;
+    content: "";
+    display: inline-block;
+    height: 20px;
+    position: relative;
+    vertical-align: middle;
+    width: 20px; }
+  
+  @-webkit-keyframes spin {
+    from {
+      -webkit-transform: rotate(0deg); }
+    to {
+      -webkit-transform: rotate(359deg); } }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg); }
+    to {
+      transform: rotate(359deg); } }
+</style>
+</style>
+
+<link href="https://d3nn82uaxijpm6.cloudfront.net/assets/application-11277b6af278339e5042842cbf019538.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="https://d3nn82uaxijpm6.cloudfront.net/assets/strava-app-activity-9c4b86c8f1fe4446fb31576b396fd922.css" media="screen" rel="stylesheet" type="text/css" />
+<!-- SVG Icons -->
+<link href="https://d3nn82uaxijpm6.cloudfront.net/assets/strava-app-icons-788999462e6bfd0ddb607563e00626c7.css" media="screen" rel="stylesheet" type="text/css" />
+<!--[if lte IE 9]>
+<link href="https://d3nn82uaxijpm6.cloudfront.net/assets/application-ie-04a301a01e9ad971f44f439c583c6221.css" media="screen" rel="stylesheet" type="text/css" />
+<![endif]-->
+<meta content="authenticity_token" name="csrf-param" />
+<meta content="hVZjc1dZH4p+AW/rjTqMsQ1AmE4sAfiSMwfGkVMNJ+o=" name="csrf-token" />
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/strava-head-e2dcbf12e93fb23d5530f39814fa1160.js" type="text/javascript"></script>
+
+<link href="https://d3nn82uaxijpm6.cloudfront.net/assets/maps/strava-mapbox-27a9883d19e9a22d4c9034aa6b00ad4a.css" media="screen" rel="stylesheet" type="text/css" />
+<title>Activity Profile | Petite sortie a Greo near  | Times and Records | Strava</title>
+<link href='https://www.strava.com/activities/505558211' rel='canonical'>
+<meta content='284597785309' property='fb:app_id'>
+<meta content='Strava' property='og:site_name'>
+<meta content='stravainc:activity' property='og:type'>
+<meta content="Petite sortie a Greo - Didier Patacq-Croutzet's 7.7 km backcountry ski" property='og:title'>
+<meta content="En fait ma premiere sortie de l'hiver..." property='og:description'>
+<meta content='https://www.strava.com/activities/505558211' property='og:url'>
+<meta content='http://d3nn82uaxijpm6.cloudfront.net/assets/sharing/summary_activity_generic-2e518d0b90a81f7c5a479b2b875b0c79.png' property='og:image'>
+<meta content='575' property='fitness:custom_unit_energy:value'>
+<meta content='https://www.strava.com/activities/facebook_open_graph_unit_elevation_gain_meters' property='fitness:custom_unit_energy:units'>
+<meta content='7.7' property='stravainc:distance:value'>
+<meta content='km' property='stravainc:distance:units'>
+<meta content='1:33:36' property='stravainc:duration'>
+<link href='https://www.strava.com/activities/505558211/facebook_open_graph_metadata' rel='opengraph'>
+
+<meta content='summary' property='twitter:card'>
+<meta content='@Strava' property='twitter:site'>
+<meta content='strava.com' property='twitter:domain'>
+<meta content='Petite sortie a Greo' property='twitter:title'>
+<meta content='Strava' property='twitter:app:name:googleplay'>
+<meta content='com.strava' property='twitter:app:id:googleplay'>
+<meta content='https://www.strava.com/activities/505558211' property='twitter:app:url:googleplay'>
+<meta content='Strava' property='twitter:app:name:iphone'>
+<meta content='426826309' property='twitter:app:id:iphone'>
+<meta content='strava://activities/505558211' property='twitter:app:url:iphone'>
+<meta content="En fait ma premiere sortie de l'hiver..." property='twitter:description'>
+<meta content='http://d3nn82uaxijpm6.cloudfront.net/assets/sharing/summary_activity_generic-2e518d0b90a81f7c5a479b2b875b0c79.png' property='twitter:image'>
+
+
+<link href='https://www.strava.com/activities/505558211' hreflang='x-default' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=en-GB' hreflang='en-gb' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=fr-FR' hreflang='fr-fr' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=de-DE' hreflang='de-de' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=pt-BR' hreflang='pt-br' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=es-ES' hreflang='es-es' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=it-IT' hreflang='it-it' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=ru-RU' hreflang='ru-ru' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=es-419' hreflang='es-419' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=ja-JP' hreflang='ja-jp' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=ko-KR' hreflang='ko-kr' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=nl-NL' hreflang='nl-nl' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=zh-TW' hreflang='zh-tw' rel='alternate'>
+<link href='https://www.strava.com/activities/505558211?hl=pt-PT' hreflang='pt-pt' rel='alternate'>
+
+
+<script>
+  window['optimizely'] = [['customTag', {logged_out: 'true', language: 'en-US'}]];
+</script>
+
+<script src='//cdn.optimizely.com/js/7172046.js'></script>
+
+
+</head>
+<body class='logged-out responsive old-lightbox old-login'>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+    {'gtm.start': new Date().getTime(),event:'gtm.js'}
+    );var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','googleTagManagerDataLayer', "GTM-TP845S");
+</script>
+<noscript>
+<iframe height='0' src='//www.googletagmanager.com/ns.html?id=GTM-TP845S' style='display:none;visibility:hidden' width='0'></iframe>
+</noscript>
+
+<div class='container'>
+<link href="https://d3nn82uaxijpm6.cloudfront.net/assets/smartbanner-93aa5850bd426971d040c65fca7ffa44.css" media="screen" rel="stylesheet" type="text/css" />
+<div class='smartbanner visible-xs-block'>
+<div class='smartbanner-container'>
+<img alt="Icon-app" class="app-icon" src="https://d3nn82uaxijpm6.cloudfront.net/assets/website/mobile/icon-app-58899e9f5d745473721ac180538dd2f0.png" />
+<div class='app-info'>
+<div class='app-name'>Strava</div>
+<div class='app-subtitle'>Free app for Android and iPhone</div>
+</div>
+<a class='cta' href='https://www.strava.com/mobile'>
+Download
+</a>
+<div class='clear'></div>
+</div>
+</div>
+
+<header>
+<!--
+deploy: 8431bb2ea3ae643d1a0d93f46837cd8bcb0f6448
+instance: i-a9bc662d
+env: 'ec2'
+-->
+<!--[if lte IE 8]>
+<div class='message warning ie7'>
+<p>It looks like you're using a version of Internet Explorer that Strava no longer supports. Please <a href='http://www.microsoft.com/en-us/download/ie.aspx?q=internet+explorer'>upgrade your web browser</a> &mdash; <a href='https://strava.zendesk.com/entries/20420212-Supported-Browsers-on-Strava'>Learn more</a>.</p>
+</div>
+<![endif]-->
+<nav class='nav-bar'>
+<div class='inner-content'>
+<h1 class='branding'><a href="/" class="strava-logo" title="Return to the Strava home page">Strava</a></h1>
+<ul class='user-nav hidden-xs'>
+<li class='media-hide tap-nav user-menu'><a href="/mobile">Mobile</a></li>
+<li class='media-hide tap-nav user-menu'><a href="/features">Features</a></li>
+<li class='media-hide tap-nav user-menu'><a href="/how-it-works">How It Works</a></li>
+<li class='media-hide tap-nav user-menu'><a href="/premium?cta=premium&amp;element=nav&amp;source=global-header">Premium</a></li>
+<li class='user-menu tap-nav media-hide'><a href="http://blog.strava.com/?utm_source=website-header">Blog</a></li>
+<li class='logged_out_nav'><a href="https://www.strava.com/login" class="button">Log In</a></li>
+</ul>
+</div>
+</nav>
+
+</header>
+<div class='upsell-block-alt inset hidden-xs'>
+<div class='row'>
+<div class='spans6'>
+<h3 class='marginless'>Sign Up for Free</h3>
+<p>Track your rides and runs via your iPhone, Android or GPS device, analyze your performance, and compare with friends.</p>
+</div>
+<div class='spans9 offset1' id='email-partial-form-js'>
+<script>
+  jQuery.ajax({
+    url: '/register/email_form',
+    data: { activity_id: 505558211 },
+    dataType: 'html',
+    success: function(data) { jQuery('#email-partial-form-js').html(data); }
+  });
+</script>
+</div>
+</div>
+</div>
+
+
+<div class='messages'>
+<div class='message page-status-message' style='display:none;'>Loading &hellip;</div>
+</div>
+<div class='page'>
+<script id='custom-map-controls-show-privacy-fullscreen-template' type='text/template'>
+<div id='map-control-container' style='padding: 5px'>
+<div class='js-map-control' id='map-control-container' index='1'>
+<div class='inline-inputs' id='strava-map-controls'>
+
+<div class='drop-down-menu' id='map-type-control'>
+<a class='selection' data-map-type-id='terrain' id='selected-map'>Terrain Map</a>
+<ul class='options'>
+<li>
+<a class='map-type-selector' data-map-type-id='standard'>Standard Map</a>
+</li>
+<li>
+<a class='map-type-selector' data-map-type-id='satellite'>Satellite Map</a>
+</li>
+<li>
+<label>
+<input id='privacy_toggle' type='checkbox'>Show Privacy Zone</input>
+</label>
+</li>
+</ul>
+</div>
+
+<a class='button' id='toggle-fullscreen'></a>
+</div>
+</div>
+</div>
+</script>
+<script id='custom-map-controls-suggest-privacy-fullscreen-template' type='text/template'>
+<div id='map-control-container' style='padding: 5px'>
+<div class='js-map-control' id='map-control-container' index='1'>
+<div class='inline-inputs' id='strava-map-controls'>
+
+<div class='drop-down-menu' id='map-type-control'>
+<a class='selection' data-map-type-id='terrain' id='selected-map'>Terrain Map</a>
+<ul class='options'>
+<li>
+<a class='map-type-selector' data-map-type-id='standard'>Standard Map</a>
+</li>
+<li>
+<a class='map-type-selector' data-map-type-id='satellite'>Satellite Map</a>
+</li>
+<li>
+<a href='/settings/privacy'>Add Privacy Zone</a>
+</li>
+</ul>
+</div>
+
+<a class='button' id='toggle-fullscreen'></a>
+</div>
+</div>
+</div>
+</script>
+<script id='custom-map-controls-show-privacy-template' type='text/template'>
+<div id='map-control-container' style='padding: 5px'>
+<div class='js-map-control' id='map-control-container' index='1'>
+<div class='inline-inputs' id='strava-map-controls'>
+
+<div class='drop-down-menu' id='map-type-control'>
+<a class='selection' data-map-type-id='terrain' id='selected-map'>Terrain Map</a>
+<ul class='options'>
+<li>
+<a class='map-type-selector' data-map-type-id='standard'>Standard Map</a>
+</li>
+<li>
+<a class='map-type-selector' data-map-type-id='satellite'>Satellite Map</a>
+</li>
+<li>
+<label>
+<input id='privacy_toggle' type='checkbox'>Show Privacy Zone</input>
+</label>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+</script>
+<script id='custom-map-controls-suggest-privacy-template' type='text/template'>
+<div id='map-control-container' style='padding: 5px'>
+<div class='js-map-control' id='map-control-container' index='1'>
+<div class='inline-inputs' id='strava-map-controls'>
+
+<div class='drop-down-menu' id='map-type-control'>
+<a class='selection' data-map-type-id='terrain' id='selected-map'>Terrain Map</a>
+<ul class='options'>
+<li>
+<a class='map-type-selector' data-map-type-id='standard'>Standard Map</a>
+</li>
+<li>
+<a class='map-type-selector' data-map-type-id='satellite'>Satellite Map</a>
+</li>
+<li>
+<a href='/settings/privacy'>Add Privacy Zone</a>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+</script>
+<script id='custom-map-controls-fullscreen-template' type='text/template'>
+<div id='map-control-container' style='padding: 5px'>
+<div class='js-map-control' id='map-control-container' index='1'>
+<div class='inline-inputs' id='strava-map-controls'>
+
+<div class='drop-down-menu' id='map-type-control'>
+<a class='selection' data-map-type-id='terrain' id='selected-map'>Terrain Map</a>
+<ul class='options'>
+<li>
+<a class='map-type-selector' data-map-type-id='standard'>Standard Map</a>
+</li>
+<li>
+<a class='map-type-selector' data-map-type-id='satellite'>Satellite Map</a>
+</li>
+</ul>
+</div>
+
+<a class='button' id='toggle-fullscreen'></a>
+</div>
+</div>
+</div>
+</script>
+<script id='custom-map-controls-template' type='text/template'>
+<div id='map-control-container' style='padding: 5px'>
+<div class='js-map-control' id='map-control-container' index='1'>
+<div class='inline-inputs' id='strava-map-controls'>
+
+<div class='drop-down-menu' id='map-type-control'>
+<a class='selection' data-map-type-id='terrain' id='selected-map'>Terrain Map</a>
+<ul class='options'>
+<li>
+<a class='map-type-selector' data-map-type-id='standard'>Standard Map</a>
+</li>
+<li>
+<a class='map-type-selector' data-map-type-id='satellite'>Satellite Map</a>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+</script>
+
+<div class='row'>
+<div class='main spans11'>
+<div class='section'>
+<div class='hgroup'>
+<h1>Petite sortie a Greo</h1>
+</div>
+<div class='inline-stats-container'>
+<div class='activity-type-date'>
+<strong>Backcountry Ski</strong>
+<span class='timestamp'>
+<time>February 29, 2016</time>
+</span>
+</div>
+<ul class='inline-stats'>
+<li class='distance'>
+<strong>
+7.7<abbr class='unit' title='kilometers'>km</abbr>
+</strong>
+<div class='label'>Distance</div>
+</li>
+<li class='elevation'>
+<strong>
+576<abbr class='unit' title='meters'>m</abbr>
+</strong>
+<div class='label'>Elevation</div>
+</li>
+<li class='moving-time'>
+<strong>1:33:36</strong>
+<div class='label'>Moving Time</div>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+<div class='sidebar spans5 profile'>
+<div class='section'>
+<div class='hgroup'>
+<div class='left'><a href="/athletes/1346753" class="avatar avatar-athlete avatar-lg"><img alt="Didier Patacq-Croutzet" src="https://dgalywyr863hv.cloudfront.net/pictures/athletes/1346753/1430931/1/large.jpg" title="Didier Patacq-Croutzet" />
+</a></div>
+<div class='description'>
+<h2 class='bottomless'>
+<a href="/athletes/1346753">Didier Patacq-Croutzet</a>
+</h2>
+<div class='location'>Antibes, Provence-Alpes-Côte d'Azur, France</div>
+<a class='button' href='/register/free?content=1346753&amp;follow=true&amp;medium=strava_directory&amp;source=athlete'>Follow on Strava</a>
+</div>
+</div>
+<div class='inline-stats-container'>
+<div class='activity-type-date'>
+<strong>Backcountry Ski</strong>
+<span class='timestamp'>
+<time>February 29, 2016</time>
+</span>
+</div>
+<ul class='inline-stats'>
+<li class='distance'>
+<strong>
+7.7<abbr class='unit' title='kilometers'>km</abbr>
+</strong>
+<div class='label'>Distance</div>
+</li>
+<li class='elevation'>
+<strong>
+576<abbr class='unit' title='meters'>m</abbr>
+</strong>
+<div class='label'>Elevation</div>
+</li>
+<li class='moving-time'>
+<strong>1:33:36</strong>
+<div class='label'>Moving Time</div>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+<div class='row'>
+<div class='spans11'><div id='activity-photos-container'>
+</div>
+</div>
+</div>
+<div class='row'>
+<div class='main spans11'>
+<div id='map_mask'></div>
+<div id='map_canvas'>&nbsp;</div>
+<div class='charts' id='chart-container'>
+<div class='activity-charts'>
+<div class='elevation chart'>
+<div class='target' id='elev-chart'></div>
+</div>
+</div>
+</div>
+</div>
+<div class='sidebar spans5'>
+<div class='section ytd-stats'>
+<h2>2016 Stats</h2>
+<ul class='inline-stats'>
+<li>
+<strong>8</strong>
+<div class='label'>Followers</div>
+</li>
+</ul>
+</div>
+<div class='section'>
+</div>
+</div>
+</div>
+<div class='section inset visible-xs-block lo-activity-page-banner-variants' id='js-lo-activity-page-banner-variant-simple' style='display: none !important'>
+<div class='banner-text'>
+<img alt="Icon-app" class="float-left" height="40" src="https://d3nn82uaxijpm6.cloudfront.net/assets/website/mobile/icon-app-58899e9f5d745473721ac180538dd2f0.png" width="40" />
+<span>Join Strava: The Social Network for Athletes</span>
+</div>
+<a class='button btn-primary btn-block' href='https://app.adjust.com/ysiur4_g0l7by'>Download</a>
+</div>
+<div class='inset lo-activity-page-banner-variants run section visible-xs-block' id='js-lo-activity-page-banner-variant-fancy' style='display: none !important'>
+<div class='banner-text'>
+<img alt="Icon-app" class="float-left" height="40" src="https://d3nn82uaxijpm6.cloudfront.net/assets/website/mobile/icon-app-58899e9f5d745473721ac180538dd2f0.png" width="40" />
+<span>Track Your Rides and Runs with Strava</span>
+</div>
+<a class='button btn-primary btn-block' href='https://app.adjust.com/5klhwe_6j4rev'>Download</a>
+</div>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','//connect.facebook.net/en_US/fbevents.js');
+  
+  fbq('init', "845436102209527");
+  fbq('track', 'PageView');
+</script>
+<noscript>
+<img height='1' src='https://www.facebook.com/tr?id=845436102209527&amp;ev=PageView&amp;noscript=1' style='display:none' width='1'>
+</noscript>
+
+
+<div class='clear'></div>
+</div>
+<footer><div class='media-sm-show mobile-footer-nav'>
+<ul>
+<li class=''><a href="/tour">Features</a></li>
+<li class=''><a href="/how-it-works">How It Works</a></li>
+</ul>
+<div class='inner-content'><a href="/register/free?cta=sign-up&amp;element=nav&amp;source=mobile-footer" class="alt button">Sign Up for Free</a></div>
+</div>
+<div class='footer-global'>
+<div class='row'>
+<div class='spans5'>
+<a href="/" class="strava-logo lg bw">Strava — Built for Athletes</a>
+<div class='copyright'>
+©2016 Strava, Inc.
+All rights reserved.
+</div>
+</div>
+<div class='spans2 offset1 nav'>
+<h4>About</h4>
+<ul>
+<li><a href="/about">About</a></li>
+<li><a href="/how-it-works">How It Works</a></li>
+<li><a href="/features">Features</a></li>
+<li><a href="/mobile">Mobile</a></li>
+<li><a href="/premium?cta=premium&amp;element=nav&amp;source=global-footer">Premium</a></li>
+<li><a href="/privacy">Privacy Policy</a></li>
+<li><a href="/terms">Terms and Conditions</a></li>
+<li><a href="https://strava.zendesk.com/entries/46363890-About-Strava-Maps">About Our Maps</a></li>
+</ul>
+</div>
+<div class='spans2 nav'>
+<h4>Follow</h4>
+<ul>
+<li><a href="http://www.facebook.com/StravaRun" target="_blank">Facebook - Running</a></li>
+<li><a href="http://www.facebook.com/Strava" target="_blank">Facebook - Cycling</a></li>
+<li><a href="http://twitter.com/strava" target="_blank">Twitter</a></li>
+<li><a href="http://www.youtube.com/stravainc" target="_blank">YouTube</a></li>
+<li><a href="http://blog.strava.com">Blog</a></li>
+</ul>
+</div>
+<div class='spans2 nav'>
+<h4>Help</h4>
+<ul class='unstyled'>
+<li id='ticket-form-link'>
+<a>Submit a Request</a>
+</li>
+<li><a href="https://strava.zendesk.com/home">Strava Support</a></li>
+</ul>
+
+</div>
+<div class='spans2 nav'>
+<h4>More</h4>
+<ul>
+<li><a href="/register/free?cta=sign-up&amp;element=nav&amp;source=global-footer">Sign Up</a></li>
+<li><a href="https://www.strava.com/login">Log In</a></li>
+<li><a href="/local">Local</a></li>
+<li><a href="https://www.strava.com/store" class="js-content-shop">Shop</a></li>
+<li><a href="/careers">Careers</a></li>
+<li><a href="/developers">Developers</a></li>
+<li><a href="/pros">Pros on Strava</a></li>
+<li><a href="/stand-with-us">Stand With Us</a></li>
+</ul>
+</div>
+<div class='spans2 nav'>
+
+</div>
+</div>
+</div>
+<a href="#" class="media-sm-show" id="back-to-top">Top ↑</a>
+</footer>
+
+
+</div>
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/mapbox-0fd71b6e080ef35cc068dfb9ab80c9b2.js" type="text/javascript"></script>
+<script>
+  window._maps_api = "pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg"
+  jQuery(document).ready(function(){
+    Strava.Maps.Mapbox.Base.setMapIds({"terrain_id":"strava.blprdx6r","terrain_template":"https://api.tiles.mapbox.com/v4/strava.blprdx6r/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","satellite_id":"strava.xdfmkj4i","satellite_template":"https://api.tiles.mapbox.com/v4/strava.xdfmkj4i/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","standard_id":"strava.map-zn3cjvc6","standard_template":"https://api.tiles.mapbox.com/v4/strava.map-zn3cjvc6/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","runbikehike_template":"https://api.tiles.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","mapboxstreets_template":"https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","mapboxstreetsbasic_template":"https://api.tiles.mapbox.com/v4/mapbox.streets-basic/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","mapboxlight_template":"https://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","mapboxsatellite_template":"https://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","mapboxstreetssatellite_template":"https://api.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg","mapboxoutdoors_template":"https://api.tiles.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RyYXZhIiwiYSI6IlpoeXU2U0UifQ.c7yhlZevNRFCqHYm6G6Cyg"});
+  });
+</script>
+<script>
+  jQuery(document).ready(function(){
+    if (Strava && Strava.Maps && Strava.Maps.TelenavNonInteractiveMap){
+      Strava.Maps.TelenavNonInteractiveMap.TILE_HOST = "d1tnly5wepfkzd.cloudfront.net"
+    }
+  });
+</script>
+<script id='lightbox-template' type='text/template'>
+<div class='lightbox-window'>
+<div class='lightbox-control close-lightbox'>
+<button class='btn btn-unstyled btn-close'>
+<div class='app-icon icon-close icon-sm icon-white'></div>
+</button>
+</div>
+</div>
+</script>
+<script id='popover-template' type='text/template'>
+<div class='popover'></div>
+</script>
+<script>
+  window._asset_host = "https://d3nn82uaxijpm6.cloudfront.net";
+  window._measurement_preference = "meters";
+  window._date_preference = "%m/%d/%Y";
+  window._datepicker_preference_format = "mm/dd/yy"
+  
+  //async script load for twitter
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  
+  jQuery(document).ready(function() {
+    Strava.Util.EventLogging.createInstance("https://analytics.strava.com","7215fa60b5f01ecc3967543619f7e3d9", null);
+  });
+</script>
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/strava/i18n/locales/en-US-8a0032b97f41c342fc74ac67b548864d.js" type="text/javascript"></script>
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/application-a46e62d6bc74e0b6a6e5c4dc9a86ab6f.js" type="text/javascript"></script>
+
+
+<div id='fb-root'></div>
+<script>
+  var version = 'v2.2';
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: "284597785309",
+      status: true,
+      cookie: true,
+      xfbml: true,
+      version: version
+    });
+    Strava.Facebook.PermissionsManager.getInstance().facebookReady(version);
+    jQuery('#fb-root').trigger('facebook:init');
+  };
+  (function(d){
+    var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement('script'); js.id = id; js.async = true;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    ref.parentNode.insertBefore(js, ref);
+  }(document));
+</script>
+
+
+<script>
+  jQuery('document').ready(function() {
+    setTimeout(function() {
+      jQuery('#face-pile').css('visibility', 'visible');
+    }, 300);
+  });
+  var ua = navigator.userAgent;
+  var checker = {
+    ios: ua.match(/(iPhone|iPod|iPad)/),
+    android: ua.match(/Android/)
+  };
+  
+  var regButton = jQuery('#get-started-button');
+  if (checker.android || checker.ios) {
+    regUrl = regButton.attr('href');
+    if (checker.android) {
+      regUrl = 'https://market.android.com/details?id=com.strava';
+    } else if (checker.ios) {
+      regUrl = 'http://itunes.apple.com/app/strava-cycling/id426826309';
+    }
+    regButton.attr('href', regUrl).text('Get the App');
+  }
+  regButton.css('visibility', 'visible');
+</script>
+<script>
+  var currentAthlete = new Strava.Models.CurrentAthlete({"logged_in":false});
+  HAML.globals = function() {
+    return {
+      currentAthlete: currentAthlete,
+      t: {
+        distances: {"400m":"400m","805m":"1/2 mile","1000m":"1k","1500m":"1500 meters","1609m":"1 mile","3000m":"3000 meters","3219m":"2 miles","5000m":"5k","10000m":"10k","15000m":"15k","16090m":"10 miles","20000m":"20k","21097m":"Half-Marathon","30000m":"30k","42195m":"Marathon","50000m":"50k","80467m":"50 miles","100000m":"100k","160934m":"100 miles"},
+        invites_dialog: {"email":{"addresses":"Email addresses (separated by commas)","send":"Send Invites","sending":"Sending your email...","sent":"Invite sent!","title":"Email","subtitle":"Invite Message","message_label":"Message","message":"I use Strava to track my activities, create running and cycling routes, and participate in Challenges. I think you should join so we can follow each other's training.\n\n - %{inviter_name}"},"gmail":{"unauthenticated":{"title":"Add Your Contacts","message":"Add contacts from your address book by connecting your Gmail with Strava.","disclaimer":"We will never send out any email messages without your consent.","button":"Add Gmail Contacts"},"title":"Your Contacts","sending":"Sending your email...","invite_instructions":"Click the corresponding \"invite\" button to email the message below to your selected contacts."},"title":"Find and Invite Your Friends"},
+        profile: {"activity_summary":"Activity Summary Last 4 Weeks","activity_summary_short":"Last 4 Weeks","activity_type":"Activity Type","all_time":"All-Time","all_time_prs":"All-Time PRs","athlete_stats":"%{athlete_name} Stats","biggest_climb":"Biggest Climb","biggest_ride":"Biggest Ride","comments_received":"Comments Received","distance":"Distance","distance_per_week":"Avg Distance / Week","elev_gain":"Elev Gain","estimated_best_efforts":"Estimated Best Efforts","kudos_received":"Kudos Received","max_effort":"Max Effort","my_stats":"My Stats","pro_activity_summary":"%{athlete_name} Activity Last 4 Weeks","recent_achievements":"Recent Achievements","rides":"Rides","rides_per_week":"Avg Rides / Week","running_types":"Running includes runs, hikes, and walks","runs":"Runs","runs_per_week":"Avg Runs / Week","side_by_side_comparison":"Side by Side Comparison","time":"Time","time_per_week":"Avg Time / Week","total_activities":"Total Activities","ytd":"Year-to-Date"},
+        'new': "New"
+      },
+      renderPartial: function(name, context) {
+        if (context == null) {
+          context = this;
+        }
+        return JST[name](context);
+      }
+    }
+  }
+</script>
+
+<script>
+  new Strava.Initializer();
+</script>
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/strava/maps/mapbox/manifest-72ea53976498e16ef4af5e264a576c5c.js" type="text/javascript"></script>
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/strava/directory/manifest-47a3ff40c01cd87e11336b65766d3562.js" type="text/javascript"></script>
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/strava/activities/Activity-4d7b8ad1b3c0ca5a246ff7ecc5b218bc.js" type="text/javascript"></script>
+<script>
+  function renderInstagram(map){
+    var rowId = 'activity-photos';
+    var stmSource = "activity";
+    Strava.Util.EventLogging.trackingSource(stmSource);
+  
+    var photosJson = [];
+    var viewableCount = 12;
+    var photos = new Strava.Models.Photos(photosJson);
+    var manager = Strava.ExternalPhotos.PhotoPageManager
+      .getInstance()
+      .renderImages(photos, rowId, viewableCount)
+      .renderMapImages(photos, map);
+  };
+</script>
+
+<script>
+  jQuery(document).ready(function() {
+    new Strava.ActivityInitializer({
+      activity_id: 505558211,
+      activity_type: 'BackcountrySki',
+      activity_stream_api_url: "/stream/505558211",
+      measurement_preference: "meters",
+      client_data: {"id":505558211,"activityType":"Backcountry ski","athleteId":1346753,"athleteName":"Didier Patacq-Croutzet","athleteGender":"M","athleteMaxHR":183,"viewerGender":null,"viewerId":null,"mapIndices":[0,100],"streamKeys":["time","latlng","altitude","distance","heartrate","speed"],"streamAPI":"/stream/505558211","effortData":{"segmentIds":[],"highlightIds":[],"details":{"1553299596":{"id":1553299596,"activityId":505558211,"streamIndices":[0,2924],"name":"Lap 1","distance":"7.7\u003Cabbr class='unit' title='kilometers'\u003Ekm\u003C/abbr\u003E","avgGrade":"0\u003Cabbr class='unit' title='percent'\u003E%\u003C/abbr\u003E","elevLow":"1,381\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","elevHigh":"1,693\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","elevGain":"576\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","elevDifference":"312\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","elapsedTime":"3:51:45","movingTime":"3:24:42","restingTime":"27:03","avgSpeed":"2.0\u003Cabbr class='unit' title='kilometers per hour'\u003Ekm/h\u003C/abbr\u003E","heartRate":"117\u003Cabbr class='unit' title='beats per minute'\u003Ebpm\u003C/abbr\u003E","avgWatts":"N/A","feedEntryImage":null,"feedEntryDesc":null,"isSegment":false,"isClimb":false,"mapClimbIconIndex":null,"isLapOrDetectedClimb":true,"isPrivateForAthlete":true,"effortTitle":"LAP","segmentId":null,"category":0,"categoryDesc":"NC","segmentDistance":"7.7\u003Cabbr class='unit' title='kilometers'\u003Ekm\u003C/abbr\u003E","segmentAvgGrade":"0\u003Cabbr class='unit' title='percent'\u003E%\u003C/abbr\u003E","segmentElevLow":"1,381\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","segmentElevHigh":"1,693\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","segmentElevGain":"576\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","segmentElevDifference":"312\u003Cabbr class='unit' title='meters'\u003Em\u003C/abbr\u003E","vam":"N/A","hazard":false}}}}
+    });
+    renderInstagram();
+  });
+</script>
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/strava/registers/manifest-efe1474f27bcfe5d38f1edc25c7311b2.js" type="text/javascript"></script>
+<script>
+  jQuery('document').ready(function() {
+    Strava.Registers.ActivitySignupView.initialize();
+    setTimeout(function() {
+      jQuery('#face-pile').css('visibility', 'visible');
+    }, 300);
+  });
+</script>
+<script>
+  jQuery(document).ready(function($) {
+    $('#ticket-form-link').click(function() {
+      new Strava.Support.ZendeskTicketController();
+    });
+  });
+</script>
+
+<script src="https://d3nn82uaxijpm6.cloudfront.net/assets/strava/notifications/drop_down/manifest-e1b1aab27dddd8053d60767c03aeee6b.js" type="text/javascript"></script>
+<script>
+  jQuery(function($) {
+    var mark_all_read_notifications_path = "/notifications/mark_all_read";
+    var controller = new Strava.Notifications.DropDown.MarkAllReadController(mark_all_read_notifications_path);
+    var view = new Strava.Notifications.DropDown.View(controller);
+  })
+</script>
+
+<script>
+  jQuery(document).ready(function(){
+    var values = [];
+    Strava.module('Strava.Features');
+    Strava.Features.current = values;
+  });
+</script>
+</body>
+</html>

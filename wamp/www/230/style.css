@@ -1,0 +1,55 @@
+#form {
+	font-family:helvetica,sans-serif;
+	/*width:100%;*/
+	text-align: center;
+}
+#form label {
+	font-weight: bold;
+	font-size: 1em;
+	color:#999;
+	display:inline;
+}
+#form #search {
+	font-size: 1.5em;
+	display: block;
+}
+#form #search:hover {
+	color: #888;
+}
+#form input {
+	display: inline;
+	margin-left: auto;
+	margin-right: auto;
+}
+h1 {
+	text-align: center;
+	font-family:Tahoma;
+	color: DarkSlateGray;
+}
+h2 {
+	text-align:left;
+	font-family:Tahoma;
+	color: DarkSlateGray;
+	font-size: 1.5em;
+}
+li {
+	font-family:helvetica,sans-serif;
+	font-weight:bold;
+	float:left;
+	margin-left:10px;
+}
+ul {
+	text-align:center;
+}
+a:hover {
+	color:dodgerblue;
+}
+a {
+	color:deepskyblue;
+}
+#showcalendar {
+	font-size:0.8em;
+}
+.showcalendar {
+	font-size:0.8em;
+}

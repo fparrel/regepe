@@ -1,0 +1,12 @@
+Arrow0-345          myself
+VertBar[Left|Right] myself
+Up*                 gnome
+World*              gnome
+WorldSearch*        gnome
+PlayStart*          gnome
+title_bg*           ?
+Marker*             skitour + modif
+loading		?
+
+home    gnome (GPL)
+map_edit    CC attrib www.fatcow.com
