@@ -25,13 +25,15 @@ CGI was the only solution to use python on OVH's cheap shared hosting. Other sol
 * Allow keeping logging on several devices
 
 ## How is the code organized?
-The testing can be done even with WAMP+Python on Windows or with Apache+PHP+Python on Ubuntu (LAMP)
-`wamp` contains the WAMP version of the code for testing on localhost
-`wamp/www` contains .php and static html/css/js/png files
-`wamp/cgi-bin` contains cgi executables running on Windows' python2.7
-In `wamp/www`, `${GeoPortalApiKey}`, `${GMapsApiKey}` and `${GMapsApiKey2}` have to be replaced by actual value of API Key
-`translate.py` is used to generate french version of the website (on `wamp/www/fr`)
-`lamp-test` contains the LAMP version of the code for testing on localhost
-`lamp-prod` contains the LAMP version of the code for putting on production
-`lamp-test`, `lamp-prod` and `wamp/www/fr` are on `.gitignore` since they are generated from `wamp`
-`realign.py` can be used to realign bettwen `wamp`, `lamp-test` and `lamp-prod` and to have the list of modified files that have to be loaded on production
+The testing can be done even with WAMP+Python on Windows or with Apache+PHP+Python on Ubuntu (LAMP)  
+`wamp` contains the WAMP version of the code for testing on localhost  
+`wamp/www` contains .php and static html/css/js/png files  
+`wamp/cgi-bin` contains cgi executables running on Windows' python2.7  
+In `wamp/www`, `${GeoPortalApiKey}`, `${GMapsApiKey}` and `${GMapsApiKey2}` have to be replaced by actual value of API Key  
+`translate.py` is used to generate french version of the website (on `wamp/www/fr`)  
+`lamp-test` contains the LAMP version of the code for testing on localhost  
+`lamp-prod` contains the LAMP version of the code for putting on production  
+`lamp-test`, `lamp-prod` and `wamp/www/fr` are on `.gitignore` since they are generated from `wamp`  
+`realign.py` can be used to realign bettwen `wamp`, `lamp-test` and `lamp-prod` and to have the list of modified files that have to be loaded on production  
+`wampconfig.md` contains the modifications to be done on WAMP configuration to serve on localhost from your git clone directory  
+`ubuntuconfig.md` contains the modifications to be done on Apache configuration to serve on localhost from your git clone directory (tested on Lubuntu 15.10)  
