@@ -30,7 +30,7 @@ The testing can be done even with WAMP+Python on Windows or with Apache+PHP+Pyth
 `wamp/www` contains .php and static html/css/js/png files  
 `wamp/cgi-bin` contains cgi executables running on Windows' python2.7  
 In `wamp/www`, `${GeoPortalApiKey}`, `${GMapsApiKey}` and `${GMapsApiKey2}` have to be replaced by actual value of API Key  
-`translate.py` is used to generate french version of the website (on `wamp/www/fr`)  
+`translate.py` is used to generate french version of the website (on `wamp/www/fr`) translation data is on `translations.txt`  
 `lamp-test` contains the LAMP version of the code for testing on localhost  
 `lamp-prod` contains the LAMP version of the code for putting on production  
 `lamp-test`, `lamp-prod` and `wamp/www/fr` are on `.gitignore` since they are generated from `wamp`  

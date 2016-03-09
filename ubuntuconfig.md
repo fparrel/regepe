@@ -41,11 +41,12 @@ There is how to configure your test server on Ubuntu (tested with Lubuntu 15.10)
 ```
 
 3. Then activate the host and restart apache:
-```udo a2ensite regepe
+```
+sudo a2ensite regepe
 sudo service apache2 restart
 ```
 
 4. Put right permissions on `cgi-bin` folder
-```bash
+```shell
 chmod +x `grep "#\!/usr/bin/python" lamp-test/cgi-bin/*.py -l`
 ```
