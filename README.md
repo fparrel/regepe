@@ -37,3 +37,7 @@ In `wamp/www`, `${GeoPortalApiKey}`, `${GMapsApiKey}` and `${GMapsApiKey2}` have
 `realign.py` can be used to realign bettwen `wamp`, `lamp-test` and `lamp-prod` and to have the list of modified files that have to be loaded on production  
 `wampconfig.md` contains the modifications to be done on WAMP configuration to serve on localhost from your git clone directory  
 `ubuntuconfig.md` contains the modifications to be done on Apache configuration to serve on localhost from your git clone directory (tested on Lubuntu 15.10)  
+`minify.sh` is used to minify .js files in `lamp-prod`  
+
+## What technologies/libraries/services are used?
+CGI Python PHP Javascript BerkelyDB D3.js flotcharts JQuery Geoportail GoogleMaps HTML CSS

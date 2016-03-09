@@ -1,15 +1,15 @@
 There is how to configure your test server on Ubuntu (tested with Lubuntu 15.10). Example if the git repository has been cloned into `/home/fred/regepe`
 
 1. In `/etc/apache2/apache2.conf`, add
-
-    <Directory /home/fred/regepe/lamp-test/>
-    	Options Indexes FollowSymLinks
-    	AllowOverride None
-    	Require all granted
-    </Directory>
-
+```html
+<Directory /home/fred/regepe/lamp-test/>
+  Options Indexes FollowSymLinks
+  AllowOverride None
+  Require all granted
+</Directory>
+```
 2. Create `/etc/apache2/sites-enabled/regepe.conf`
-
+```html
     <VirtualHost *:80>
     
 	    ServerAdmin webmaster@localhost
@@ -38,10 +38,14 @@ There is how to configure your test server on Ubuntu (tested with Lubuntu 15.10)
     	</IfModule>
     
     </VirtualHost>
+```
 
 3. Then activate the host and restart apache:
-    sudo a2ensite regepe
-    sudo service apache2 restart
+```udo a2ensite regepe
+sudo service apache2 restart
+```
 
 4. Put right permissions on `cgi-bin` folder
-    chmod +x `grep "#\!/usr/bin/python" lamp-test/cgi-bin/*.py -l`
+```bash
+chmod +x `grep "#\!/usr/bin/python" lamp-test/cgi-bin/*.py -l`
+```
