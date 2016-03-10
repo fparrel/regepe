@@ -69,14 +69,14 @@ stopsnicenord = [
 'Mistral',
 'Fontaine du Temple'];
 stopsniceprom = [
-'Nice - Lycée Masséna',
+'Nice - Lyc&eacute;e Mass&eacute;na',
 'Gustave V',
 'Gambetta/Promenade',
 'Magnan/Promenade',
 'Fabron/Promenade',
 'Carras/Promenade',
-'La Vallière/Promenade',
-'Aéroport/Promenade',
+'La Valli&egrave;re/Promenade',
+'A&eacute;roport/Promenade',
 'Santoline'];
 stopssophia = [
 'Les Chappes',
@@ -92,18 +92,18 @@ stopssophia = [
 'Pompidou',
 'Garbejaire',
 'Les Cardoulines',
-'Sophia Gare Routière'];
+'Sophia Gare Routi&egrave;re'];
 stopsvalbonne = [
-'Les Genêts',
+'Les Gen&ecirc;ts',
 'Val Martin',
 'Peyniblou',
 'La Petite Ferme',
 'Les Fauvettes',
-'La Carrière',
+'La Carri&egrave;re',
 'Val de Cuberte',
 'Hauts de Valbonne',
 'Pont de la Brague',
-'Hôtel de Ville',
+'H&ocirc;tel de Ville',
 'Valbonne Village'];
 function reverseArr(input) {
     var ret = new Array;

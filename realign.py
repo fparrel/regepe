@@ -1,6 +1,7 @@
 
 import os
 import sys
+import json
 
 def in_ignore(root,file):
     #print 'in_ignore('+root+','+file
@@ -84,6 +85,11 @@ except ImportError:
     pass
 '''
 
+if dest_dir in ('lamp-prod'):
+    keysnpwds = json.load(open('keysnpwds-prod.json','r'))
+elif dest_dir in ('lamp-test','wamp'):
+    keysnpwds = json.load(open('keysnpwds-test.json','r'))
+
 print 'Source=%s Destination=%s' % (src_dir, dest_dir)
 print 'Run translate.py and minify.sh first'
 for root, dirs, files in os.walk(src_dir):
@@ -124,6 +130,12 @@ for root, dirs, files in os.walk(src_dir):
                     if c_from.find('.min.js"')>-1:
                         modified=True
                         c_from = c_from.replace('.min.js"','.js"')
+                for k,v in keysnpwds.iteritems():
+                    try:
+                        c_from = c_from.replace(k,v)
+                    except UnicodeDecodeError,e:
+                        print k,v,file,root
+                        raise e
             elif file.endswith('.js'):
                 if src_dir in ('wamp','lamp-test') and dest_dir=='lamp-prod':
                     if c_from.find('${GeoPortalApiKey}')>-1:
@@ -133,6 +145,12 @@ for root, dirs, files in os.walk(src_dir):
                     if c_from.find('${GeoPortalApiKeyProd}')>-1:
                         modified=True
                         c_from = c_from.replace('${GeoPortalApiKeyProd}','${GeoPortalApiKey}')
+                for k,v in keysnpwds.iteritems():
+                    try:
+                        c_from = c_from.replace(k,v)
+                    except UnicodeDecodeError,e:
+                        print k,v,file,root
+                        raise e
             elif file=='config.py':
                 if src_dir in ('wamp','lamp-test') and dest_dir=='lamp-prod':
                     if c_from.find("domain = 'localhost'")>-1:

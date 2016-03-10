@@ -1,6 +1,6 @@
 <?php
 
-// Redirige l'utilisateur s'il est déjà identifié
+// Redirige l'utilisateur s'il est deja identifie
 if(isset($_COOKIE["USER_ID"]))
 {
     //header("Location: index.php");
