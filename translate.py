@@ -47,14 +47,14 @@ def processphp(fname):
 
 def processall():
     out = []
-    for fname in os.listdir('www/javascript'):
+    for fname in os.listdir('wamp/www/javascript'):
         if fname not in jsfilter:
-            out.extend(processjs('www/javascript/%s'%fname))
-    for fname in os.listdir('www'):
+            out.extend(processjs('wamp/www/javascript/%s'%fname))
+    for fname in os.listdir('wamp/www'):
         if fname.endswith('.html'):
-            out.extend(processhtml('www/%s'%fname))
+            out.extend(processhtml('wamp/www/%s'%fname))
         elif fname.endswith('.php') and fname not in phpfilter:
-            out.extend(processphp('www/%s'%fname))
+            out.extend(processphp('wamp/www/%s'%fname))
     return out
 
 
@@ -89,11 +89,11 @@ def parseTranslations(csvfname,list=False):
         except:
             raise Exception('Cannot parse line %s'%line)
         if list:
-            out.append('%s:%s'%(fname,totradstr))
+            out.append('wamp/%s:%s'%(fname,totradstr))
         else:
             if not translations.has_key(fname):
-                translations[fname] = []
-            translations[fname].append((totradstr,traducedstr))
+                translations['wamp/'+fname] = []
+            translations['wamp/'+fname].append((totradstr,traducedstr))
     f.close()
     if list:
         return out
@@ -103,11 +103,11 @@ def parseTranslations(csvfname,list=False):
 def buildtraduced(csvfname):
     translations = parseTranslations(csvfname)
     print translations
-    createdirifneeded('www/fr/javascript')
+    createdirifneeded('wamp/www/fr/javascript')
     for fname in translations:
         print 'Process %s'%fname
         fin = open(fname,'r')
-        fout = open(fname.replace('www/','www/fr/'),'wb')
+        fout = open(fname.replace('wamp/www/','wamp/www/fr/'),'wb')
         contents = fin.read()
         for (oldstr,newstr) in translations[fname]:
             contents = contents.replace(oldstr,newstr)
@@ -116,14 +116,14 @@ def buildtraduced(csvfname):
         fin.close()
     
     #files with no translation
-    createdirifneeded('www/fr/images')
-    createdirifneeded('www/fr/styles')    
-    dirlist = ['www','www/javascript','www/images','www/styles']
+    createdirifneeded('wamp/www/fr/images')
+    createdirifneeded('wamp/www/fr/styles')    
+    dirlist = ['wamp/www','wamp/www/javascript','wamp/www/images','wamp/www/styles']
     for path in dirlist:
         for fname in os.listdir(path):
             if fname.endswith('.html') or fname.endswith('.js') or fname.endswith('.php') or fname.endswith('.png') or fname.endswith('.gif') or fname.endswith('.jpg') or fname.endswith('.htc') or fname.endswith('.css'):
                 if '%s/%s'%(path,fname) not in translations:
-                    copyfile('%s/%s'%(path,fname), '%s/%s'%(path.replace('www','www/fr'),fname))
+                    copyfile('%s/%s'%(path,fname), '%s/%s'%(path.replace('wamp/www','wamp/www/fr'),fname))
 
 def dictToFile(d,cvsfname):
     f = open(cvsfname,'w')

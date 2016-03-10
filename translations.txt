@@ -77,7 +77,7 @@ www/javascript/jquery.flot.time.js:Wed	Mer
 www/javascript/jquery.flot.time.js:Thu	Jeu
 www/javascript/jquery.flot.time.js:Fri	Ven
 www/javascript/jquery.flot.time.js:Sat	Sam
-www/javascript/js-inflate.js:HufBuild error: 	Erreur HufBuild : 
+www/javascript/js-inflate.js:HufBuild error: 	Erreur HufBuild: 
 www/javascript/js-unzip.js:File is not a Zip file.	Le fichier n'est pas un fichier ZIP
 www/javascript/js-unzip.js:File contains encrypted entry. Not supported.	D&eacute;sol&eacute;, mais les fichier crypt&eacute;s ne sont pas support&eacute;s
 www/javascript/js-unzip.js:File is using UTF8. Not supported.	D&eacute;sol&eacute;, mais les fichiers encod&eacute; en UTF8 ne sont pas support&eacute;s

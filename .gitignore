@@ -78,6 +78,8 @@ wamp/www/maps/*.php
 
 #API Keys
 api_keys.txt
+keysnpwds-prod.json
+keysnpwds-test.json
 
 #Generated files
 lamp-prod/
