@@ -231,7 +231,7 @@ def DbSearchLatLonRange(minlat,minlon,maxlat,maxlon):
         DbBuildInvert('maps','startpoint',lambda value: [value])
     print('<!-- DEBUG:DbSearchLatLonRange %f %f %f %f -->' % (minlat,maxlat,minlon,maxlon))
     #Log('DbSearchLatLonRange open db r STARTPOINT_INV\n')
-    dbinv = anydbm.open('STARTPOINT_INV.db','r')
+    dbinv = anydbm.open('STARTPOINT_INV.db','c')
     out = []
     for latlonstr,mapidsstr in dbinv.iteritems():
         (lat,lon) = map(float,latlonstr.split(','))
@@ -250,7 +250,7 @@ def DbGetAllMaps():
     if RebuildNeeded('startpoint'):
         DbBuildInvert('maps','startpoint',lambda value: [value])
     #Log('DbGetAllMaps open db r STARTPOINT_INV\n')
-    dbinv = anydbm.open('STARTPOINT_INV.db','r')
+    dbinv = anydbm.open('STARTPOINT_INV.db','c')
     out = []
     for latlonstr,mapidsstr in dbinv.iteritems():
         (lat,lon) = map(float,latlonstr.split(','))
@@ -282,7 +282,7 @@ def DbGetListOfDates():
     if RebuildNeeded('date'):
         DbBuildInvert('maps','date',lambda value: [value])
     #Log('DbGetListOfDates open db r DATE_INV\n')
-    dbinv = anydbm.open('DATE_INV.db','r')
+    dbinv = anydbm.open('DATE_INV.db','c')
     out = {}
     for k,v in dbinv.iteritems():
         out[k] = v.split(',')

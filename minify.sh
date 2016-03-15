@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 for i in `ls lamp-prod/www/javascript/*.js | grep -v "\.min\.js"`
 do
 echo "Processing $i"

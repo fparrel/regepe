@@ -72,7 +72,12 @@ function geodeticDist(lat1,lon1,lat2,lon2) {
 /* Compute course from (lat1,lon1) to (lat2,lon2)
    Input is in degrees and output in degrees */
 function computeCourse(lat1,lon1,lat2,lon2) {
-	var y = Math.sin(lon2 - lon1) * Math.cos(lat2);
+  //convert inputs in degrees to radians
+  lat1 = lat1 * 0.0174532925199433;
+  lon1 = lon1 * 0.0174532925199433;
+  lat2 = lat2 * 0.0174532925199433;
+  lon2 = lon2 * 0.0174532925199433;
+  var y = Math.sin(lon2 - lon1) * Math.cos(lat2);
 	var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2 - lon1);
 	return (((Math.atan2(y, x) * 180 / Math.PI)+360) % 360);
 }

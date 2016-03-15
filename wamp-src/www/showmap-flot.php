@@ -75,61 +75,104 @@ if ($spdunitindex!=false) {
 <script type="text/javascript" src="javascript/slider.js"></script>
 <script type="text/javascript" src="javascript/jquery.js"></script>
 <script type="text/javascript" src="javascript/jquery.flot.js"></script>
-<script type="text/javascript" src="javascript/jquery.flot.resize.js"></script>
 <script type="text/javascript" src="javascript/jquery.flot.selection.js"></script>
 <script type="text/javascript" src="javascript/jquery.flot.time.js"></script>
 <script type="text/javascript" src='javascript/raphael-min.js'></script>
 <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
 <script type="text/javascript" src="javascript/d3polar.js"></script>
 <link type="text/css" rel="StyleSheet" href="styles/slider-flot.css" />
-<link type="text/css" rel="StyleSheet" href="styles/mapstyle-flot2.css" />
-<link type="text/css" rel="StyleSheet" href="styles/header2.css" />
+<link type="text/css" rel="StyleSheet" href="styles/mapstyle-flot.css" />
+<link type="text/css" rel="StyleSheet" href="styles/header.css" />
 </head>
 <body>
 <?php include('header.html'); ?>
 <div id="body">
-  <!--<div class="topbox">-->
-    <div class="mapbox">
+    <table><tbody><tr>
+         <td class="mapbox">
 <?php if ($map_type=='GMaps') { ?>
-        <div id="map" class="map" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);" onmousewheel="onMapMouseWheel(event);"></div>
+			<div id="map" class="map" title="Click on track to change current point" onmousewheel="onMapMouseWheel(event);" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 <?php } else if ($map_type=='GeoPortal') { ?>
-        <div id="map" class="map" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+			<div id="map" style="height:500px;width:500px;" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 <?php } else if ($map_type=='MapQuest') { ?>
-        <div id="map" class="map" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+			<div id="map" style="width:500px; height:500px;" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 <?php } ?>
-        <div class="mapfooter">
-            <span class="mapfooterleft">
+			<table class="currpointcontrol"><tbody>
+                <tr>
+                    <td><a href="javascript:void(0);" id="scrolloneminus" onclick="scrollOffset(-1);" title="Scroll one point">&lt;</a></td>
+                    <td>
+                        <div class="slider" id="currentpoint-slider" title="Move current point" tabIndex="1">
+                            <input class="slider-input" id="currentpoint-slider-input" name="currentpoint-slider-input"/>
+                        </div>
+                    </td>
+                    <td><a href="javascript:void(0);" id="scrolloneplus" onclick="scrollOffset(1);" title="Scroll one point">&gt;</a></td>
+                    <td>
+                        <a id="toogle_auto_play" href="javascript:void(0);" onclick="toogleAutoPlay();">Play</a><br/>
+                        <div class="slider" id="playingspeed-slider" title="Playing speed" tabIndex="1">
+                            <input class="slider-input" id="playingspeed-slider-input" name="playingspeed-slider-input"/>
+                        </div>
+                    </td>
+                    <td>
+                        <b>Snake length:</b><br/>
+                        <div class="slider" id="snakelength-slider" title="Snake length" tabIndex="2">
+                            <input class="slider-input" id="snakelength-slider-input" name="snakelength-slider-input"/>
+                        </div>
+                    </td>
+                </tr>
+<?php if($wind=='1') { ?>
+                <tr>
+                    <td></td>
+                    <td>
+                        <table><tbody><tr>
+                            <td>
+                                <div id="use_windir" style="display:none;"><input id="use_winddir_btn" type="button" value="Use WindDir" onclick="useWinddir();"/></div>
+                                <div id="windirbox">
+                                    <b>Wind direction:</b>
+                                    <div class="slider" id="winddir-slider" title="Wind dir" tabIndex="2">
+                                        <input class="slider-input" id="winddir-slider-input" name="winddir-slider-input"/>
+                                    </div>
+                                    <div id="winddir-value">180 &deg; (S)</div>
+                                </div>
+                            </td><td>
+                                <div id="use_buoy"><input id="use_buoy_btn" type="button" value="Use Buoy" onclick="useBuoy();"/></div>
+                            </td>
+                        </tr></tbody></table>
+                    </td>
+                </tr>
+<?php } ?>
+              </tbody></table>
+			<table style="width: 100%;"><tbody><tr>
+                    <td class="mapfooterleft">
 Switch to: <?php
-$maptypes=array("GeoPortal"=>"Geo Portail","GMaps"=>"Google Maps","MapQuest"=>"Open Street Map");
+$maptypes=array("GeoPortal"=>"Geo Portail","GMaps"=>"Google Maps"/*,"MapQuest"=>"Open Street Map"*/);
 foreach($maptypes as $maptype=>$maptypedesc) {
 	if($map_type!=$maptype) {
 		print '<a href="/showmap-flot.php?mapid='.$_GET['mapid'].'&amp;maptype='.$maptype.'">'.$maptypedesc.'</a> ';
 	}
 }
 ?>
-            </span>
-            <span class="mapfooterright">Center map : <a id="center_map_toogle" href="javascript:void(0);" onclick="toogleCenterMap()">Yes</a></span>
-        </div>
-    </div><!--mapbox-->
-    <div class="summary">
-        <h3 onclick="toogleHideShow('trackinfos');">Map infos:</h3>
-        <div class="box" id="trackinfos">
-            <b>User: </b><!-- link will be overwritten by javascript --><a id='trackuserlink' href="/showuser.php?user=unknown"><span id='trackuser'>Loading...</span></a><br/>
-            <b>Description: </b>
-            <div id='trackdesc' style="display: inline;" onclick="showInput('trackdesc');"><?php echo $desc; ?></div>
-            <div id="trackdesc_input" style="display:none;">
-                <table><tbody><tr>
-                    <td>
-                        <textarea rows="5" cols="20" id="trackdesc_inputtxtbox" onkeypress="onInputKeyPress(event,'trackdesc');"></textarea>
-                    </td><td style="vertical-align:bottom;">
-                        <input id="trackdesc_cancelbtn" type="button" value="Cancel" onclick="onCancelClick('trackdesc');"/><br/>
-                        <input id="trackdesc_okbtn" type="button" value="OK" onclick="onOkClick('trackdesc',mapid);"/>
                     </td>
-                </tr></tbody></table>
-            </div><br/>
-            <b>Date: </b><div id='date' style="display: inline;">Loading...</div><br/>
-        </div> <!-- trackinfos -->
-        <div id="figures">
+                    <td class="mapfooterright">Center map : <a id="center_map_toogle" href="javascript:void(0);" onclick="toogleCenterMap()">Yes</a></td>
+              </tr></tbody></table>
+		</td>
+		<td style="vertical-align:top;">
+                <h3 onclick="toogleHideShow('trackinfos');">Map infos:</h3>
+                <div class="box" id="trackinfos">
+                    <b>User: </b><!-- link will be overwritten by javascript --><a id='trackuserlink' href="/showuser.php?user=unknown"><span id='trackuser'>Loading...</span></a><br/>
+                    <b>Description: </b>
+                    <div id='trackdesc' style="display: inline;" onclick="showInput('trackdesc');"><?php echo $desc; ?></div>
+                    <div id="trackdesc_input" style="display:none;">
+                        <table><tbody><tr>
+                            <td>
+                                <textarea rows="5" cols="20" id="trackdesc_inputtxtbox" onkeypress="onInputKeyPress(event,'trackdesc');"></textarea>
+                            </td><td style="vertical-align:bottom;">
+                                <input id="trackdesc_cancelbtn" type="button" value="Cancel" onclick="onCancelClick('trackdesc');"/><br/>
+                                <input id="trackdesc_okbtn" type="button" value="OK" onclick="onOkClick('trackdesc',mapid);"/>
+                            </td>
+                        </tr></tbody></table>
+                    </div><br/>
+                    <b>Date: </b><div id='date' style="display: inline;">Loading...</div><br/>
+                </div>
+                <div id="figures">
 <?php
 $figobj = json_decode($figures);
 if($figobj) {
@@ -153,56 +196,20 @@ if($figobj) {
     print '</div>';
 }
 ?>
-        </div> <!-- figures -->
-        <br/>
-        <div class="currentbox">
-            <h3>Current point:</h3>
-            <div class="currentinfobox" id="current_point_infos"></div>
-            <div class="currptallcontrols">
-                <div class="currpointcontrol">
-                    <span><a href="javascript:void(0);" id="scrolloneminus" onclick="scrollOffset(-1);" title="Scroll one point">&lt;</a></span>
-                    <span>
-                        <div class="slider" id="currentpoint-slider" title="Move current point" tabIndex="1">
-                            <input class="slider-input" id="currentpoint-slider-input" name="currentpoint-slider-input"/>
-                        </div>
-                    </span>
-                    <span><a href="javascript:void(0);" id="scrolloneplus" onclick="scrollOffset(1);" title="Scroll one point">&gt;</a></span>
-                </div>
-                <div class="autoplaycontrol">
-                    <a id="toogle_auto_play" href="javascript:void(0);" onclick="toogleAutoPlay();">Play</a><br/>
-                    <div class="slider" id="playingspeed-slider" title="Playing speed" tabIndex="1">
-                        <input class="slider-input" id="playingspeed-slider-input" name="playingspeed-slider-input"/>
-                    </div>
-                </div>
-                <div class="snakecontrol">
-                    <b>Snake length:</b><br/>
-                    <div class="slider" id="snakelength-slider" title="Snake length" tabIndex="2">
-                        <input class="slider-input" id="snakelength-slider-input" name="snakelength-slider-input"/>
-                    </div>
-                </div>
-            </div> <!-- currptallcontrols -->
-        </div> <!-- currentbox -->
-        <div class="currentbox">
-            <h3>Current selection:</h3>
-            <div class="currentinfobox" id="selection_infos"></div>
-        </div> <!-- currentbox -->
-<?php if($wind=='1') { ?>
-        <div style="clear:both;"></div>
-        <div class="windcontrol">
-            <div id="use_windir" style="display:none;"><input id="use_winddir_btn" type="button" value="Use WindDir" onclick="useWinddir();"/></div>
-            <div id="windirbox">
-                <b>Wind direction:</b><br/>
-                <div class="slider" id="winddir-slider" title="Wind dir" tabIndex="2">
-                    <input class="slider-input" id="winddir-slider-input" name="winddir-slider-input"/>
-                </div>
-                <div id="winddir-value">180 &deg; (S)</div>
-            </div>
-            <!--<div id="use_buoy"><input id="use_buoy_btn" type="button" value="Use Buoy" onclick="useBuoy();"/></div>-->
-        </div> <!-- windcontrol -->
-<?php } ?>
-    </div> <!-- summary -->
-  <!--</div><!--topbox-->
-    <div class="charttabs">
+                </div><br/>
+                <table><tbody><tr>
+                    <td>
+                        <h3>Current point:</h3>
+                        <div class="currentinfobox" id="current_point_infos"></div>
+                    </td>
+                    <td>
+                        <h3>Current selection:</h3>
+                        <div class="currentinfobox" id="selection_infos"></div>
+                    </td>
+                </tr></tbody></table>
+		</td>
+	</tr></tbody></table>
+	<div class="charttabs">
 <?php
 /*
 function simpleEncode($arrVals,$maxv) {
@@ -363,7 +370,7 @@ foreach(explode("\n", $charts) as $chart) {
             print 'Cannot decode '.$chart;
             continue;
         }
-        print '<div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">'.$js->title.'</div><div class="chart" id="'.$js->name.'"><div id="chart'.$j.'" style="width:100%; height:200px;"></div><input type="button" value="Zoom" id="chartzoombtn'.$j.'" style="display: none;" onclick="onChartZoom(this,'.$j.');"/><input type="button" value="Reset Zoom" id="chartzoomresetbtn'.$j.'" style="display: none;" onclick="onChartZoomReset(this,'.$j.');"/></div></div>
+        print '<div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">'.$js->title.'</div><div class="chart" id="'.$js->name.'"><div id="chart'.$j.'" style="width:800px; height:200px;"></div><input type="button" value="Zoom" id="chartzoombtn'.$j.'" style="display: none;" onclick="onChartZoom(this,'.$j.');"/><input type="button" value="Reset Zoom" id="chartzoomresetbtn'.$j.'" style="display: none;" onclick="onChartZoomReset(this,'.$j.');"/></div></div>
         ';
         $j++;
     }
@@ -372,48 +379,47 @@ foreach(explode("\n", $charts) as $chart) {
     }
 }
 ?>
-        <div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Tools</div>
-            <div class="chart" id="toolbox">
-                <b>Selection:</b> <input id="sel_clearbtn" type="button" value="Clear" onclick="onSelClearClick();"/>
-                <input id="sel_cropbtn" type="button" value="Crop" onclick="onSelCropClick();"/><br/>
-                <b>Map:</b> <input id="map_deletebtn" type="button" value="Delete" onclick="onMapDeleteClick();"/>
-                <a href="/cgi-bin/togpx.py?type=json&amp;mapid=<?php echo $_GET['mapid'] ?>&amp;filename=out.gpx">Export as gpx</a><br/>
-                <input id="del_curpt" type="button" value="Submit deleted points" onclick="onSubmitDeleteClick();"/> Submit points deleted by pressing DEL key on map
-            </div>
+    <div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Tools</div>
+        <div class="chart" id="toolbox">
+            <b>Selection:</b> <input id="sel_clearbtn" type="button" value="Clear" onclick="onSelClearClick();"/>
+            <input id="sel_cropbtn" type="button" value="Crop" onclick="onSelCropClick();"/><br/>
+            <b>Map:</b> <input id="map_deletebtn" type="button" value="Delete" onclick="onMapDeleteClick();"/>
+            <a href="/cgi-bin/togpx.py?type=json&amp;mapid=<?php echo $_GET['mapid'] ?>&amp;filename=out.gpx">Export as gpx</a><br/>
+            <input id="del_curpt" type="button" value="Submit deleted points" onclick="onSubmitDeleteClick();"/> Submit points deleted by pressing DEL key on map
+        </div>
         </div>
         <div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Comments</div>
-            <div class="chart" id="comments" style="width:90%;">
-                <a href="javscript:void(0);" onclick="toogleAddComment();">Add</a>
-            </div>
+        <div class="chart" id="comments" style="width:90%;">
+        <a href="javscript:void(0);" onclick="toogleAddComment();">Add</a>
+        </div>
         </div>
         <div class="chartcontainer" id="pauseschartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Pauses</div>
-            <div class="chart" id="pauseschart" style="width:90%;">
-                <div class="pauses_settings">
-                    <div class="slidertitle">Pause min. time:</div>
-                    <div class="slider" id="pauses-time-slider" title="Time" tabIndex="1">
-                        <input class="slider-input" id="pauses-time-input" name="pauses-time-input"/>
-                    </div>
-                    <div class="sliderlbl" id="pauses-time-value-disp">1:00</div>
-                    <div class="slidertitle">Pause max. distance:</div>
-                    <div class="slider" id="pauses-dist-slider" title="Distance" tabIndex="1">
-                        <input class="slider-input" id="pauses-dist-input" name="pauses-dist-input"/>
-                    </div>
-                    <div class="sliderlbl" id="pauses-dist-value-disp">20 m</div>
-                    <div class="slidertitle">Pause max. speed:</div>
-                    <div class="slider" id="pauses-spd-slider" title="Speed" tabIndex="1">
-                        <input class="slider-input" id="pauses-spd-input" name="pauses-spd-input"/>
-                    </div>
-                    <div class="sliderlbl" id="pauses-spd-value-disp">3 m/s</div>
+        <div class="chart" id="pauseschart" style="width:90%;">
+            <div class="pauses_settings">
+                <div class="slidertitle">Pause min. time:</div>
+                <div class="slider" id="pauses-time-slider" title="Time" tabIndex="1">
+                    <input class="slider-input" id="pauses-time-input" name="pauses-time-input"/>
                 </div>
-                <div id="pauses">Computing...</div>
+                <div class="sliderlbl" id="pauses-time-value-disp">1:00</div>
+                <div class="slidertitle">Pause max. distance:</div>
+                <div class="slider" id="pauses-dist-slider" title="Distance" tabIndex="1">
+                    <input class="slider-input" id="pauses-dist-input" name="pauses-dist-input"/>
+                </div>
+                <div class="sliderlbl" id="pauses-dist-value-disp">20 m</div>
+                <div class="slidertitle">Pause max. speed:</div>
+                <div class="slider" id="pauses-spd-slider" title="Speed" tabIndex="1">
+                    <input class="slider-input" id="pauses-spd-input" name="pauses-spd-input"/>
+                </div>
+                <div class="sliderlbl" id="pauses-spd-value-disp">3 m/s</div>
             </div>
+            <div id="pauses">Computing...</div>
         </div>
-    </div> <!-- charttabs -->
-    <div id="nearmapsandtitle">
-        <h2>Other tracks nearby</h2>
-        <div id="near_maps">Loading...</div>
+        </div>
     </div>
-</div> <!-- body -->
+    <div style="clear:both;"></div>
+    <h2>Other tracks nearby</h2>
+    <div id="near_maps">Near maps</div>
+</div>
 <?php if ($map_type=='GMaps') { ?>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=${GMapsApiKey2}&amp;sensor=false"></script>
 <?php } else if ($map_type=='GeoPortal') { ?>

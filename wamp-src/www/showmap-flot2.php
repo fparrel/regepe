@@ -82,8 +82,8 @@ if ($spdunitindex!=false) {
 <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
 <script type="text/javascript" src="javascript/d3polar.js"></script>
 <link type="text/css" rel="StyleSheet" href="styles/slider-flot.css" />
-<link type="text/css" rel="StyleSheet" href="styles/mapstyle-flot.css" />
-<link type="text/css" rel="StyleSheet" href="styles/header.css" />
+<link type="text/css" rel="StyleSheet" href="styles/mapstyle-flot2.css" />
+<link type="text/css" rel="StyleSheet" href="styles/header2.css" />
 </head>
 <body>
 <?php include('header.html'); ?>

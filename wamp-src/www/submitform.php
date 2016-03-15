@@ -96,7 +96,7 @@
 <?php include('footer.html'); ?>
 </body>
 </html>
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=${GMapsApiKey}" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=${GMapsApiKey2}" type="text/javascript"></script>
 <script src="javascript/xmlhttprequest.js" type="text/javascript"></script>
 <script src="javascript/header.js" type="text/javascript"></script>
 <script src="javascript/utils.js" type="text/javascript"></script>
