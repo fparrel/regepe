@@ -65,16 +65,16 @@ target/
 *.min.js
 
 #Data
-wamp/www/previews/*.png
-wamp/www/maps/*.gz
-wamp/cgi-bin/coords2tz/*.db
-wamp/cgi-bin/dem1/*.zip
-wamp/cgi-bin/dem3/*.zip
-wamp/cgi-bin/logs/*.log
-wamp/cgi-bin/maps/*.db
-wamp/cgi-bin/users/*.db
-wamp/cgi-bin/*.db
-wamp/www/maps/*.php
+wamp-src/www/previews/*.png
+wamp-src/www/maps/*.gz
+wamp-src/cgi-bin/coords2tz/*.db
+wamp-src/cgi-bin/dem1/*.zip
+wamp-src/cgi-bin/dem3/*.zip
+wamp-src/cgi-bin/logs/*.log
+wamp-src/cgi-bin/maps/*.db
+wamp-src/cgi-bin/users/*.db
+wamp-src/cgi-bin/*.db
+wamp-src/www/maps/*.php
 
 #API Keys
 api_keys.txt
@@ -84,17 +84,18 @@ keysnpwds-test.json
 #Generated files
 lamp-prod/
 lamp-test/
-wamp/www/fr/
+wamp-test/
+wamp-src/www/fr/
 
 #work files
 diff.txt
 
 #Garbage
-wamp/www/testwmts.php
-wamp/www/fr/testwmts.php
-wamp/www/showwpts.php
-wamp/www/fr/showwpts.php
-wamp/www/prepare-old.php
-wamp/www/fr/prepare-old.php
-wamp/www/test_mapofmaps-highvolume.php
-wamp/www/fr/test_mapofmaps-highvolume.php
+wamp-src/www/testwmts.php
+wamp-src/www/fr/testwmts.php
+wamp-src/www/showwpts.php
+wamp-src/www/fr/showwpts.php
+wamp-src/www/prepare-old.php
+wamp-src/www/fr/prepare-old.php
+wamp-src/www/test_mapofmaps-highvolume.php
+wamp-src/www/fr/test_mapofmaps-highvolume.php

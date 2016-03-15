@@ -41,6 +41,8 @@ def DbGetCgi():
 print('Content-Type: text/xml')
 print
 try:
-	DbGetCgi()
+    DbGetCgi()
 except Exception, inst:
-	print('Error: ' + str(inst))
+    import traceback
+    print('Error: ' + str(inst))
+    print(traceback.format_exc())

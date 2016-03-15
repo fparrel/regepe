@@ -7,8 +7,8 @@ DocumentRoot "D:/wamp/www"
 ```
 by
 ```html
-DocumentRoot "D:/regepe/wamp/www"
-<Directory "D:/regepe/wamp/www">
+DocumentRoot "D:/regepe/wamp-test/www"
+<Directory "D:/regepe/wamp-test/www">
 ```
 
 * Replace
@@ -17,7 +17,7 @@ ScriptAlias /cgi-bin/ "D:/wamp/cgi-bin/"
 ```
 by
 ```
-ScriptAlias /cgi-bin/ "D:/regepe/wamp/cgi-bin/"
+ScriptAlias /cgi-bin/ "D:/regepe/wamp-test/cgi-bin/"
 ```
 
 * Replace
@@ -26,5 +26,7 @@ ScriptAlias /cgi-bin/ "D:/regepe/wamp/cgi-bin/"
 ```
 by
 ```html
-<Directory "D:/regepe/wamp/cgi-bin">
+<Directory "D:/regepe/wamp-test/cgi-bin">
 ```
+
+Depending on your version of Windows and WAMP, you may have to set rights (I use `chmod` on cygwin)

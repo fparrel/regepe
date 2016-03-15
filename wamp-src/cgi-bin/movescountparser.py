@@ -3,20 +3,21 @@
 from model import Point
 #Datetime
 import datetime
-from tz import GetTimeZone
+#from tz import GetTimeZone
 #from log import Log
 
 import json
 #import tzwhere
-import pytz
+#import pytz
 
 def ParseJsonMoveCountFile(inputfile,trk_id,trk_seg_id):
     ptlist = []
     data = inputfile.read()
     js = json.loads(data)
     #tz = pytz.timezone(tzwhere.w.tzNameAt(js['TrackPoints'][0]['Latitude'],js['TrackPoints'][0]['Longitude']))
-    tz = 0
-    return map(lambda trackpoint: Point(trackpoint['Latitude'],trackpoint['Longitude'],trackpoint['Altitude'],None,None,datetime.datetime.fromtimestamp(int(trackpoint['LocalTime']/1000)),tz),js['TrackPoints'])
+    #tz = 0
+    #return map(lambda trackpoint: Point(trackpoint['Latitude'],trackpoint['Longitude'],trackpoint['Altitude'],None,None,datetime.datetime.fromtimestamp(int(trackpoint['LocalTime']/1000)),tz),js['TrackPoints'])
+    return map(lambda trackpoint: Point(trackpoint['Latitude'],trackpoint['Longitude'],trackpoint['Altitude'],None,None,datetime.datetime.fromtimestamp(int(trackpoint['LocalTime']/1000))),js['TrackPoints'])
     #return map(lambda metric: Point(float(metric['metrics'][latidx]),float(metric['metrics'][lonidx]),float(metric['metrics'][eleidx]),float(metric['metrics'][spdidx]),None,datetime.datetime.fromtimestamp(int(metric['metrics'][timeidx]/1000)),spdunit),js['metrics'])
 
 

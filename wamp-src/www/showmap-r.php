@@ -150,7 +150,7 @@ if(array_key_exists('maptype',$_GET)) {
 </body>
 </html>
 <?php if ($map_type=='GMaps') { ?>
-<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=${GMapsApiKey}"></script>
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=${GMapsApiKey2}"></script>
 <?php } else if ($map_type=='GeoPortal') { ?>
 <script type="text/javascript" charset="utf-8" src="http://api.ign.fr/geoportail/api/js/2.0.0/Geoportal.js"><!-- --></script>
 <?php } else if ($map_type=='MapQuest') { ?>

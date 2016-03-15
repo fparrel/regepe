@@ -26,11 +26,12 @@ CGI was the only solution to use python on OVH's cheap shared hosting. Other sol
 
 ## How is the code organized?
 The testing can be done even with WAMP+Python on Windows or with Apache+PHP+Python on Ubuntu (LAMP)  
-`wamp` contains the WAMP version of the code for testing on localhost  
-`wamp/www` contains .php and static html/css/js/png files  
-`wamp/cgi-bin` contains cgi executables running on Windows' python2.7  
-In `wamp/www`, `${GeoPortalApiKey}`, `${GMapsApiKey}` and `${GMapsApiKey2}` have to be replaced by actual value of API Key  
-`translate.py` is used to generate french version of the website (on `wamp/www/fr`) translation data is on `translations.txt`  
+`wamp-src` contains the WAMP version of the code with keys and password hidden  
+`wamp-lamp` contains the WAMP version of the code with real keys and passwords for testing on localhost  
+`wamp-src/www` contains .php and static html/css/js/png files  
+`wamp-src/cgi-bin` contains cgi executables running on Windows' python2.7  
+In `wamp-src/www`, `${GeoPortalApiKey}`, `${GMapsApiKey}` and `${GMapsApiKey2}` are meant to be replaced by actual value of API Key (by script `realign.ph`)  
+`translate.py` is used to generate french version of the website (on `wamp-src/www/fr`). Translation data is on `translations.txt`  
 `lamp-test` contains the LAMP version of the code for testing on localhost  
 `lamp-prod` contains the LAMP version of the code for putting on production  
 `lamp-test`, `lamp-prod` and `wamp/www/fr` are on `.gitignore` since they are generated from `wamp`  

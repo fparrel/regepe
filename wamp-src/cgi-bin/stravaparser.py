@@ -14,7 +14,7 @@ import urllib2
 
 def ParseJsonStravaFile(inputfilejson,inputfilehtml,trk_id,trk_seg_id):
     data = inputfilehtml.read()
-    open('tmp.html','wb').write(data)
+    #open('tmp.html','wb').write(data)
     timeopentag = '<time>'
     tstart = data.index(timeopentag)+len(timeopentag)
     tend = data.index('</time>',tstart)
