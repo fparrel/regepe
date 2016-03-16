@@ -93,8 +93,8 @@ def parseTranslations(csvfname,list=False):
             out.append('wamp-src/%s:%s'%(fname,totradstr))
         else:
             if not translations.has_key(fname):
-                translations['wamp-src/'+fname] = []
-            translations['wamp-src/'+fname].append((totradstr,traducedstr))
+                translations[fname] = []
+            translations[fname].append((totradstr,traducedstr))
     f.close()
     if list:
         return out
@@ -110,7 +110,7 @@ def buildtraduced(csvfname):
         fin = open(fname,'r')
         fout = open(fname.replace('wamp-src/www/','wamp-src/www/fr/'),'wb')
         contents = fin.read()
-        for (oldstr,newstr) in translations[fname]:
+        for (oldstr,newstr) in translations[fname[len('wamp-src/'):]]:
             contents = contents.replace(oldstr,newstr)
         fout.write(contents)
         fout.close()

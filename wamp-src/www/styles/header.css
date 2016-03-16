@@ -100,8 +100,7 @@ input[type=button]:hover,#header_login input[type=button]:hover {
 #body {
 	clear:both;
 	font-size:12px;
-	margin:0px;
-	padding-top:3px;
+	margin:10px;
 }
 
 #footer {

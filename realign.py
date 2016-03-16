@@ -3,6 +3,49 @@
 import os
 import sys
 import json
+import difflib
+
+def diff(old,new):
+    """
+    To compute differences between two files. Diffs are filtered through is_expected_diff()
+    
+    @param old Contents of old file
+    @param new Contents of new file
+    
+    @return A string representation of the diff (to be displayed with a Monospaced font). Empty string is returned if no diffs are found (or if all diffs can be ignored)
+    """
+    linesold = old.split('\n')
+    linesnew = new.split('\n')
+    s = difflib.SequenceMatcher(isjunk=lambda x: x in(" ","\t"),a=linesold,b=linesnew,autojunk=False)
+    #s = difflib.SequenceMatcher(a=linesold,b=linesnew)
+    for opcode,a1,a2,b1,b2 in s.get_opcodes():
+        if opcode=='equal':
+            pass
+        #elif opcode=='replace' and is_expected_diff(opcode,linesold[a1:a2],linesnew[b1:b2]):
+        #    pass
+        else:
+            yield (opcode,linesold[a1:a2],linesnew[b1:b2])
+
+def format_diff(opcode,linesold,linesnew):
+    """
+    To print a diff
+    @param opcode Kind of diff: 'replace', 'delete', 'insert'
+    @param linesold Array containing the old lines
+    @param linesnew Array containging the new lines
+    
+    @return A string that represent the diff (to be displayed with a Monospaced font)
+    """
+    if opcode=='replace':
+        return ''.join(map(lambda line:'- %s'%line,linesold)+['\n']+map(lambda line:'+ %s'%line,linesnew))
+    elif opcode=='delete':
+        return ''.join(map(lambda line:'- %s'%line,linesold))
+    elif opcode=='insert':
+        return ''.join(map(lambda line:'+ %s'%line,linesnew))
+    else:
+        raise Exception("Unknow opcode for diff: %s"%opcode)
+
+def get_diffs(old,new):
+    return '\n'.join(map(lambda p: format_diff(p[0],p[1],p[2]),diff(old,new)))
 
 def in_ignore(root,file):
     #print 'in_ignore('+root+','+file
@@ -24,6 +67,9 @@ def in_ignore(root,file):
     # logs
     if root==src_dir+'/cgi-bin/logs':
         return True
+    # submitted gpx files
+    if root==src_dir+'/cgi-bin/submit':
+        return True
     # 230 db
     if file=='Log230.csv':
         return True
@@ -44,7 +90,10 @@ def in_ignore(root,file):
     if file.startswith('test') and root.startswith(src_dir+'/www'):
         return True
     # maintenance scripts
-    if file.startswith('maintenance') and root.startswith(src_dir+'/www'):
+    #if file.startswith('maintenance') and root.startswith(src_dir+'/www'):
+    #    return True
+    # temporary files on cgi
+    if root==src_dir+'/cgi-bin/tmp':
         return True
     return False
 
@@ -59,15 +108,18 @@ def open_mkdir(fname,row):
 src_dir = 'wamp'
 dest_dir = 'lamp-prod'
 overwrite = False
+showdiffs = False
 
 for arg in sys.argv[1:]:
     if arg in ('-h','--help'):
-        print 'Usage: realign.py [-f] [--src=wamp-src|wamp-test|lamp-test|lamp-prod] [--dst=wamp-src|wamp-test|lamp-test|lamp-prod]'
+        print 'Usage: realign.py [-f] [-d|--diff][--src=wamp-src|wamp-test|lamp-test|lamp-prod] [--dst=wamp-src|wamp-test|lamp-test|lamp-prod]'
         print '-f: overwrite destination. By default, only show files that are in diff'
         print 'Default source is %s and default destination is %s' % (src_dir,dest_dir)
         exit(0)
     elif arg=='-f':
         overwrite = True
+    elif arg in ('-d','--diff'):
+        showdiffs = True
     elif arg.startswith('--src='):
         src_dir = arg[6:]
         assert(src_dir in ('wamp-src','wamp-test','lamp-test','lamp-prod'))
@@ -188,9 +240,13 @@ for root, dirs, files in os.walk(src_dir):
                 if modified:
                     # Files differs and modification has been done by realign.py
                     print 'D! %s/%s'%(root,file)
+                    if showdiffs:
+                        print get_diffs(c_from,c_to)
                 else:
                     # Files differs and no modification was done by realign.py
                     print 'D  %s/%s'%(root,file)
+                    if showdiffs:
+                        print get_diffs(c_from,c_to)
         else:
             # Don't know how to handle this file!
             print '!!! %s %s' % (root,file)

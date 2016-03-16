@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!c:/Python27/python.exe
 # -*- coding: latin1 -*-
 
 import urllib2

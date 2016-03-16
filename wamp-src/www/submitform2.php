@@ -8,14 +8,14 @@
 <?php include('header.html'); ?>
     <div id="wrapper">
         <div id="body">
-            <h1>Submit a track (Do not forget to choose right activity profile!)</h1>
+            <h1>Submit a track</h1>
             <form name="submitform" action="/cgi-bin/sendgpxfile2.py" method="POST" enctype="multipart/form-data">
             <h2>Source</h2>
             <div id="file_and_preview">
                 <div id="file_and_desc">
                     <div id="file_and_trk_select_div">
                         <div id="file_select_div">
-                            Gpx/Kml/Nmea/Sbp file(s) to analyze: <input id="gpx_file" name="gpx_file[]" type="file" onchange="input_file_change(event,this);" multiple="true"><br/>
+                            Gpx/Kml/Nmea/Spb file(s) to analyze: <input id="gpx_file" name="gpx_file[]" type="file" onchange="input_file_change(event,this);" multiple="true"><br/>
                             <small><b>Note:</b> You can select more than one file using Ctrl or Shift key (not available on all broswers), the files will be concatenated in a single track.</small>
                         </div>
                         <div id="trk_select_div" style="display: none;">
@@ -41,9 +41,9 @@
             <div style="clear:both;"></div>
             <h2>Options</h2>
             <div id="options_div">
-                Activity profile: <br/><div id="activity_select"></div><br/>
+                Activity profile: <div id="activity_select"></div><br/>
                 <hr/>
-                Map type: <br/><div id="map_type_select"></div><br/>
+                Map type: <div id="map_type_select"></div><br/>
                 Speed unit: 
                 <select id="spdunit" name="spdunit">
                     <option value="m/s">m/s</option>
@@ -85,11 +85,15 @@
             </div>
             </form>
             <div id="progress_div">
-		<div id="progress_status"></div>
-		<div class="bar"></div>
-		<div class="percent">0%</div>
-		<div id="upload_status"></div>
-	   </div>
+            </div>
+            <div class="progress">
+    <div class="bar"></div >
+    <div class="percent">0%</div >
+</div>
+
+<div id="status"></div>
+            <div id="debug_box" style="display:none;">
+            </div>
         </div>
         <div id="footer_push"></div>
     </div>
@@ -104,7 +108,6 @@
 <script src="javascript/js-inflate.js" type="text/javascript"></script>
 <script src="javascript/unzip.js" type="text/javascript"></script>
 <script src="javascript/jquery.js" type="text/javascript"></script>
-<script src="javascript/jquery.form.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
 
@@ -116,43 +119,64 @@ setAfterLoginCallBack(after_login);
 //check session
 checkSession(1);
 
-function getprogress_readystatechange() {
+function debug_print(str) {
+    document.getElementById("debug_box").innerHTML += str+'<br/>';
+}
+
+function client_readystatechange() {
+    debug_print("client_readystatechange "+this.readyState);
     if (this.readyState == 4) {
         if (this.status == 200) {
-            console.log('Request DONE "'+this.responseText+'"');
+            debug_print('Request DONE');
+            /*debug_print('Request DONE "'+this.responseText+'"');
             if (this.responseText.length>1) {
                 if ((typeof(last_client_reponse_text)=="undefined")||(this.responseText!=last_client_reponse_text)) {
                     last_client_reponse_text = this.responseText;
-                    document.getElementById("progress_status").innerHTML += last_client_reponse_text+'<br/>';
+                    document.getElementById("progress_div").innerHTML += last_client_reponse_text+'<br/>';
                 }
             }
             if (this.responseText.substring(0,4)!='Done') {
                 progress_timer = setTimeout("getprogress_callback()",1000);
-            }
+            }*/
         }
     }
 }
 
 function getprogress_callback() {
-    console.log("getprogress_callback()");
     var client = new XMLHttpRequest();
     client.open('GET','/cgi-bin/getprogress.py?submitid='+document.getElementById("submit_id").value);
     client.send();
-    client.onreadystatechange = getprogress_readystatechange;
-    console.log('Request sent "'+'/cgi-bin/getprogress.py?submitid='+document.getElementById("submit_id").value+'"');
+    client.onreadystatechange = client_readystatechange;
+    debug_print('Request sent "'+'/cgi-bin/getprogress.py?submitid='+document.getElementById("submit_id").value+'"');
+}
+
+function getprogress_callback_sync() {
+    debug_print('getprogress_callback_sync()');
+    var client = new XMLHttpRequest();
+    client.open('GET','/cgi-bin/getprogress.py?submitid='+document.getElementById("submit_id").value,false);
+    client.send();
+    debug_print('getprogress_callback_sync(): after send +'+client.responseText+'+');    
+    if (client.responseText.length>1) {
+        if ((typeof(last_client_reponse_text)=="undefined")||(client.responseText!=last_client_reponse_text)) {
+            last_client_reponse_text = client.responseText;
+            document.getElementById("progress_div").innerHTML += last_client_reponse_text+'<br/>';
+        }
+    }
+    if (client.responseText!='Done') {
+        progress_timer = setTimeout("getprogress_callback_sync();",500);
+    }
 }
 
 function submit_click() {
-    console.log("submit_click()");
-    document.getElementById("progress_status").innerHTML = 'Uploading file...<br/>';
+    document.getElementById("progress_div").innerHTML = 'Uploading file...<br/>';
     progress_timer = setTimeout("getprogress_callback()",500);
     //getprogress_callback();
 }
 
 function MapType(name,caption,pict) {
-    this.name = name;
-    this.caption = caption;
-    this.pict = pict;
+	this.name = name;
+	this.caption = caption;
+     this.pict = pict;
 }
 
 function Activity(name,caption,spdunit,flat,wind,maxspd,maptype,pictureslist) {
@@ -163,7 +187,7 @@ function Activity(name,caption,spdunit,flat,wind,maxspd,maptype,pictureslist) {
 	this.wind = wind;
 	this.maxspd = maxspd;
 	this.maptype = maptype;
-    this.pictureslist = pictureslist;
+     this.pictureslist = pictureslist;
 }
 
 function on_activity_change(selectbox) {
@@ -352,26 +376,6 @@ function nmea_parse_trk_for_preview(filecontents) {
     return (-1);
 }
 
-function sbp_parse_trk_for_preview(filecontents) {
-    var secs= filecontents.charCodeAt(64+4) & 0x3F;
-    var mins= ((filecontents.charCodeAt(64+4) & 0xC0)>>6)|((filecontents.charCodeAt(64+5) & 0x0F) << 2);
-    var hours=((filecontents.charCodeAt(64+5) & 0xF0) >> 4)|((filecontents.charCodeAt(64+6) & 0x01) << 4);
-    var days= (filecontents.charCodeAt(64+6) & 0x3E) >> 1;
-    var m =(((filecontents.charCodeAt(64+6) & 0xC0) >> 6)|(filecontents.charCodeAt(64+7) << 2));
-    var month=m%12;
-    var year=Math.floor(2000+m/12);
-    if(month<10) month='0'+month;
-    if(days<10) days='0'+days;
-    if(hours<10) hours='0'+hours;
-    if(mins<10) mins='0'+mins;
-    if(secs<10) secs='0'+secs;
-    var dt=year+'-'+month+'-'+days+' '+hours+':'+mins+':'+secs;
-    var lat = (filecontents.charCodeAt(64+12)+(filecontents.charCodeAt(64+13)<<8)+(filecontents.charCodeAt(64+14)<<16)+(filecontents.charCodeAt(64+15)<<24))/10000000.0;
-    var lon = (filecontents.charCodeAt(64+16)+(filecontents.charCodeAt(64+17)<<8)+(filecontents.charCodeAt(64+18)<<16)+(filecontents.charCodeAt(64+19)<<24))/10000000.0;    
-    console.log("%d %d %d %d %d %d %f %f",secs,mins,hours,days,month,year,lat,lon);
-    return [dt,lat,lon];
-}
-
 function add_to_trkselect(trkselect,trknames) {
     var mylen = trkselect.options.length;
     var i;
@@ -419,6 +423,8 @@ function get_file_type(contents) {
     }
     if (contents.substring(0,2)=='PK') {
         /*var uncompressed = unzip(contents);
+        document.getElementById("debug_box").style.display = 'block';
+        document.getElementById('debug_box').innerHTML = '<pre>'+htmlentities(uncompressed)+'</pre>';
         */
         /*
         var unzipper = new JSUnzip(contents);
@@ -427,7 +433,9 @@ function get_file_type(contents) {
             if (unzipper.entries.length>0) {
                 var entry = unzipper.entries[0];
                 if (entry.compressionMethod==8) {
+                    document.getElementById("debug_box").style.display = 'block';
                     var uncompressed = JSInflate.inflate(entry.databuf,entry.uncompressedSize);
+                    document.getElementById('debug_box').innerHTML = '<pre>'+htmlentities(uncompressed)+'</pre>';
                 }
             }
         }*/
@@ -435,9 +443,6 @@ function get_file_type(contents) {
     }
     if (contents.substring(0,3)=='$GP') {
         return 4;
-    }
-    if (contents[6]=='\xFD') {
-        return 5;//SBP
     }
     return 0;
 }
@@ -595,7 +600,7 @@ function refresh_preview(filecontents,track,filetype,reset) {
     else {
         oldfilecontents = filecontents;
     }
-    var result = -1;
+    var result;
     if (filetype==1) {
         result = parse_trk_for_preview(filecontents,track);
     }
@@ -604,9 +609,6 @@ function refresh_preview(filecontents,track,filetype,reset) {
     }
     else if (filetype==4) {
         result = nmea_parse_trk_for_preview(filecontents);
-    }    
-    else if (filetype==5) {
-        result = sbp_parse_trk_for_preview(filecontents);
     }    
 	if (result!=-1) {
         var pt = new GLatLng(result[1],result[2]);
@@ -682,19 +684,19 @@ var map_types = [
 ];
 
 var activities = [
-	new Activity("hiking","Hiking, Skitouring, Ski, Snowboard, Bike","km/h",false,false,true,"GeoPortal",["Bike-icon.svg","skitouring.svg","hiking.svg"]),
-	new Activity("kayak","Surfing, Sea Kayak, Motor boat","knots",true,false,true,"GMaps",["kayak.svg","surf3.svg"]),
-	new Activity("sailing","Windsurf, Kite, Sailing","knots",true,true,true,"GMaps",["kitesurfing.svg","windsurf1.svg"]),
-	new Activity("flying","Snowkite, Free-flying, Air Balloon","km/h",false,true,true,"GeoPortal",["Ballooning_pictogram.svg","delta3.svg","skikite.svg"])
+	new Activity("hiking","Hiking, Bike, Skitouring, Ski, Snowboard","km/h",false,false,true,"GeoPortal",["hiking.svg","skitouring.svg","Bike-icon.svg",]),
+	new Activity("kayak","Surfing, Sea Kayak, Motor boat","knots",true,false,true,"GMaps",["surf3.svg","kayak.svg"]),
+	new Activity("sailing","Sailing, Windsurf, Kite","knots",true,true,true,"GMaps",["kitesurfing.svg","windsurf1.svg"]),
+	new Activity("flying","Free-flying, Air Balloon, Snowkite","km/h",false,true,true,"GeoPortal",["skikite.svg","delta3.svg","Ballooning_pictogram.svg"])
 ];
 
 for (i in activities) {
-	document.getElementById("activity_select").innerHTML += '<div><span><input type="radio" id="activity'+i+'" name="activity" onchange="on_activity_change(this);" value="'+activities[i].name+'">'+activities[i].caption+''+activities[i].pictureslist.map(function(pict){return '</input></span><img src="images/'+pict+'" width="60" height="60" />'}).join('')+'<div style="clear:both"></div></div>';
+	document.getElementById("activity_select").innerHTML += '<input type="radio" id="activity'+i+'" name="activity" onchange="on_activity_change(this);" value="'+activities[i].name+'">'+activities[i].caption+''+activities[i].pictureslist.map(function(pict){return '<img src="images/'+pict+'" width="80" height="80" />'}).join('')+'</input><br/>';
     //options[i] = new Option(activities[i].caption,activities[i].name);
 }
 
 for (i in map_types) {
-	document.getElementById("map_type_select").innerHTML += '<div><span><input type="radio" id="map_type_select'+map_types[i].name+'" name="map_type" onchange="on_map_type_change(this);" value="'+map_types[i].name+'">'+map_types[i].caption+'</input></span><img src="images/'+''+map_types[i].pict+'" width="93" height="66" /><div style="clear:both"></div></div>';
+	document.getElementById("map_type_select").innerHTML += '<input type="radio" id="map_type_select'+map_types[i].name+'" name="map_type" onchange="on_map_type_change(this);" value="'+map_types[i].name+'">'+map_types[i].caption+'<img src="images/'+''+map_types[i].pict+'" width="93" height="66" /></input><br/>';
     //options[i] = new Option(map_types[i].caption,map_types[i].name);
 }
 
@@ -707,12 +709,12 @@ map.addMapType(G_PHYSICAL_MAP);
 map.setMapType(G_PHYSICAL_MAP);
 map.enableScrollWheelZoom();
 
-// upload progress bar
+// progress bar
 $(function() {
 
     var bar = $('.bar');
     var percent = $('.percent');
-    var status = $('#upload_status');
+    var status = $('#status');
 
     $('form').ajaxForm({
         beforeSend: function() {
