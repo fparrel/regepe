@@ -106,25 +106,27 @@ def buildtraduced(csvfname):
     print translations
     createdirifneeded('wamp-src/www/fr/javascript')
     for fname in translations:
-        print 'Process %s'%fname
-        fin = open(fname,'r')
-        fout = open(fname.replace('wamp-src/www/','wamp-src/www/fr/'),'wb')
+        print 'Process %s -> %s'%('wamp-src/' + fname,'wamp-src/' + fname.replace('www/','www/fr/'))
+        fin = open('wamp-src/' + fname,'r')
+        fout = open('wamp-src/' + fname.replace('www/','www/fr/'),'wb')
         contents = fin.read()
-        for (oldstr,newstr) in translations[fname[len('wamp-src/'):]]:
+        cptr=0
+        for (oldstr,newstr) in translations[fname]:
             contents = contents.replace(oldstr,newstr)
+            cptr+=1
+        print '%d replacments done'%cptr
         fout.write(contents)
         fout.close()
         fin.close()
     
     #files with no translation
-    createdirifneeded('wamp-src/www/fr/images')
-    createdirifneeded('wamp-src/www/fr/styles')    
-    dirlist = ['wamp-src/www','wamp-src/www/javascript','wamp-src/www/images','wamp-src/www/styles']
+    dirlist = ['www','www/javascript','www/images','www/styles','www/android']
     for path in dirlist:
-        for fname in os.listdir(path):
-            if fname.endswith('.html') or fname.endswith('.js') or fname.endswith('.php') or fname.endswith('.png') or fname.endswith('.gif') or fname.endswith('.jpg') or fname.endswith('.htc') or fname.endswith('.css'):
+        createdirifneeded('wamp-src/'+path.replace('www','www/fr'))
+        for fname in os.listdir('wamp-src/'+path):
+            if fname.endswith('.html') or fname.endswith('.js') or fname.endswith('.php') or fname.endswith('.png') or fname.endswith('.gif') or fname.endswith('.jpg') or fname.endswith('.svg') or fname.endswith('.htc') or fname.endswith('.css') or fname.endswith('.apk'):
                 if '%s/%s'%(path,fname) not in translations:
-                    copyfile('%s/%s'%(path,fname), '%s/%s'%(path.replace('wamp-src/www','wamp-src/www/fr'),fname))
+                    copyfile('wamp-src/%s/%s'%(path,fname), 'wamp-src/%s/%s'%(path.replace('www','www/fr'),fname))
 
 def dictToFile(d,cvsfname):
     f = open(cvsfname,'w')

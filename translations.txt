@@ -162,7 +162,7 @@ www/javascript/tools.js:Keep only the selected part of track?	Etes-vous sur de n
 www/javascript/tools.js:Confirm deletion of this map?	Confirmez-vous la suppression de la trace?
 www/javascript/tools.js:Done	Fait
 www/javascript/tools.js:<b>Error:</b> 	<b>Erreur:</b>
-www/javascript/tools.js:Internal Error, please retry	Erreur interne, merci de réessayer
+www/javascript/tools.js:Internal Error, please retry	Erreur interne, merci de r&eacute;essayer
 www/javascript/tools.js:delmap.py?	delmap.py?lang=fr&
 www/javascript/tools.js:cutmap.py?	cutmap.py?lang=fr&
 www/javascript/tools.flot.js:Remove selected part from the track?	Enlever la partie s&eacute;lectionn&eacute;e et la remplacer par une ligne droite?
@@ -341,6 +341,7 @@ www/showuser.php:Loading...	Chargement...
 www/showuser.php:Preview	Miniature
 www/submitform.php:Replay your GPS Tracks with REGEPE	Revivez vos traces GPS avec REGEPE
 www/submitform.php:Submit a track	Ajouter une trace GPS
+www/submitform.php:(Do not forget to choose right activity profile!)	(N'oubliez pas de choisir le type d'activit&eacute;!)
 www/submitform.php:Gpx/Kml/Nmea/Sbp file(s) to analyze:	Choisissez le ou les fichiers GPX/KML/NMEA/SBP &agrave; ajouter&nbsp;:
 www/submitform.php:You can select more than one file using Ctrl or Shift key (not available on all broswers), the files will be concatenated in a single track.	Si votre navigateur le permet, vous pouvez s&eacute;lectionner plusieurs fichiers avec la touche Ctrl ou Shift. Les fichiers seront concat&eacute;n&eacute;s par ordre chronologique pour former une seule trace.
 www/submitform.php:Preview of track start point:	Point(s) de d&eacute;part&nbsp;:
@@ -387,3 +388,4 @@ www/userhome.php:Merge	Fusionner
 www/userhome.php:View	Voir
 www/userhome.php:Confirm deletion of	Confirmez-vous la suppression de
 www/userhome.php:map(s)?	trace(s)?
+www/javascript/pauses.js:Computing...	Calcul en cours...
