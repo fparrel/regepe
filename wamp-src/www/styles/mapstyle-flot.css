@@ -1,7 +1,7 @@
 body {
 	margin:0;
 	padding:0;
-	font-family:verdana,arial,sans-serif;
+	font-family: verdana, arial, sans-serif;
 	font-size:10px;
 }
 h3 {
@@ -12,117 +12,22 @@ h3 {
 	margin-top:5px; 
 	margin-bottom:0px; 
 	cursor:pointer; 
-	background:linear-gradient(lightgrey,white);
-	display:block;
+	background:linear-gradient(lightgrey, white);
+	display: block;
 }
 h3:hover {
 	font-size:10px; 
-	background:linear-gradient(lightyellow,white);
-}
-.mapbox {
-	/*text-align:right; */
-	width:60%;
-	font-family:verdana,arial,sans-serif; 
-	font-size:10px;
-	margin-left:2px;
-}
-.map {
-	height:500px;
-	width:100%;
-	border:1px solid #000;
-}
-.mapfooter {
-	font-size:10px;
-
-}
-.mapfooterleft {
-}
-.mapfooterright {
-	float:right;
-}
-.summary {
-	position:relative;
-	top:-510px; /* cf. map.height - one line*/
-	right:2px;
-	width:39%;
-	float:right;/*
-	vertical-align:top;*/
-}
-.box {
-	font-size:10px; 
-	padding:10px; 
-	border:1px solid #9ac1c9; 
-	border-top:none; 
-	background-color:#EEEEEE;
-}
-.boxcontainer {
-	float:left;
-	margin:5px;
-}
-.currentinfobox {
-	font-size:10px; 
-	padding:10px; 
-	border:1px solid #9ac1c9; 
-	border-top:none; 
-	background-color:#EEEEEE;
-	/*width:150px;*/
-}
-#playingspeed-slider {
-	width:50px; 
-}
-#snakelength-slider {
-	width:100px; 
-}
-#currentpoint-slider {
-	width:150px; 
-}
-#winddir-slider {
-	width:200px; 
-}
-#use_buoy {
-	float:right;
-}
-#windirbox {
-	font-family:verdana,arial,sans-serif; 
-	font-size:12px;
-	background-color:ThreeDFace;
-}
-.currpointcontrol .slider {
-	display:inline-block;
-}
-.currptallcontrols {
-	background-color:ThreeDFace; 
-	border-left:1px solid #9ac1c9; 
-	border-right:1px solid #9ac1c9; 
-	border-bottom:1px solid #9ac1c9; 
-}
-.autoplaycontrol, .snakecontrol, .windcontrol {
-	display:inline-block;
-}
-.currpointcontrol span div {
-	vertical-align:middle;
-}
-.currpointcontrol {
-	background-color:ThreeDFace; 
-}
-.currentbox {
-	float:left;
-	margin:4px;
-}
-.windcontrol {
-	background-color:ThreeDFace; 
-	border:1px solid #9ac1c9; 
+	background:linear-gradient(lightyellow, white);
 }
 .charttabs {
-	min-height:300px;
+	min-height: 300px;
 }
 .chartcontainer {
-	float:left;
-	margin-top:10px;
+	float: left;
 }
 .chartlabel {
 	font-size:10px; 
-	border:1px solid #9ac1c9;
+	border:1px solid #9ac1c9; 
 	/*border-bottom:0px;*/
 	padding:6px 6px 8px; 
 	font-weight:bold; 
@@ -132,7 +37,6 @@ h3:hover {
 	position:relative;
 	top:3px;
 	z-index:2;
-	/*left:10px;*/
 }
 .chartlabelselected {
 	font-size:10px; 
@@ -145,46 +49,88 @@ h3:hover {
 	position:relative;
 	top:1px;
 	z-index:2;
-	/*left:10px;*/
 }
 .chartlabel:hover {
 	background:linear-gradient(lightyellow,white);
 }
 .chart {
-	background-color:#EEEEEE;
-	position:absolute;
-	min-width:500px;
-	z-index:1;
-	border-top:1px solid #9ac1c9;
-	border-bottom:1px solid #9ac1c9;
-	border-left:0;
-	border-right:0;
-	padding-top:5px;
-	padding-bottom:5px;
-	
-	/*
-	border:1px solid #9ac1c9; 	
-	left: 10px;
 	padding:15px; 
-	*/
-	left:0;
-	width:100%;
-	
-	/*width:95%;*/
-	
+	border:1px solid #9ac1c9; 
+	background-color: #EEEEEE;
+	position: absolute;
+	left: 10px;
+	min-width: 500px;
+	z-index:1;
 	/*background:#fff;*/
 	/*display: none;*/
 	/*border-top:none; */
 	/*margin-bottom:10px;*/
 	/*float: left;*/
 }
-.best_spd_main_group, #toolbox, #comments, #pauseschart {
-	padding-left:5px;
-	padding-right:5px;
+.box {
+	font-size:10px; 
+	padding:10px; 
+	border:1px solid #9ac1c9; 
+	border-top:none; 
+	background-color: #EEEEEE;
 }
-#toolbox, #comments, #pauseschart {
-	padding-top:10px;
-	padding-bottom:10px;
+.boxcontainer {
+	float:left;
+	margin:5px;
+}
+.currentinfobox {
+	font-size:10px; 
+	padding:10px; 
+	border:1px solid #9ac1c9; 
+	border-top:none; 
+	background-color: #EEEEEE;
+	width:150px;
+}
+.currpointcontrol { 
+	background-color: ThreeDFace; 
+	/*background-color: #EEEEEE;*/
+	font-size:12px; 
+	width: 100%; 
+}
+.mapbox { 
+	text-align:right; 
+	font-family:verdana,arial,sans-serif; 
+	font-size:10px;
+}
+.mapfooterleft {
+	font-size:10px;
+	text-align:left; 
+}
+.mapfooterright {
+	font-size:10px;
+	text-align:right; 
+}
+.map {
+	height:500px;
+	width:500px;
+	border:1px solid #000;
+}
+#playingspeed-slider { 
+	width: 50px; 
+}
+#snakelength-slider { 
+	width: 100px; 
+}
+#currentpoint-slider { 
+	width: 300px; 
+}
+#winddir-slider {
+	width: 200px; 
+}
+#use_buoy {
+	float:right;
+}
+#windirbox {
+	font-family:verdana,arial,sans-serif; 
+	font-size:12px;
+	background-color: ThreeDFace;
+}
+.best_spd_main_group {
 }
 .best_spd_sub_group {
 	float:left;
@@ -203,6 +149,7 @@ h3:hover {
 	margin-top:2px;
 	margin-bottom:2px;
 }
+
 .pauses_settings {
 	float:left;
 	margin-right:10px;
@@ -229,23 +176,30 @@ h3:hover {
 	font-weight:bold; 
 	width:50%;
 }
+
 .figure_field {
+	
 }
 
+
 /* For polar */
+
 .axis text {
   font: 10px sans-serif;
 }
+
 .axis line,
 .axis circle {
   fill: none;
   stroke: #777;
   stroke-dasharray: 1,4;
 }
+
 .axis :last-of-type circle {
   stroke: #333;
   stroke-dasharray: none;
 }
+
 .line_mean {
     opacity:0.5;
   fill: lightgreen;
@@ -268,11 +222,7 @@ h3:hover {
   fill: lightblue;
   stroke-width: 1px;
 }
-#nearmapsandtitle {
-	clear:both;
-	margin-left:5px;
-	margin-right:5px;
-}
+
 .nearmapover {
 	position: absolute;
 	top:0px;

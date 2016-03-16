@@ -5,6 +5,7 @@ if(!$f) {
     print "Cannot open database";
 }
 else {
+    print "# IP (anonymised),day hour,direction,busstop,fullness\n";
     $ips = Array();
     while(($line = fgets($f))!==false) {
         $contents=explode(',',$line,2);
