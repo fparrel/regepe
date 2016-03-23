@@ -12,7 +12,7 @@ from powercomp import BikePower,CarPower,RunningPower,BoatPower,KayakPower
 from conversions import TimeDeltaToSeconds,SecondToTimeString,MetersToNauticalMiles,MetersPerSecToMetersPerHour,MetersPerSecToSpdunit
 
 # Misc math and util functions
-from mathutil import Mean,ApplyThreshold,Filter,GeodeticDist
+from mathutil import Mean,Filter
 
 from gpxparser import ParseGpxFile
 from kmlparser import ParseKmlFile

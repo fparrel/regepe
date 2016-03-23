@@ -400,15 +400,26 @@ foreach(explode("\n", $charts) as $chart) {
                 <div class="slider" id="pauses-time-slider" title="Time" tabIndex="1">
                     <input class="slider-input" id="pauses-time-input" name="pauses-time-input"/>
                 </div>
-                <div id="pauses">Computing...</div>
+                <div class="sliderlbl" id="pauses-time-value-disp">1:00</div>
+                <div class="slidertitle">Pause max. distance:</div>
+                <div class="slider" id="pauses-dist-slider" title="Distance" tabIndex="1">
+                    <input class="slider-input" id="pauses-dist-input" name="pauses-dist-input"/>
+                </div>
+                <div class="sliderlbl" id="pauses-dist-value-disp">20 m</div>
+                <div class="slidertitle">Pause max. speed:</div>
+                <div class="slider" id="pauses-spd-slider" title="Speed" tabIndex="1">
+                    <input class="slider-input" id="pauses-spd-input" name="pauses-spd-input"/>
+                </div>
+                <div class="sliderlbl" id="pauses-spd-value-disp">3 m/s</div>
             </div>
+            <div id="pauses">Computing...</div>
         </div>
-    </div> <!-- charttabs -->
-    <div id="nearmapsandtitle">
-        <h2>Other tracks nearby</h2>
-        <div id="near_maps">Loading...</div>
+        </div>
     </div>
-</div> <!-- body -->
+    <div style="clear:both;"></div>
+    <h2>Other tracks nearby</h2>
+    <div id="near_maps">Near maps</div>
+</div>
 <?php if ($map_type=='GMaps') { ?>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=${GMapsApiKey2}&amp;sensor=false"></script>
 <?php } else if ($map_type=='GeoPortal') { ?>
