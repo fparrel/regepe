@@ -110,18 +110,18 @@ class Figures:
                 # Vertical over time
                 for maxspds_idx in range(0,len(maxspdstime_vert)):
                     for j in range(i,len(self.trkseg.ptlist)):
-                        if TimeDeltaToSeconds(tms[j]-tms[i])>=Figures.max_spd_times[maxspds_idx]:
+                        if TimeDeltaToSeconds(tms[j]-tms[i])>=Figures.max_spd_times_vert[maxspds_idx]:
                             spd = (eles[j]-eles[i])/TimeDeltaToSeconds(tms[j]-tms[i])
                             if spd>maxspdstime_vert[maxspds_idx][-1].spd:
-                                self.addMaxSpeed(MaxSpd(spd,(dsts[j]-dsts[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdstime_vert[maxspds_idx])
+                                self.addMaxSpeed(MaxSpd(spd,(eles[j]-eles[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdstime_vert[maxspds_idx])
                             break
                 # Vertical over distance
                 for maxspds_idx in range(0,len(maxspdsdist_vert)):
                     for j in range(i,len(self.trkseg.ptlist)):
-                        if eles[j]-eles[i]>=Figures.max_spd_dists[maxspds_idx]:
+                        if eles[j]-eles[i]>=Figures.max_spd_dists_vert[maxspds_idx]:
                             spd = (eles[j]-eles[i])/TimeDeltaToSeconds(tms[j]-tms[i])
                             if spd>maxspdsdist_vert[maxspds_idx][-1].spd:
-                                self.addMaxSpeed(MaxSpd(spd,(dsts[j]-dsts[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdsdist_vert[maxspds_idx])
+                                self.addMaxSpeed(MaxSpd(spd,(eles[j]-eles[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdsdist_vert[maxspds_idx])
                             break
 
         # Return output merged without the zeros
@@ -130,7 +130,7 @@ class Figures:
                     dict([(Figures.max_spd_times[i],filter(lambda maxspd: maxspd!=MaxSpdZero, maxspdstime[i])) \
                             for i in range(0,len(Figures.max_spd_times))])]
         if not options['flat']:
-            out.extend([dict([(Figures.max_spd_dists_vert[i],filter(lambda maxspd: maxspd!=MaxSpdZero, maxspds_vert[i])) \
+            out.extend([dict([(Figures.max_spd_dists_vert[i],filter(lambda maxspd: maxspd!=MaxSpdZero, maxspdsdist_vert[i])) \
                             for i in range(0,len(Figures.max_spd_dists_vert))]), \
                             dict([(Figures.max_spd_times_vert[i],filter(lambda maxspd: maxspd!=MaxSpdZero, maxspdstime_vert[i])) \
                             for i in range(0,len(Figures.max_spd_times_vert))])])
