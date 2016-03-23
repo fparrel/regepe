@@ -769,12 +769,12 @@ class Track:
         #print('DEBUG: model.py: Track: GetEleFromDEM()')
         # Get from dem
         GetEleFromLatLonList(self.ptlist,True)
-    def ComputeSpeedWhenNeeded(self):
+    def ComputeSpeedWhenNeeded(self,force=False):
         self.ComputeDistancesCache()
         self.spdcomputed = False
         # Compute speeds in case it is not provided
         for i in range(0,len(self.ptlist)-1):
-            if self.ptlist[i].spd==None or self.ptlist[i].spd<0.0:
+            if self.ptlist[i].spd==None or self.ptlist[i].spd<0.0 or force:
                 self.spdcomputed = True
                 if self.ptlist[i].datetime==None or self.ptlist[i+1].datetime==None:
                     self.ptlist[i].spd = -1.0
