@@ -1,6 +1,6 @@
 
 from miscranges import frange6,SmartRange
-from mathutil import Mean,GeodeticDist,GeodeticCourse,StrangeFilter
+from mathutil import Mean,GeodeticDistGreatCircle,GeodeticDistVincenty,GeodeticCourse,StrangeFilter
 from conversions import TimeDeltaToSeconds,MetersPerSecToSpdunit
 from powercomp import BikePower
 from mymath import fsum
@@ -116,7 +116,10 @@ class Point:
                 raise ValueError('Speed conversion from %s to %s not supported' % (self.spdunit,unit))
     def Distance(self,other):
         "Return distance in meters from self to other"
-        return GeodeticDist(self.lat,self.lon,other.lat,other.lon)
+        return GeodeticDistGreatCircle(self.lat,self.lon,other.lat,other.lon)
+    def DistancePrecise(self,other):
+        "Return distance in meters from self to other"
+        return GeodeticDistVincenty(self.lat,self.lon,other.lat,other.lon)
     def GetTimeString(self):
         "Return time converted to a 'HH:MM:SS' string"
         if self.datetime==None:
@@ -154,10 +157,12 @@ class Track:
     # ptindexlist: if the trkseg is the compression of another trkseg, list of id of ptlist in the ptlist of the orginial trkseg
     # nospeeds: true if track contains no speed/time data
     # spdcomputed: have the speed been computed or taken from input file
+    # dists: distance between this point and the previous one (zero for first point)
     bike_power_friction = 0.016975308641975308641975308641975
     bike_power_climbing = 0.0272
     def __init__(self,ptlist,bounds=None,ptindexlist=None):
         "Create a Track from a list of Points and a Bounds"
+        self.dists=None
         self.bounds = Bounds()
         if not bounds==None:
             self.bounds.Extend(bounds)
@@ -272,9 +277,10 @@ class Track:
             pt.ConvertSpeed(unit)
     def RemoveStayingPointsFromDistance(self,threshold):
         "Remove the points when GPS is staying at the same place"
+        self.ComputeDistancesCache()
         idlist = []
         for i in range(0,len(self.ptlist)-1):
-            if self.ptlist[i].Distance(self.ptlist[i+1])>threshold:
+            if self.dists[i+1]>threshold:
                 idlist.append(i+1)
         ptlist_new = [self.ptlist[i] for i in idlist]
         self.ptlist = ptlist_new        
@@ -460,16 +466,18 @@ class Track:
         return out
     def ComputeSlope(self):
         "Compute list of slopes"
+        self.ComputeDistancesCache()
         prevpt = None
+        i = 0
         for pt in self.ptlist:
             if prevpt==None:
                 slopes = [0.0]
             else:
-                if pt.Distance(prevpt)<1.0:
+                if self.dists[i]<1.0:
                     slope = 0.0
                 else:
                     try:
-                        slope = (pt.ele-prevpt.ele)/pt.Distance(prevpt)
+                        slope = (pt.ele-prevpt.ele)/self.dists[i]
                     except ZeroDivisionError:
                         slope = 0.0
                     if slope>0.5:
@@ -478,13 +486,15 @@ class Track:
                         slope = -0.5
                 slopes.append(slope)
             prevpt = pt
+            i+=1
         return slopes
     def ComputeSlope2(self):
         "Compute list of slopes"
+        self.ComputeDistancesCache()
         ele = StrangeFilter(self.GetElevations())
         out = []
         for i in range(0,len(self)-1):
-            dist = self.ptlist[i+1].Distance(self.ptlist[i])
+            dist = self.dists[i+1]
             if dist==0.0:
                 slope = 0.0
             else:
@@ -497,7 +507,7 @@ class Track:
         for up_down in self.GetUpsAndDowns(vertthreshold):
             if up_down[1].Distance(up_down[0])>=horithreshold:
                 try:
-                    slope = (up_down[1].ele-up_down[0].ele)/up_down[1].Distance(up_down[0])
+                    slope = (up_down[1].ele-up_down[0].ele)/up_down[1].DistancePrecise(up_down[0])
                 except ZeroDivisionError:
                     slope = 0.0
             else:
@@ -521,15 +531,12 @@ class Track:
         return [self.ptlist[i].spd * self.ptlist[i].spd * Track.bike_power_friction + self.ptlist[i].spd * bike_power_climbing * slope[i] for i in range(0,len(self.ptlist))]
     def ComputeDistances(self):
         "Compute list of distances from the begin of track segment"
+        self.ComputeDistancesCache()
         out = []
-        prevpt = None
-        for pt in self.ptlist:
-            if prevpt==None:
-                val = 0.0
-            else:
-                val += pt.Distance(prevpt)
-            out.append(val)
-            prevpt = pt
+        cptr = 0.0
+        for i in range(0,len(self.ptlist)):
+            cptr+=self.dists[i]
+            out.append(cptr)
         return out
     def ComputeEleDiffRaw(self):
         "Compute D+ and D-"
@@ -707,12 +714,24 @@ class Track:
         for i in range(0,len(self.ptlist)-1):
             out += TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)*self.ptlist[i].spd
         return out
+    def ComputeDistancesCache(self):
+        if self.dists==None:
+            self.dists=[0.0]
+            if len(self.ptlist)>5000: #vincenty is too slow for long tracks
+                for i in range(1,len(self.ptlist)):
+                    self.dists.append(GeodeticDistGreatCircle(self.ptlist[i-1].lat,self.ptlist[i-1].lon,self.ptlist[i].lat,self.ptlist[i].lon))
+            else:
+                for i in range(1,len(self.ptlist)):
+                    self.dists.append(GeodeticDistVincenty(self.ptlist[i-1].lat,self.ptlist[i-1].lon,self.ptlist[i].lat,self.ptlist[i].lon))
     def ComputeLengthFromDist(self):
         "Compute track length by summing distances"
-        out = 0.0
-        for i in range(0,len(self.ptlist)-1):
-            out += GeodeticDist(self.ptlist[i+1].lat,self.ptlist[i+1].lon,self.ptlist[i].lat,self.ptlist[i].lon)
+        self.ComputeDistancesCache()
+        out = fsum(self.dists)
         return out
+        #out = 0.0
+        #for i in range(0,len(self.ptlist)-1):
+        #    out += GeodeticDist(self.ptlist[i+1].lat,self.ptlist[i+1].lon,self.ptlist[i].lat,self.ptlist[i].lon)
+        #return out
     def ComputePolar(self,nbstep,spdthreshold=0.0,spdunit='m/s',nbptsthreshold=1):
         maxspds = []
         meanspds = []
@@ -751,6 +770,7 @@ class Track:
         # Get from dem
         GetEleFromLatLonList(self.ptlist,True)
     def ComputeSpeedWhenNeeded(self):
+        self.ComputeDistancesCache()
         self.spdcomputed = False
         # Compute speeds in case it is not provided
         for i in range(0,len(self.ptlist)-1):
@@ -763,7 +783,7 @@ class Track:
                     #raise Exception("Cannot compute speeds if datetime is not provided")
                 else:
                     try:
-                        self.ptlist[i].spd = GeodeticDist(self.ptlist[i].lat,self.ptlist[i].lon,self.ptlist[i+1].lat,self.ptlist[i+1].lon)/TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
+                        self.ptlist[i].spd = self.dists[i+1]/TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
                         self.ptlist[i].spdunit = 'm/s'
                         self.ptlist[i].spd_converted = {'m/s': self.ptlist[i].spd}
                     except ZeroDivisionError:
@@ -808,13 +828,14 @@ class Track:
                 pt.ele = prevele
             prevele = pt.ele
     def ComputedSpeedDontOverWrite(self):
+        self.ComputeDistancesCache()
         out = []
         for i in range(0,len(self.ptlist)-1):
             if self.ptlist[i].datetime==None or self.ptlist[i+1].datetime==None:
                 return None
             else:
                 try:
-                    spd = GeodeticDist(self.ptlist[i].lat,self.ptlist[i].lon,self.ptlist[i+1].lat,self.ptlist[i+1].lon)/TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
+                    spd = self.dists[i+1]/TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
                 except ZeroDivisionError:
                     spd = 0.0
             out.append(spd)
@@ -898,10 +919,17 @@ class Track:
             #print prevpt,pt.spd
             if prevpt!=None and pt.spd!=None:
                 delta=(pt.datetime - prevpt.datetime).seconds
-                if delta > threshold_time and GeodeticDist(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<prevpt.spd*0.2 and GeodeticDist(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<pt.spd*0.2:
+                if delta > threshold_time and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<prevpt.spd*0.2 and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<pt.spd*0.2:
                     #print 'poz'
                     out.append(Point(prevpt.lat,prevpt.lon,prevpt.ele,0,prevpt.course,prevpt.datetime+timedelta(seconds=1)))
                     out.append(Point(pt.lat,pt.lon,pt.ele,0,pt.course,pt.datetime-timedelta(seconds=1)))
             out.append(pt)
             prevpt = pt
         self.ptlist = out
+
+if __name__=='__main__':
+    from gpxparser import ParseGpxFile
+    ptlist = ParseGpxFile('../../lamp-prod/cgi-bin/submit/56d74ad0cb0ec_0.gpx',0,0)
+    print len(ptlist)
+    track = Track(ptlist)
+    print track.ComputeLengthFromDist()

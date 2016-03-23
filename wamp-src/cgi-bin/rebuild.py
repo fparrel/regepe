@@ -7,7 +7,7 @@ from mapparser import ParseMap
 from model import Track
 from orchestrator import ProcessTrkSegWithProgress
 from config import maps_root
-from cgiparser import FormParseInt,FormParseStr,FormParseOptions
+from cgiparser import FormParseInt,FormParseStr,FormParseOptions,FormParseBool
 from log import Log
 from options import options
 
@@ -15,6 +15,7 @@ def RebuildCgi():
     # Get input args
     form = cgi.FieldStorage()
     mapid = FormParseStr(form,'mapid')
+    forcerecompspd = FormParseBool(form,'forcerecompspd')
     
     Log("RebuildCgi: parse map %s\n" % mapid)
     
@@ -32,6 +33,8 @@ def RebuildCgi():
     
     # Rebuild map
     track = Track(ptlist)
+    if forcerecompspd:
+        track.ComputeSpeedWhenNeeded(force=True)
     mapoutfilename = '%s/%s.php' % (maps_root,mapid)
     Log("RebuildCgi: rebuild: ProcessTrkSegWithProgress %s\n" % mapid)
     ProcessTrkSegWithProgress(track,mapoutfilename,mapid,light=True)
