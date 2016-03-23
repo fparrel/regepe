@@ -150,7 +150,12 @@ def ProcessTrkSegWithProgress(track,fname_out,submitid,light=False,type='ggl'):
     #f = open(fname_out,'w')
     #f.write(out)
     Log("ProcessTrkSegWithProgress: compress and write %s\n"%submitid)
-    f = gzip.open(fname_out+'.gz','wb')
+    try:
+        f = gzip.open(fname_out+'.gz','wb')
+    except:
+        import os
+        os.mkdir('../www/maps')
+        f = gzip.open(fname_out+'.gz','wb')
     f.write(out[5:-3])
     f.close()
     #f = open(fname_out+'.gz','wb')

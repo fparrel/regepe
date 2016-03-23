@@ -18,10 +18,7 @@ if(!file_exists($phpfname)) {
 	$phpfname = './maps/'.$_GET['mapid'].'-json.php';
 }
 
-$pngmtime = filemtime($pngfname);
-$phpmtime = filemtime($phpfname);
-
-if((!file_exists($pngfname))||($pngmtime<$phpmtime)||(filesize($pngfname)==0)) {
+if((!file_exists($pngfname))||(filemtime($pngfname)<filemtime($phpfname))||(filesize($pngfname)==0)) {
 
 /* Get Map data */
 $filename = './maps/'.$_GET['mapid'].'-json.php.gz';

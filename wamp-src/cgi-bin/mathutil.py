@@ -1,5 +1,6 @@
 
-from math import sqrt,cos,sin,atan2,ceil,floor,log10,pi
+from math import sqrt,cos,sin,atan2,ceil,floor,log10,pi,atan,tan
+from log import Warn
 
 try:
     from math import fsum
@@ -179,8 +180,126 @@ def FindLocalMaximums(points,key,FilterFunc,filterhalfsize):
     # Return ids of points matching local max
     return [mymax[0] for mymax in localmaxs]
 
+def GeodeticDist(lat1, lng1, lat2, lng2):
+    return GeodeticDistVincenty(lat1, lng1, lat2, lng2)
 
-def GeodeticDist(lat1,lon1,lat2,lon2):
+def GeodeticDistVincenty(lat1, lng1, lat2, lng2):
+    # Vincenty formula (taken from geopy) with WGS-84
+
+    # Convert degrees to radians
+    lat1 = lat1 * 0.0174532925199433
+    lng1 = lng1 * 0.0174532925199433
+    lat2 = lat2 * 0.0174532925199433
+    lng2 = lng2 * 0.0174532925199433
+
+    delta_lng = lng2 - lng1
+
+    reduced_lat1 = atan((1 - 0.00335281066474748071984552861852) * tan(lat1))
+    reduced_lat2 = atan((1 - 0.00335281066474748071984552861852) * tan(lat2))
+
+    sin_reduced1, cos_reduced1 = sin(reduced_lat1), cos(reduced_lat1)
+    sin_reduced2, cos_reduced2 = sin(reduced_lat2), cos(reduced_lat2)
+
+    lambda_lng = delta_lng
+    lambda_prime = 2 * pi
+
+    iter_limit = 20 #20 iterations max
+
+    i = 0
+    while abs(lambda_lng - lambda_prime) > 10e-12 and i <= iter_limit:
+        i += 1
+
+        sin_lambda_lng, cos_lambda_lng = sin(lambda_lng), cos(lambda_lng)
+
+        sin_sigma = sqrt(
+            (cos_reduced2 * sin_lambda_lng) ** 2 +
+            (cos_reduced1 * sin_reduced2 -
+              sin_reduced1 * cos_reduced2 * cos_lambda_lng) ** 2
+        )
+
+        if sin_sigma == 0:
+            return 0 # Coincident points
+
+        cos_sigma = (
+            sin_reduced1 * sin_reduced2 +
+            cos_reduced1 * cos_reduced2 * cos_lambda_lng
+        )
+
+        sigma = atan2(sin_sigma, cos_sigma)
+
+        sin_alpha = (
+            cos_reduced1 * cos_reduced2 * sin_lambda_lng / sin_sigma
+        )
+        cos_sq_alpha = 1 - sin_alpha ** 2
+
+        if cos_sq_alpha != 0:
+            cos2_sigma_m = cos_sigma - 2 * (
+                sin_reduced1 * sin_reduced2 / cos_sq_alpha
+            )
+        else:
+            cos2_sigma_m = 0.0 # Equatorial line
+
+        C = 0.00335281066474748071984552861852 / 16. * cos_sq_alpha * (4 + 0.00335281066474748071984552861852 * (4 - 3 * cos_sq_alpha))
+
+        lambda_prime = lambda_lng
+        lambda_lng = (
+            delta_lng + (1 - C) * 0.00335281066474748071984552861852 * sin_alpha * (
+                sigma + C * sin_sigma * (
+                    cos2_sigma_m + C * cos_sigma * (
+                        -1 + 2 * cos2_sigma_m ** 2
+                    )
+                )
+            )
+        )
+
+    if i > iter_limit:
+        # Vincenty formula failed to converge => use great circle algorithm
+        Warn("Vincenty formula failed to converge")
+        return GeodeticDistGreatCircle(lat1, lng1, lat2, lng2)
+
+    u_sq = cos_sq_alpha * (6378137.0 ** 2 - 6356752.3142 ** 2) / 6356752.3142 ** 2
+
+    A = 1 + u_sq / 16384. * (
+        4096 + u_sq * (-768 + u_sq * (320 - 175 * u_sq))
+    )
+
+    B = u_sq / 1024. * (256 + u_sq * (-128 + u_sq * (74 - 47 * u_sq)))
+
+    delta_sigma = (
+        B * sin_sigma * (
+            cos2_sigma_m + B / 4. * (
+                cos_sigma * (
+                    -1 + 2 * cos2_sigma_m ** 2
+                ) - B / 6. * cos2_sigma_m * (
+                    -3 + 4 * sin_sigma ** 2
+                ) * (
+                    -3 + 4 * cos2_sigma_m ** 2
+                )
+            )
+        )
+    )
+
+    s = 6356752.3142 * A * (sigma - delta_sigma)
+    return s
+
+def GeodeticDistGreatCircleBitSlower(lat1,lon1,lat2,lon2):
+    lat1 = lat1 * 0.0174532925199433
+    lon1 = lon1 * 0.0174532925199433
+    lat2 = lat2 * 0.0174532925199433
+    lon2 = lon2 * 0.0174532925199433
+    sin_lat1, cos_lat1 = sin(lat1), cos(lat1)
+    sin_lat2, cos_lat2 = sin(lat2), cos(lat2)
+
+    delta_lng = lon2 - lon1
+    cos_delta_lng, sin_delta_lng = cos(delta_lng), sin(delta_lng)
+
+    d = atan2(sqrt((cos_lat2 * sin_delta_lng) ** 2 +
+                    (cos_lat1 * sin_lat2 -
+                     sin_lat1 * cos_lat2 * cos_delta_lng) ** 2),
+                sin_lat1 * sin_lat2 + cos_lat1 * cos_lat2 * cos_delta_lng)
+    return 6372795.0 * d
+
+def GeodeticDistGreatCircle(lat1,lon1,lat2,lon2):
     "Compute distance between two points of the earth geoid (approximated to a sphere)"
     # convert inputs in degrees to radians
     lat1 = lat1 * 0.0174532925199433
@@ -191,7 +310,7 @@ def GeodeticDist(lat1,lon1,lat2,lon2):
     a = sin((lat2 - lat1)/2)**2 + cos(lat1) * cos(lat2) * sin((lon2 - lon1)/2)**2
     c = 2 * atan2(sqrt(a), sqrt(1-a))
     # earth mean radius is 6371 km
-    return 6371000.0 * c
+    return 6372795.0 * c
 
 
 def GeodeticCourse(lat1,lon1,lat2,lon2):
@@ -270,9 +389,12 @@ def GetIndexOfClosest(mylist,value):
 ## UNIT TEST CODE ##
 
 def main():
+    from timeit import timeit
     print(Mean([0.6,0.9,0.7]))
-    print(GeodeticDist(45.0,0.0,46.0,1.0))
-    #raw_input('Press Enter')
+    print("great circle 1",GeodeticDistGreatCircleBitSlower(45.0,0.0,46.0,1.0),timeit("GeodeticDistGreatCircleBitSlower(45.0,0.0,46.0,1.0)",setup="from __main__ import GeodeticDistGreatCircleBitSlower"))
+    print("great circle 2",GeodeticDistGreatCircle(45.0,0.0,46.0,1.0),timeit("GeodeticDistGreatCircle(45.0,0.0,46.0,1.0)",setup="from __main__ import GeodeticDistGreatCircle"))
+    print("vincenty",GeodeticDistVincenty(45.0,0.0,46.0,1.0),timeit("GeodeticDistVincenty(45.0,0.0,46.0,1.0)",setup="from __main__ import GeodeticDistVincenty"))
+    print("GeodeticDist",GeodeticDist(45.0,0.0,46.0,1.0))
 
 if __name__ == '__main__':
    main()
