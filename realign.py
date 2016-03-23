@@ -105,7 +105,7 @@ def open_mkdir(fname,row):
         os.makedirs(path)
     return open(fname,row)
 
-src_dir = 'wamp'
+src_dir = 'wamp-src'
 dest_dir = 'lamp-prod'
 overwrite = False
 showdiffs = False
