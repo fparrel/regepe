@@ -156,6 +156,11 @@ else:
 
 print 'Source=%s Destination=%s' % (src_dir, dest_dir)
 print 'Run translate.py and minify.sh first'
+
+if not os.path.exists('%s/www/previews' % dest_dir):
+    os.mkdir('%s/www/previews' % dest_dir)
+    os.chmod('%s/www/previews' % dest_dir,stat.S_IWOTH)
+
 for root, dirs, files in os.walk(src_dir):
     for file in files:
         if in_ignore(root,file): #ignore data and logs

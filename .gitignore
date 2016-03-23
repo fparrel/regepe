@@ -99,3 +99,6 @@ wamp-src/www/prepare-old.php
 wamp-src/www/fr/prepare-old.php
 wamp-src/www/test_mapofmaps-highvolume.php
 wamp-src/www/fr/test_mapofmaps-highvolume.php
+
+#backup from winmerge
+*.bak

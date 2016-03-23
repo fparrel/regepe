@@ -152,6 +152,8 @@ class Track:
     # ptlist: list of points
     # bounds: bounds of the list of points
     # ptindexlist: if the trkseg is the compression of another trkseg, list of id of ptlist in the ptlist of the orginial trkseg
+    # nospeeds: true if track contains no speed/time data
+    # spdcomputed: have the speed been computed or taken from input file
     bike_power_friction = 0.016975308641975308641975308641975
     bike_power_climbing = 0.0272
     def __init__(self,ptlist,bounds=None,ptindexlist=None):
@@ -749,11 +751,11 @@ class Track:
         # Get from dem
         GetEleFromLatLonList(self.ptlist,True)
     def ComputeSpeedWhenNeeded(self):
-        spdcomputed = False
+        self.spdcomputed = False
         # Compute speeds in case it is not provided
         for i in range(0,len(self.ptlist)-1):
             if self.ptlist[i].spd==None or self.ptlist[i].spd<0.0:
-                spdcomputed = True
+                self.spdcomputed = True
                 if self.ptlist[i].datetime==None or self.ptlist[i+1].datetime==None:
                     self.ptlist[i].spd = -1.0
                     self.nospeeds = True
@@ -778,7 +780,7 @@ class Track:
                 self.ptlist[len(self.ptlist)-1].spdunit = self.ptlist[len(self.ptlist)-2].spdunit
                 self.ptlist[len(self.ptlist)-1].spd_converted = {'m/s': self.ptlist[len(self.ptlist)-1].spd}
         previous = self.ptlist[0].spd
-        if spdcomputed:
+        if self.spdcomputed:
             for pt in self.ptlist:
                 pt.spd = previous + (pt.spd - previous)/5
                 pt.spd_converted = {'m/s': pt.spd}

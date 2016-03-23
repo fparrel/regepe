@@ -115,7 +115,12 @@ def DbSetPassword(mapid,pwd):
     dbfile = 'maps/%s.db' % mapid
     # Write password
     #Log('DbSetPassword open db c %s\n'%mapid)
-    db = anydbm.open(dbfile, 'c')
+    try:
+        db = anydbm.open(dbfile, 'c')
+    except:
+        import os
+        os.mkdir('maps')
+        db = anydbm.open(dbfile, 'c')
     db['pwd'] = pwd
     db.close()
     #Log('DbSetPassword close db c %s\n'%mapid)
