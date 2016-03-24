@@ -40,6 +40,8 @@ There is how to configure your test server on Ubuntu (tested with Lubuntu 15.10)
 </VirtualHost>
 ```
 
+* Remove the file `/etc/apache2/conf-enabled/javascript-common.conf`
+
 * Then activate the host and restart apache:
 ```shell
 sudo a2ensite regepe
