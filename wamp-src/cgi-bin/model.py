@@ -284,6 +284,9 @@ class Track:
                 idlist.append(i+1)
         ptlist_new = [self.ptlist[i] for i in idlist]
         self.ptlist = ptlist_new        
+        if self.dists!=None:
+            dists_new = [self.dists[i] for i in idlistnew]
+            self.dists = dists_new
     def RemoveStayingPointsFromSpeed(self,threshold):
         "Remove the points when GPS is staying at the same place"
         idlist = []
@@ -292,6 +295,9 @@ class Track:
                 idlist.append(i+1)
         ptlist_new = [self.ptlist[i] for i in idlist]
         self.ptlist = ptlist_new
+        if self.dists!=None:
+            dists_new = [self.dists[i] for i in idlistnew]
+            self.dists = dists_new
     def RemoveStayingPoints3(self,thresholddist,thresholdtime,thresholdspeed):
         "Remove the points when GPS is staying at the same place"
         if (self.nospeeds):
@@ -348,6 +354,9 @@ class Track:
                 idlistnew.append(i)
         ptlist_new = [self.ptlist[i] for i in idlistnew]
         self.ptlist = ptlist_new
+        if self.dists!=None:
+            dists_new = [self.dists[i] for i in idlistnew]
+            self.dists = dists_new
         return pauses
     def RemoveStayingPoints4(self,thresholddist,thresholdtime,thresholdspeed):
         "Remove the points when GPS is staying at the same place"
@@ -411,6 +420,9 @@ class Track:
                 idlistnew.append(i)
         ptlist_new = [self.ptlist[i] for i in idlistnew]
         self.ptlist = ptlist_new
+        if self.dists!=None:
+            dists_new = [self.dists[i] for i in idlistnew]
+            self.dists = dists_new
         return pauses
     def ComputeInstantVertSpeeds(self):
         "Compute list of instant vertical speeds in m/s"
@@ -715,7 +727,7 @@ class Track:
             out += TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)*self.ptlist[i].spd
         return out
     def ComputeDistancesCache(self):
-        if self.dists==None:
+        if self.dists==None or not(len(self.ptlist)==len(self.dists)):
             self.dists=[0.0]
             if len(self.ptlist)>5000: #vincenty is too slow for long tracks
                 for i in range(1,len(self.ptlist)):
@@ -913,8 +925,10 @@ class Track:
         return out
     def AddOruxMapPauses(self):
         out=[]
+        out_dists=[]
         threshold_time = 2
         prevpt = None
+        i=0
         for pt in self.ptlist:
             #print prevpt,pt.spd
             if prevpt!=None and pt.spd!=None:
@@ -922,10 +936,15 @@ class Track:
                 if delta > threshold_time and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<prevpt.spd*0.2 and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<pt.spd*0.2:
                     #print 'poz'
                     out.append(Point(prevpt.lat,prevpt.lon,prevpt.ele,0,prevpt.course,prevpt.datetime+timedelta(seconds=1)))
+                    out_dists.append(0.0)
                     out.append(Point(pt.lat,pt.lon,pt.ele,0,pt.course,pt.datetime-timedelta(seconds=1)))
+                    out_dists.append(0.0)
             out.append(pt)
+            out_dists.append(self.dists[i])
             prevpt = pt
+            i+=1
         self.ptlist = out
+        self.dists = out_dists
 
 if __name__=='__main__':
     from gpxparser import ParseGpxFile

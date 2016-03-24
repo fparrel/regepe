@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import difflib
+import stat
 
 def diff(old,new):
     """
