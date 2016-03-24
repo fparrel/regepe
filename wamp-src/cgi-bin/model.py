@@ -278,26 +278,36 @@ class Track:
     def RemoveStayingPointsFromDistance(self,threshold):
         "Remove the points when GPS is staying at the same place"
         self.ComputeDistancesCache()
-        idlist = []
+        idlistnew = []
         for i in range(0,len(self.ptlist)-1):
             if self.dists[i+1]>threshold:
-                idlist.append(i+1)
-        ptlist_new = [self.ptlist[i] for i in idlist]
-        self.ptlist = ptlist_new        
+                idlistnew.append(i+1)
+        ptlist_new = [self.ptlist[i] for i in idlistnew]
         if self.dists!=None:
-            dists_new = [self.dists[i] for i in idlistnew]
+            dists_new=[]
+            for i in range(1,len(idlistnew)):
+                if idlistnew[i]==idlistnew[i-1]+1:
+                    dists_new.append(self.dists[i])
+                else:
+                    dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
             self.dists = dists_new
+        self.ptlist = ptlist_new
     def RemoveStayingPointsFromSpeed(self,threshold):
         "Remove the points when GPS is staying at the same place"
-        idlist = []
+        idlistnew = []
         for i in range(0,len(self.ptlist)):
             if self.ptlist[i].spd>threshold:
-                idlist.append(i+1)
-        ptlist_new = [self.ptlist[i] for i in idlist]
-        self.ptlist = ptlist_new
+                idlistnew.append(i+1)
+        ptlist_new = [self.ptlist[i] for i in idlistnew]
         if self.dists!=None:
-            dists_new = [self.dists[i] for i in idlistnew]
+            dists_new=[]
+            for i in range(1,len(idlistnew)):
+                if idlistnew[i]==idlistnew[i-1]+1:
+                    dists_new.append(self.dists[i])
+                else:
+                    dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
             self.dists = dists_new
+        self.ptlist = ptlist_new
     def RemoveStayingPoints3(self,thresholddist,thresholdtime,thresholdspeed):
         "Remove the points when GPS is staying at the same place"
         if (self.nospeeds):
@@ -353,10 +363,15 @@ class Track:
             if i not in removedptsidlistcpy:
                 idlistnew.append(i)
         ptlist_new = [self.ptlist[i] for i in idlistnew]
-        self.ptlist = ptlist_new
         if self.dists!=None:
-            dists_new = [self.dists[i] for i in idlistnew]
+            dists_new=[]
+            for i in range(1,len(idlistnew)):
+                if idlistnew[i]==idlistnew[i-1]+1:
+                    dists_new.append(self.dists[i])
+                else:
+                    dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
             self.dists = dists_new
+        self.ptlist = ptlist_new
         return pauses
     def RemoveStayingPoints4(self,thresholddist,thresholdtime,thresholdspeed):
         "Remove the points when GPS is staying at the same place"
@@ -419,10 +434,15 @@ class Track:
             if i not in removedptsidlistcpy:
                 idlistnew.append(i)
         ptlist_new = [self.ptlist[i] for i in idlistnew]
-        self.ptlist = ptlist_new
         if self.dists!=None:
-            dists_new = [self.dists[i] for i in idlistnew]
+            dists_new=[]
+            for i in range(1,len(idlistnew)):
+                if idlistnew[i]==idlistnew[i-1]+1:
+                    dists_new.append(self.dists[i])
+                else:
+                    dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
             self.dists = dists_new
+        self.ptlist = ptlist_new
         return pauses
     def ComputeInstantVertSpeeds(self):
         "Compute list of instant vertical speeds in m/s"
