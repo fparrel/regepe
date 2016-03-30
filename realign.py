@@ -231,6 +231,12 @@ for root, dirs, files in os.walk(src_dir):
                         modified=True
                         c_from = c_from.replace('#!/usr/bin/python','#!c:/Python27/python.exe')
                         c_from = c_from.replace('#pythonwindowsbinarypostcgistuff\n',pythonwindowsbinarypostcgistuff)
+                for k,v in keysnpwds.iteritems():
+                    try:
+                        c_from = c_from.replace(k,v)
+                    except UnicodeDecodeError,e:
+                        print k,v,file,root
+                        raise e
             
             f_from.close()
             if not is_new:
