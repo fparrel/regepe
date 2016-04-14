@@ -221,6 +221,14 @@ for root, dirs, files in os.walk(src_dir):
                         modified=True
                         c_from = c_from.replace("domain = 'regepe.com'","domain = 'localhost'")
             elif file.endswith('.py'):
+                beginenc = c_from.find('-*- coding:')
+                if beginenc>-1:
+                    endenc=c_from.find('-*-',beginenc+len('-*- coding:'))
+                    encoding = c_from[beginenc+len('-*- coding:'):endenc].strip()
+                    print 'encoding "%s"'%encoding
+                    c_from = c_from.decode(encoding)
+                else:
+                    encoding = None
                 if src_dir in ('wamp-src','wamp-test') and dest_dir in ('lamp-test','lamp-prod'):
                     if c_from.find('#!c:/Python27/python.exe')>-1:
                         modified=True
@@ -244,7 +252,10 @@ for root, dirs, files in os.walk(src_dir):
                 f_to.close()
             if overwrite and (is_new or c_from!=c_to):
                 f_to = open_mkdir('%s/%s'%(root.replace(src_dir+'/',dest_dir+'/'),file),'w')
-                f_to.write(c_from)
+                if encoding==None:
+                    f_to.write(c_from)
+                else:
+                    f_to.write(c_from.encode(encoding))
                 f_to.close()
             
             # Compare files
