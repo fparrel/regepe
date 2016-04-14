@@ -23,6 +23,7 @@ from garminparser import ParseJsonGarminFile
 from movescountparser import ParseJsonMoveCountFile
 from stravaparser import UrlOpenStrava,ParseJsonStravaFile
 from sbpparser import ParseSbpFile
+from fitparser import ParseFitFile
 from model import Bounds,Track,Point
 from options import options
 from pagebuilder import BuildPage,MyPolar,MyXYChart,ChartString,ChartStringWithTitle,BuildMaxSpeeds
@@ -173,12 +174,18 @@ JSON_GARMIN = 7
 JSON_MOVESCOUNT = 8
 SBP = 9
 JSON_STRAVA = 10
+FIT = 11
 UNKNOWN = 0
 EMPTY = -1
 
 
 def GetFileType(inputfile):
     # Warning: you must do seek(0,0) if you want to parse the file
+    fithdr = inputfile.read(14)
+    if fithdr[8:12]=='.FIT':
+        return FIT
+    else:
+        inputfile.seek(0,0)
     for i in range(0,10):
         line = inputfile.readline()
         if not line:
