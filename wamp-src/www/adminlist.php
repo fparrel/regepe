@@ -12,7 +12,10 @@ table { border-collapse:collapse;}
   <div style="position:fixed;left:0px;">
     <input type="button" value="Add pwd cookie" onclick="DoAddMapPwdCookie();"/>
     <input type="button" value="Rebuild" onclick="DoRebuild();"/>
-    <input type="checkbox" value="forcerecompspd" id="forcerecompspd"><label for="forcerecompspd">recomp spd</label>
+    <input type="checkbox" value="forcerecompspd" id="forcerecompspd"><label for="forcerecompspd">recomp spd</label><br/>
+    <input type="text" value="element" id="ele" style="width:50px;"/>
+    <input type="text" value="value" id="val" style="width:50px;"/>
+    <input type="button" value="Change value" onclick="DoSetElementValue();"/>
   </div>
   <h1>List of maps</h1>
   <table><thead></thead><tbody>
@@ -65,6 +68,7 @@ foreach($maps->map as $map) {
 <?php } ?>
 </body>
 </html>
+<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
 <script type="text/javascript">
 var curmapid;
 function DoRebuild() {
@@ -103,4 +107,23 @@ function showPreview(mapid) {
 	document.getElementById("row"+mapid).style.backgroundColor = "#A7C942";
 	document.getElementById("row"+mapid).style.border ='1px solid ';
 }
+
+function onSetElementValueAnswer() {
+	if (this.readyState == 4) {
+		if (this.status == 200) {
+        var result = this.responseText;
+        alert(result);
+    }
+  }
+}
+function DoSetElementValue() {
+  var ele = document.getElementById("ele").value;
+  var val = document.getElementById("val").value;
+  var url = "/cgi-bin/adminsetmapele2.py?pwd=<?php echo $_POST['pwd']; ?>&mapid="+curmapid+"&ele="+ele+"&val="+val;
+  var req = new XMLHttpRequest();
+  req.open("GET", url, true);
+  req.onreadystatechange = onSetElementValueAnswer;
+  req.send(null);
+}
+
 </script>
