@@ -1,4 +1,5 @@
 {"${GMapsApiKey}":"xxxxx",
   "${GMapsApiKey2}":"xxxxx",
-  "${GeoPortalApiKey}":"xxxxx"
+  "${GeoPortalApiKey}":"xxxxx",
+  "${AdminPwdSha1}":"xxxxx"
 }

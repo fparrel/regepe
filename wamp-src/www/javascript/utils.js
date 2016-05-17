@@ -87,6 +87,7 @@ function convertSpeed(speedms,spdunit) {
 	if (spdunit=='m/s') return (speedms);
 	if (spdunit=='knots') return (speedms*1.94384449);
 	if (spdunit=='km/h') return (speedms*3.6);
+	if (spdunit=='mph') return (speedms*2.23693629);
 }
 
 /* Compute an angle given 3 points */

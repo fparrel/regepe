@@ -146,9 +146,12 @@ function computeVmgPolar() {
 }
 
 function refreshBestVMGs() {
-    var bestvmgs = computeBestVMGs();
-    //console.log("computeBestVMGs=%o",bestvmgs);
-    //    return number_format($spd,$nbdec).' '.$spdunit_disp.' '.$maxspd->dst.' '.$maxspd->dst_unit.' in '.convert_time($maxspd->time,$maxspd->time_unit).' at <a href="#" onclick="javascript:refreshSelection('.$maxspd->from_id.','.$maxspd->to_id.');return false;">'.$maxspd->when_from.'</a>';
-    document.getElementById("bestvmg").innerHTML = bestvmgs.map(bestVmgsToHtml).join('');
-    refreshVmgPolar();
+    var bestvmgdiv = document.getElementById("bestvmg");
+    if(bestvmgdiv) {
+        var bestvmgs = computeBestVMGs();
+        //console.log("computeBestVMGs=%o",bestvmgs);
+        //    return number_format($spd,$nbdec).' '.$spdunit_disp.' '.$maxspd->dst.' '.$maxspd->dst_unit.' in '.convert_time($maxspd->time,$maxspd->time_unit).' at <a href="#" onclick="javascript:refreshSelection('.$maxspd->from_id.','.$maxspd->to_id.');return false;">'.$maxspd->when_from.'</a>';
+        bestvmgdiv.innerHTML = bestvmgs.map(bestVmgsToHtml).join('');
+        refreshVmgPolar();
+    }
 }

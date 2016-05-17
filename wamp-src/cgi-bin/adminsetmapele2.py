@@ -10,7 +10,7 @@ from log import Log
 
 def DbSetMapEleCgi():
     form = cgi.FieldStorage()
-    pwdhexvalue = '560ff0101be9750e804656afb15cf1e7ba1d252a'
+    pwdhexvalue = '${AdminPwdSha1}'
     if not hashlib.sha1(form.getvalue('pwd')).hexdigest()==pwdhexvalue:
         print 'Error: bad password'
         return

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!c:/Python27/python.exe
 
 import cgi
 import hashlib
@@ -10,7 +10,8 @@ from log import Log
 
 def DbGetCgi():
     form = cgi.FieldStorage()
-    if not hashlib.sha1(form.getvalue('pwd')).hexdigest()=='${AdminPwdSha1}':
+    pwdhexvalue = '${AdminPwdSha1}'
+    if not hashlib.sha1(form.getvalue('pwd')).hexdigest()==pwdhexvalue:
         print 'Error: bad password'
         return
     if form.has_key('limit'):
