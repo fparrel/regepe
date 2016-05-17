@@ -264,12 +264,18 @@ for root, dirs, files in os.walk(src_dir):
                     # Files differs and modification has been done by realign.py
                     print 'D! %s/%s'%(root,file)
                     if showdiffs:
-                        print get_diffs(c_from,c_to)
+                        try:
+                            print get_diffs(c_from,c_to)
+                        except:
+                            print 'Error cannot display diffs for %s' % (file)
                 else:
                     # Files differs and no modification was done by realign.py
                     print 'D  %s/%s'%(root,file)
                     if showdiffs:
-                        print get_diffs(c_from,c_to)
+                        try:
+                            print get_diffs(c_from,c_to)
+                        except:
+                            print 'Error cannot display diffs for %s' % (file)
         else:
             # Don't know how to handle this file!
             print '!!! %s %s' % (root,file)

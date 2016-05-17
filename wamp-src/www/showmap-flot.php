@@ -263,7 +263,7 @@ function convert_maxspd($maxspd) {
         } else {
             switch($spdunit) {
             case 'm/s':
-                $spd = $maxspd->dst*1.94384449/$maxspd->time;
+                $spd = $maxspd->dst/$maxspd->time;
                 $spdunit_disp='m/s';
                 break;
             case 'knots':
@@ -273,6 +273,10 @@ function convert_maxspd($maxspd) {
             case 'km/h':
                 $spd = $maxspd->dst*3.6/$maxspd->time;
                 $spdunit_disp='km/h';
+                break;
+            case 'mph':
+                $spd = $maxspd->dst*2.23693629/$maxspd->time;
+                $spdunit_disp='mph';
                 break;
             default:
                 $spd='error '.$spdunit;
@@ -421,7 +425,7 @@ foreach(explode("\n", $charts) as $chart) {
     <div id="near_maps">Near maps</div>
 </div>
 <?php if ($map_type=='GMaps') { ?>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=${GMapsApiKey2}&amp;sensor=false"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=${GMapsApiKey2}"></script>
 <?php } else if ($map_type=='GeoPortal') { ?>
 <script type="text/javascript" charset="utf-8" src='http://api.ign.fr/geoportail/api/js/latest/Geoportal.js'></script>
 <?php } else if ($map_type=='MapQuest') { ?>
