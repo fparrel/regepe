@@ -20,11 +20,13 @@ def RebuildCgi():
     Log("RebuildCgi: parse map %s\n" % mapid)
     
     # Parse map
-    mapfname = '%s/%s.php' % (maps_root,mapid)
+    mapfname = '%s/%s-json.php.gz' % (maps_root,mapid)
     if os.access(mapfname,os.F_OK):
-        ptlist = ParseMap(mapfname,False)
+        ptlist = ParseMap(mapfname,True)
     else:
-        ptlist = ParseMap(mapfname+'.gz',True)
+        # Old version
+        mapfname = '%s/%s.php' % (maps_root,mapid)
+        ptlist = ParseMap(mapfname,False)
     
     #overwrite options if requested
     FormParseOptions(form,options)
