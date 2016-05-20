@@ -5,6 +5,7 @@ import sys
 import json
 import difflib
 import stat
+import traceback
 
 def diff(old,new):
     """
@@ -259,11 +260,16 @@ for root, dirs, files in os.walk(src_dir):
                 f_to.close()
             
             # Compare files
+            if encoding!=None:
+                try:
+                    c_to = c_to.decode(encoding)
+                except Exception,e:
+                    print e,file,encoding,traceback.format_exc()
             if not is_new and c_from!=c_to:
                 if modified:
                     # Files differs and modification has been done by realign.py
                     print 'D! %s/%s'%(root,file)
-                    if showdiffs:
+                    if showdiffs and not file.endswith('.apk'):
                         try:
                             print get_diffs(c_from,c_to)
                         except:
@@ -271,11 +277,11 @@ for root, dirs, files in os.walk(src_dir):
                 else:
                     # Files differs and no modification was done by realign.py
                     print 'D  %s/%s'%(root,file)
-                    if showdiffs:
+                    if showdiffs and not file.endswith('.apk'):
                         try:
                             print get_diffs(c_from,c_to)
                         except:
                             print 'Error cannot display diffs for %s' % (file)
         else:
             # Don't know how to handle this file!
-            print '!!! %s %s' % (root,file)
+            print 'IGNORING %s %s' % (root,file)

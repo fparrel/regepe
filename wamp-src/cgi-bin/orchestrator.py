@@ -47,6 +47,8 @@ from urlparse import urlparse,parse_qsl
 
 from figures import Figures
 
+import traceback
+
 
 def ProcessTrkSegWithProgress(track,fname_out,submitid,light=False,type='ggl'):
     if not light:
@@ -82,7 +84,7 @@ def ProcessTrkSegWithProgress(track,fname_out,submitid,light=False,type='ggl'):
             data = (trksegcompressed.ComputeTimes(),trksegcompressed.GetSpeeds(options['spdunit']))
             charts.append(MyXYChart(data,'','spdtimechart','Speed (%s)'%(options['spdunit']),'Speed',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Spd',unity=options['spdunit']))
         except Exception, e:
-            Warn('Cannot make speed against time chart %s\n'%e)
+            Warn('Cannot make speed against time chart %s %s\n'%(e,traceback.format_exc()))
         # Speed against distance
         #charts.append(MyXYChart((trksegcompressed.ComputeDistances(),trksegcompressed.GetSpeeds(options['spdunit'])),'','spddistchart','Speed in '+options['spdunit']+' against distance in m',len(track),trksegcompressed.ptindexlist))
     if not options['flat']:
@@ -300,6 +302,9 @@ def BuildMap2(inputfile_single_or_list,outputfile,trk_id,trk_seg_id,submitid=Non
         elif (filetype==SBP):
             inputfile.seek(0,0)
             ptlist = ParseSbpFile(inputfile,trk_id,trk_seg_id)
+        elif (filetype==FIT):
+            inputfile.seek(0,0)
+            ptlist = ParseFitFile(inputfile,trk_id,trk_seg_id)
         elif (filetype==EMPTY):
             # ignore empty files
             continue
