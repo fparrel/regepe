@@ -81,8 +81,9 @@ class GpxTrkSeg:
         self.ptlist = []
         for trkpt in trksegxmlelement:
             pt = GpxPoint(trkpt,xmlns)
-            self.ptlist.append(pt)
-            self.bounds.Extend(pt.lat,pt.lon)
+            if not(pt.lat==0.0 and pt.lon==0.0): # Fix for Garmin Connect's bug
+                self.ptlist.append(pt)
+                self.bounds.Extend(pt.lat,pt.lon)
     def __add__(self,other):
         out = GpxTrkSeg([],'')
         out.ptlist.extend(self.ptlist)
