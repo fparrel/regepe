@@ -1,8 +1,10 @@
 #!c:/Python27/python.exe
 
 import cgi
+import traceback
 
 from users import Login
+from log import Warn
 
 def DoLogin():
     input = cgi.FieldStorage()
@@ -22,6 +24,7 @@ def DoLogin():
 print('Content-Type: text/xml')
 print
 try:
-	DoLogin()
-except Exception, inst:
-	print('<result><user>NoUser</user><sess>-1</sess><error>%s</error></result>' % str(inst))
+    DoLogin()
+except Exception, e:
+    print('<result><user>NoUser</user><sess>-1</sess><error>%s</error></result>' % e)
+    Warn('Error with login %s %s\n'%(e,traceback.format_exc()))

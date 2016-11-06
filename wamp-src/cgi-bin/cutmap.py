@@ -43,8 +43,10 @@ def CutMapCgi():
     if((action=='clear')or(action=='crop')):
         firstptid = FormParseInt(form,'fisrtptid')
         lastptid = FormParseInt(form,'lastptid')
+        Log("CutMapCgi: %s %s %s %s\n" % (mapid,action,firstptid,lastptid))
     elif(action=='delptlist'):
         delptlist = map(int,FormParseStr(form,'ptlist').split(','))
+        Log("CutMapCgi: %s %s %s\n" % (mapid,action,delptlist))
     
     # Check rights
     if form.has_key('user') and form.has_key('sess'):
