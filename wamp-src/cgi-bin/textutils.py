@@ -12,7 +12,7 @@ def remove_accents(input_str,encoding):
     return only_ascii
 
 def main():
-    print remove_accents(u'été à la braïssa','latin1')
+    print remove_accents('été à la braïssa','latin1')
 
 if __name__=='__main__':
     main()
