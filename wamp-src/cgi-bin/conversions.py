@@ -25,7 +25,7 @@ def MetersPerSecToMetersPerHour(ms):
 
 def MetersPerSecToSpdunit(ms,spdunit):
     "Convert speed in m/s to speed in spdunit (currently supported 'knots', 'km/h')"
-    spd_converter = {'knots': 1.94384449, 'km/h': 3.6, 'm/h': 3600.0}
+    spd_converter = {'knots': 1.94384449, 'km/h': 3.6, 'm/h': 3600.0, 'mph': 2.23693629}
     return ms*spd_converter[spdunit]
 
 

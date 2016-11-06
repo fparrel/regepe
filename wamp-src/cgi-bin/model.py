@@ -70,7 +70,7 @@ class Point:
     # datetime: date and time
     # priority: is the point important
     # hr: hearth rate
-    spd_converter = {'knots': 1.94384449, 'km/h': 3.6, 'mph': 0.44704}
+    spd_converter = {'knots': 1.94384449, 'km/h': 3.6, 'mph': 2.23693629}
     def __init__(self,lat,lon,ele,spd,course,datetime,spdunit='m/s',hr=None):
         "Create a Point"
         self.lat = lat
