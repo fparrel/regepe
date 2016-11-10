@@ -1,5 +1,4 @@
 <?php
-
 function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
 {
     // error was suppressed with the @-operator
@@ -10,7 +9,6 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 }
 set_error_handler('handleError');
-
 
 /* Get Map data */
 $filename = './maps/'.$_GET['mapid'].'-json.php.gz';
@@ -87,14 +85,13 @@ if ($spdunitindex!=false) {
 <body>
 <?php include('header.html'); ?>
 <div id="body">
-    <table><tbody><tr>
-         <td class="mapbox">
+  <div class="mapbox">
 <?php if ($map_type=='GMaps') { ?>
 			<div id="map" class="map" title="Click on track to change current point" onmousewheel="onMapMouseWheel(event);" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 <?php } else if ($map_type=='GeoPortal') { ?>
-			<div id="map" style="height:500px;width:500px;" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+			<div id="map" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 <?php } else if ($map_type=='MapQuest') { ?>
-			<div id="map" style="width:500px; height:500px;" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+			<div id="map" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 <?php } ?>
 			<table class="currpointcontrol"><tbody>
                 <tr>
@@ -140,7 +137,7 @@ if ($spdunitindex!=false) {
                 </tr>
 <?php } ?>
               </tbody></table>
-			<table style="width: 100%;"><tbody><tr>
+			<table class="mapfooter"><tbody><tr>
                     <td class="mapfooterleft">
 Switch to: <?php
 $maptypes=array("GeoPortal"=>"Geo Portail","GMaps"=>"Google Maps"/*,"MapQuest"=>"Open Street Map"*/);
@@ -153,26 +150,30 @@ foreach($maptypes as $maptype=>$maptypedesc) {
                     </td>
                     <td class="mapfooterright">Center map : <a id="center_map_toogle" href="javascript:void(0);" onclick="toogleCenterMap()">Yes</a></td>
               </tr></tbody></table>
-		</td>
-		<td style="vertical-align:top;">
-                <h3 onclick="toogleHideShow('trackinfos');">Map infos:</h3>
-                <div class="box" id="trackinfos">
-                    <b>User: </b><!-- link will be overwritten by javascript --><a id='trackuserlink' href="/showuser.php?user=unknown"><span id='trackuser'>Loading...</span></a><br/>
-                    <b>Description: </b>
-                    <div id='trackdesc' style="display: inline;" onclick="showInput('trackdesc');"><?php echo $desc; ?></div>
-                    <div id="trackdesc_input" style="display:none;">
-                        <table><tbody><tr>
-                            <td>
-                                <textarea rows="5" cols="20" id="trackdesc_inputtxtbox" onkeypress="onInputKeyPress(event,'trackdesc');"></textarea>
-                            </td><td style="vertical-align:bottom;">
-                                <input id="trackdesc_cancelbtn" type="button" value="Cancel" onclick="onCancelClick('trackdesc');"/><br/>
-                                <input id="trackdesc_okbtn" type="button" value="OK" onclick="onOkClick('trackdesc',mapid);"/>
-                            </td>
-                        </tr></tbody></table>
-                    </div><br/>
-                    <b>Date: </b><div id='date' style="display: inline;">Loading...</div><br/>
-                </div>
-                <div id="figures">
+  </div>
+  <div id="notabs">
+    <div id="mapinfos" class="rightofmap">
+      <h3 onclick="toogleHideShow('trackinfos');">Map infos:</h3>
+      <div class="box" id="trackinfos">
+        <b>User: </b><!-- link will be overwritten by javascript --><a id='trackuserlink' href="/showuser.php?user=unknown"><span id='trackuser'>Loading...</span></a><br/>
+        <b>Description: </b>
+        <div id='trackdesc' style="display: inline;" onclick="showInput('trackdesc');"><?php echo $desc; ?></div>
+        <div id="trackdesc_input" style="display:none;">
+          <table><tbody><tr>
+            <td>
+              <textarea rows="5" cols="20" id="trackdesc_inputtxtbox" onkeypress="onInputKeyPress(event,'trackdesc');"></textarea>
+            </td><td style="vertical-align:bottom;">
+              <input id="trackdesc_cancelbtn" type="button" value="Cancel" onclick="onCancelClick('trackdesc');"/><br/>
+              <input id="trackdesc_okbtn" type="button" value="OK" onclick="onOkClick('trackdesc',mapid);"/>
+            </td>
+          </tr></tbody></table>
+        </div>
+          <br/>
+          <b>Date: </b><div id='date' style="display: inline;">Loading...
+        </div><br/>
+      </div>
+    </div>
+    <div id="figures" class="rightofmap">
 <?php
 $figobj = json_decode($figures);
 if($figobj) {
@@ -196,40 +197,37 @@ if($figobj) {
     print '</div>';
 }
 ?>
-                </div><br/>
-                <table><tbody><tr>
-                    <td>
-                        <h3>Current point:</h3>
-                        <div class="currentinfobox" id="current_point_infos"></div>
-                    </td>
-                    <td>
-                        <h3>Current selection:</h3>
-                        <div class="currentinfobox" id="selection_infos"></div>
-                    </td>
-                </tr></tbody></table>
-		</td>
-	</tr></tbody></table>
-	<div class="charttabs">
+    </div>
+    <div id="currentpoint" class="rightofmap">
+      <h3>Current point:</h3>
+      <div class="currentinfobox" id="current_point_infos"></div>
+    </div>
+    <div id="currentsel" class="rightofmap">
+      <h3>Current selection:</h3>
+      <div class="currentinfobox" id="selection_infos"></div>
+    </div>
+  </div>
+  <div id="tabs">
+    <div id="chartlabels">
 <?php
-/*
-function simpleEncode($arrVals,$maxv) {
-    $MAP='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    $MAP_LENGTH = strlen($MAP);
-    $chartData = '';
+foreach(explode("\n", $charts) as $chart) {
+    if(strlen(trim($chart))==0) continue;
 
-    foreach($arrVals as $v) {
-        $scaledVal=$v*$MAP_LENGTH/$maxv;
-        if($scaledVal > ($MAP_LENGTH) - 1) {
-            $chartData .= "9";
-        } else if ($scaledVal < 0) {
-            $chartData .= 'A';
-        } else {
-            $quotient = intval($scaledVal);
-            $chartData .= $MAP[$quotient];
-        }
+    $js = json_decode(rtrim($chart,','));
+    if(!$js) {
+        print 'Cannot decode '.$chart;
+        continue;
     }
-    return $chartData;
-}*/
+    if($js->type=='polar') { $js->title="Polar"; }
+    print '<div class="chartlabel" id="lbl'.$js->name.'" onclick="toogleTab(this);">'.$js->title.'</div>';
+}
+?>
+      <div class="chartlabel" id="lbltoolbox" onclick="toogleTab(this);">Tools</div>
+      <div class="chartlabel" id="lblcomments" onclick="toogleTab(this);">Comments</div>
+      <div class="chartlabel" id="lblpauseschart" onclick="toogleTab(this);">Pauses</div>
+    </div>
+    <div id="chartcontents">
+<?php
 function convert_time($value,$unit) {
     $mins=0;$hours=0;
     if($unit!='s') return $value.' '.$unit;
@@ -251,10 +249,6 @@ function convert_time($value,$unit) {
 }
 function convert_maxspd($maxspd) {
     global $spdunit;
-    /*global $wind;
-    if($wind)
-        return $maxspd->dst.' '.$maxspd->dst_unit.' in '.$maxspd->time.' '.$maxspd->time_unit.' at <a href="javascript:refreshSelection('.$maxspd->from_id.','.$maxspd->to_id.');">'.$maxspd->when_from.'</a>'.$maxspd->course;
-    else*/
     if(($maxspd->dst_unit=='m')and($maxspd->time_unit=='s')) {
         if($maxspd->type=="vert") {
             $spd = $maxspd->dst*3600/$maxspd->time;
@@ -268,7 +262,7 @@ function convert_maxspd($maxspd) {
                 break;
             case 'knots':
                 $spd = $maxspd->dst*1.94384449/$maxspd->time;
-                $spdunit_disp='knots';
+                $spdunit_disp='kts';
                 break;
             case 'km/h':
                 $spd = $maxspd->dst*3.6/$maxspd->time;
@@ -286,7 +280,7 @@ function convert_maxspd($maxspd) {
         } 
     }
     else $spd='error '.$maxspd->dst_unit.$maxspd->time_unit;
-    return number_format($spd,$nbdec).' '.$spdunit_disp.' '.$maxspd->dst.' '.$maxspd->dst_unit.' in '.convert_time($maxspd->time,$maxspd->time_unit).' at <a href="#" onclick="javascript:refreshSelection('.$maxspd->from_id.','.$maxspd->to_id.');return false;">'.$maxspd->when_from.'</a>';
+    return '<span class="spdnb">'.number_format($spd,$nbdec).'</span> '.$spdunit_disp.' '.$maxspd->dst.' '.$maxspd->dst_unit.' in '.convert_time($maxspd->time,$maxspd->time_unit).' at <a href="#" onclick="javascript:refreshSelection('.$maxspd->from_id.','.$maxspd->to_id.');return false;">'.$maxspd->when_from.'</a>';
 }
 function convert_maxspds($maxspds) {
     return join('<br/>',array_map('convert_maxspd',$maxspds));
@@ -354,19 +348,7 @@ foreach(explode("\n", $charts) as $chart) {
     }
     
     if ($js->type=='polar') {
-        /*$encoded = array();
-        $maxv = $js->range->max;
-        foreach($js->data as $dataset) {
-            array_push($encoded,simpleEncode($dataset,$maxv));
-        }
-        $marks = array();
-        for($i=0;$i<=$js->range->max;$i+=$js->range->scale) {
-            array_push($marks,'h,AAAAAA,0,'.($i/$js->range->max).',1,-1');
-        }
-        $polarurl = 'http://chart.apis.google.com/chart?cht=r&amp;chs=400x300&amp;chd=s:'.join(',',$encoded).'&amp;chdl=max|mean&amp;chco=CC0000,339900&amp;chxt=x&amp;chxl=0:|0||||||||||||||||||||||||||||||30||||||||||||||||||||||||||||||60||||||||||||||||||||||||||||||90||||||||||||||||||||||||||||||120||||||||||||||||||||||||||||||150||||||||||||||||||||||||||||||180||||||||||||||||||||||||||||||210||||||||||||||||||||||||||||||240||||||||||||||||||||||||||||||270||||||||||||||||||||||||||||||300||||||||||||||||||||||||||||||330||||||||||||||||||||||||||||&amp;chm='.join('|',$marks);
-        print '<div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Polar &amp; VMG</div><div id="polarchart" class="chart"><img src="'.$polarurl.'" width="400" height="300" alt="Grid size: '.$js->range->scale.'"/><div id="bestvmg"></div></div></div>
-        ';*/
-        print '<div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Polar &amp; VMG</div><div id="polarchart" class="chart"><div id="polargraph" style="width:500px; height:400px;"></div><div id="bestvmg"></div></div></div>';
+        print '<div id="polarchart" class="chart"><div id="polargraph" style="width:500px; height:400px;"></div><div id="bestvmg"></div></div>';
         print '<script>drawD3Polar('.json_encode($js).',500,400,"#polargraph");</script>';
     }
     else if ($js->type=='line') {
@@ -374,55 +356,50 @@ foreach(explode("\n", $charts) as $chart) {
             print 'Cannot decode '.$chart;
             continue;
         }
-        print '<div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">'.$js->title.'</div><div class="chart" id="'.$js->name.'"><div id="chart'.$j.'" style="width:800px; height:200px;"></div><input type="button" value="Zoom" id="chartzoombtn'.$j.'" style="display: none;" onclick="onChartZoom(this,'.$j.');"/><input type="button" value="Reset Zoom" id="chartzoomresetbtn'.$j.'" style="display: none;" onclick="onChartZoomReset(this,'.$j.');"/></div></div>
+        print '<div class="chart" id="'.$js->name.'"><div id="chart'.$j.'" class="linechartcanva"></div><input type="button" value="Zoom" id="chartzoombtn'.$j.'" style="display: none;" onclick="onChartZoom(this,'.$j.');"/><input type="button" value="Reset Zoom" id="chartzoomresetbtn'.$j.'" style="display: none;" onclick="onChartZoomReset(this,'.$j.');"/></div>
         ';
         $j++;
     }
     else if ($js->type=='title+string') {
-        print '<div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">'.$js->title.'</div><div id="'.$js->name.'" class="chart">'.convert_chart_contents($js->contents).'</div></div>';
+        print '<div id="'.$js->name.'" class="chart">'.convert_chart_contents($js->contents).'</div>';
     }
 }
 ?>
-    <div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Tools</div>
-        <div class="chart" id="toolbox">
-            <b>Selection:</b> <input id="sel_clearbtn" type="button" value="Clear" onclick="onSelClearClick();"/>
-            <input id="sel_cropbtn" type="button" value="Crop" onclick="onSelCropClick();"/><br/>
-            <b>Map:</b> <input id="map_deletebtn" type="button" value="Delete" onclick="onMapDeleteClick();"/>
-            <a href="/cgi-bin/togpx.py?type=json&amp;mapid=<?php echo $_GET['mapid'] ?>&amp;filename=out.gpx">Export as gpx</a><br/>
-            <input id="del_curpt" type="button" value="Submit deleted points" onclick="onSubmitDeleteClick();"/> Submit points deleted by pressing DEL key on map
-        </div>
-        </div>
-        <div class="chartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Comments</div>
-        <div class="chart" id="comments" style="width:90%;">
+      <div class="chart" id="toolbox">
+        <b>Selection:</b> <input id="sel_clearbtn" type="button" value="Clear" onclick="onSelClearClick();"/>
+        <input id="sel_cropbtn" type="button" value="Crop" onclick="onSelCropClick();"/><br/>
+        <b>Map:</b> <input id="map_deletebtn" type="button" value="Delete" onclick="onMapDeleteClick();"/>
+        <a href="/cgi-bin/togpx.py?type=json&amp;mapid=<?php echo $_GET['mapid'] ?>&amp;filename=out.gpx">Export as gpx</a><br/>
+        <input id="del_curpt" type="button" value="Submit deleted points" onclick="onSubmitDeleteClick();"/> Submit points deleted by pressing DEL key on map
+      </div>
+      <div class="chart" id="comments" style="width:90%;">
         <a href="javscript:void(0);" onclick="toogleAddComment();">Add</a>
+      </div>
+      <div class="chart" id="pauseschart" style="width:90%;">
+        <div class="pauses_settings">
+          <div class="slidertitle">Pause min. time:</div>
+          <div class="slider" id="pauses-time-slider" title="Time" tabIndex="1">
+            <input class="slider-input" id="pauses-time-input" name="pauses-time-input"/>
+          </div>
+          <div class="sliderlbl" id="pauses-time-value-disp">1:00</div>
+          <div class="slidertitle">Pause max. distance:</div>
+          <div class="slider" id="pauses-dist-slider" title="Distance" tabIndex="1">
+            <input class="slider-input" id="pauses-dist-input" name="pauses-dist-input"/>
+          </div>
+          <div class="sliderlbl" id="pauses-dist-value-disp">20 m</div>
+          <div class="slidertitle">Pause max. speed:</div>
+          <div class="slider" id="pauses-spd-slider" title="Speed" tabIndex="1">
+            <input class="slider-input" id="pauses-spd-input" name="pauses-spd-input"/>
+          </div>
+          <div class="sliderlbl" id="pauses-spd-value-disp">3 m/s</div>
         </div>
-        </div>
-        <div class="chartcontainer" id="pauseschartcontainer"><div class="chartlabel" onclick="toogleTab(this);">Pauses</div>
-        <div class="chart" id="pauseschart" style="width:90%;">
-            <div class="pauses_settings">
-                <div class="slidertitle">Pause min. time:</div>
-                <div class="slider" id="pauses-time-slider" title="Time" tabIndex="1">
-                    <input class="slider-input" id="pauses-time-input" name="pauses-time-input"/>
-                </div>
-                <div class="sliderlbl" id="pauses-time-value-disp">1:00</div>
-                <div class="slidertitle">Pause max. distance:</div>
-                <div class="slider" id="pauses-dist-slider" title="Distance" tabIndex="1">
-                    <input class="slider-input" id="pauses-dist-input" name="pauses-dist-input"/>
-                </div>
-                <div class="sliderlbl" id="pauses-dist-value-disp">20 m</div>
-                <div class="slidertitle">Pause max. speed:</div>
-                <div class="slider" id="pauses-spd-slider" title="Speed" tabIndex="1">
-                    <input class="slider-input" id="pauses-spd-input" name="pauses-spd-input"/>
-                </div>
-                <div class="sliderlbl" id="pauses-spd-value-disp">3 m/s</div>
-            </div>
-            <div id="pauses">Computing...</div>
-        </div>
-        </div>
+        <div id="pauses">Computing...</div>
+          <div style="clear:both;"></div>
+      </div>
     </div>
-    <div style="clear:both;"></div>
-    <h2>Other tracks nearby</h2>
-    <div id="near_maps">Near maps</div>
+  </div>
+  <h2 id="aftertabs">Other tracks nearby</h2>
+  <div id="near_maps">Near maps</div>
 </div>
 <?php if ($map_type=='GMaps') { ?>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=${GMapsApiKey2}"></script>

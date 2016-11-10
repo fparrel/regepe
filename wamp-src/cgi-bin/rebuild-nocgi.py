@@ -1,0 +1,53 @@
+#!c:/Python27/python.exe
+
+import cgi
+import os
+import traceback
+from mapparser import ParseMap
+from gpxparser import ParseGpxFile
+from model import Track
+from orchestrator import ProcessTrkSegWithProgress
+from config import maps_root
+from cgiparser import FormParseInt,FormParseStr,FormParseOptions,FormParseBool
+from log import Log
+from options import options
+
+def Rebuild(mapid,forcerecompspd,fromsubmit):
+    Log("RebuildCgi: parse map %s\n" % mapid)
+    
+    # Parse map
+    if fromsubmit:
+        ptlist = ParseGpxFile('submit/%s_0.gpx'%mapid,0,0)
+    else:
+        mapfname = '%s/%s-json.php.gz' % (maps_root,mapid)
+        if os.access(mapfname,os.F_OK):
+            ptlist = ParseMap(mapfname,True)
+        else:
+            # Old version
+            mapfname = '%s/%s.php' % (maps_root,mapid)
+            ptlist = ParseMap(mapfname,False)
+    
+    Log("RebuildCgi: rebuild: Track %s\n" % mapid)
+    
+    # Rebuild map
+    track = Track(ptlist)
+    if forcerecompspd:
+        track.ComputeSpeedWhenNeeded(force=True)
+    mapoutfilename = '%s/%s.php' % (maps_root,mapid)
+    Log("RebuildCgi: rebuild: ProcessTrkSegWithProgress %s\n" % mapid)
+    ProcessTrkSegWithProgress(track,mapoutfilename,mapid,light=True)
+    ProcessTrkSegWithProgress(track,mapoutfilename.replace('.php','-json.php'),mapid,light=True,type='json')
+    
+    # Recompute thumbnail
+    previewfile = '%s/../previews/%s.png' % (maps_root,mapid)
+    if os.access(previewfile,os.F_OK):
+        os.remove(previewfile)
+    
+    Log("RebuildCgi: finished %s\n" % mapid)
+    
+    # Redirect to map
+    print('Done</p>')
+    print('<p><a href="/showmap-flot.php?mapid=%s">Back to map</a></p></body></html>' % mapid)
+    print('<script type="text/javascript">location.href=\'/showmap-flot.php?mapid=%s\';</script>' % mapid)
+
+Rebuild('5757e71ee0c29',False,True)

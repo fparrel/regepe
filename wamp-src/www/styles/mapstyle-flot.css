@@ -1,39 +1,47 @@
 body {
 	margin:0;
 	padding:0;
-	font-family: verdana, arial, sans-serif;
+	font-family:verdana,arial,sans-serif;
 	font-size:10px;
 }
 h3 {
-	font-size:10px; 
-	border:1px solid #9ac1c9; 
-	padding:6px 6px 8px; 
-	font-weight:bold; 
-	margin-top:5px; 
-	margin-bottom:0px; 
-	cursor:pointer; 
-	background:linear-gradient(lightgrey, white);
-	display: block;
+	font-size:10px;
+	border:1px solid #9ac1c9;
+	padding:6px 6px 8px;
+	font-weight:bold;
+	margin-top:5px;
+	margin-bottom:0px;
+	cursor:pointer;
+	background:linear-gradient(lightgrey,white);
+	display:block;
 }
 h3:hover {
-	font-size:10px; 
-	background:linear-gradient(lightyellow, white);
+	font-size:10px;
+	background:linear-gradient(lightyellow,white);
 }
-.charttabs {
-	min-height: 300px;
+.rightofmap {
+	display:inline-block;
+	vertical-align:top;
+	margin-left:5px;
 }
-.chartcontainer {
-	float: left;
+#notabs {
+	/*float:left;*/
+	margin:5px;
+}
+#tabs {
+	/*clear:both;*/
+	float:left;
+	margin:5px;
 }
 .chartlabel {
 	font-size:10px; 
 	border:1px solid #9ac1c9; 
-	/*border-bottom:0px;*/
+	border-bottom:0px;
 	padding:6px 6px 8px; 
 	font-weight:bold; 
 	cursor:pointer; 
 	background:linear-gradient(lightgrey,white);
-	display:block;
+	display:inline-block;
 	position:relative;
 	top:3px;
 	z-index:2;
@@ -45,7 +53,7 @@ h3:hover {
 	padding:6px 6px 8px; 
 	font-weight:bold; 
 	background:#EEEEEE;
-	display:block;
+	display:inline-block;
 	position:relative;
 	top:1px;
 	z-index:2;
@@ -54,25 +62,39 @@ h3:hover {
 	background:linear-gradient(lightyellow,white);
 }
 .chart {
-	padding:15px; 
 	border:1px solid #9ac1c9; 
-	background-color: #EEEEEE;
-	position: absolute;
-	left: 10px;
-	min-width: 500px;
+	background-color:#EEEEEE;
+	padding-bottom:15px;
+	left:10px;
+	min-width:500px;
 	z-index:1;
-	/*background:#fff;*/
-	/*display: none;*/
-	/*border-top:none; */
-	/*margin-bottom:10px;*/
-	/*float: left;*/
+	display:none;
+}
+.linechartcanva {
+	height:200px;
+}
+@media screen and (max-width: 800px) {
+	.chart {
+		max-width:700px;
+	}
+	.linechartcanva {
+		width:680px;
+	}
+}
+@media screen and (min-width: 800px) {
+	.chart {
+		max-width:802px;
+	}
+	.linechartcanva {
+		width:800px;
+	}
 }
 .box {
 	font-size:10px; 
 	padding:10px; 
 	border:1px solid #9ac1c9; 
 	border-top:none; 
-	background-color: #EEEEEE;
+	background-color:#EEEEEE;
 }
 .boxcontainer {
 	float:left;
@@ -83,19 +105,26 @@ h3:hover {
 	padding:10px; 
 	border:1px solid #9ac1c9; 
 	border-top:none; 
-	background-color: #EEEEEE;
-	width:150px;
+	background-color:#EEEEEE;
+	/*width:150px;*/
 }
 .currpointcontrol { 
-	background-color: ThreeDFace; 
+	background-color:ThreeDFace;
 	/*background-color: #EEEEEE;*/
 	font-size:12px; 
-	width: 100%; 
+	width: 502px;
 }
-.mapbox { 
+.mapfooter {
+	width:502px; /*500+margin*/
+}
+.mapbox {
+	float:left;
+	/*margin:5px;*/
+	margin-top:5px;
 	text-align:right; 
 	font-family:verdana,arial,sans-serif; 
 	font-size:10px;
+	display:inline-block;
 }
 .mapfooterleft {
 	font-size:10px;
@@ -111,16 +140,16 @@ h3:hover {
 	border:1px solid #000;
 }
 #playingspeed-slider { 
-	width: 50px; 
+	width:50px;
 }
 #snakelength-slider { 
-	width: 100px; 
+	width:100px;
 }
 #currentpoint-slider { 
-	width: 300px; 
+	width:300px;
 }
 #winddir-slider {
-	width: 200px; 
+	width:200px;
 }
 #use_buoy {
 	float:right;
@@ -128,13 +157,17 @@ h3:hover {
 #windirbox {
 	font-family:verdana,arial,sans-serif; 
 	font-size:12px;
-	background-color: ThreeDFace;
+	background-color:ThreeDFace;
 }
 .best_spd_main_group {
 }
 .best_spd_sub_group {
-	float:left;
+	display:inline-block;
 	margin:5px;
+	font-size:10px;
+}
+.spdnb {
+	font-size:12px;
 }
 .best_spd_main_group h4 {
 	font-family:verdana,arial,sans-serif; 
@@ -156,10 +189,10 @@ h3:hover {
 }
 .pauses_settings .slider {
 	float:left;
-	background-color: #EEEEEE;
+	background-color:#EEEEEE;
 }
 .pauses_settings .slider .handle {
-	background-color: #E0E0E0;
+	background-color:#E0E0E0;
 }
 .pauses_settings .sliderlbl {
 	float:left;
@@ -178,62 +211,19 @@ h3:hover {
 }
 
 .figure_field {
-	
-}
-
-
-/* For polar */
-
-.axis text {
-  font: 10px sans-serif;
-}
-
-.axis line,
-.axis circle {
-  fill: none;
-  stroke: #777;
-  stroke-dasharray: 1,4;
-}
-
-.axis :last-of-type circle {
-  stroke: #333;
-  stroke-dasharray: none;
-}
-
-.line_mean {
-    opacity:0.5;
-  fill: lightgreen;
-  stroke: green;
-  stroke-width: 1.5px;
-}
-.line_max {
-    opacity:0.5;
-  fill: yellow;
-  stroke: red;
-  stroke-width: 1.5px;
-}
-.line_winddir {
-	stroke: black;
-  stroke-width: 2px;
-}
-.line_vmg {
-    opacity:0.5;
-  stroke: blue;
-  fill: lightblue;
-  stroke-width: 1px;
 }
 
 .nearmapover {
-	position: absolute;
+	position:absolute;
 	top:0px;
-	background-color: yellow;
+	background-color:yellow;
 	margin:2px;
 	border:1px solid;
 	display:none;
 	width:125px;
 }
 .nearmapoverbottom {
-	position: absolute;
+	position:absolute;
 	top:90px;
 	right:0px;
 	/*background-color: yellow;*/
@@ -244,7 +234,7 @@ h3:hover {
 	font-weight:bold; 
 	font-size:0.8em;
 	color:red;
-	text-shadow: 2px 2px 2px black;
+	text-shadow:2px 2px 2px black;
 }
 .nearmap:hover > .nearmapover {
 	display:block;
@@ -260,4 +250,48 @@ h3:hover {
 #near_maps {
 	height:118px;
 	margin-bottom:20px;
+}
+#aftertabs {
+	clear:both;
+}
+
+/* For polar */
+
+.axis text {
+  font:10px sans-serif;
+}
+
+.axis line,
+.axis circle {
+  fill:none;
+  stroke:#777;
+  stroke-dasharray:1,4;
+}
+
+.axis:last-of-type circle {
+  stroke:#333;
+  stroke-dasharray:none;
+}
+
+.line_mean {
+  opacity:0.5;
+  fill:lightgreen;
+  stroke:green;
+  stroke-width:1.5px;
+}
+.line_max {
+  opacity:0.5;
+  fill:yellow;
+  stroke:red;
+  stroke-width:1.5px;
+}
+.line_winddir {
+  stroke:black;
+  stroke-width:2px;
+}
+.line_vmg {
+  opacity:0.5;
+  stroke:blue;
+  fill:lightblue;
+  stroke-width:1px;
 }
