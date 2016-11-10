@@ -22,6 +22,7 @@ from jsonparser import ParseJsonFile
 from garminparser import ParseJsonGarminFile
 from movescountparser import ParseJsonMoveCountFile
 from stravaparser import UrlOpenStrava,ParseJsonStravaFile
+from sportstrackliveparser import ParseSportsTrackLiveFile
 from sbpparser import ParseSbpFile
 from fitparser import ParseFitFile
 from model import Bounds,Track,Point
@@ -177,6 +178,7 @@ JSON_MOVESCOUNT = 8
 SBP = 9
 JSON_STRAVA = 10
 FIT = 11
+XML_SPORTSTRACKLIVE = 12
 UNKNOWN = 0
 EMPTY = -1
 
@@ -257,6 +259,12 @@ def BuildMap2(inputfile_single_or_list,outputfile,trk_id,trk_seg_id,submitid=Non
                 inputfile = urlopen('https://www.strava.com/stream/%s?streams[]=latlng&streams[]=distance&streams[]=altitude&streams[]=time'%activityid)
                 stravahtmlfile = UrlOpenStrava(activityid)
                 filetype = JSON_STRAVA
+            elif inputfile.startswith('https://www.sportstracklive.com/track/map#') or inputfile.startswith('http://www.sportstracklive.com/track/map#'):
+                foundfull = inputfile.rfind('/full')
+                foundid = inputfile.rfind('/',0,foundfull)
+                id = inputfile[foundid+1:foundfull]
+                filetype = XML_SPORTSTRACKLIVE
+                inputfile = urlopen('http://www.sportstracklive.com/live/xml/mapdata?g=_FIAE`FN??&z=10&what=t&op=track&id=%s'%id)
             else:
                 raise Exception('URL must start with "http[s]://www.kitetracker.com/gps/tracking?r=", "http[s]://connect.garmin.com/modern/activity/", "http[s]://www.movescount.com/[fr/]moves/" or "http[s]://www.strava.com/activities/"')
         else:
@@ -299,6 +307,10 @@ def BuildMap2(inputfile_single_or_list,outputfile,trk_id,trk_seg_id,submitid=Non
             # do not seek 0 for url/json
             #inputfile.seek(0,0)
             ptlist = ParseJsonStravaFile(inputfile,stravahtmlfile,trk_id,trk_seg_id)
+        elif (filetype==XML_SPORTSTRACKLIVE):
+            # do not seek 0 for url/json
+            #inputfile.seek(0,0)
+            ptlist = ParseSportsTrackLiveFile(inputfile,trk_id,trk_seg_id)
         elif (filetype==SBP):
             inputfile.seek(0,0)
             ptlist = ParseSbpFile(inputfile,trk_id,trk_seg_id)

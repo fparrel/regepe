@@ -659,18 +659,22 @@ function onSubmitDeleteClick() {
 }
 
 function toogleTab(e) {
-    var containers = document.getElementsByClassName("chartcontainer");
-    var i;
-    for(i=0;i<containers.length;i++) {
-        if (containers[i].children[0]==e) {
-            containers[i].children[1].style.display='block';
-        }
-        else {
-            containers[i].children[0].className='chartlabel';
-            containers[i].children[1].style.display='none';
-        }
+  var eid=e.id.substr(3);
+  document.getElementById(eid).style.display='block';
+  var charts = document.getElementsByClassName("chart");
+  var i;
+  for(i=0;i<charts.length;i++) {
+    if(charts[i].id!=eid) {
+      charts[i].style.display='none';
     }
-    e.className='chartlabelselected';
+  }
+  var labels = document.getElementById("chartlabels");
+  for(i=0;i<labels.children.length;i++) {
+    if(labels.children[i]!=e) {
+      labels.children[i].className='chartlabel';
+    }
+  }
+  e.className='chartlabelselected';
 }
 
 function onChartSelected(chartid,minx,maxx) {
