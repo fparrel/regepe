@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Replay your GPS Tracks with REGEPE - Forgotten password</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
+<link type="text/css" rel="StyleSheet" href="/static/styles/inputform.css" />
+</head>
+<body>
+    <div id="wrapper">
+		<div id="header">
+			<div id="header_search">
+				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
+				<input type="button" value="Search" onclick="onSearchClick();"/>
+				<div id="header_lang">
+					<a href="/"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
+					<a href="/fr/"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
+				</div>
+			</div>
+			<div id="header_home">
+				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+			</div>
+			<div id="header_mobile">
+				<a href="/static/mobile.html"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+			</div>
+			<div id="header_submit">
+				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+			</div>
+			<div id="header_prepare">
+				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+			</div>
+			<div id="header_mapofmaps">
+				<a href="mapofmaps.html"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+			</div>
+			<div id="header_login">
+				<form action="">
+					<div>User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+					Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+					<input type="button" value="Login" onclick="onLoginClick();"/><br/>
+					<a href="/registerform">Register</a> |
+					<a href="/static/forgotpwd.html">Forgot password?</a>
+					</div>
+				</form>
+			</div>
+		</div>
+        <div id="body">
+			<p>{{ error_message }}</p>
+        </div>
+        <div id="footer_push"></div>
+    </div>
+	<div id="footer">
+	  <b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
+	</div>
+</body>
+</html>
+<script src="/static/javascript/xmlhttprequest.js" type="text/javascript"></script>
+<script src="/static/javascript/header.js" type="text/javascript"></script>
+<script src="/static/javascript/utils.js" type="text/javascript"></script>

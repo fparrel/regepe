@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Replay your GPS Tracks with REGEPE - Register</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
+<link type="text/css" rel="StyleSheet" href="/static/styles/inputform.css" />
+</head>
+<body>
+    <div id="wrapper">
+		<div id="header">
+			<div id="header_search">
+				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
+				<input type="button" value="Search" onclick="onSearchClick();"/>
+				<div id="header_lang">
+					<a href="/"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
+					<a href="/fr/"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
+				</div>
+			</div>
+			<div id="header_home">
+				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+			</div>
+			<div id="header_mobile">
+				<a href="/static/mobile.html"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+			</div>
+			<div id="header_submit">
+				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+			</div>
+			<div id="header_prepare">
+				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+			</div>
+			<div id="header_mapofmaps">
+				<a href="mapofmaps.html"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+			</div>
+			<div id="header_login">
+				<form action="">
+					<div>User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+					Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+					<input type="button" value="Login" onclick="onLoginClick();"/><br/>
+					<a href="/registerform">Register</a> |
+					<a href="/static/forgotpwd.html">Forgot password?</a>
+					</div>
+				</form>
+			</div>
+		</div>
+        <div id="body">
+            <h2>Register</h2>
+			{% if error_message %}<p><b>{{ error_message }}</b></p>{% endif %}
+            <form action="/register" method="POST">
+                <b>Mail:</b> <input name="mail" type="text" id="mail"/><br/>
+                <b>User:</b> <input name="user" type="text" id="user" /> <input type="button" value="Generate from mail" onclick="onGenerateUserClick();"/><br/>
+                <b>Password:</b> <input name="pwd1" type="password"/><br/>
+                <b>Confirm password:</b> <input name="pwd2" type="password"/><br/>
+                <b>What is the name of the planet you live on? (Anti-Robot):</b> <input name="humaincheck" type="text"/><br/>
+                <input type="submit" name="Register" value="Register"/>
+            </form>
+        </div>
+        <div id="footer_push"></div>
+    </div>
+	<div id="footer">
+	  <b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="/static/javascript/xmlhttprequest.js"></script>
+<script type="text/javascript" src="/static/javascript/header.js"></script>
+<script type="text/javascript" src="/static/javascript/db.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+function generateUser(email) {
+    var left;
+    var i = email.indexOf('@');
+    if (i>18) {
+        i = 18;
+    }
+    if (i==-1) {
+        left = email;
+    }
+    else {
+        left = email.substring(0,i);
+    }
+    return left.replace(/[^a-z0-9_]/,'_');
+}
+
+function onGenerateUserClick() {
+    document.getElementById("user").value = generateUser(document.getElementById("mail").value);
+}
+
+//]]>
+</script>

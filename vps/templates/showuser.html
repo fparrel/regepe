@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Replay your GPS Tracks with REGEPE</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
+<link type="text/css" rel="StyleSheet" href="/static/styles/inputform.css" />
+</head>
+<body>
+    <div id="wrapper">
+		<div id="header">
+			<div id="header_search">
+				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
+				<input type="button" value="Search" onclick="onSearchClick();"/>
+				<div id="header_lang">
+					<a href="/"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
+					<a href="/fr/"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
+				</div>
+			</div>
+			<div id="header_home">
+				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+			</div>
+			<div id="header_mobile">
+				<a href="/static/mobile.html"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+			</div>
+			<div id="header_submit">
+				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+			</div>
+			<div id="header_prepare">
+				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+			</div>
+			<div id="header_mapofmaps">
+				<a href="mapofmaps.html"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+			</div>
+			<div id="header_login">
+				<form action="">
+					<div>User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+					Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+					<input type="button" value="Login" onclick="onLoginClick();"/><br/>
+					<a href="/registerform">Register</a> |
+					<a href="/static/forgotpwd.html">Forgot password?</a>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id="body">
+			<h1>User {{ user }}</h1>
+			<div id="map_list">Loading...<img src="/static/images/loading.svg" width="32" height="32"/></div>
+		</div>
+        <div id="footer_push"></div>
+	</div>
+	<div id="footer">
+		<b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
+	</div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="/static/javascript/xmlhttprequest.js"></script>
+<script type="text/javascript" src="/static/javascript/header.js"></script>
+<script type="text/javascript" src="/static/javascript/db.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+/* sort Maps by decreasing date */
+function sortMaps(map1,map2) {
+    return ((map1.startdate < map2.startdate) ? 1 : ((map1.startdate > map2.startdate) ? -1 : 0));
+}
+
+/* Map object */
+function Map(mapid,desc,startdate,lat,lon) {
+    this.mapid = mapid;
+    this.desc = desc;
+    this.startdate = startdate;
+    this.lat = lat;
+    this.lon = lon;
+}
+
+function onReadystatechange() {
+	if (this.readyState == 4) {
+		if (this.status == 200) {
+            
+            var maps = this.responseXML.getElementsByTagName("map");
+            var map_list = new Array(maps.length);
+            var i;
+            for (i=0;i<maps.length;i++) {
+                var mapid = maps[i].getAttribute('mapid');
+                var desc = maps[i].childNodes[0].nodeValue;
+                var startdate = maps[i].getAttribute('date');
+                var lat = maps[i].getAttribute('lat');
+                var lon = maps[i].getAttribute('lon');
+                map_list[i] = new Map(mapid,desc,startdate,lat,lon);
+            }
+            map_list.sort(sortMaps);
+            var map_list_contents = '';
+            for (i=0;i<map_list.length;i++) {
+                map_list_contents += '<tr><td>'+map_list[i].startdate+'</td><td><a href="showmap-flot.php?mapid='+map_list[i].mapid+'"/>'+map_list[i].desc+'</a></td><td><img src="/thumbnail/'+map_list[i].mapid+'" width="130" height="110"/></td></tr>';
+            }
+            document.getElementById('map_list').innerHTML = '<table id="search_results_table"><thead><tr><th id="sortby_date">Date</th><th id="sortby_desc">Description</th><th>Preview</th></tr></thead><tbody id="search_tbody">'+map_list_contents+'</tbody></table>';
+            if(document.getElementById("sortby_date").addEventListener) {
+                document.getElementById("sortby_date").addEventListener("click",onSortClick,false);
+            }
+            else if(document.getElementById("sortby_date").attachEvent) {
+                document.getElementById("sortby_date").attachEvent("onclick",onSortClick);
+            }
+            if(document.getElementById("sortby_desc").addEventListener) {
+                document.getElementById("sortby_desc").addEventListener("click",onSortClick,false);
+            }
+            else if(document.getElementById("sortby_desc").attachEvent) {
+                document.getElementById("sortby_desc").attachEvent("onclick",onSortClick);
+            }
+        }
+    }
+}
+
+function fillPage() {
+    var query_str = "/userinfo/{{ user }}";
+    var client = new XMLHttpRequest();
+    client.open('GET',query_str);
+    client.send();
+    client.onreadystatechange = onReadystatechange;
+}
+
+fillPage();
+
+//]]>
+</script>

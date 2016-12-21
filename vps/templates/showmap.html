@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.1//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" version="XHTML+RDFa 1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml-rdfa-2.xsd" lang="en" xml:lang="en" dir="ltr" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://ogp.me/ns/fb#">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Replay your GPS tracks with ReGePe</title>
+<meta name="description" content="{{ mapdb.trackdesc }}"/>
+<link rel="image_src" href="http://localhost/thumbnail/{{ mapid }}"/>
+<meta property="og:title" content="ReGePe's GPS Track replay"/>
+<meta property="og:description" content="{{ mapdb.trackdesc }}"/>
+<meta property="og:image" content="http://localhost/thumbnail/{{ mapid }}"/>
+<meta http-equiv="X-UA-Compatible" content="IE=7"/>
+<script type="text/javascript" src="/static/javascript/range.js"></script>
+<script type="text/javascript" src="/static/javascript/timer.js"></script>
+<script type="text/javascript" src="/static/javascript/slider.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>
+<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
+<script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+<script type="text/javascript" src="/static/javascript/d3polar.js"></script>
+<link type="text/css" rel="StyleSheet" href="/static/styles/slider-flot.css" />
+<link type="text/css" rel="StyleSheet" href="/static/styles/mapstyle-flot.css" />
+<link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
+</head>
+<body>
+<div id="header">
+    <div id="header_search">
+            <input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
+            <input type="button" value="Search" onclick="onSearchClick();"/>
+    <div id="header_lang">
+            <a href="/showmap/{{ mapid }}"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
+            <a href="/fr/showmap/{{ mapid }}"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
+    </div>
+    </div>
+    <div id="header_home">
+        <a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+    </div>
+    <div id="header_mobile">
+        <a href="/static/mobile.html"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+    </div>
+    <div id="header_submit">
+        <a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+    </div>
+    <div id="header_prepare">
+        <a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+    </div>
+    <div id="header_mapofmaps">
+        <a href="mapofmaps.php"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+    </div>
+    <div id="header_login">
+        <form action="">
+            <div>User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+            Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+            <input type="button" value="Login" onclick="onLoginClick();"/><br/>
+            <a href="/registerform">Register</a> |
+            <a href="/static/forgotpwd.html">Forgot password?</a>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="body">
+  <div class="mapbox">
+{% if type=="GMaps" %}
+			<div id="map" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);" onmousewheel="onMapMouseWheel(event);"></div>
+{% elif type=="GeoPortal" %}
+			<div id="map" title="Click on track to change current point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+{% endif %}
+			<table class="currpointcontrol"><tbody>
+                <tr>
+                    <td><a href="javascript:void(0);" id="scrolloneminus" onclick="scrollOffset(-1);" title="Scroll one point">&lt;</a></td>
+                    <td>
+                        <div class="slider" id="currentpoint-slider" title="Move current point" tabIndex="1">
+                            <input class="slider-input" id="currentpoint-slider-input" name="currentpoint-slider-input"/>
+                        </div>
+                    </td>
+                    <td><a href="javascript:void(0);" id="scrolloneplus" onclick="scrollOffset(1);" title="Scroll one point">&gt;</a></td>
+                    <td>
+                        <a id="toogle_auto_play" href="javascript:void(0);" onclick="toogleAutoPlay();">Play</a><br/>
+                        <div class="slider" id="playingspeed-slider" title="Playing speed" tabIndex="1">
+                            <input class="slider-input" id="playingspeed-slider-input" name="playingspeed-slider-input"/>
+                        </div>
+                    </td>
+                    <td>
+                        <b>Snake length:</b><br/>
+                        <div class="slider" id="snakelength-slider" title="Snake length" tabIndex="2">
+                            <input class="slider-input" id="snakelength-slider-input" name="snakelength-slider-input"/>
+                        </div>
+                    </td>
+                </tr>
+{% if mapdata.wind %}
+                <tr>
+                    <td></td>
+                    <td>
+                        <table><tbody><tr>
+                            <td>
+                                <div id="use_windir" style="display:none;"><input id="use_winddir_btn" type="button" value="Use WindDir" onclick="useWinddir();"/></div>
+                                <div id="windirbox">
+                                    <b>Wind direction:</b>
+                                    <div class="slider" id="winddir-slider" title="Wind dir" tabIndex="2">
+                                        <input class="slider-input" id="winddir-slider-input" name="winddir-slider-input"/>
+                                    </div>
+                                    <div id="winddir-value">180 &deg; (S)</div>
+                                </div>
+                            </td><td>
+                                <div id="use_buoy"><input id="use_buoy_btn" type="button" value="Use Buoy" onclick="useBuoy();"/></div>
+                            </td>
+                        </tr></tbody></table>
+                    </td>
+                </tr>
+{% endif %}
+              </tbody></table>
+			<table class="mapfooter"><tbody><tr>
+                    <td class="mapfooterleft">
+Switch to: {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google Maps</a>{% else %}<a href='/showmap/{{ mapid }}/GeoPortal'>GeoPortal</a>{% endif %}
+                    </td>
+                    <td class="mapfooterright">Center map : <a id="center_map_toogle" href="javascript:void(0);" onclick="toogleCenterMap()">Yes</a></td>
+              </tr></tbody></table>
+  </div>
+  <div id="notabs">
+    <div id="mapinfos" class="rightofmap">
+      <h3 onclick="toogleHideShow('trackinfos');">Map infos:</h3>
+      <div class="box" id="trackinfos">
+        <b>User: </b><a id='trackuserlink' href="/showuser/{{ mapdb.trackuser }}"><span id='trackuser'>{{ mapdb.trackuser }}</span></a><br/>
+        <b>Description: </b>
+        <div id='trackdesc' style="display: inline;" onclick="showInput('trackdesc');">{{ mapdb.trackdesc }}</div>
+        <div id="trackdesc_input" style="display:none;">
+          <table><tbody><tr>
+            <td>
+              <textarea rows="5" cols="20" id="trackdesc_inputtxtbox" onkeypress="onInputKeyPress(event,'trackdesc');"></textarea>
+            </td><td style="vertical-align:bottom;">
+              <input id="trackdesc_cancelbtn" type="button" value="Cancel" onclick="onCancelClick('trackdesc');"/><br/>
+              <input id="trackdesc_okbtn" type="button" value="OK" onclick="onOkClick('trackdesc','{{ mapid }}');"/>
+            </td>
+          </tr></tbody></table>
+        </div>
+          <br/>
+          <b>Date: </b><div id='date' style="display: inline;">{{ mapdb.date }}
+        </div><br/>
+      </div>
+    </div>
+    <div id="figures" class="rightofmap">
+{% if mapdata.figures.top10spd %}
+		<h3 onclick="toogleHideShow(\'top10speeds\');">Top10 speeds</h3><div class="box" id="top10speeds"><ul>
+	{% for spd in mapdata.figures.top10spd %}
+			<li><a href="javascript:void(0);" onclick="refreshCurrentPoint({{ spd.ptidx }})">{{ spd.when }}</a> - {{ spd.spd }}</li>
+	{% endfor %}
+</ul></div>
+{% endif %}
+<h3 onclick="toogleHideShow(\'globalfigures\');">Global figures</h3><div class="box" id="globalfigures">
+{% for key, value in mapdata.figures.iteritems() %}
+	{% if key!="top10spd" %}
+	<div id="{{ key }}" class="figure_field"><b>{{ key }}:</b> <span id="{{ key }}-value">{{ value }}</span></div>
+	{% endif %}
+{% endfor %}
+{% if not mapdata.flat %}
+	<div id="mean_motion_vert_spd" class="figure_field"><b>Mean vert. spd. in motion:</b> <span id="mean_motion_vert_spd-value">Computing...</span></div>
+{% endif %}
+</div>
+    </div>
+    <div id="currentpoint" class="rightofmap">
+      <h3>Current point:</h3>
+      <div class="currentinfobox" id="current_point_infos"></div>
+    </div>
+    <div id="currentsel" class="rightofmap">
+      <h3>Current selection:</h3>
+      <div class="currentinfobox" id="selection_infos"></div>
+    </div>
+  </div>
+  <div id="tabs">
+    <div id="chartlabels">
+{% for chart in mapdata.charts %}
+	{% if chart.type=="polar" %}
+		<div class="chartlabel" id="lbl{{ chart.name }}" onclick="toogleTab(this);">Polar</div>
+	{% else %}
+		<div class="chartlabel" id="lbl{{ chart.name }}" onclick="toogleTab(this);">{{ chart.title }}</div>
+	{% endif %}
+{% endfor %}
+      <div class="chartlabel" id="lbltoolbox" onclick="toogleTab(this);">Tools</div>
+      <div class="chartlabel" id="lblcomments" onclick="toogleTab(this);">Comments</div>
+      <div class="chartlabel" id="lblpauseschart" onclick="toogleTab(this);">Pauses</div>
+    </div>
+    <div id="chartcontents">
+{% for chart in mapdata.chartdata %}
+	{% if chart.type=="polar" %}
+		<div id="polarchart" class="chart"><div id="polargraph" style="width:500px; height:400px;"></div><div id="bestvmg"></div></div>
+        <script>drawD3Polar({{ chart|tojson|safe }},500,400,"#polargraph");</script>
+	{% elif chart.type=="line" %}
+		<div class="chart" id="{{ chart.name }}"><div id="chart{{ chart.name }}" class="linechartcanva"></div><input type="button" value="Zoom" id="chartzoombtn{{ chart.name }}" style="display: none;" onclick="onChartZoom(this,'{{ chart.name }}');"/><input type="button" value="Reset Zoom" id="chartzoomresetbtn{{ chart.name }}" style="display: none;" onclick="onChartZoomReset(this,'{{ chart.name }}');"/></div>
+	{% elif chart.type=="title+string" %}
+		<div id="{{ chart.name }}" class="chart">
+		{% if chart.name=="maxspd" %}
+{% macro convert_time(value,unit) -%}
+	{{ value }}{{ unit }}
+{%- endmacro %}
+{% macro convert_maxspds(maxspds) -%}
+	{% for maxspd in maxspds %}
+		{% if mapdata.spdunit=="knots" %}
+					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*1.94384449/maxspd.time) }}</span> kts {{ maxspd.dst }}{{ maxspd.dst_unit}} in {{convert_time(maxspd.time_unit)}} at <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+		{% elif mapdata.spdunit=="km/h" %}
+					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*3.6/maxspd.time) }}</span> km/h {{ maxspd.dst }}{{ maxspd.dst_unit}} in {{convert_time(maxspd.time_unit)}} at <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+		{% elif mapdata.spdunit=="mph" %}
+		{% else %}
+					<span class="spdnb">{{ "%.2f"|format(maxspd.dst/maxspd.time) }}</span> m/s {{ maxspd.dst }}{{ maxspd.dst_unit}} in {{convert_time(maxspd.time_unit)}} at <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+		{% endif %}
+	{% endfor %}
+{%- endmacro %}
+			{% set lasttype = "n/a" %}
+			{% for content in chart.contents %}
+				{% if content.maxspds|length > 0 %}
+					{% if content.type=="dist" %}
+						{% if content.type!=lasttype %}
+							{% if not loop.first %}
+				<div style="clear: both;"></div>
+			</div>
+							{% endif %}
+			<div class="best_spd_main_group"><h4>Best speeds on distance</h4>
+						{% endif %}
+						{% if content.interval_value==1852 and content.interval_unit=="m" %}
+				<div class="best_spd_sub_group"><h5>Best nautical mile (1852m)</h5>{{convert_maxspds(content.maxspds)}}</div>
+						{% else %}
+				<div class="best_spd_sub_group"><h5>{{ content.interval_value }}{{ content.interval_unit }}</h5>{{convert_maxspds(content.maxspds)}}</div>
+						{% endif %}
+					{% elif content.type=="time" %}
+						{% if content.type!=lasttype %}
+							{% if not loop.first %}
+				<div style="clear: both;"></div>
+			</div>
+							{% endif %}
+			<div class="best_spd_main_group"><h4>Best speeds on time</h4>
+						{% endif %}
+				<div class="best_spd_sub_group"><h5>{{convert_time(content.interval_value,content.interval_unit)}}</h5>{{convert_maxspds(content.maxspds)}}</div>
+					{% elif content.type=="dist_vert" %}
+						{% if content.type!=lasttype %}
+							{% if not loop.first %}
+				<div style="clear: both;"></div>
+			</div>
+							{% endif %}
+			<div class="best_spd_main_group"><h4>Best vertical speeds on distance</h4>
+						{% endif %}
+				<div class="best_spd_sub_group"><h5>Climbing {{ content.interval_value }}{{ content.interval_unit }}</h5>{{convert_maxspds(content.maxspds)}}</div>
+					{% elif content.type=="dist_time" %}
+						{% if content.type!=lasttype %}
+							{% if not loop.first %}
+				<div style="clear: both;"></div>
+			</div>
+							{% endif %}
+			<div class="best_spd_main_group"><h4>Best vertical speeds on time</h4>
+						{% endif %}
+				<div class="best_spd_sub_group"><h5>{{convert_time(content.interval_value,content.interval_unit)}}</h5>{{convert_maxspds(content.maxspds)}}</div>
+					{% endif %}
+					{% set lasttype = content.type %}
+				{% endif %}
+			{% endfor %}
+				<div style="clear: both;"></div>
+			</div>
+		{% else %}
+			{{ chart.contents }}
+		{% endif %}
+		</div>
+	{% endif %}
+{% endfor %}
+      <div class="chart" id="toolbox">
+        <b>Selection:</b> <input id="sel_clearbtn" type="button" value="Clear" onclick="onSelClearClick();"/>
+        <input id="sel_cropbtn" type="button" value="Crop" onclick="onSelCropClick();"/><br/>
+        <b>Map:</b> <input id="map_deletebtn" type="button" value="Delete" onclick="onMapDeleteClick();"/>
+        <a href="/togpx/{{ mapid }}">Export as gpx</a><br/>
+        <input id="del_curpt" type="button" value="Submit deleted points" onclick="onSubmitDeleteClick();"/> Submit points deleted by pressing DEL key on map
+      </div>
+      <div class="chart" id="comments" style="width:90%;">
+        <a href="javscript:void(0);" onclick="toogleAddComment();">Add</a>
+      </div>
+      <div class="chart" id="pauseschart" style="width:90%;">
+        <div class="pauses_settings">
+          <div class="slidertitle">Pause min. time:</div>
+          <div class="slider" id="pauses-time-slider" title="Time" tabIndex="1">
+            <input class="slider-input" id="pauses-time-input" name="pauses-time-input"/>
+          </div>
+          <div class="sliderlbl" id="pauses-time-value-disp">1:00</div>
+          <div class="slidertitle">Pause max. distance:</div>
+          <div class="slider" id="pauses-dist-slider" title="Distance" tabIndex="1">
+            <input class="slider-input" id="pauses-dist-input" name="pauses-dist-input"/>
+          </div>
+          <div class="sliderlbl" id="pauses-dist-value-disp">20 m</div>
+          <div class="slidertitle">Pause max. speed:</div>
+          <div class="slider" id="pauses-spd-slider" title="Speed" tabIndex="1">
+            <input class="slider-input" id="pauses-spd-input" name="pauses-spd-input"/>
+          </div>
+          <div class="sliderlbl" id="pauses-spd-value-disp">3 m/s</div>
+        </div>
+        <div id="pauses">Computing...</div>
+          <div style="clear:both;"></div>
+      </div>
+    </div>
+  </div>
+  <h2 id="aftertabs">Other tracks nearby</h2>
+  <div id="near_maps">Near maps</div>
+</div>
+{% if type=="GMaps" %}
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey2 }}"></script>
+{% elif type=="GeoPortal" %}
+<script type="text/javascript" charset="utf-8" src='http://api.ign.fr/geoportail/api/js/latest/Geoportal.js'></script>
+{% endif %}
+<script type="text/javascript" src="/static/javascript/utils.js"></script>
+<script type="text/javascript" src="/static/javascript/chartandpoint.js"></script>
+<script type="text/javascript" src="/static/javascript/xmlhttprequest.js"></script>
+<script type="text/javascript" src="/static/javascript/header.js"></script>
+<script type="text/javascript" src="/static/javascript/db.js"></script>
+<script type="text/javascript" src="/static/javascript/tools.flot.js"></script>
+<script type="text/javascript" src="/mapdata/{{ mapid }}"></script>
+{% if mapdata.wind %}
+<script type="text/javascript" src="/static/javascript/wind.js"></script>
+{% endif %}
+<script type="text/javascript" src="/static/javascript/map-flot.js"></script>
+{% if type=="GMaps" %}
+<script type="text/javascript" src="/static/javascript/mapgmaps.js"></script>
+{% elif type=="GeoPortal" %}
+<script type="text/javascript">
+GeoPortalApiKey="{{ GeoPortalApiKey }}";
+</script>
+<script type="text/javascript" src="/static/javascript/mapgeoportal.js"></script>
+{% endif %}
+<script type="text/javascript" src="/static/javascript/pauses.js"></script>
+<script type="text/javascript" src="/static/javascript/nearmaps.js"></script>
+</body>
+</html>
