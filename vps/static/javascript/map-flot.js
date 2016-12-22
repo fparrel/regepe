@@ -451,7 +451,7 @@ function guessWindDir() {
     return min_angle;
 }
 
-COMMENT_ADD = '<a href="javscript:void(0);" onclick="toogleAddComment();">Add</a>';
+COMMENT_ADD = '<a href="javascript:void(0);return false;" onclick="toogleAddComment();">Add</a>';
 
 function toogleAddComment() {
     document.getElementById('comments').innerHTML = '<table><tbody><tr><td>'+

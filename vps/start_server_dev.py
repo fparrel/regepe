@@ -5,7 +5,7 @@ import os.path
 import os
 import gzip
 import urllib
-from db import DbGetListOfDates,DbGet,DbGetComments,DbGetMulitple,DbGetNearbyPoints,DbPut,DbPutWithoutPassword,DbSearchWord,DbGetMapsOfUser,DbGetAllMaps
+from db import DbGetListOfDates,DbGet,DbGetComments,DbGetMulitple,DbGetNearbyPoints,DbPut,DbPutWithoutPassword,DbSearchWord,DbGetMapsOfUser,DbGetAllMaps,DbAddComment,CheckValidMapId,CheckValidFreetext,DbDelMap,DbChkPwd
 import anydbm
 import traceback
 from progress import GetProgress
@@ -32,6 +32,9 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 # Load keys and password
 keysnpwds=readKeysAndPasswords('config/keysnpwds-test.json')
 
+
+## Index page
+
 @app.route('/',defaults={'limit':10})
 @app.route('/indexall',defaults={'limit':-1})
 def index(limit):
@@ -52,6 +55,9 @@ def index(limit):
         if(limit>-1) and (cptr>limit):
             break
     return render_template('index.html',limit=limit,maps=mapsout,GMapsApiKey2=keysnpwds['GMapsApiKey2'])
+
+
+## Thumbnails
 
 @app.route('/thumbnail/<mapid>')
 def thumbnail(mapid):
@@ -86,6 +92,9 @@ def thumbnail(mapid):
         f.close()
         return contents
 
+
+## Show map
+
 @app.route('/showmap/<mapid>', defaults={'map_type': None})
 @app.route('/showmap/<mapid>/<map_type>')
 def showmap(mapid,map_type):
@@ -116,11 +125,33 @@ def mapdata(mapid):
 @app.route('/comments/<mapid>')
 def comments(mapid):
     comments = DbGetComments(mapid)
-    return Response('<?xml version="1.0" encoding="UTF-8"?><result>%s</result>' % ''.join(map(lambda comment: '<comment user="%s" date="%s">%s</comment>' % comment,comments)), mimetype='text/xml')
+    return Response('<?xml version="1.0" encoding="UTF-8"?><result>%s</result>' % ''.join(map(lambda comment: '<comment user="%s" date="%s">%s</comment>' % (comment[1],comment[0],comment[2]),comments)), mimetype='text/xml')
 
 @app.route('/sendcomment/<mapid>/<comment>')
 def sendcomment(mapid,comment):
-    pass
+    try:
+        user = 'unknown'
+        if request.form.has_key('user'):
+            user = request.form.getvalue('user')
+            if not CheckValidUserName(user):
+                raise Exception('Invalid user name')
+            sess = request.form.getvalue('sess')
+            if CheckSession(user,sess):
+                pass
+            else:
+                raise Exception('Invalid session, please re-login')
+        else:
+            user = request.remote_addr
+        if not CheckValidMapId(mapid):
+            raise Exception('Invalid map id')
+        if not CheckValidFreetext(comment):
+            raise Exception('Invalid map id')
+        DbAddComment(mapid,user,comment)
+        result = 'OK'
+    except Exception, e:
+        result = str(e)
+    out = '<?xml version="1.0" encoding="UTF-8"?>\n<result>%s</result>'%result
+    return Response(out, mimetype='text/xml')
 
 @app.route('/nearmaps/<mapid>')
 def nearmaps(mapid):
@@ -159,6 +190,9 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
         val = 'Error'
     out = '<?xml version="1.0" encoding="UTF-8"?>\n<answer><message>%s</message><pageelementid>%s</pageelementid><value>%s</value></answer>' % (message,ele,val)
     return Response(out, mimetype='text/xml')
+
+
+## Send map
 
 @app.route('/submitform')
 def submitform():
@@ -229,6 +263,9 @@ def upload():
 def getprogress(submitid):
     return GetProgress(submitid.encode('ascii')).encode('ascii')
 
+
+## Search
+
 class MapSeach(SearchQueryParser):
     def GetWord(self, word):
         return Set(DbSearchWord('trackdesc',word))
@@ -258,12 +295,8 @@ def search(search_req):
         out='<error>Error: %s</error>'%e
     return Response(out, mimetype='text/xml')
 
-@app.route('/prepare',defaults={'map_type':'GeoPortal','pts':[],'names':[]})
-@app.route('/prepare/<map_type>',defaults={'pts':[],'names':[]})
-@app.route('/prepare/<map_type>/<pts>',defaults={'names':None})
-@app.route('/prepare/<map_type>/<pts>/<names>')
-def prepare(map_type,pts,names):
-    return render_template('prepare.html',map_type=map_type,GMapsApiKey2=keysnpwds['GMapsApiKey2'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
+
+## Show user
 
 @app.route('/showuser/<user>')
 def showuser(user):
@@ -274,6 +307,9 @@ def userinfo(user):
     mapids = DbGetMapsOfUser(user.encode('ascii'))
     out = '<maps>%s</maps>'%''.join(map(map_search_result,mapids))
     return Response(out, mimetype='text/xml')
+
+
+## Browse maps
 
 @app.route('/mapofmaps')
 def mapofmaps():
@@ -299,29 +335,83 @@ def getmaplist():
     out = '<results>%s</results>' % ''.join(map(latlonmapids2xml,latlonmapidss))
     return Response(out, mimetype='text/xml')
 
-@app.route('/delmap/<mapid>/<pwd>')
-def delmap(mapid,pwd):
+
+## Map Tools
+
+def auth(mapid,pwd,user,sess):
+    # Check rights
+    if user!=None and sess!=None:
+        if CheckSession(user,sess):
+            map_user = DbGet(mapid,'trackuser')
+            if len(map_user)>0 and map_user==user:
+                pass
+            else:
+                raise Exception('Map %s does not belong to user %s, but to user %s' % (mapid,user,map_user))
+        else:
+            raise Exception('Invalid session, please re-login')
+    else:
+        if not DbChkPwd(mapid,pwd):
+            raise Exception('You do not have the map\'s password in your browser\'s cookies')
+
+@app.route('/delmap/<mapid>/<pwd>',defaults={'user':None,'sess':None})
+@app.route('/delmap/<mapid>/<pwd>/<user>/<sess>')
+def delmap(mapid,pwd,user,sess):
+    try:
+        auth(mapid,pwd,user,sess)
+        # Delete map
+        DbDelMap(mapid)
+        mapfile = 'data/mapdata/%s.json.gz' % mapid
+        os.remove(mapfile)
+        message = 'Map deleted'
+    except Exception, e:
+        message = str(e)
+    return render_template('map_deleted.html',message=message)
+
+@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
+@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
+def cropmap(mapid,pwd,pt1,pt2,user,sess):
+    try:
+        auth(mapid,pwd,user,sess)
+        ptlist = ParseMap('data/mapdata/%s.json.gz'%mapid,True)
+        startpointchanged = (pt1==0)
+        ptlist = ptlist[pt1:pt2]
+        # Rebuild map
+        track = Track(ptlist)
+        ProcessTrkSegWithProgress(track,mapid,mapid,light=True)
+        # If start point has changed, then update the database
+        if startpointchanged:
+            DbPutWithoutPassword(mapid,'startpoint','%.4f,%.4f' % (track.ptlist[0].lat,track.ptlist[0].lon))
+        # Recompute thumbnail
+        previewfile = 'data/thumbnail_cache/%s.png' % mapid
+        if os.access(previewfile,os.F_OK):
+            os.remove(previewfile)
+        message = None
+    except Exception, e:
+        message = str(e)
+    if message==None:
+        return redirect('/showmap/%s'%mapid)
+    else:
+        return render_template('map_action_error.html',message=message,mapid=mapid)
+
+@app.route('/map/clear/<mapid>/<pwd>/<pt1>/<pt2>',defaults={'user':None,'sess':None})
+@app.route('/map/clear/<mapid>/<pwd>/<pt1>/<pt2>/<user>/<sess>')
+def clearmap(mapid,pwd,pt1,pt2,user,sess):
     pass
 
-@app.route('/map/crop/<mapid>/<pwd>/<pt1>/<pt2>')
-def cropmap(mapid,pwd,pt1,pt2):
-    pass
-
-@app.route('/map/clear/<mapid>/<pwd>/<pt1>/<pt2>')
-def clearmap(mapid,pwd,pt1,pt2):
-    pass
-
-@app.route('/map/clearlist/<mapid>/<pwd>/<ptlist>')
-def clearmaplist(mapid,pwd,ptlist):
+@app.route('/map/clearlist/<mapid>/<pwd>/<ptlist>',defaults={'user':None,'sess':None})
+@app.route('/map/clearlist/<mapid>/<pwd>/<ptlist>/<user>/<sess>')
+def clearmaplist(mapid,pwd,ptlist,user,sess):
     pass
 
 @app.route('/map/export/<mapid>')
 def exportmap(mapid):
     pass
 
-@app.route('/map/demize/<mapid>/<pwd>')
-def demize(mapid,pwd):
+@app.route('/map/demize/<index>/<mapid>/<pwd>',defaults={'user':None,'sess':None})
+@app.route('/map/demize/<index>/<mapid>/<pwd>/<user>/<sess>')
+def demize(index,mapid,pwd,user,sess):
     pass
+
 
 ## User services
 
@@ -399,7 +489,19 @@ def resendpwd():
         return render_template('resendpwd_error.html',error_message=str(e))
     return render_template('resendpwd_ok.html',mail=mail)
 
+@app.route('/userhome/<user>')
+def userhome(user):
+    pass
+
+
 ## Prepare
+
+@app.route('/prepare',defaults={'map_type':'GeoPortal','pts':[],'names':[]})
+@app.route('/prepare/<map_type>',defaults={'pts':[],'names':[]})
+@app.route('/prepare/<map_type>/<pts>',defaults={'names':None})
+@app.route('/prepare/<map_type>/<pts>/<names>')
+def prepare(map_type,pts,names):
+    return render_template('prepare.html',map_type=map_type,GMapsApiKey2=keysnpwds['GMapsApiKey2'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
 @app.route('/ele/<lat>/<lon>')
 def getele(lat,lon):

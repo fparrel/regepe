@@ -170,9 +170,9 @@ function updateFiguresDepPause() {
         else
             mvspddown = 0;
         //console.log("mspdup=%d m/h mspddown=%d m/h mtup=%d s mdup=%d m mtdown=%d s mddown=%d m",mspdup,mspddown,mtup,mdup,mtdown,mddown);
-        document.getElementById("mean_motion_vert_spd-value").innerHTML = '<img src="images/up.png" width="16" height="16"/> '+mvspdup.toFixed(0)+' m/h <img src="images/down.png" width="16" height="16"/> '+mvspddown.toFixed(0)+'m/h';
+        document.getElementById("mean_motion_vert_spd-value").innerHTML = '<img src="/static/images/up.png" width="16" height="16"/> '+mvspdup.toFixed(0)+' m/h <img src="/static/images/down.png" width="16" height="16"/> '+mvspddown.toFixed(0)+'m/h';
         
-        document.getElementById("mean_speed_when_in_motion-value").innerHTML = '<img src="images/up.png" width="16" height="16"/> '+mspdup.toFixed(2)+' '+spdunit+' <img src="images/down.png" width="16" height="16"/> '+mspddown.toFixed(2)+' '+spdunit;
+        document.getElementById("mean_speed_when_in_motion-value").innerHTML = '<img src="/static/images/up.png" width="16" height="16"/> '+mspdup.toFixed(2)+' '+spdunit+' <img src="/static/images/down.png" width="16" height="16"/> '+mspddown.toFixed(2)+' '+spdunit;
     }
     else {
         document.getElementById("mean_speed_when_in_motion-value").innerHTML = mspd.toFixed(2)+' '+spdunit;
