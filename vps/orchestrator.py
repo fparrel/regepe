@@ -55,7 +55,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
     if not light:
         pauses = track.RemoveStayingPoints4(3.0,30,0.2)
         #Log('pauses=%s\n'%',\n'.join(map(lambda ptpair: '%s->%s'%(ptpair[0].datetime,ptpair[1].datetime),pauses)))
-        Log('RemoveStayingPoints4 %d points -> %d points\n' % (nbptsbefore,len(track)))
+        Log('RemoveStayingPoints4 %d points -> %d points' % (nbptsbefore,len(track)),submitid)
         SetProgress(submitid,'%d points -> %d points' % (nbptsbefore,len(track)))
     if not options['flat'] and options['usedem'] and not light:
         SetProgress(submitid,'Getting elevations from DEM')
@@ -70,7 +70,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
     if type=='dyg':
         charts.append(ChartString('<script type="text/javascript">var dygraphs=[];</script>'))
     if len(track)>400 and type=='ggl':
-        Log("ProcessTrkSegWithProgress: CompressCopyPriority %s\n"%submitid)
+        Log("ProcessTrkSegWithProgress: CompressCopyPriority",submitid)
         trksegcompressed = track.CompressCopyPriority(400)
     else:
         trksegcompressed = track
@@ -78,7 +78,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
         if not light:
             SetProgress(submitid,'Building speed chart')
         try:
-            Log('ProcessTrkSegWithProgress: spd chart %s\n'%submitid)
+            Log('ProcessTrkSegWithProgress: spd chart',submitid)
             data = (trksegcompressed.ComputeTimes(),trksegcompressed.GetSpeeds(options['spdunit']))
             charts.append(MyXYChart(data,'','spdtimechart','Speed (%s)'%(options['spdunit']),'Speed',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Spd',unity=options['spdunit']))
         except Exception, e:
@@ -94,7 +94,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
             #eles = trksegcompressed.GetElevations()
             #chart = MyXYChart([dists,eles],'','eledistchart','Elevation in m against distance in m',len(track),trksegcompressed.ptindexlist)
             #charts.append(chart)
-            Log("ProcessTrkSegWithProgress: vert charts %s\n"%submitid)
+            Log("ProcessTrkSegWithProgress: vert charts",submitid)
             charts.append(MyXYChart([trksegcompressed.ComputeDistances(),trksegcompressed.GetElevations()],'','eledistchart','Profile (m)','Profile',len(track),trksegcompressed.ptindexlist,type=type,labelx='Dst',labely='Ele',unitx='m',unity='m'))
             if not track.nospeeds:
                 # Vert speed
@@ -116,7 +116,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
         if options['wind']:
             charts.append(MyXYChart([trksegcompressed.ComputeDistances(),map(lambda pt:pt.course,trksegcompressed.ptlist)],'','coursechart','Course (&deg;)','Course',len(track),trksegcompressed.ptindexlist,type=type))
     if options['wind']:
-        Log("ProcessTrkSegWithProgress: polar charts %s\n"%submitid)
+        Log("ProcessTrkSegWithProgress: polar charts",submitid)
         if not light:
             SetProgress(submitid,'Building polar')
         if track.nospeeds:
@@ -130,10 +130,10 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
                 Warn('Cannot build polar: %s\n'%e)
     if not light:
         SetProgress(submitid,'Building map')
-    Log("ProcessTrkSegWithProgress: BuildPage %s\n"%submitid)
+    Log("ProcessTrkSegWithProgress: BuildPage",submitid)
     
     if not track.nospeeds and options['maxspd']:
-        Log("ProcessTrkSegWithProgress: BuildMaxSpeeds %s\n"%submitid)
+        Log("ProcessTrkSegWithProgress: BuildMaxSpeeds",submitid)
         try:
             charts.append(ChartStringWithTitle(BuildMaxSpeeds(figures),'maxspd','Max speed analysis',type=type))
         except Exception, e:
@@ -145,12 +145,12 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
         except Exception, e:
             Warn('Cannot Build hearth rate %s\n'%e)
     
-    Log("ProcessTrkSegWithProgress: BuildPage %s\n"%submitid)
+    Log("ProcessTrkSegWithProgress: BuildPage",submitid)
     out = BuildPage(track,charts,figures,options['spdunit'],mapid,type=type)
     
     #f = open(fname_out,'w')
     #f.write(out)
-    Log("ProcessTrkSegWithProgress: compress and write %s\n"%submitid)
+    Log("ProcessTrkSegWithProgress: compress and write",submitid)
     try:
         f = gzip.open('data/mapdata/%s.json.gz'%mapid,'wb')
     except:
@@ -348,7 +348,7 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid=None,desc
     return BuildMapFromTrack(track,mapid,submitid,desc,user)
 
 def BuildMapFromTrack(track,mapid,submitid,desc,user):
-    ProcessTrkSegWithProgress(track,mapid,submitid)
+    #ProcessTrkSegWithProgress(track,mapid,submitid)
     SetProgress(submitid,'Generating uuid')
     pwd = str(uuid.uuid4())
     SetProgress(submitid,'Writing to DB')

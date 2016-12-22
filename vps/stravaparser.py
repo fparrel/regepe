@@ -4,7 +4,6 @@ from model import Point
 #Datetime
 import datetime
 #from tz import GetTimeZone
-from log import Log
 
 import json
 #import tzwhere

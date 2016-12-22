@@ -3,9 +3,6 @@
 from model import Bounds,Point,Track
 #Datetime
 import datetime,time
-
-from log import Log
-
 import json
 
 

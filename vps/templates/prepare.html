@@ -237,7 +237,7 @@ function onExportClick() {
     var ptliststr = buildPtlistUrl(getLatLonList());
     var exportformat = document.getElementById('exportformat').value;
     var exporthref = document.createElement('a');
-    exporthref.setAttribute('href','/cgi-bin/export.py?fmt='+exportformat+'&ptlist='+ptliststr+'&names='+namesurl);
+    exporthref.setAttribute('href','/prepare/export/'+exportformat+'/'+ptliststr+'/'+namesurl);
     exporthref.innerHTML = 'Export';
     exporthref.setAttribute('onclick','this.innerHTML="";');
     document.getElementById('export').appendChild(exporthref);
@@ -255,7 +255,7 @@ function onExportAllOrNamedChange() {
 function askElevation(pt) {
     var client = new XMLHttpRequest();
     client.pt = pt;
-    client.open('GET','/cgi-bin/getele.py?lat='+pt.lat+'&lon='+pt.lon);
+    client.open('GET','/ele/'+pt.lat+'/'+pt.lon);
     client.send();
     client.onreadystatechange = onGetEleAnswer;
 }
@@ -324,7 +324,7 @@ function refreshUrls() {
             }
         }
     }
-    document.getElementById('exporthref').setAttribute('href','/cgi-bin/export.py?fmt='+document.getElementById('exportformat').value+'&ptlist='+ptlisturl+'&names='+namesurl);
+    document.getElementById('exporthref').setAttribute('href','/prepare/export/'+document.getElementById('exportformat').value+'/'+ptlisturl+'/'+namesurl);
 }
 
 function onWptChange() {
@@ -566,7 +566,7 @@ function onComputeProfileAnswer() {
 /* Send points for profile computation */
 function computeProfile(ptlisturl) {
     var client = new XMLHttpRequest();
-    client.open('GET','/cgi-bin/computeprofile.py?ptlist='+ptlisturl+'&width=800&height=200');
+    client.open('GET','/profile/'+ptlisturl+'/800/200');
     client.send();
     client.onreadystatechange = onComputeProfileAnswer;
     

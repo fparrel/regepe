@@ -3,9 +3,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
 <link type="text/css" rel="StyleSheet" href="/static/styles/inputform.css" />
-<style type="text/css">
-table { border-collapse:collapse;}
-</style>
 </head>
 <body>
     <div id="wrapper">
@@ -44,30 +41,38 @@ table { border-collapse:collapse;}
 				</form>
 			</div>
 		</div>
-        <div id="body" style="position: static;">
-            <h1>Replay your GPS Tracks with REGEPE</h1>
-			<h2>{% if limit>-1 %}Last updates | <a href="/indexall">All updates</a>{% else %}<a href="/">Last updates</a> | All updates{% endif %}</h2>
-			<div style="position: absolute;">
-				<div style='width:600px; left:0; margin-left : 10px; {% if limit==-1 %}overflow: auto; height:320px;{% endif %}'>
-					<table style="position: static;"><thead></thead><tbody>
-					{% for map in maps %}
-						<tr class="maplistitm" id="row{{ map.mapid }}" style="cursor:pointer;" onclick="changePreview('{{ map.mapid }}','{{ map.lat }}','{{ map.lon }}','{{ map.desc }}')"><td>{{ map.date }}</td><td>{{ map.desc }}</td><td> by {{ map.user }}</td><td style="font-size:10px;"><a href="showmap/{{ map.mapid }}">View</a></tr>
-					{% endfor %}
-					</tbody></table>
-				</div>
-				<div style="position: static;"><a href="/static/tour.html"><img src="/static/images/PlayStart64x64.png" width="64" height="64"/>Take tour</a></div>
-			</div>
-			<div id="previewout" style="margin-left: 610px; heigth:110px;width:130px; position:absolute; z-index:10;"><img style="visibility:hidden; border-style:solid;border-width:1px;" width="130" height="110" name="preview" id="preview"/></div>
-			<div id="map_of_maps" style="height:300px;width:400px;right:0; position:absolute; margin-right: 10px; z-index:9;"></div>
+		<div id="body">
+		<h1>Tour</h1>
+		<ol>
+			<li>With your GPS device, record your GPS position track to a GPX/Kml/Nmea file</br></li>
+			<li>Go to submit page by clicking on: <p><a href="submitform.php"><img src="/static/images/Up64x64.png" height="64" width="64"/> Submit a track</a></p>
+			<br/>&nbsp;</li>
+			<li>Choose the file containing your track:<br/>
+			<img src="/static/images/tour_choosefile.png" width="206" height="92"/><br/>&nbsp;</li>
+			<li>Choose an activity:<br/>
+			<img src="/static/images/tour_activitychoose.png" width="320" height="89"/><br/>&nbsp;</li>
+			<li>Submit your track:<br/>
+			<img src="/static/images/tour_submit.png"/><br/>&nbsp;</li>
+			<li>Get a view of your track, and:
+				<ul>
+					<li>If you selected a wind-related activity, you will get directional figures such as VMG, polar, ...<br/>
+					<img src="/static/images/tour_nautic.png" width="812" height="316"/><br/>
+					<b>PS:</b> Do not forget to check the wind direction detected by the software. It can be changed if it is wrong or in case of changing wind<br/>
+					<br/>&nbsp;</li>
+					<li>If you selected a ground or air activity, you will get vertical figures such as vertical speed, ...<br/>
+					<img src="/static/images/tour_vertical.png" width="760" height="352"/>
+					<br/>&nbsp;</li>
+				</ul>
+			</li>
+		</ol>
 		</div>
-		<div id="footer_push"></div>
+		</div>
+        <div id="footer_push"></div>
 	</div>
 	<div id="footer">
-	  <b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
+		<b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
 	</div>
 </body>
 </html>
 <script src="/static/javascript/xmlhttprequest.js" type="text/javascript"></script>
 <script src="/static/javascript/header.js" type="text/javascript"></script>
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{GMapsApiKey2}}" type="text/javascript"></script>
-<script src="/static/javascript/preview.js" type="text/javascript"></script>

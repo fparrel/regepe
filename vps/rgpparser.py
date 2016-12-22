@@ -1,13 +1,8 @@
 
 # Model classes
-from model import Bounds,Point,Track
+from model import Point
 #Datetime
 import datetime
-
-#only for unittests
-import os
-
-from log import Log
 
 
 def ParseRegepeFile(inputfile,trk_id,trk_seg_id):

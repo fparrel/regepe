@@ -20,8 +20,8 @@ def CheckValidEmail(email):
 
 subjects = {'en': 'ReGePe (Replay your GPS Tracks) account creation',
     'fr': 'Creation de compte ReGePe.com'}
-bodies = {'en':  'Your accound will be created when you visit http://%s/cgi-bin/doactivate.py?user=%s&activation_id=%s',
-    'fr': "Votre compte utilisateur sera cree si vous cliquez sur l'hyperlien suivant http://%s/cgi-bin/doactivate.py?user=%s&activation_id=%s&lang=fr"}
+bodies = {'en':  'Your accound will be created when you visit http://%s/activate/%s/%s',
+    'fr': "Votre compte utilisateur sera cree si vous cliquez sur l'hyperlien suivant http://%s/activate/%s/%s&lang=fr"} #TODO
 
 def SendActivationMail(mail,user,activation_id,lang='en'):
     subject = subjects[lang]

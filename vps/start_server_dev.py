@@ -16,6 +16,7 @@ from orchestrator import BuildMap
 from searchparser import SearchQueryParser
 from sets import Set
 from textutils import remove_accents
+from log import Log
 
 
 def readKeysAndPasswords(filename):
@@ -31,9 +32,9 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 # Load keys and password
 keysnpwds=readKeysAndPasswords('config/keysnpwds-test.json')
 
-@app.route('/')
-def index():
-    limit = 10
+@app.route('/',defaults={'limit':10})
+@app.route('/indexall',defaults={'limit':-1})
+def index(limit):
     maplist = DbGetListOfDates()
     cptr = 0
     mapsout = []
@@ -50,7 +51,7 @@ def index():
                 break
         if(limit>-1) and (cptr>limit):
             break
-    return render_template('index.html',maps=mapsout,GMapsApiKey2=keysnpwds['GMapsApiKey2'])
+    return render_template('index.html',limit=limit,maps=mapsout,GMapsApiKey2=keysnpwds['GMapsApiKey2'])
 
 @app.route('/thumbnail/<mapid>')
 def thumbnail(mapid):
@@ -117,6 +118,10 @@ def comments(mapid):
     comments = DbGetComments(mapid)
     return Response('<?xml version="1.0" encoding="UTF-8"?><result>%s</result>' % ''.join(map(lambda comment: '<comment user="%s" date="%s">%s</comment>' % comment,comments)), mimetype='text/xml')
 
+@app.route('/sendcomment/<mapid>/<comment>')
+def sendcomment(mapid,comment):
+    pass
+
 @app.route('/nearmaps/<mapid>')
 def nearmaps(mapid):
     lat,lon = map(float,DbGet(mapid,'startpoint').split(','))
@@ -170,6 +175,9 @@ def upload():
     i=0
     for file in request.files.getlist("file[]"):
         # Save each uploaded file
+        if not os.path.isdir(app.config['UPLOAD_FOLDER']):
+            os.mkdir(app.config['UPLOAD_FOLDER'])
+        Log('Saving file',submit_id)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('%s_%s.gpx'%(submit_id,i))))
         i+=1
         inputfile.append(file)
@@ -206,8 +214,9 @@ def upload():
                 options[key]=request.form[key]
             else:
                 raise Exception('type not handled')
-    sys.stderr.write('options=%s\n'%options)
+    Log('start BuildMap',submit_id)
     pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user)
+    Log('end BuildMap',submit_id)
     return '''<script type="text/javascript">
     var date = new Date();
     date.setTime(date.getTime()+(10*24*60*60*1000));
@@ -290,6 +299,30 @@ def getmaplist():
     out = '<results>%s</results>' % ''.join(map(latlonmapids2xml,latlonmapidss))
     return Response(out, mimetype='text/xml')
 
+@app.route('/delmap/<mapid>/<pwd>')
+def delmap(mapid,pwd):
+    pass
+
+@app.route('/map/crop/<mapid>/<pwd>/<pt1>/<pt2>')
+def cropmap(mapid,pwd,pt1,pt2):
+    pass
+
+@app.route('/map/clear/<mapid>/<pwd>/<pt1>/<pt2>')
+def clearmap(mapid,pwd,pt1,pt2):
+    pass
+
+@app.route('/map/clearlist/<mapid>/<pwd>/<ptlist>')
+def clearmaplist(mapid,pwd,ptlist):
+    pass
+
+@app.route('/map/export/<mapid>')
+def exportmap(mapid):
+    pass
+
+@app.route('/map/demize/<mapid>/<pwd>')
+def demize(mapid,pwd):
+    pass
+
 ## User services
 
 def CheckHumain(humaincheck):
@@ -366,6 +399,19 @@ def resendpwd():
         return render_template('resendpwd_error.html',error_message=str(e))
     return render_template('resendpwd_ok.html',mail=mail)
 
+## Prepare
+
+@app.route('/ele/<lat>/<lon>')
+def getele(lat,lon):
+    return Response('0', mimetype='text/plain')
+
+@app.route('/profile/<ptlist>/<width>/<height>')
+def profile(ptlist,width,height):
+    pass
+
+@app.route('/prepare/export/<format>/<ptlist>/<names>')
+def prepare_export(format,ptlist,names):
+    pass
 
 ## Program entry point
 

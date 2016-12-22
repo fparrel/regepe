@@ -7,7 +7,7 @@ from datetime import datetime,date
 #only for unittests
 import os
 
-from log import Log
+from log import Warn
 
 class Date:
     'Contains a date, with writable attributes'
@@ -178,7 +178,7 @@ def ParseSentence(line,current_date):
             return None
             #raise Exception('NMEA sentence %s not supported' % sentence[0])
     except Exception,e:
-        Log('Cannot parse "%s": %s\n' % (line,str(e)))
+        Warn('Cannot parse "%s": %s' % (line,str(e)))
         return None
 
 def ParseNmeaFile(inputfile,trk_id,trk_seg_id):

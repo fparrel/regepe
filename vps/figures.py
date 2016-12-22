@@ -66,6 +66,7 @@ class Figures:
 
     def computeMaxSpeeds(self,fromspd=True,nbmax=6):
 
+        Log('computeMaxSpeeds: get distances (%d points)' % len(self.trkseg.ptlist))
         # Get distances
         if fromspd and not self.trkseg.spdcomputed:
             dsts = self.trkseg.ComputeEqDistancesFromSpd()
@@ -74,6 +75,7 @@ class Figures:
         if not options['flat']:
             eles = map(lambda pt:pt.ele,self.trkseg.ptlist)
 
+        Log('computeMaxSpeeds: get times')
         # Get times
         tms = map(lambda pt:pt.datetime,self.trkseg.ptlist)
 
@@ -86,6 +88,7 @@ class Figures:
             maxspdsdist_vert = [[MaxSpdZero for i in range(0,nbmax)] for i in range(0,len(Figures.max_spd_dists_vert))]
             maxspdstime_vert = [[MaxSpdZero for i in range(0,nbmax)] for i in range(0,len(Figures.max_spd_times_vert))]
 
+        Log('computeMaxSpeeds: start loop')
         for i in range(0,len(self.trkseg.ptlist)):
 
             # Over time
@@ -124,6 +127,7 @@ class Figures:
                                 self.addMaxSpeed(MaxSpd(spd,(eles[j]-eles[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdsdist_vert[maxspds_idx])
                             break
 
+        Log('computeMaxSpeeds: return results')
         # Return output merged without the zeros
         out = [dict([(Figures.max_spd_dists[i],filter(lambda maxspd: maxspd!=MaxSpdZero, maxspdsdist[i])) \
                             for i in range(0,len(Figures.max_spd_dists))]), \
@@ -155,17 +159,17 @@ class Figures:
             self.lengthdist = trkseg.ComputeLengthFromDist()
             return
         # Compute top 10 speeds
-        Log('Figures: FindLocalMaximums\n')
+        Log('Figures: FindLocalMaximums')
         top10_speed_ids = FindLocalMaximums(trkseg.ptlist,lambda pt: pt.spd,None,0)
         #top10_speed_ids = FindLocalMaximums(trkseg.ptlist,lambda pt: pt.spd,Mean,3)
         top10_speed_ids = top10_speed_ids[0:10]
         self.top10_speeds = [[i,trkseg.ptlist[i]] for i in top10_speed_ids]
         self.top10_speeds.sort(key=lambda a: a[1].datetime)
         # Compute mean speed
-        Log('Figures: ConvertSpeed\n')
+        Log('Figures: ConvertSpeed')
         trkseg.ConvertSpeed(spdunit)
         speeds = [pt.spd_converted[spdunit] for pt in trkseg.ptlist]
-        Log('Figures: Means\n')
+        Log('Figures: Means')
         self.mean_speed = Mean(speeds)
         self.spdunit = spdunit
         # Mean speed when in motion
@@ -180,11 +184,11 @@ class Figures:
         # Compute duration
         self.duration = trkseg.ptlist[-1].datetime - trkseg.ptlist[0].datetime
         # Compute length
-        Log('Figures: ComputeLengthFromSpd\n')
+        Log('Figures: ComputeLengthFromSpd')
         self.lengthspd = trkseg.ComputeLengthFromSpd()
-        Log('Figures: ComputeLengthFromDist\n')
+        Log('Figures: ComputeLengthFromDist')
         self.lengthdist = trkseg.ComputeLengthFromDist()
-        Log('Figures: end\n')
+        Log('Figures: end')
     def __str__(self):
         return 'Figures object'
     def computeOneSpd(self,when_from,when_to,fromspd=True):
