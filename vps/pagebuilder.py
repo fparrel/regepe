@@ -1,6 +1,5 @@
 
 from miscranges import ExtendRange,ExtendRange5
-from options import options
 from conversions import MetersToNauticalMiles
 from log import Log
 import datetime
@@ -45,7 +44,7 @@ def ChartToJsonShort(chart):
     else:
         return '{"type":"%s","title":"%s","name":"%s"}'%(chart.charttype,chart.title,chart.name)
 
-def BuildPage(track,charts,figures,spdunit,mapid='0000',type='ggl'):
+def BuildPage(track,charts,figures,spdunit,mapid,options):
     template = """{"type":"%(maptype)s","figures":%(figures)s,"chartdata":[%(chartsnameandmarginsize)s],
 "nbpts": %(nbpts)d,
 "spdunit": "%(spdunit)s",
@@ -67,15 +66,8 @@ def BuildPage(track,charts,figures,spdunit,mapid='0000',type='ggl'):
 ]}
    """
     xycharts = filter(lambda chart: isinstance(chart,MyXYChart), charts)
-    if type=='ggl':
-        charts_out = '\n'.join([chartobj.ToHtml(chartid) for (chartid,chartobj) in enumerate(charts)])
-        chartsnameandmarginsize = ',\n'.join(['\t["%(name)s",%(marginsize)d,%(pt2px)s]' % \
-                                              {'name': chart.name, \
-                                               'marginsize': chart.marginsize, \
-                                               'pt2px': ChartPt2pxToString(chart.pt2px)} for chart in xycharts])
-    else:
-        charts_out = ',\n'.join(map(ChartToJsonShort,charts))
-        chartsnameandmarginsize = ',\n'.join([chartobj.ToHtml(chartid) for (chartid,chartobj) in enumerate(charts)])
+    charts_out = ',\n'.join(map(ChartToJsonShort,charts))
+    chartsnameandmarginsize = ',\n'.join([chartobj.ToHtml(chartid) for (chartid,chartobj) in enumerate(charts)])
     [centerlat,centerlon] = track.bounds.GetCenter()
     nbpts = len(track.ptlist)
     angle_factor = 15 #arrowid = angle/angle_factor
@@ -227,14 +219,14 @@ def MaxSpeedToJson(type,i,iunit,mxspds):
 
 def BuildMaxSpeeds(figures):
     out = []
-    if not options['flat']:
+    if not figures.options['flat']:
         (mxspdsdst,mxspdtime,mxspdsdst_vert,mxspdtime_vert) = figures.computeMaxSpeeds()
     else:
         (mxspdsdst,mxspdtime) = figures.computeMaxSpeeds()
     
     out.extend([MaxSpeedToJson('dist',i,'m',mxspdsdst[i]) for i in sorted(mxspdsdst.keys())])
     out.extend([MaxSpeedToJson('time',i,'s',mxspdtime[i]) for i in sorted(mxspdtime.keys())])
-    if not options['flat']:
+    if not figures.options['flat']:
         out.extend([MaxSpeedToJson('dist_vert',i,'m',mxspdsdst_vert[i]) for i in sorted(mxspdsdst_vert.keys())])
         out.extend([MaxSpeedToJson('dist_time',i,'s',mxspdtime_vert[i]) for i in sorted(mxspdtime_vert.keys())])
         
@@ -255,7 +247,7 @@ def TimeDeltaFormat(t):
         return '%d seconds'%(duration_sec)
 
 def BuildFigures(figures,type='ggl'):
-    if figures.spdunit=='knots':
+    if figures.options['spdunit']=='knots':
         length = '%.3f nautical miles' % (MetersToNauticalMiles(figures.lengthdist))
     else:
         if figures.lengthdist>10000:
@@ -264,13 +256,13 @@ def BuildFigures(figures,type='ggl'):
             length = '%d m' % int(round(figures.lengthdist))
     out = []
     if len(figures.top10_speeds)>0:
-        out.append('"top10spd": [%s]'%','.join(map(lambda (i,pt): '{"ptidx":%d,"when":"%s","spd":"%.2f %s"}'%(i, pt.datetime.strftime('%H:%M:%S'), pt.spd_converted[figures.spdunit], figures.spdunit), figures.top10_speeds)))
+        out.append('"top10spd": [%s]'%','.join(map(lambda (i,pt): '{"ptidx":%d,"when":"%s","spd":"%.2f %s"}'%(i, pt.datetime.strftime('%H:%M:%S'), pt.spd_converted[figures.options['spdunit']], figures.options['spdunit']), figures.top10_speeds)))
     if figures.mean_speed>=0.0:
-        out.append('"meanspeed": "%.2f %s"' % (figures.mean_speed, figures.spdunit))
+        out.append('"meanspeed": "%.2f %s"' % (figures.mean_speed, figures.options['spdunit']))
     if figures.mean_speed_when_in_motion>=0.0:
-        out.append('"mean_speed_when_in_motion": "%.2f %s"' % (figures.mean_speed_when_in_motion, figures.spdunit))
+        out.append('"mean_speed_when_in_motion": "%.2f %s"' % (figures.mean_speed_when_in_motion, figures.options['spdunit']))
     out.append('"length": "%s"'%length)
-    if not figures.flat:
+    if not figures.options['flat']:
         out.append('"minele": "%d m"'%int(round(figures.min_ele)))
         out.append('"maxele": "%d m"'%int(round(figures.max_ele)))
         out.append('"up": "%d m"'%int(round(figures.up)))
