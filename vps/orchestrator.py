@@ -23,7 +23,6 @@ from sportstrackliveparser import ParseSportsTrackLiveFile
 from sbpparser import ParseSbpFile
 from fitparser import ParseFitFile
 from model import Track
-from options import options
 from pagebuilder import BuildPage,MyPolar,MyXYChart,ChartString,ChartStringWithTitle,BuildMaxSpeeds
 from progress import SetProgress
 from db import DbSetPassword,DbPut
@@ -48,7 +47,7 @@ from figures import Figures
 import traceback
 
 
-def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
+def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
     if not light:
         SetProgress(submitid,'Remove staying points')
     nbptsbefore = len(track)
@@ -65,7 +64,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
     #    print('DEBUG:ProcessTrkSegWithProgress: la=%s lg=%s e=%s s=%s c=%s t=%s' % (pt.lat,pt.lon,pt.ele,pt.spd,pt.course,pt.datetime))
     if not light:
         SetProgress(submitid,'Computing figures')
-    figures = Figures(track,options['spdunit'],options['flat'])
+    figures = Figures(track,options)
     charts = []
     if type=='dyg':
         charts.append(ChartString('<script type="text/javascript">var dygraphs=[];</script>'))
@@ -146,7 +145,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light=False,type='ggl'):
             Warn('Cannot Build hearth rate %s\n'%e)
     
     Log("ProcessTrkSegWithProgress: BuildPage",submitid)
-    out = BuildPage(track,charts,figures,options['spdunit'],mapid,type=type)
+    out = BuildPage(track,charts,figures,options['spdunit'],mapid,options)
     
     #f = open(fname_out,'w')
     #f.write(out)
@@ -207,7 +206,7 @@ def GetFileType(inputfile):
             return SBP
     return UNKNOWN
 
-def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid=None,desc='',user=''):
+def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user,options):
     if hasattr(inputfile_single_or_list,'__len__'):
         inputfile_list = inputfile_single_or_list
     else:
@@ -345,9 +344,9 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid=None,desc
     # build track and map
     track = Track(ptlist_all)
     
-    return BuildMapFromTrack(track,mapid,submitid,desc,user)
+    return BuildMapFromTrack(track,mapid,submitid,desc,user,options)
 
-def BuildMapFromTrack(track,mapid,submitid,desc,user):
+def BuildMapFromTrack(track,mapid,submitid,desc,user,options):
     #ProcessTrkSegWithProgress(track,mapid,submitid)
     SetProgress(submitid,'Generating uuid')
     pwd = str(uuid.uuid4())
@@ -361,7 +360,7 @@ def BuildMapFromTrack(track,mapid,submitid,desc,user):
     else:
         startdate = datetime.datetime.now()
     DbPut(mapid,pwd,'date',startdate.strftime('%Y-%m-%d'))
-    ProcessTrkSegWithProgress(track,mapid,submitid,light=True,type='json')
+    ProcessTrkSegWithProgress(track,mapid,submitid,True,options)
     SetProgress(submitid,'Done')
     return pwd
 

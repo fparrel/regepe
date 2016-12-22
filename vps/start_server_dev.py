@@ -11,13 +11,14 @@ import traceback
 from progress import GetProgress
 from users import CheckSession,Login,ActivateUser,SendActivationMail,ReserveUser,GetUserFromUserOrEmail,SendForgotPasswordMail
 import sys
-from options import options
-from orchestrator import BuildMap
+from orchestrator import BuildMap,ProcessTrkSegWithProgress
 from searchparser import SearchQueryParser
 from sets import Set
 from textutils import remove_accents
 from log import Log
-
+from mapparser import ParseMap
+from model import Track
+from options import options_default
 
 def readKeysAndPasswords(filename):
     f=open(filename,'r')
@@ -238,6 +239,7 @@ def upload():
         if not CheckSession(user,sess):
             user = 'unknown'
     # Parse options (flat,wind,maptype,...)
+    options = options_default
     for key in options:
         if request.form.has_key(key):
             if type(options[key])==bool:
@@ -249,7 +251,7 @@ def upload():
             else:
                 raise Exception('type not handled')
     Log('start BuildMap',submit_id)
-    pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user)
+    pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user,options)
     Log('end BuildMap',submit_id)
     return '''<script type="text/javascript">
     var date = new Date();
@@ -372,12 +374,12 @@ def delmap(mapid,pwd,user,sess):
 def cropmap(mapid,pwd,pt1,pt2,user,sess):
     try:
         auth(mapid,pwd,user,sess)
-        ptlist = ParseMap('data/mapdata/%s.json.gz'%mapid,True)
+        options, ptlist = ParseMap(mapid)
         startpointchanged = (pt1==0)
         ptlist = ptlist[pt1:pt2]
         # Rebuild map
         track = Track(ptlist)
-        ProcessTrkSegWithProgress(track,mapid,mapid,light=True)
+        ProcessTrkSegWithProgress(track,mapid,mapid,True,options)
         # If start point has changed, then update the database
         if startpointchanged:
             DbPutWithoutPassword(mapid,'startpoint','%.4f,%.4f' % (track.ptlist[0].lat,track.ptlist[0].lon))

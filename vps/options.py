@@ -2,7 +2,7 @@
 
 ## OPTIONS ##
 
-options = { \
+options_default = { \
     'spdunit': 'm/s', \
     'flat': False, \
     'wind': False, \
