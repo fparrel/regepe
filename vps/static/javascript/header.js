@@ -174,7 +174,7 @@ function displayLogged(user,sess) {
     if (typeof after_login_callback!='undefined') {
         after_login_callback(user,sess);
     }
-    document.getElementById("header_login").innerHTML = 'Logged as <a href="userhome.php?user='+user+'">'+user+'</a><br/>'+
+    document.getElementById("header_login").innerHTML = 'Logged as <a href="/userhome/'+user+'">'+user+'</a><br/>'+
         '<form><input type="button" value="Logout" onclick="onLogoutClick();"/></form>';
 }
 

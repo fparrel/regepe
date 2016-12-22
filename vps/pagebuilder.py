@@ -46,7 +46,7 @@ def ChartToJsonShort(chart):
         return '{"type":"%s","title":"%s","name":"%s"}'%(chart.charttype,chart.title,chart.name)
 
 def BuildPage(track,charts,figures,spdunit,mapid='0000',type='ggl'):
-    template = """{"type":"%(maptype)s","figures":%(figures)s,"chartdata":[%(charts)s],
+    template = """{"type":"%(maptype)s","figures":%(figures)s,"chartdata":[%(chartsnameandmarginsize)s],
 "nbpts": %(nbpts)d,
 "spdunit": "%(spdunit)s",
 "flat": %(flat)d,
@@ -63,7 +63,7 @@ def BuildPage(track,charts,figures,spdunit,mapid='0000',type='ggl'):
 %(trackpoints)s
 ],
 "charts": [
-%(chartsnameandmarginsize)s
+%(charts)s
 ]}
    """
     xycharts = filter(lambda chart: isinstance(chart,MyXYChart), charts)

@@ -18,7 +18,7 @@ function onDelCurPtClick() {
         var url = '/map/clear/'+mapid+'/'+pwd+'/'+ptid+'/'+(ptid+1);
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
-            url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
+            url = url + '/' + user_sess[0] + '/' + user_sess[1];
         }
         //window.location.replace("http://www.un-site.com/une-page.htm");
         document.location.href = url;        
@@ -32,7 +32,7 @@ function onDelPtListClick() {
         var url = '/map/clearlist/'+mapid+'/'+pwd+'/'+todelete;
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
-            url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
+            url = url + '/' + user_sess[0] + '/' + user_sess[1];
         }
         //window.location.replace("http://www.un-site.com/une-page.htm");
         document.location.href = url;        
@@ -49,7 +49,7 @@ function cutMap(action) {
         var url = '/map/'+action+'/'+mapid+'/'+pwd+'/'+firstptid+'/'+lastptid;
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
-            url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
+            url = url + '/' + user_sess[0] + '/' + user_sess[1];
         }
         //window.location.replace("http://www.un-site.com/une-page.htm");
         document.location.href = url;
@@ -62,7 +62,7 @@ function onMapDeleteClick() {
         var url = '/delmap/'+mapid+'/'+pwd;
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
-            url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
+            url = url + '/' + user_sess[0] + '/' + user_sess[1];
         }
         document.location.href = url;
     }
@@ -95,7 +95,7 @@ function onDemizeAnswer() {
                 var nextindex = this.responseXML.getElementsByTagName("nextindex")[0].childNodes[0].nodeValue;
                 var percent = this.responseXML.getElementsByTagName("percent")[0].childNodes[0].nodeValue;
                 document.getElementById('demizeresults').innerHTML = ' '+percent+'% <img src="/static/images/loading.svg" width="16" height="16"/>';
-                var url = this.url + '&index=' + nextindex;
+                var url = this.url.replace(/\/demize\/\d+/,'/demize/'+nextindex);
                 var req = new XMLHttpRequest();
                 req.url = this.url;
                 req.open("GET", url, true);
@@ -118,10 +118,10 @@ function onDemizeAnswer() {
 
 function onDemizeClick() {
     var pwd = getPwdFromCookie(mapid);
-    var url = '/map/demize/'+mapid+'/'+pwd;
+    var url = '/map/demize/0/'+mapid+'/'+pwd;
     var user_sess = getSessionFromCookie();
     if (user_sess.length>0) {
-        url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
+        url = url + '/' + user_sess[0] + '/' + user_sess[1];
     }
     var req = new XMLHttpRequest();
     req.url = url;
