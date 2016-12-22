@@ -15,7 +15,7 @@ function onDelCurPtClick() {
     var ptid = last_point_id;
     if(ptid!=-1) {
         var pwd = getPwdFromCookie(mapid);
-        var url = '/cgi-bin/cutmap.py?type=json&mapid='+mapid+'&fisrtptid='+ptid+'&lastptid='+(ptid+1)+'&action=clear&pwd='+pwd;
+        var url = '/map/clear/'+mapid+'/'+pwd+'/'+ptid+'/'+(ptid+1);
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
             url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
@@ -29,7 +29,7 @@ function onDelPtListClick() {
     var ptid = last_point_id;
     if(ptid!=-1) {
         var pwd = getPwdFromCookie(mapid);
-        var url = '/cgi-bin/cutmap.py?type=json&mapid='+mapid+'&pwd='+pwd+'&action=delptlist&ptlist='+todelete;
+        var url = '/map/clearlist/'+mapid+'/'+pwd+'/'+todelete;
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
             url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
@@ -46,7 +46,7 @@ function cutMap(action) {
     //alert(firstptid+' '+lastptid);
     if ((firstptid!=-1)&&(lastptid!=-1)) {
         var pwd = getPwdFromCookie(mapid);
-        var url = '/cgi-bin/cutmap.py?type=json&mapid='+mapid+'&fisrtptid='+firstptid+'&lastptid='+lastptid+'&action='+action+'&pwd='+pwd;
+        var url = '/map/'+action+'/'+mapid+'/'+pwd+'/'+firstptid+'/'+lastptid;
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
             url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
@@ -59,7 +59,7 @@ function cutMap(action) {
 function onMapDeleteClick() {
     if (confirm("Confirm deletion of this map?")) { 
         var pwd = getPwdFromCookie(mapid);
-        var url = '/cgi-bin/delmap.py?type=json&mapid='+mapid+'&pwd='+pwd;
+        var url = '/delmap/'+mapid+'/'+pwd;
         var user_sess = getSessionFromCookie();
         if (user_sess.length>0) {
             url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
@@ -69,7 +69,7 @@ function onMapDeleteClick() {
 }
  
 function onMapExportClick() {
-    var url = '/cgi-bin/togpx.py?type=json&mapid='+mapid;
+    var url = '/map/export/'+mapid;
     document.location.href = url;
 /*
     var gpxfile = '<?xml version="1.0" encoding="UTF-8"?>\n'+
@@ -94,7 +94,7 @@ function onDemizeAnswer() {
             if (result=='OK') {
                 var nextindex = this.responseXML.getElementsByTagName("nextindex")[0].childNodes[0].nodeValue;
                 var percent = this.responseXML.getElementsByTagName("percent")[0].childNodes[0].nodeValue;
-                document.getElementById('demizeresults').innerHTML = ' '+percent+'% <img src="/images/loading.svg" width="16" height="16"/>';
+                document.getElementById('demizeresults').innerHTML = ' '+percent+'% <img src="/static/images/loading.svg" width="16" height="16"/>';
                 var url = this.url + '&index=' + nextindex;
                 var req = new XMLHttpRequest();
                 req.url = this.url;
@@ -118,7 +118,7 @@ function onDemizeAnswer() {
 
 function onDemizeClick() {
     var pwd = getPwdFromCookie(mapid);
-    var url = '/cgi-bin/demize.py?type=json&mapid='+mapid+'&pwd='+pwd;
+    var url = '/map/demize/'+mapid+'/'+pwd;
     var user_sess = getSessionFromCookie();
     if (user_sess.length>0) {
         url = url + '&user=' + user_sess[0] + '&sess=' + user_sess[1];
@@ -128,6 +128,6 @@ function onDemizeClick() {
     req.open("GET", url, true);
     req.onreadystatechange = onDemizeAnswer;
     req.send(null);
-    document.getElementById('demizeresults').innerHTML = ' 0 % <img src="/images/loading.svg" width="16" height="16"/>';
+    document.getElementById('demizeresults').innerHTML = ' 0 % <img src="/static/images/loading.svg" width="16" height="16"/>';
     /*document.location.href = url;*/
 }

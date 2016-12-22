@@ -147,7 +147,7 @@ class MyXYChart(MyChart):
     # pt2px: for each point of chart, return the corresponding pixel X
     # WARNING: Limit is around 970 points
     def __init__(self,data,imagefileurl,name,label,title,nbpts=None,ptindexlist=None,timerange=False,timestart=None,type='ggl',labelx='',labely=None,unitx='',unity=''):
-        Log('MyXYChart: begin %s\n' % label)
+        Log('MyXYChart: begin %s' % label)
         self.charttype='line'
         self.imagefileurl = imagefileurl
         self.name = name

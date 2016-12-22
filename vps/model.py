@@ -174,11 +174,11 @@ class Track:
         self.ptlist = ptlist
         self.ptindexlist = ptindexlist
         self.nospeeds = False
-        Log('Track: ComputeSpeed/Course/FillEleWhenNeeded\n')
+        Log('Track: ComputeSpeed/Course/FillEleWhenNeeded')
         self.ComputeSpeedWhenNeeded()
         self.ComputeCourseWhenNeeded()
         self.FillEleWhenNeeded()
-        Log('Track: CheckSpeedUnitAndCorrectIfNeeded\n')
+        Log('Track: CheckSpeedUnitAndCorrectIfNeeded')
         self.CheckSpeedUnitAndCorrectIfNeeded()
         if not self.nospeeds:
             self.AddOruxMapPauses()
@@ -881,7 +881,7 @@ class Track:
         "Some gpx file contain speed in another unit that standard m/s. Check this"
         spdsfromfile = map(lambda pt: pt.spd,self.ptlist)
         spdsfromcomputation = self.ComputedSpeedDontOverWrite()
-        Log('Track::CheckSpeedUnitAndCorrectIfNeeded: after ComputedSpeedDontOverWrite\n')
+        Log('Track::CheckSpeedUnitAndCorrectIfNeeded: after ComputedSpeedDontOverWrite')
         if spdsfromcomputation==None:
             return True
         sumdiff = 0.0

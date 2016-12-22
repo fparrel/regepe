@@ -9,8 +9,6 @@ import struct
 #only for unittests
 import os
 
-from log import Log
-
 fieldDefNbName=[[] for i in range(0,255)]
 #file_id
 fieldDefNbName[0]=['type','manufacturer','product','serial_number','time_created','number','','','product_name']

@@ -68,7 +68,7 @@ def PerformQuery(pts,retr_list,db):
 # Return: none
 def GetEleFromLatLonList(pts,interpolate=True):
     
-    Log('GetEleFromLatLonList nbpts=%s\n' % len(pts))
+    Log('GetEleFromLatLonList nbpts=%s' % len(pts))
     
     # Open cache for r/w (create if file don't yet exists)
     db = anydbm.open("data/DEM.db", "c")

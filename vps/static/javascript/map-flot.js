@@ -476,7 +476,7 @@ function onCommentOkClick() {
 
 function sendComment(comment) {
     var req = new XMLHttpRequest();
-    var url = '/cgi-bin/sendcomment.py?mapid='+mapid+'&comment='+encodeURIComponent(htmlentities(comment));
+    var url = '/sendcomment/'+mapid+'/'+encodeURIComponent(htmlentities(comment));
     var user_sess = getSessionFromCookie();
     if (user_sess.length>0) {
         url = url + '&user='+user_sess[0] + '&sess=' + user_sess[1];

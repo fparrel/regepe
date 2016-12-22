@@ -1,4 +1,4 @@
-import time
+import datetime
 import sys
 
 def open_mkdir(fname,row):
@@ -14,14 +14,13 @@ def open_mkdir(fname,row):
             os.makedirs(path)
         return open(fname,row)
 
-def Log(s):
+def Log(s,uid=""):
     sys.stderr.write('Log: %s\n'%s)
     f = open_mkdir('logs/log.log','a')
-    f.write('[%s] %s' % (time.time(),s))
-    #f.write('[%s] %s' % (time.strftime('%Y-%m-%d %H:%M:%S'),s))
+    f.write('[%s] %14s %s\n' % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),uid,s))
     f.close()
 
-def Warn(s):
+def Warn(s,uid=""):
     f = open_mkdir('logs/warn.log','a')
-    f.write('[%s] %s' % (time.time(),s))
+    f.write('[%s] %14s %s\n' % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),uid,s))
     f.close()
