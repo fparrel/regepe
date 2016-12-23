@@ -91,7 +91,7 @@ function onReadystatechange() {
             map_list.sort(sortMaps);
             var map_list_contents = '';
             for (i=0;i<map_list.length;i++) {
-                map_list_contents += '<tr><td>'+map_list[i].startdate+'</td><td><a href="showmap-flot.php?mapid='+map_list[i].mapid+'"/>'+map_list[i].desc+'</a></td><td><img src="/thumbnail/'+map_list[i].mapid+'" width="130" height="110"/></td></tr>';
+                map_list_contents += '<tr><td>'+map_list[i].startdate+'</td><td><a href="/showmap/'+map_list[i].mapid+'"/>'+map_list[i].desc+'</a></td><td><img src="/thumbnail/'+map_list[i].mapid+'" width="130" height="110"/></td></tr>';
             }
             document.getElementById('map_list').innerHTML = '<table id="search_results_table"><thead><tr><th id="sortby_date">Date</th><th id="sortby_desc">Description</th><th>Preview</th></tr></thead><tbody id="search_tbody">'+map_list_contents+'</tbody></table>';
             if(document.getElementById("sortby_date").addEventListener) {
