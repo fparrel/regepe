@@ -367,13 +367,7 @@ def BuildMapFromTrack(track,mapid,submitid,desc,user,options):
 ## PROGRAM ENTRY POINT
 
 def main():
-    #return
-    #options['usedem'] = True
-    #BuildMap('gpx/Track_20091220112504.gpx','maps/TEST.html',0,0)
-    
-    #BuildMap2(open('../../work/gordo.gpx','r'),'../../work/gordo.json',0,0,submitid='FOO')
-    BuildMap2(open('../../work/caramagne.gpx','r'),'../www/maps/caramagne.php',0,0,submitid='caramagne')
-    #BuildMap2(open('../../work/calern.gpx','r'),'../www/maps/calern.php',0,0,submitid='calern')
+    BuildMap(open('../../work/caramagne.gpx','r'),'caramagne',0,0,'caramagne','desc','user',options_default)
 
 if __name__ == '__main__':
    main()

@@ -60,6 +60,11 @@ def index(limit):
 
 ## Thumbnails
 
+if not os.path.isdir('data'):
+	os.mkdir('data')
+if not os.path.isdir('data/thumbnail_cache'):
+	os.mkdir('data/thumbnail_cache')
+
 @app.route('/thumbnail/<mapid>')
 def thumbnail(mapid):
     filename='data/thumbnail_cache/%s.png'%mapid
@@ -170,6 +175,7 @@ def dbget(mapid,element):
     out = '<?xml version="1.0" encoding="UTF-8"?>\n<answer><message>%s</message><pageelementid>%s</pageelementid><value>%s</value></answer>' % (message,element,val)
     return Response(out, mimetype='text/xml')
 
+@app.route('/dbput/<mapid>/<pwd>/<ele>/<val>',defaults={'user':None,'sess':-1})
 @app.route('/dbput/<mapid>/<pwd>/<ele>/<val>/<user>/<sess>')
 def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
     try:
@@ -184,7 +190,7 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
             else:
                 raise Exception('Invalid session, please re-login')
         else:
-            DbPut(mapid,pwd,ele,val)
+            DbPut(mapid,pwd,ele.encode('ascii'),val.encode('utf8'))
             message = 'OK'
     except Exception, e:
         message = 'Error: ' + str(e)

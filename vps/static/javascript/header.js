@@ -252,7 +252,7 @@ function onLoginClick() {
 
 function onLogoutClick() {
     document.getElementById("header_login").innerHTML =
-        '<form>User: <input id="login_user" name="user" type="text"/>Password: <input id="login_password" name="password" type="password"/><input type="button" value="Login" onclick="onLoginClick();"/><br/><a href="register.php">Register</a> | <a href="forgotpwd.php">Forgot password?</a></form>';
+        '<form>User: <input id="login_user" name="user" type="text"/>Password: <input id="login_password" name="password" type="password"/><input type="button" value="Login" onclick="onLoginClick();"/><br/><a href="/registerform">Register</a> | <a href="/static/forgotpwd.html">Forgot password?</a></form>';
     removeSessionCookie();
 }
 

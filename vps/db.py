@@ -13,6 +13,12 @@ DBTYPES = ('users','maps')
 
 ELELIST = {'maps':('trackdesc','trackuser','startpoint','date','winddir','demized'),'users':('mail',)}
 
+if not os.path.isdir('data'):
+	os.mkdir('data')
+for dbtype in DBTYPES:
+	path='data/%s'%dbtype
+	if not os.path.isdir(path):
+		os.mkdir(path)
 
 def TriggerRebuildOfInv(ele):
     if os.access('data/.rebuilt'+ele,os.F_OK):
@@ -348,41 +354,25 @@ def DbGetNearbyPoints(lati,loni):
 ## FOR TEST
 
 def DumpDb(dbfile):
-    out = [dbfile[5:-3]]
-    #print('<p><b>Dump of <a href="/showmap.php?mapid=%s"/>%s</a>:</b><br/>' % (dbfile[5:-3],dbfile))
+    out=[]
     db = anydbm.open(dbfile, "r")
     for k,v in db.iteritems():
         out.append((k,v))
-        #print('  %s %s</br>' % (k,v))
     db.close()
     return out
-    #print('</p>')
 
 def DumpAllMaps():
-    for mapdbfile in os.listdir('maps'):
-        yield DumpDb('maps/%s' % mapdbfile)
+    for mapdbfile in os.listdir('data/maps'):
+        yield DumpDb('data/maps/%s' % mapdbfile)
 
 def main():
-    #print DbGetNearbyPoints(45.0,0.0)
-    #return
+    print DbGetNearbyPoints(45.0,0.0)
     l = DbGetListOfDates()
     for k,v in l.iteritems():
         print '%s %s' % (k,v)
-    return
-    #db = anydbm.open('maps/4bde8e94543a1.db', "c")
-    #for k,v in db.iteritems():
-    #    if k[:7]=='comment':
-    #        print 'del'
-    #        del db[k]
-    #db.close()
-    #print DbGetComments('4bde8e94543a1')
-    DumpDb('maps/4bde8e94543a1.db')
-    return
-    DbBuildInvert('maps','startpoint',lambda value: [value])
-    DbBuildWordList('trackdesc')
     DumpAllMaps()
-    DumpDb('TRACKDESC_INV.db')
-    DumpDb('STARTPOINT_INV.db')
+    DumpDb('data/TRACKDESC_INV.db')
+    DumpDb('data/STARTPOINT_INV.db')
 
 if __name__ == '__main__':
    main()
