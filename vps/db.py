@@ -252,6 +252,8 @@ def DbGetMapsOfUser(user):
         DbBuildInvert('maps','trackuser',lambda value: [value])
     #Log('DbGetMapsOfUser open db r TRACKUSER_INV\n')
     dbinv = anydbm.open('data/TRACKUSER_INV.db','r')
+    if not dbinv.has_key(user):
+        return []
     out = dbinv[user].split(',')
     dbinv.close()
     #Log('DbGetMapsOfUser close db r TRACKUSER_INV\n')
@@ -371,6 +373,10 @@ def main():
     for k,v in l.iteritems():
         print '%s %s' % (k,v)
     DumpAllMaps()
+    for dbfile in os.listdir('data/'):
+        if dbfile.endswith('_INV.db'):
+            print dbfile
+            print DumpDb('data/%s' % dbfile)
     DumpDb('data/TRACKDESC_INV.db')
     DumpDb('data/STARTPOINT_INV.db')
 
