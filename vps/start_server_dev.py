@@ -442,12 +442,12 @@ def register():
         return render_template('register.html',error_message='Humain check error')
     if pwd1!=pwd2:
         return render_template('register.html',error_message='Password check error')
-    activation_id = ReserveUser(user,mail,pwd1)
+    activation_id = ReserveUser(user.encode('ascii'),mail.encode('ascii'),pwd1.encode('utf8'))
     SendActivationMail(mail,user,activation_id)
     return render_template('user_registered.html',user=user)
 
-@app.route('/activate/<user>/<activation_id>')
-def activate(activation_id):
+@app.route('/activate/<user>/<activationid>')
+def activate(user,activationid):
     """ Activate user given it's activation_id """
     try:
         ActivateUser(user,activationid)
@@ -486,7 +486,7 @@ def chksess(user,sess):
 
 @app.route('/resendpwd', methods=['POST'])
 def resendpwd():
-    user_mail = request.form['user_mail'].lower()
+    user_mail = request.form['user_mail'].encode('ascii').lower()
     humaincheck = request.form['humaincheck']
     if not CheckHumain(humaincheck):
         return render_template('resendpwd_error.html',error_message='Humain check error')
@@ -497,10 +497,26 @@ def resendpwd():
         return render_template('resendpwd_error.html',error_message=str(e))
     return render_template('resendpwd_ok.html',mail=mail)
 
+
+def retrievemap(mapid):
+    (lat,lon) = DbGet(mapid,'startpoint').split(',')
+    desc = DbGet(mapid,'trackdesc').decode('utf8')
+    startdate = DbGet(mapid,'date')
+    user = DbGet(mapid,'trackuser')
+    return {'mapid':mapid,'lat':lat,'lon':lon,'desc':desc,'date':startdate,'user':user}
+
 @app.route('/userhome/<user>')
 def userhome(user):
+    mapids = DbGetMapsOfUser(user.encode('ascii'))
+    return render_template('userhome.html',user=user,maps=map(retrievemap,mapids),GMapsApiKey2=keysnpwds['GMapsApiKey2'])
+
+@app.route('/mergemaps/<mapidslist>/<user>/<sess>')
+def mergemaps(mapidslist,user,sess):
     pass
 
+@app.route('/delmaps/<mapidslist>/<user>/<sess>')
+def merge(mapidslist,user,sess):
+    pass
 
 ## Prepare
 

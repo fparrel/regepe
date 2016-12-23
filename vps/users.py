@@ -223,6 +223,8 @@ def DumpUser(user):
 ## UNIT TESTS ##
 
 def main():
+    for userfile in os.listdir('data/users'):
+	    DumpUser(userfile[:-3])
     #GetUserByEmail('test')
     #DumpDb('MAIL_INV.db')
     #DumpUser('fredi')
@@ -236,7 +238,6 @@ def main():
     print CheckSession(user,session_id)
     print CheckSession(user,session_id2)
     print CheckSession(user,'lol')
-    DumpUser('fparrel2')
 
 if __name__=='__main__':
     main()

@@ -186,6 +186,7 @@ function setSessionCookie(user,sessid) {
 }
 
 function removeSessionCookie() {
+	//TODO: fixme
     var user_sess = getSessionFromCookie();
     if (user_sess.length>0) {
         var exdate=new Date();
