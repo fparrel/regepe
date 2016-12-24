@@ -11,7 +11,7 @@ import traceback
 from progress import GetProgress
 from users import CheckSession,Login,ActivateUser,SendActivationMail,ReserveUser,GetUserFromUserOrEmail,SendForgotPasswordMail
 import sys
-from orchestrator import BuildMap,ProcessTrkSegWithProgress
+from orchestrator import BuildMap,ProcessTrkSegWithProgress,BuildMapFromTrack
 from searchparser import SearchQueryParser
 from sets import Set
 from textutils import remove_accents
@@ -22,6 +22,7 @@ from options import options_default
 from dem import GetEleFromLatLon
 from computeprofile import ComputeProfile
 from demize import Demize
+from generate_id import uniqid
 
 def readKeysAndPasswords(filename):
     f=open(filename,'r')
@@ -429,6 +430,7 @@ def clearmaplist(mapid,pwd,ptliststr,user,sess):
 
 @app.route('/map/export/<mapid>')
 def exportmap(mapid):
+    # TODO: build it from client side
     pass
 
 @app.route('/map/demize/<int:index>/<mapid>/<pwd>',defaults={'user':None,'sess':None})
@@ -539,13 +541,68 @@ def userhome(user):
     mapids = DbGetMapsOfUser(user.encode('ascii'))
     return render_template('userhome.html',user=user,maps=map(retrievemap,mapids),GMapsApiKey2=keysnpwds['GMapsApiKey2'])
 
-@app.route('/mergemaps/<mapidslist>/<user>/<sess>')
-def mergemaps(mapidslist,user,sess):
-    pass
+@app.route('/mergemaps/<mapidsliststr>/<user>/<sess>')
+def mergemaps(mapidsliststr,user,sess):
+    if not CheckSession(user,sess):
+        message = 'Cannot identify user %s %s'%(user,sess)
+    else:
+        mapids = mapidsliststr.split(',')
+        ptlistmerged = {}
+        for mapid in mapids:
+            newmapid = uniqid()
+            Log("MergeCgi: parse map %s" % mapid,newmapid)
 
-@app.route('/delmaps/<mapidslist>/<user>/<sess>')
-def merge(mapidslist,user,sess):
-    pass
+            # Parse map
+            options,ptlist = ParseMap(mapid)
+            #TODO: merge options
+
+            # set right day if needed
+            if ptlist[0].datetime.year<=1980:
+                dfromdb = DbGet(mapid,'date')
+                if dfromdb:
+                    d = datetime.datetime.strptime(dfromdb,'%Y-%m-%d')
+                    for pt in ptlist:
+                        pt.datetime = pt.datetime.replace(year=d.year,month=d.month,day=d.day)
+
+            # append to dict
+            for pt in ptlist:
+                ptlistmerged[pt.datetime] = pt
+
+        ptlistmerged = ptlistmerged.values()
+        ptlistmerged.sort(key=lambda pt:pt.datetime)
+
+        Log("MergeCgi: rebuild: Track len=%d" % len(ptlistmerged),newmapid)
+
+        # Rebuild map
+        track = Track(ptlistmerged)
+        pwd = BuildMapFromTrack(track,newmapid,newmapid,'Result of merge',user,options)
+
+        Log("MergeCgi: finished",newmapid)
+
+        # Redirect to map
+        return redirect('/showmap/%s'%newmapid)
+
+@app.route('/delmaps/<mapidsliststr>/<user>/<sess>')
+def delmaps(mapidsliststr,user,sess):
+    if not CheckSession(user,sess):
+        message = 'Cannot identify user %s %s'%(user,sess)
+    else:
+        try:
+            mapids = mapidsliststr.split(',')
+            message = ''
+            for mapid in mapids:
+                map_user = DbGet(mapid,'trackuser')
+                if len(map_user)>0 and map_user==user:
+                    DbDelMap(mapid)
+                    os.remove('data/mapdata/%s.json.gz'%mapid)
+                    message += 'Map %s deleted. '%mapid
+                else:
+                    message += 'Map %s do not belong to you'%mapid
+                    break
+        except Exception, e:
+            message += 'Error: %s'%e
+    return render_template('map_deleted.html',message=message)
+
 
 ## Prepare
 
@@ -574,6 +631,7 @@ def profile(ptliststr,width,height):
 
 @app.route('/prepare/export/<format>/<ptlist>/<names>')
 def prepare_export(format,ptlist,names):
+    # TODO: build it from client side
     pass
 
 ## Program entry point
