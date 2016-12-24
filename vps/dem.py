@@ -1,14 +1,17 @@
+# Digital Elevation Model data reader
+# It need .hgt zipped files in dem/dem1 (for 1" resolution data) and in dem/dem3 (for 3" resolution data)
+# You can download data from http://www.viewfinderpanoramas.org
+# Alternatively, it can request data from geonames.org
 
 import anydbm
-from urllib import urlopen
 from log import Log
+import zipfile
+import struct
+import datetime
+from urllib import urlopen
 
 
-## Geonames.org functions ##
-
-#http://ws.geonames.org/astergdem?lats=50.01,50.02&lngs=10.2,10.3 (up to 20 pts)
-
-def GetEleFromLatLonFromServer(lat,lon):
+def GetEleFromServer(lat,lon):
     "Give elevation from latitude and longitude using geonames.org web service"
     query_str = 'http://api.geonames.org/astergdem?username=fredi&lat=%f&lng=%f' % (lat,lon)
     try:
@@ -18,105 +21,82 @@ def GetEleFromLatLonFromServer(lat,lon):
         raise Exception('Sorry, outage on DEM server, please resend the map without the DEM option checked')
     return ele
 
-def GetEleFromLatLon(lat,lon):
-    db = anydbm.open("data/DEM.db", "c")
-    dbkey = '%.4f,%.4f' % (lat,lon)
-    if db.has_key(dbkey):
-        if not db.has_key('stats_callcnt'):
-            db['stats_callcnt'] = '1'
-        else:
-            db['stats_callcnt'] = str(int(db['stats_callcnt'])+1)
-        ele = int(db[dbkey])
+
+data = {}
+
+#In dem1 an dem3 .hgt files, data is serialized as an array of 16 bits big endian signed integers line is longitude
+# column is latitude
+#unpack1 = 'h'*3601*3601
+#unpack3 = 'h'*1201*1201
+
+def GetEleFromDem(lat,lon):
+    ilat = int(lat)
+    ilon = int(lon)
+    if(lat>=0.0):
+        fnamelat = 'N%s'% (ilat)
     else:
-        ele = GetEleFromLatLonFromServer(lat,lon)
-        db[dbkey] = str(ele)
-    db.close()
+        fnamelat = 'S%s'% (-ilat)
+    if(lon>=0.0):
+        fnamelon = 'E%03d'% (ilon)
+    else:
+        fnamelon = 'W%03d'% (-ilon)
+    fname1='dem/dem1/%s%s.zip'%(fnamelat,fnamelon)
+    fname3='dem/dem3/%s%s.zip'%(fnamelat,fnamelon)
+    if data.has_key(fname1):
+        fname = fname1
+        demnb = 1
+    elif data.has_key(fname3):
+        fname = fname3
+        demnb = 3
+    else:
+        try:
+            zip = zipfile.ZipFile(fname1,'r')
+            demnb = 1
+        except Exception,e:
+            try:
+                zip = zipfile.ZipFile(fname3,'r')
+                demnb = 3
+            except:
+                return GetEleFromServer(lat,lon)
+        if demnb==1:
+            data[fname1] = zip.read(zip.namelist()[0])
+        else:
+            data[fname3] = zip.read(zip.namelist()[0])
+        zip.close()
+    #1 deg = 60 min = 3600 sec
+    if demnb==1:
+        la=int(3600.0-(lat-ilat)*3600.0)
+        lo=int((lon-ilon)*3600.0)
+        b=data[fname1][la*7202+lo*2:la*7202+lo*2+2]
+    else:
+        la=int(1200.0-(lat-ilat)*1200.0)
+        lo=int((lon-ilon)*1200.0)
+        b=data[fname3][la*2402+lo*2:la*2402+lo*2+2]
+    ele = struct.unpack('>h',b)[0]
     return ele
 
-def LogError(s):
-    f = open('dem.log','a')
-    f.write(s)
-    f.close()
-
-def PerformQuery(pts,retr_list,db):
-    
-    # Build Query String (ex: http://ws.geonames.org/astergdem?lats=45.01,45.02&lngs=7.2,7.3)
-    query_url = 'http://api.geonames.org/astergdem?username=fredi&lats=' + ','.join(map(lambda (lat,lon,index_pts): '%.4f' % lat,retr_list)) + '&lngs=' + ','.join(map(lambda (lat,lon,index_pts): '%.4f' % lon,retr_list))
-    
-    # Perform HTTP request
-    try:
-        retr_eles = map(int,urlopen(query_url).read()[:-2].split('\r\n'))
-    except:
-        LogError('DEM server returned: %s\n' % urlopen(query_url).read())
-        #raise Exception('DEM server returned: %s' % urlopen(query_url).read())
-        #DEM Server error->keep current elevations
-        return
-    
-    # Update elevations of bufferized points
-    index_retr_eles = 0
-    for lat,lon,index_pts_inner_loop in retr_list:
-        
-        pts[index_pts_inner_loop].ele = retr_eles[index_retr_eles]
-        
-        # Put data in cache
-        db['%.4f,%.4f' % (lat,lon)] = str(retr_eles[index_retr_eles])
-        
-        index_retr_eles+=1
+def GetEleFromLatLon(lat,lon):
+    return GetEleFromDem(lat,lon)
 
 
 # Input/Output: pts: objects with lat and lon attributes, ele will be set (or overwritten)
 # Return: none
 def GetEleFromLatLonList(pts,interpolate=True):
-    
-    Log('GetEleFromLatLonList nbpts=%s' % len(pts))
-    
-    # Open cache for r/w (create if file don't yet exists)
-    db = anydbm.open("data/DEM.db", "c")
-    
-    # List of (lat,lon,index) for building query string
-    retr_list = []
-    
-    # Counter for saving the index in pts list
-    index_pts = 0
-    
+
+    Log('GetEleFromLatLonList nbpts=%s\n' % len(pts))
+
     for pt in pts:
-        
-        # Check if data is already on cache
-        db_key = '%.4f,%.4f' % (pt.lat,pt.lon)
-        if db.has_key(db_key):
-            
-            # Get data from cache
-            pt.ele = int(db[db_key])
-            
-        else:
-            
-            # Add in retr_list
-            retr_list.append((pt.lat,pt.lon,index_pts))
-            
-            if len(retr_list)==20:
-                
-                PerformQuery(pts,retr_list,db)
-                
-                # Empty retrieve list
-                retr_list = []
-                
-        index_pts+=1
-    
-    # Perform query for last retr_list
-    if len(retr_list)>1:
-        PerformQuery(pts,retr_list,db)
-    
-    # Flush and close cache
-    db.close()
-    
+        pt.ele = GetEleFromDem(pt.lat,pt.lon)
+        # TODO: bufferize buffer
+
     if interpolate:
-        
+
         # Interpolate
         curele = pts[0].ele
         curidx = 0
         for i in range(0,len(pts)):
             if pts[i].ele!=curele:
-                
+
                 # build linear interpolation
                 for j in range(curidx+1,i):
                     pts[j].ele = int(float(pts[curidx].ele) + float(j-curidx)*float(pts[i].ele-pts[curidx].ele)/float(i-curidx))
@@ -126,31 +106,10 @@ def GetEleFromLatLonList(pts,interpolate=True):
 
 ## UNIT TEST CODE ##
 
-def DumpDemDb():
-    db = anydbm.open("DEM.db", "r")
-    for k,v in db.iteritems():
-        print('%s %s' % (k,v))
-    db.close()
-
-def TestCase1():
-	print(GetEleFromLatLon(43.8467283,7.1270533))
-	print(GetEleFromLatLon(43.8467250,7.1270500))
-	print(GetEleFromLatLon(43.8549017,7.1351717))
-
-def PrintStatsCallCnt():
-	db = anydbm.open("DEM.db", "r")
-	if not db.has_key('stats_callcnt'):
-		print('0')
-	else:
-		print(db['stats_callcnt'])
-	db.close()
-
-
 def main():
-	PrintStatsCallCnt()
-	TestCase1()
-	DumpDemDb()
-	raw_input('Press Enter')
+    print GetEleFromDem(47.5,6.5)
+    print GetEleFromDem(47.5,6.6)
+    print GetEleFromDem(36.5,-6.2)
 
 if __name__ == '__main__':
    main()
