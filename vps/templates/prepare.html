@@ -544,19 +544,14 @@ function onComputeProfileAnswer() {
 	if (this.readyState == 4) {
 		if (this.status == 200) {
             document.getElementById('compprofileloading').style.display='none';
-            //document.getElementById('profile_title').innerHTML = '<b>Elevation in meters against distance in meters</b>';
             var res = this.responseText.split("\n");
-            //document.getElementById('chartimg').src = res[0];
-            //document.getElementById('chartimg').style.width="800px";
-            //document.getElementById('chartimg').style.height="200px";
-            eles = res[1].split(',');
+            eles = res[0].split(',');
             eles = eles.map(returnInt);
-            dists = res[2].split(',');
+            dists = res[1].split(',');
             dists = dists.map(parseFloat);
-            //marginsize = parseInt(res[3]);
-            pt2px = res[4].split(',');
+            pt2px = res[2].split(',');
             pt2px = pt2px.map(returnInt);
-            ptinput2px = res[5].split(',');
+            ptinput2px = res[3].split(',');
             ptinput2px = ptinput2px.map(returnInt);
             refreshGraphDetail();
         }
