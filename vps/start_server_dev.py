@@ -19,6 +19,9 @@ from log import Log
 from mapparser import ParseMap
 from model import Track
 from options import options_default
+from dem import GetEleFromLatLon
+from computeprofile import ComputeProfile
+from demize import Demize
 
 def readKeysAndPasswords(filename):
     f=open(filename,'r')
@@ -375,14 +378,15 @@ def delmap(mapid,pwd,user,sess):
         message = str(e)
     return render_template('map_deleted.html',message=message)
 
-@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
-@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
-def cropmap(mapid,pwd,pt1,pt2,user,sess):
+
+def modifymap(mapid,pwd,user,sess,modifyfunction):
     try:
+        # Authentificate
         auth(mapid,pwd,user,sess)
+        # Parse map
         options, ptlist = ParseMap(mapid)
-        startpointchanged = (pt1==0)
-        ptlist = ptlist[pt1:pt2]
+        # Apply modifications
+        ptlist,startpointchanged = modifyfunction(ptlist)
         # Rebuild map
         track = Track(ptlist)
         ProcessTrkSegWithProgress(track,mapid,mapid,True,options)
@@ -401,24 +405,49 @@ def cropmap(mapid,pwd,pt1,pt2,user,sess):
     else:
         return render_template('map_action_error.html',message=message,mapid=mapid)
 
-@app.route('/map/clear/<mapid>/<pwd>/<pt1>/<pt2>',defaults={'user':None,'sess':None})
-@app.route('/map/clear/<mapid>/<pwd>/<pt1>/<pt2>/<user>/<sess>')
-def clearmap(mapid,pwd,pt1,pt2,user,sess):
-    pass
+@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
+@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
+def cropmap(mapid,pwd,pt1,pt2,user,sess):
+    return modifymap(mapid,pwd,user,sess,lambda ptlist: (ptlist[pt1:pt2],pt1!=0))
 
-@app.route('/map/clearlist/<mapid>/<pwd>/<ptlist>',defaults={'user':None,'sess':None})
-@app.route('/map/clearlist/<mapid>/<pwd>/<ptlist>/<user>/<sess>')
-def clearmaplist(mapid,pwd,ptlist,user,sess):
-    pass
+@app.route('/map/clear/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
+@app.route('/map/clear/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
+def clearmap(mapid,pwd,pt1,pt2,user,sess):
+    return modifymap(mapid,pwd,user,sess,lambda ptlist: (ptlist[:pt1]+ptlist[pt2:],pt1==0))
+
+def removepoints(ptlist,ptidxtodel):
+    l=range(0,len(ptlist))
+    for i in ptidxtodel:
+        l.remove(i)
+    return ([ptlist[i] for i in l],0 in ptidxtodel)
+
+@app.route('/map/clearlist/<mapid>/<pwd>/<ptliststr>',defaults={'user':None,'sess':None})
+@app.route('/map/clearlist/<mapid>/<pwd>/<ptliststr>/<user>/<sess>')
+def clearmaplist(mapid,pwd,ptliststr,user,sess):
+    ptidxtodel = map(int,ptliststr.split(','))
+    return modifymap(mapid,pwd,user,sess,lambda ptlist: removepoints(ptlist,ptidxtodel))
 
 @app.route('/map/export/<mapid>')
 def exportmap(mapid):
     pass
 
-@app.route('/map/demize/<index>/<mapid>/<pwd>',defaults={'user':None,'sess':None})
-@app.route('/map/demize/<index>/<mapid>/<pwd>/<user>/<sess>')
+@app.route('/map/demize/<int:index>/<mapid>/<pwd>',defaults={'user':None,'sess':None})
+@app.route('/map/demize/<int:index>/<mapid>/<pwd>/<user>/<sess>')
 def demize(index,mapid,pwd,user,sess):
-    pass
+    try:
+        # Authentificate
+        auth(mapid,pwd,user,sess)
+        # Start/continue/finish DEMization. index is current point index, l is total number of points in map
+        index,l = Demize(index,mapid)
+        # Format answer
+        if index==0:
+            answer = '<answer><result>Done</result></answer>'
+        else:
+            percent = index * 100 / l
+            answer = '<answer><result>OK</result><nextindex>%s</nextindex><percent>%s</percent></answer>' % (index,percent)
+    except Exception, e:
+        answer = '<answer><result>%s</result></answer>' % e
+    return Response('<?xml version="1.0" encoding="UTF-8"?>\n%s'%answer,mimetype='text/xml')
 
 
 ## User services
@@ -527,13 +556,21 @@ def merge(mapidslist,user,sess):
 def prepare(map_type,pts,names):
     return render_template('prepare.html',map_type=map_type,GMapsApiKey2=keysnpwds['GMapsApiKey2'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
-@app.route('/ele/<lat>/<lon>')
+@app.route('/ele/<float:lat>/<float:lon>')
 def getele(lat,lon):
-    return Response('0', mimetype='text/plain')
+    return Response('%d'%GetEleFromLatLon(lat,lon), mimetype='text/plain')
 
-@app.route('/profile/<ptlist>/<width>/<height>')
-def profile(ptlist,width,height):
-    pass
+def PtStr2FloatArray(ptstr):
+    out = ptstr.split(',')
+    return (float(out[0]),float(out[1]))
+
+@app.route('/profile/<ptliststr>/<width>/<height>')
+def profile(ptliststr,width,height):
+    ptlist = map(PtStr2FloatArray,ptliststr.split('~'))
+    if(len(ptlist)<2):
+        return Response('Error: Cannot compute profile for only one point', mimetype='text/plain')
+    nbpts = 400
+    return Response('\n'.join(map(str,ComputeProfile(ptlist,nbpts,width,height))), mimetype='text/plain')
 
 @app.route('/prepare/export/<format>/<ptlist>/<names>')
 def prepare_export(format,ptlist,names):
