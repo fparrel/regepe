@@ -82,7 +82,13 @@ function onReadystatechange() {
             var i;
             for (i=0;i<maps.length;i++) {
                 var mapid = maps[i].getAttribute('mapid');
-                var desc = maps[i].childNodes[0].nodeValue;
+				var desc;
+				if(typeof(maps[i].childNodes[0])!='undefined') {
+					desc = maps[i].childNodes[0].nodeValue;
+				}
+				else {
+					desc = '';
+				}
                 var startdate = maps[i].getAttribute('date');
                 var lat = maps[i].getAttribute('lat');
                 var lon = maps[i].getAttribute('lon');
