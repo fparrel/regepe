@@ -23,19 +23,12 @@ from dem import GetEleFromLatLon
 from computeprofile import ComputeProfile
 from demize import Demize
 from generate_id import uniqid
+from config import keysnpwds
 
-def readKeysAndPasswords(filename):
-    f=open(filename,'r')
-    k = json.load(f)
-    f.close()
-    return k
 
 # Create flask app
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
-
-# Load keys and password
-keysnpwds=readKeysAndPasswords('config/keysnpwds-test.json')
 
 
 ## Index page
