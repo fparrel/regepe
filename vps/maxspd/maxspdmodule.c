@@ -1,5 +1,8 @@
 #include <Python.h>
 #include <stdio.h>
+#define MAXSPD_FMT "(d,d,i,i,i)"
+#define MAXSPDS_FMT MAXSPD_FMT MAXSPD_FMT MAXSPD_FMT MAXSPD_FMT MAXSPD_FMT MAXSPD_FMT
+#define NB_MAXSPD 6
 
 static PyObject *
 maxspd_tst(PyObject *self, PyObject *args)
@@ -14,11 +17,19 @@ maxspd_tst(PyObject *self, PyObject *args)
    printf("\n");
 }
 
+struct MaxSpd {
+	double spd;
+	double dst;
+	int t;
+	int from;
+	int to;
+};
+
 static PyObject *
 maxspd_compute(PyObject *self, PyObject *args)
 {
 	PyObject *objtms,*objdsts,*objeles;
-	int sts;
+	int flat = 0;
 
     if (!PyArg_ParseTuple(args, "OO|O", &objtms,&objdsts,&objeles))
         return NULL;
@@ -113,12 +124,25 @@ maxspd_compute(PyObject *self, PyObject *args)
 		eles[i] = v;
 		i++;
 	}
+	struct MaxSpd maxspds_htime[NB_MAXSPD];
+	struct MaxSpd maxspds_hdst[NB_MAXSPD];
+	struct MaxSpd maxspds_vtime[NB_MAXSPD];
+	struct MaxSpd maxspds_vdst[NB_MAXSPD];
+	memset(maxspds_htime,0,NB_MAXSPD*sizeof(struct MaxSpd));
+	memset(maxspds_hdst,0,NB_MAXSPD*sizeof(struct MaxSpd));
+	memset(maxspds_vtime,0,NB_MAXSPD*sizeof(struct MaxSpd));
+	memset(maxspds_vdst,0,NB_MAXSPD*sizeof(struct MaxSpd));
+
 	//TODO
-	
+
 	free(tms);
 	free(dsts);
 	free(eles);
-    return Py_BuildValue("i", 42);
+
+	if(!flat) {
+		return Py_BuildValue(MAXSPDS_FMT MAXSPDS_FMT MAXSPDS_FMT MAXSPDS_FMT, maxspds_htime, maxspds_hdst, maxspds_vtime, maxspds_vdst);
+	}
+	return Py_BuildValue(MAXSPDS_FMT MAXSPDS_FMT, maxspds_htime, maxspds_hdst);
 }
 
 
