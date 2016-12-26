@@ -1,0 +1,9 @@
+maxspdmodule: maxspdmodule.o
+	gcc -shared -o maxspd.dll maxspdmodule.o -lpython2.7
+
+maxspdmodule.o: maxspdmodule.c
+	gcc -c maxspdmodule.c -I/usr/include/python2.7/
+
+clean:
+	rm *.o
+	rm *.dll
