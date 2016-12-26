@@ -88,6 +88,7 @@ class Figures:
             maxspdsdist_vert = [[MaxSpdZero for i in range(0,nbmax)] for i in range(0,len(Figures.max_spd_dists_vert))]
             maxspdstime_vert = [[MaxSpdZero for i in range(0,nbmax)] for i in range(0,len(Figures.max_spd_times_vert))]
 
+        maxelediff = max(eles)-min(eles)
         Log('computeMaxSpeeds: start loop')
         for i in range(0,len(self.trkseg.ptlist)):
 
@@ -112,20 +113,22 @@ class Figures:
             if not self.options['flat']:
                 # Vertical over time
                 for maxspds_idx in range(0,len(maxspdstime_vert)):
-                    for j in range(i,len(self.trkseg.ptlist)):
-                        if TimeDeltaToSeconds(tms[j]-tms[i])>=Figures.max_spd_times_vert[maxspds_idx]:
-                            spd = (eles[j]-eles[i])/TimeDeltaToSeconds(tms[j]-tms[i])
-                            if spd>maxspdstime_vert[maxspds_idx][-1].spd:
-                                self.addMaxSpeed(MaxSpd(spd,(eles[j]-eles[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdstime_vert[maxspds_idx])
-                            break
+                    if maxelediff>Figures.max_spd_times_vert[maxspds_idx]:
+                        for j in range(i,len(self.trkseg.ptlist)):
+                            if TimeDeltaToSeconds(tms[j]-tms[i])>=Figures.max_spd_times_vert[maxspds_idx]:
+                                spd = (eles[j]-eles[i])/TimeDeltaToSeconds(tms[j]-tms[i])
+                                if spd>maxspdstime_vert[maxspds_idx][-1].spd:
+                                    self.addMaxSpeed(MaxSpd(spd,(eles[j]-eles[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdstime_vert[maxspds_idx])
+                                break
                 # Vertical over distance
                 for maxspds_idx in range(0,len(maxspdsdist_vert)):
-                    for j in range(i,len(self.trkseg.ptlist)):
-                        if eles[j]-eles[i]>=Figures.max_spd_dists_vert[maxspds_idx]:
-                            spd = (eles[j]-eles[i])/TimeDeltaToSeconds(tms[j]-tms[i])
-                            if spd>maxspdsdist_vert[maxspds_idx][-1].spd:
-                                self.addMaxSpeed(MaxSpd(spd,(eles[j]-eles[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdsdist_vert[maxspds_idx])
-                            break
+                    if maxelediff>Figures.max_spd_dists_vert[maxspds_idx]:
+                        for j in range(i,len(self.trkseg.ptlist)):
+                            if eles[j]-eles[i]>=Figures.max_spd_dists_vert[maxspds_idx]:
+                                spd = (eles[j]-eles[i])/TimeDeltaToSeconds(tms[j]-tms[i])
+                                if spd>maxspdsdist_vert[maxspds_idx][-1].spd:
+                                    self.addMaxSpeed(MaxSpd(spd,(eles[j]-eles[i]),TimeDeltaToSeconds(tms[j]-tms[i]),self.trkseg.ptlist[i],self.trkseg.ptlist[j],i,j,GeodeticCourse(self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon,self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon),"vert"),maxspdsdist_vert[maxspds_idx])
+                                break
 
         Log('computeMaxSpeeds: return results')
         # Return output merged without the zeros
