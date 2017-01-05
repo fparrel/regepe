@@ -52,7 +52,7 @@ def index(limit):
                 break
         if(limit>-1) and (cptr>limit):
             break
-    return render_template('index.html',limit=limit,maps=mapsout,GMapsApiKey2=keysnpwds['GMapsApiKey2'])
+    return render_template('index.html',limit=limit,maps=mapsout,GMapsApiKey=keysnpwds['GMapsApiKey'])
 
 
 ## Thumbnails
@@ -113,7 +113,7 @@ def showmap(mapid,map_type):
     _mapdb={}
     for key in mapdb:
         _mapdb[key] = mapdb[key].decode('utf-8') # We must convert each utf8 string into unicode for jinja2
-    out = render_template('showmap.html',mapid=mapid,type=map_type,mapdb=_mapdb,mapdata=mapdata,GMapsApiKey2=keysnpwds['GMapsApiKey2'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
+    out = render_template('showmap.html',mapid=mapid,type=map_type,mapdb=_mapdb,mapdata=mapdata,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
     mapdb.close()
     return out
 
@@ -200,7 +200,7 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
 
 @app.route('/submitform')
 def submitform():
-    return render_template('submitform.html',GMapsApiKey2=keysnpwds['GMapsApiKey2'])
+    return render_template('submitform.html',GMapsApiKey=keysnpwds['GMapsApiKey'])
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -318,7 +318,7 @@ def userinfo(user):
 
 @app.route('/mapofmaps')
 def mapofmaps():
-    return render_template('mapofmaps.html',GMapsApiKey2=keysnpwds['GMapsApiKey2'])
+    return render_template('mapofmaps.html',GMapsApiKey=keysnpwds['GMapsApiKey'])
 
 def map_search_result2(lat,lon,mapid):
     trackdesc = DbGet(mapid,'trackdesc')
@@ -532,7 +532,7 @@ def retrievemap(mapid):
 @app.route('/userhome/<user>')
 def userhome(user):
     mapids = DbGetMapsOfUser(user.encode('ascii'))
-    return render_template('userhome.html',user=user,maps=map(retrievemap,mapids),GMapsApiKey2=keysnpwds['GMapsApiKey2'])
+    return render_template('userhome.html',user=user,maps=map(retrievemap,mapids),GMapsApiKey=keysnpwds['GMapsApiKey'])
 
 @app.route('/mergemaps/<mapidsliststr>/<user>/<sess>')
 def mergemaps(mapidsliststr,user,sess):
@@ -604,7 +604,7 @@ def delmaps(mapidsliststr,user,sess):
 @app.route('/prepare/<map_type>/<pts>',defaults={'names':None})
 @app.route('/prepare/<map_type>/<pts>/<names>')
 def prepare(map_type,pts,names):
-    return render_template('prepare.html',map_type=map_type,GMapsApiKey2=keysnpwds['GMapsApiKey2'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
+    return render_template('prepare.html',map_type=map_type,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
 @app.route('/ele/<float:lat>/<float:lon>')
 def getele(lat,lon):
