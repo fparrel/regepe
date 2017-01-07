@@ -35,11 +35,12 @@ table { border-collapse:collapse;}
 			</div>
 			<div id="header_login">
 				<form action="">
-					<div>User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
-					Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
-					<input type="button" value="Login" onclick="onLoginClick();"/><br/>
-					<a href="/registerform">Register</a> |
-					<a href="/static/forgotpwd.html">Forgot password?</a>
+					<div>
+						User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+						Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+						<input type="button" value="Login" onclick="onLoginClick();"/><br/>
+						<a href="/registerform">Register</a> |
+						<a href="/static/forgotpwd.html">Forgot password?</a>
 					</div>
 				</form>
 			</div>
@@ -51,7 +52,7 @@ table { border-collapse:collapse;}
 			<div style="width:50%; overflow:auto; position: absolute; height: 100%;">
 				<table><thead></thead><tbody>
 {% for map in maps %}
-	<tr id="row{{ map.mapid }}" style="cursor:pointer;" onclick="changePreview('{{ map.mapid }}',{{ map.lat }},{{ map.lon }},'{{ map.desc }}')"><td><input class="chkbx" type="checkbox" name="chkbx{{ map.mapid }}"/></td><td>{{ map.date }}</td><td>{{ map.desc }}</td><td style="font-size:10px;"><a href="/showmap/{{ map.mapid }}">View</a></tr>
+					<tr id="row{{ map.mapid }}" style="cursor:pointer;" onclick="changePreview('{{ map.mapid }}',{{ map.lat }},{{ map.lon }},'{{ map.desc }}')"><td><input class="chkbx" type="checkbox" name="chkbx{{ map.mapid }}"/></td><td>{{ map.date }}</td><td>{{ map.desc }}</td><td style="font-size:10px;"><a href="/showmap/{{ map.mapid }}">View</a></tr>
 {% endfor %}
 				</tbody></table>
 			</div>
