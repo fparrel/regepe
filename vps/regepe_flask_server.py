@@ -303,9 +303,16 @@ def search(search_req):
 
 ## Show user
 
+def map_retrieve_infos_showuser(mapid):
+    trackdesc = DbGet(mapid,'trackdesc').decode('utf8')
+    startdate = DbGet(mapid,'date')
+    return {'mapid':mapid,'desc':trackdesc,'date':startdate}
+
 @app.route('/showuser/<user>')
 def showuser(user):
-    return render_template('showuser.html',user=user)
+    mapids = DbGetMapsOfUser(user.encode('ascii'))
+    maps = map(map_retrieve_infos_showuser,mapids)
+    return render_template('showuser.html',user=user,maps=maps)
 
 @app.route('/userinfo/<user>')
 def userinfo(user):
