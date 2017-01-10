@@ -140,7 +140,7 @@ Switch to: {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google
       </div>
     </div>
     <div id="figures" class="rightofmap">
-{% if mapdata.figures.top10spd %}
+{% if mapdata.figures.top10spd and not mapdata.maxspd %}
 		<h3 onclick="toogleHideShow(\'top10speeds\');">Top10 speeds</h3><div class="box" id="top10speeds"><ul>
 	{% for spd in mapdata.figures.top10spd %}
 			<li><a href="javascript:void(0);" onclick="refreshCurrentPoint({{ spd.ptidx }})">{{ spd.when }}</a> - {{ spd.spd }}</li>
