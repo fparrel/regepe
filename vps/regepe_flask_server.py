@@ -26,15 +26,15 @@ from generate_id import uniqid
 from config import keysnpwds
 
 
-# Create flask app
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
+# Create flask application
+application = Flask(__name__)
+application.config['UPLOAD_FOLDER'] = 'uploads'
 
 
 ## Index page
 
-@app.route('/',defaults={'limit':10})
-@app.route('/indexall',defaults={'limit':-1})
+@application.route('/',defaults={'limit':10})
+@application.route('/indexall',defaults={'limit':-1})
 def index(limit):
     maplist = DbGetListOfDates()
     cptr = 0
@@ -62,7 +62,7 @@ if not os.path.isdir('data'):
 if not os.path.isdir('data/thumbnail_cache'):
 	os.mkdir('data/thumbnail_cache')
 
-@app.route('/thumbnail/<mapid>')
+@application.route('/thumbnail/<mapid>')
 def thumbnail(mapid):
     filename='data/thumbnail_cache/%s.png'%mapid
     if os.path.isfile(filename):
@@ -98,8 +98,8 @@ def thumbnail(mapid):
 
 ## Show map
 
-@app.route('/showmap/<mapid>', defaults={'map_type': None})
-@app.route('/showmap/<mapid>/<map_type>')
+@application.route('/showmap/<mapid>', defaults={'map_type': None})
+@application.route('/showmap/<mapid>/<map_type>')
 def showmap(mapid,map_type):
     # Read map data
     f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
@@ -117,7 +117,7 @@ def showmap(mapid,map_type):
     mapdb.close()
     return out
 
-@app.route('/mapdata/<mapid>')
+@application.route('/mapdata/<mapid>')
 def mapdata(mapid):
     # Read map data
     f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
@@ -125,12 +125,12 @@ def mapdata(mapid):
     f.close()
     return Response(render_template('mapdata.js',mapdata=mapfromfile,chartdata=json.dumps(mapfromfile['chartdata'])), mimetype='text/javascript')
 
-@app.route('/comments/<mapid>')
+@application.route('/comments/<mapid>')
 def comments(mapid):
     comments = DbGetComments(mapid)
     return Response('<?xml version="1.0" encoding="UTF-8"?><result>%s</result>' % ''.join(map(lambda comment: '<comment user="%s" date="%s">%s</comment>' % (comment[1],comment[0],comment[2]),comments)), mimetype='text/xml')
 
-@app.route('/sendcomment/<mapid>/<comment>')
+@application.route('/sendcomment/<mapid>/<comment>')
 def sendcomment(mapid,comment):
     try:
         user = 'unknown'
@@ -156,12 +156,12 @@ def sendcomment(mapid,comment):
     out = '<?xml version="1.0" encoding="UTF-8"?>\n<result>%s</result>'%result
     return Response(out, mimetype='text/xml')
 
-@app.route('/nearmaps/<mapid>')
+@application.route('/nearmaps/<mapid>')
 def nearmaps(mapid):
     lat,lon = map(float,DbGet(mapid,'startpoint').split(','))
     return '{'+','.join(['"%s":%s' % (_mapid,json.dumps(DbGetMulitple(_mapid,('startpoint','trackdesc','trackuser','date')))) for _mapid in filter(lambda mid: mid!=mapid,DbGetNearbyPoints(lat,lon))])+'}'
 
-@app.route('/dbget/<mapid>/<element>')
+@application.route('/dbget/<mapid>/<element>')
 def dbget(mapid,element):
     try:
         val = DbGet(mapid,element.encode('ascii'))
@@ -172,8 +172,8 @@ def dbget(mapid,element):
     out = '<?xml version="1.0" encoding="UTF-8"?>\n<answer><message>%s</message><pageelementid>%s</pageelementid><value>%s</value></answer>' % (message,element,val)
     return Response(out, mimetype='text/xml')
 
-@app.route('/dbput/<mapid>/<pwd>/<ele>/<val>',defaults={'user':None,'sess':-1})
-@app.route('/dbput/<mapid>/<pwd>/<ele>/<val>/<user>/<sess>')
+@application.route('/dbput/<mapid>/<pwd>/<ele>/<val>',defaults={'user':None,'sess':-1})
+@application.route('/dbput/<mapid>/<pwd>/<ele>/<val>/<user>/<sess>')
 def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
     try:
         if user!=None and sess!=-1:
@@ -198,11 +198,11 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
 
 ## Send map
 
-@app.route('/submitform')
+@application.route('/submitform')
 def submitform():
     return render_template('submitform.html',GMapsApiKey=keysnpwds['GMapsApiKey'])
 
-@app.route('/upload', methods=['POST'])
+@application.route('/upload', methods=['POST'])
 def upload():
     # Get submit_id
     submit_id = request.form['submit_id'].encode('ascii')
@@ -213,10 +213,10 @@ def upload():
     i=0
     for file in request.files.getlist("file[]"):
         # Save each uploaded file
-        if not os.path.isdir(app.config['UPLOAD_FOLDER']):
-            os.mkdir(app.config['UPLOAD_FOLDER'])
+        if not os.path.isdir(application.config['UPLOAD_FOLDER']):
+            os.mkdir(application.config['UPLOAD_FOLDER'])
         Log('Saving file',submit_id)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('%s_%s.gpx'%(submit_id,i))))
+        file.save(os.path.join(application.config['UPLOAD_FOLDER'], secure_filename('%s_%s.gpx'%(submit_id,i))))
         i+=1
         inputfile.append(file)
     # In case of import from URL
@@ -264,7 +264,7 @@ def upload():
     location.href=\'/showmap/%(mapid)s\';
     </script>'''% {'mapid':submit_id,'pwd':pwd}
 
-@app.route('/getprogress/<submitid>')
+@application.route('/getprogress/<submitid>')
 def getprogress(submitid):
     return GetProgress(submitid.encode('ascii')).encode('ascii')
 
@@ -290,7 +290,7 @@ def map_search_result(mapid):
         desc = trackdesc
     return('<map mapid="%s" lat="%s" lon="%s" date="%s" user="%s">%s</map>' % (mapid,lat,lon,startdate,trackuser,desc))
 
-@app.route('/search/<search_req>')
+@application.route('/search/<search_req>')
 def search(search_req):
     try:
         req = remove_accents(search_req.encode('utf8').lower(),'utf-8')
@@ -308,13 +308,13 @@ def map_retrieve_infos_showuser(mapid):
     startdate = DbGet(mapid,'date')
     return {'mapid':mapid,'desc':trackdesc,'date':startdate}
 
-@app.route('/showuser/<user>')
+@application.route('/showuser/<user>')
 def showuser(user):
     mapids = DbGetMapsOfUser(user.encode('ascii'))
     maps = map(map_retrieve_infos_showuser,mapids)
     return render_template('showuser.html',user=user,maps=maps)
 
-@app.route('/userinfo/<user>')
+@application.route('/userinfo/<user>')
 def userinfo(user):
     mapids = DbGetMapsOfUser(user.encode('ascii'))
     out = '<maps>%s</maps>'%''.join(map(map_search_result,mapids))
@@ -323,7 +323,7 @@ def userinfo(user):
 
 ## Browse maps
 
-@app.route('/mapofmaps')
+@application.route('/mapofmaps')
 def mapofmaps():
     return render_template('mapofmaps.html',GMapsApiKey=keysnpwds['GMapsApiKey'])
 
@@ -341,7 +341,7 @@ def latlonmapids2xml(latlonmapids):
     lat,lon,mapids = latlonmapids
     return '<maps lat="%.4f" lon="%.4f">%s</maps>' % (lat,lon,''.join(map(lambda mapid:map_search_result2(lat,lon,mapid),mapids)))
 
-@app.route('/getmaplist')
+@application.route('/getmaplist')
 def getmaplist():
     latlonmapidss = DbGetAllMaps()
     out = '<results>%s</results>' % ''.join(map(latlonmapids2xml,latlonmapidss))
@@ -365,8 +365,8 @@ def auth(mapid,pwd,user,sess):
         if not DbChkPwd(mapid,pwd):
             raise Exception('You do not have the map\'s password in your browser\'s cookies')
 
-@app.route('/delmap/<mapid>/<pwd>',defaults={'user':None,'sess':None})
-@app.route('/delmap/<mapid>/<pwd>/<user>/<sess>')
+@application.route('/delmap/<mapid>/<pwd>',defaults={'user':None,'sess':None})
+@application.route('/delmap/<mapid>/<pwd>/<user>/<sess>')
 def delmap(mapid,pwd,user,sess):
     try:
         auth(mapid,pwd,user,sess)
@@ -406,13 +406,13 @@ def modifymap(mapid,pwd,user,sess,modifyfunction):
     else:
         return render_template('map_action_error.html',message=message,mapid=mapid)
 
-@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
-@app.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
+@application.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
+@application.route('/map/crop/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
 def cropmap(mapid,pwd,pt1,pt2,user,sess):
     return modifymap(mapid,pwd,user,sess,lambda ptlist: (ptlist[pt1:pt2],pt1!=0))
 
-@app.route('/map/clear/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
-@app.route('/map/clear/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
+@application.route('/map/clear/<mapid>/<pwd>/<int:pt1>/<int:pt2>',defaults={'user':None,'sess':None})
+@application.route('/map/clear/<mapid>/<pwd>/<int:pt1>/<int:pt2>/<user>/<sess>')
 def clearmap(mapid,pwd,pt1,pt2,user,sess):
     return modifymap(mapid,pwd,user,sess,lambda ptlist: (ptlist[:pt1]+ptlist[pt2:],pt1==0))
 
@@ -422,19 +422,19 @@ def removepoints(ptlist,ptidxtodel):
         l.remove(i)
     return ([ptlist[i] for i in l],0 in ptidxtodel)
 
-@app.route('/map/clearlist/<mapid>/<pwd>/<ptliststr>',defaults={'user':None,'sess':None})
-@app.route('/map/clearlist/<mapid>/<pwd>/<ptliststr>/<user>/<sess>')
+@application.route('/map/clearlist/<mapid>/<pwd>/<ptliststr>',defaults={'user':None,'sess':None})
+@application.route('/map/clearlist/<mapid>/<pwd>/<ptliststr>/<user>/<sess>')
 def clearmaplist(mapid,pwd,ptliststr,user,sess):
     ptidxtodel = map(int,ptliststr.split(','))
     return modifymap(mapid,pwd,user,sess,lambda ptlist: removepoints(ptlist,ptidxtodel))
 
-@app.route('/map/export/<mapid>')
+@application.route('/map/export/<mapid>')
 def exportmap(mapid):
     # TODO: build it from client side
     pass
 
-@app.route('/map/demize/<int:index>/<mapid>/<pwd>',defaults={'user':None,'sess':None})
-@app.route('/map/demize/<int:index>/<mapid>/<pwd>/<user>/<sess>')
+@application.route('/map/demize/<int:index>/<mapid>/<pwd>',defaults={'user':None,'sess':None})
+@application.route('/map/demize/<int:index>/<mapid>/<pwd>/<user>/<sess>')
 def demize(index,mapid,pwd,user,sess):
     try:
         # Authentificate
@@ -457,12 +457,12 @@ def demize(index,mapid,pwd,user,sess):
 def CheckHumain(humaincheck):
     return ((humaincheck.strip().lower()=='earth')or(humaincheck.strip().lower()=='the earth'))
 
-@app.route('/registerform')
+@application.route('/registerform')
 def registerform():
     """ Display register form """
     return render_template('register.html')
 
-@app.route('/register', methods=['POST'])
+@application.route('/register', methods=['POST'])
 def register():
     mail = request.form['mail'].lower()
     user = request.form['user'].lower()
@@ -477,7 +477,7 @@ def register():
     SendActivationMail(mail,user,activation_id)
     return render_template('user_registered.html',user=user)
 
-@app.route('/activate/<user>/<activationid>')
+@application.route('/activate/<user>/<activationid>')
 def activate(user,activationid):
     """ Activate user given it's activation_id """
     try:
@@ -486,7 +486,7 @@ def activate(user,activationid):
         return render_template('user_activate_error.html',message=str(e))
     return render_template('user_activated.html',user=user)
 
-@app.route('/login/<user>/<pwd>')
+@application.route('/login/<user>/<pwd>')
 def login(user,pwd):
     """ Check login/password return sesssion_id """
     try:
@@ -500,7 +500,7 @@ def login(user,pwd):
     out = '<result><user>%s</user><sess>%s</sess></result>' % (user,sessid)
     return Response(out, mimetype='text/xml')
 
-@app.route('/chksess/<user>/<sess>')
+@application.route('/chksess/<user>/<sess>')
 def chksess(user,sess):
     """ Check session_id for a given user """
     try:
@@ -515,7 +515,7 @@ def chksess(user,sess):
     out = '<answer><result>%s</result><user>%s</user><sess>%s</sess></answer>' % (result,user,sess)
     return Response(out, mimetype='text/xml')
 
-@app.route('/resendpwd', methods=['POST'])
+@application.route('/resendpwd', methods=['POST'])
 def resendpwd():
     user_mail = request.form['user_mail'].encode('ascii').lower()
     humaincheck = request.form['humaincheck']
@@ -536,12 +536,12 @@ def retrievemap(mapid):
     user = DbGet(mapid,'trackuser')
     return {'mapid':mapid,'lat':lat,'lon':lon,'desc':desc,'date':startdate,'user':user}
 
-@app.route('/userhome/<user>')
+@application.route('/userhome/<user>')
 def userhome(user):
     mapids = DbGetMapsOfUser(user.encode('ascii'))
     return render_template('userhome.html',user=user,maps=map(retrievemap,mapids),GMapsApiKey=keysnpwds['GMapsApiKey'])
 
-@app.route('/mergemaps/<mapidsliststr>/<user>/<sess>')
+@application.route('/mergemaps/<mapidsliststr>/<user>/<sess>')
 def mergemaps(mapidsliststr,user,sess):
     if not CheckSession(user,sess):
         message = 'Cannot identify user %s %s'%(user,sess)
@@ -582,7 +582,7 @@ def mergemaps(mapidsliststr,user,sess):
         # Redirect to map
         return redirect('/showmap/%s'%newmapid)
 
-@app.route('/delmaps/<mapidsliststr>/<user>/<sess>')
+@application.route('/delmaps/<mapidsliststr>/<user>/<sess>')
 def delmaps(mapidsliststr,user,sess):
     if not CheckSession(user,sess):
         message = 'Cannot identify user %s %s'%(user,sess)
@@ -606,14 +606,14 @@ def delmaps(mapidsliststr,user,sess):
 
 ## Prepare
 
-@app.route('/prepare',defaults={'map_type':'GeoPortal','pts':[],'names':[]})
-@app.route('/prepare/<map_type>',defaults={'pts':[],'names':[]})
-@app.route('/prepare/<map_type>/<pts>',defaults={'names':None})
-@app.route('/prepare/<map_type>/<pts>/<names>')
+@application.route('/prepare',defaults={'map_type':'GeoPortal','pts':[],'names':[]})
+@application.route('/prepare/<map_type>',defaults={'pts':[],'names':[]})
+@application.route('/prepare/<map_type>/<pts>',defaults={'names':None})
+@application.route('/prepare/<map_type>/<pts>/<names>')
 def prepare(map_type,pts,names):
     return render_template('prepare.html',map_type=map_type,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
-@app.route('/ele/<float:lat>/<float:lon>')
+@application.route('/ele/<float:lat>/<float:lon>')
 def getele(lat,lon):
     return Response('%d'%GetEleFromLatLon(lat,lon), mimetype='text/plain')
 
@@ -621,7 +621,7 @@ def PtStr2FloatArray(ptstr):
     out = ptstr.split(',')
     return (float(out[0]),float(out[1]))
 
-@app.route('/profile/<ptliststr>/<width>/<height>')
+@application.route('/profile/<ptliststr>/<width>/<height>')
 def profile(ptliststr,width,height):
     ptlist = map(PtStr2FloatArray,ptliststr.split('~'))
     if(len(ptlist)<2):
@@ -629,7 +629,7 @@ def profile(ptliststr,width,height):
     nbpts = 400
     return Response('\n'.join(map(str,ComputeProfile(ptlist,nbpts,width,height))), mimetype='text/plain')
 
-@app.route('/prepare/export/<format>/<ptlist>/<names>')
+@application.route('/prepare/export/<format>/<ptlist>/<names>')
 def prepare_export(format,ptlist,names):
     # TODO: build it from client side
     pass
@@ -638,4 +638,5 @@ def prepare_export(format,ptlist,names):
 
 if __name__ == '__main__':
     # Start web server
-    app.run(port=8080,debug=True)
+    application.run(port=8080,debug=True)
+
