@@ -104,6 +104,7 @@ def thumbnail(mapid):
 @application.route('/showmap/<mapid>', defaults={'map_type': None})
 @application.route('/showmap/<mapid>/<map_type>')
 @application.route('/showmap-flot.php',defaults={'mapid':None,'map_type': None})
+@application.route('/showmap.php',defaults={'mapid':None,'map_type': None})
 def showmap(mapid,map_type):
     if mapid==None:
         mapid=request.args.get('mapid')
