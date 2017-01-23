@@ -16,6 +16,16 @@ if __name__=='__main__':
         options['flat']=True
         options['spdunit']='knots'
         options['maxspd']=True
+    elif type=='rando':
+        options['spdunit']='km/h'        
+        options['wind']=False
+        options['flat']=False
+        options['maxspd']=True
+    elif type=='baladeplat':
+        options['spdunit']='km/h'        
+        options['wind']=False
+        options['flat']=True
+        options['maxspd']=False
     trk_id = 0
     trk_seg_id = 0
     pwd = BuildMap(open(fname,"r"),mapid,trk_id,trk_seg_id,mapid,desc,'unknown',options)
