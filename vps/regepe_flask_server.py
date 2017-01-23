@@ -63,7 +63,10 @@ if not os.path.isdir('data/thumbnail_cache'):
 	os.mkdir('data/thumbnail_cache')
 
 @application.route('/thumbnail/<mapid>')
+@application.route('/thumbnail.php',defaults={'mapid':None})
 def thumbnail(mapid):
+    if mapid==None:
+        mapid=request.args.get('mapid')
     filename='data/thumbnail_cache/%s.png'%mapid
     if os.path.isfile(filename):
         # Return image in cache
@@ -100,7 +103,10 @@ def thumbnail(mapid):
 
 @application.route('/showmap/<mapid>', defaults={'map_type': None})
 @application.route('/showmap/<mapid>/<map_type>')
+@application.route('/showmap-flot.php',defaults={'mapid':None,'map_type': None})
 def showmap(mapid,map_type):
+    if mapid==None:
+        mapid=request.args.get('mapid')
     # Read map data
     f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
     mapdata=json.load(f)
