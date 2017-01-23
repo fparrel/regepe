@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import os
 import sys
@@ -168,6 +168,7 @@ for root, dirs, files in os.walk(src_dir):
         if in_ignore(root,file): #ignore data and logs
             continue
         is_new = False
+        encoding = None
         # Check source code only
         if file.endswith('.php') or file.endswith('.txt') or file.endswith('.apk') or file.endswith('.html') or file.endswith('.css') or file.endswith('.js') or file.endswith('.png') or file.endswith('.gif') or file.endswith('.jpg') or file.endswith('.svg') or file.endswith('.htc') or file.endswith('.py') or file=='.htaccess' or root.startswith(src_dir+'/cgi-bin/pytz/zoneinfo'):
             f_from = open('%s/%s'%(root,file),'r')
