@@ -9,6 +9,10 @@ if __name__=='__main__':
     mapid = sys.argv[2]
     type = sys.argv[3]
     desc = sys.argv[4]
+    if len(sys.argv)>5:
+        user=sys.argv[5]
+    else:
+        user='unknown'
     print fname,mapid,desc
     options = options_default
     if type=='kite':
@@ -28,4 +32,4 @@ if __name__=='__main__':
         options['maxspd']=False
     trk_id = 0
     trk_seg_id = 0
-    pwd = BuildMap(open(fname,"r"),mapid,trk_id,trk_seg_id,mapid,desc,'unknown',options)
+    pwd = BuildMap(open(fname,"r"),mapid,trk_id,trk_seg_id,mapid,desc,user,options)
