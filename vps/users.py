@@ -4,7 +4,7 @@ import os
 from uuid import uuid4
 from mail import sendmail
 from db import RebuildNeeded,TriggerRebuildOfInv,DbBuildInvert,DumpDb
-from config import domain
+from config import config
 
 VALID_USERNAME_PATTERN = re.compile('^[a-z0-9_]+$')
 VALID_EMAIL_PATTERN = re.compile('^[a-z0-9_A-Z\.]+@[a-z0-9_A-Z\.]+$')
@@ -25,7 +25,7 @@ bodies = {'en':  'Your accound will be created when you visit http://%s/activate
 
 def SendActivationMail(mail,user,activation_id,lang='en'):
     subject = subjects[lang]
-    body = bodies[lang] % (domain,user,activation_id)
+    body = bodies[lang] % (config['domain'],user,activation_id)
     sendmail(mail,subject,body)
 
 subjectsforgotpwd = {'en': 'ReGePe (Replay your GPS Tracks) forgoten password reminder',
@@ -40,7 +40,7 @@ def SendForgotPasswordMail(user,lang='en'):
     pwd = db['pwd']
     db.close()
     subject = subjectsforgotpwd[lang]
-    body = bodiesforgotpwd[lang] % (domain,pwd)
+    body = bodiesforgotpwd[lang] % (config['domain'],pwd)
     sendmail(mail,subject,body)
     return mail
 

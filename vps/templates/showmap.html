@@ -4,10 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Replay your GPS tracks with ReGePe</title>
 <meta name="description" content="{{ mapdb.trackdesc }}"/>
-<link rel="image_src" href="http://localhost/thumbnail/{{ mapid }}"/>
+<link rel="image_src" href="http://{{ domain }}/thumbnail/{{ mapid }}"/>
 <meta property="og:title" content="ReGePe's GPS Track replay"/>
 <meta property="og:description" content="{{ mapdb.trackdesc }}"/>
-<meta property="og:image" content="http://localhost/thumbnail/{{ mapid }}"/>
+<meta property="og:image" content="http://{{ domain }}/thumbnail/{{ mapid }}"/>
 <meta http-equiv="X-UA-Compatible" content="IE=7"/>
 <script type="text/javascript" src="/static/javascript/range.js"></script>
 <script type="text/javascript" src="/static/javascript/timer.js"></script>
@@ -148,11 +148,14 @@ Switch to: {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google
 </ul></div>
 {% endif %}
 <h3 onclick="toogleHideShow(\'globalfigures\');">Global figures</h3><div class="box" id="globalfigures">
-{% for key, value in mapdata.figures.iteritems() %}
-	{% if key!="top10spd" %}
-	<div id="{{ key }}" class="figure_field"><b>{{ key }}:</b> <span id="{{ key }}-value">{{ value }}</span></div>
-	{% endif %}
-{% endfor %}
+	{%if mapdata.figures.duration%}<div id="duration" class="figure_field"><b>Duration:</b> <span id="duration-value">{{mapdata.figures.duration}}</span></div>{%endif%}
+	{%if mapdata.figures.length%}<div id="length" class="figure_field"><b>Length:</b> <span id="length-value">{{mapdata.figures.length}}</span></div>{%endif%}
+	{%if mapdata.figures.up%}<div id="up" class="figure_field"><b>D+:</b> <span id="up-value">{{mapdata.figures.up}}</span></div>{%endif%}
+	{%if mapdata.figures.down%}<div id="down" class="figure_field"><b>D-:</b> <span id="down-value">{{mapdata.figures.down}}</span></div>{%endif%}
+	{%if mapdata.figures.maxele%}<div id="maxele" class="figure_field"><b>Ele. min:</b> <span id="maxele-value">{{mapdata.figures.maxele}}</span></div>{%endif%}
+	{%if mapdata.figures.minele%}<div id="minele" class="figure_field"><b>Ele. max:</b> <span id="minele-value">{{mapdata.figures.minele}}</span></div>{%endif%}
+	{%if mapdata.figures.meanspeed%}<div id="meanspeed" class="figure_field"><b>Mean speed:</b> <span id="meanspeed-value">{{mapdata.figures.meanspeed}}</span></div>{%endif%}
+	{%if mapdata.figures.mean_speed_when_in_motion%}<div id="mean_speed_when_in_motion" class="figure_field"><b>Mean spd when in motion:</b> <span id="mean_speed_when_in_motion-value">{{mapdata.figures.mean_speed_when_in_motion}}</span></div>{%endif%}
 {% if not mapdata.flat %}
 	<div id="mean_motion_vert_spd" class="figure_field"><b>Mean vert. spd. in motion:</b> <span id="mean_motion_vert_spd-value">Computing...</span></div>
 {% endif %}
@@ -191,11 +194,17 @@ Switch to: {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google
 		<div id="{{ chart.name }}" class="chart">
 		{% if chart.name=="maxspd" %}
 {% macro convert_time(value,unit) -%}
-	{{ value }}{{ unit }}
+    {% if unit=="s" and value>=60 %}
+        {% if value>=3600 %}{{ (value/3600)|int }}h{% endif %}{% if value%3600!=0 %}{{ ((value/60)%60)|int }}min{% endif %}{% if value%60!=0 %}{{ value%60 }}s{% endif %}
+    {% else %}
+        {{ value }}{{ unit }}
+    {% endif %}
 {%- endmacro %}
 {% macro convert_maxspds(maxspds) -%}
 	{% for maxspd in maxspds %}
-		{% if mapdata.spdunit=="knots" %}
+        {% if maxspd.type=="vert" %}
+					<span class="spdnb">{{ "%d"|format(maxspd.dst*3600/maxspd.time) }}</span> m/h {{ maxspd.dst }}{{ maxspd.dst_unit}} in {{convert_time(maxspd.time_unit)}} at <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+		{% elif mapdata.spdunit=="knots" %}
 					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*1.94384449/maxspd.time) }}</span> kts {{ maxspd.dst }}{{ maxspd.dst_unit}} in {{convert_time(maxspd.time_unit)}} at <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
 		{% elif mapdata.spdunit=="km/h" %}
 					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*3.6/maxspd.time) }}</span> km/h {{ maxspd.dst }}{{ maxspd.dst_unit}} in {{convert_time(maxspd.time_unit)}} at <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>

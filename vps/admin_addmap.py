@@ -5,6 +5,9 @@ from orchestrator import BuildMap
 from options import options_default
 
 if __name__=='__main__':
+    if len(sys.argv) not in (5,6):
+        print 'Usage: %s fname mapid kite|rando|baladeplat "description" [user]' % sys.argv[0]
+        exit()
     fname = sys.argv[1]
     mapid = sys.argv[2]
     type = sys.argv[3]
