@@ -331,7 +331,10 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
         nb_pt_wo_datetime = 0
     # add local time offset for GPX and NMEA (KML contains date offset or contains Z)
     if ((filetype==GPX)or(filetype==NMEA)):
-        tz = GetTimeZone(ptlist[0].lat,ptlist[0].lon)
+        try:
+            tz = GetTimeZone(ptlist[0].lat,ptlist[0].lon)
+        except:
+            tz=0
         if tz!=0:
             tzdelta = timedelta(hours=tz)
             for pt in ptlist_all:
