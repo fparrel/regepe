@@ -228,7 +228,7 @@ function buildNamesListUrl() {
 function onGetUrlClick() {
     var ptlisturl = buildPtlistUrl(getLatLonList());
     var namesurl = buildNamesListUrl();
-    document.getElementById('urllnk').value = 'http://localhost:8080/prepare/{{ map_type }}/'+ptlisturl+'/'+namesurl;
+    document.getElementById('urllnk').value = 'http://{{ domain }}/prepare/{{ map_type }}/'+ptlisturl+'/'+namesurl;
     document.getElementById('urllnk').style.visibility = 'visible';
 }
 
@@ -305,9 +305,9 @@ function refreshUrls() {
     var namesurl = buildNamesListUrl();
     var i;
     for(i=0;i<maptypes.length;i++) {
-        document.getElementById('switch2'+maptypes[i]).href = 'http://localhost:8080/prepare/{{ map_type }}/'+ptlisturl+'/'+namesurl;
+        document.getElementById('switch2'+maptypes[i]).href = 'http://{{ domain }}/prepare/{{ map_type }}/'+ptlisturl+'/'+namesurl;
     }
-    document.getElementById('urllnk').value = 'http://localhost:8080/prepare/{{ map_type }}/'+ptlisturl+'/'+namesurl;
+    document.getElementById('urllnk').value = 'http://{{ domain }}/prepare/{{ map_type }}/'+ptlisturl+'/'+namesurl;
     if(document.getElementById('exportallnamed').value=='named') {
         ptlisturl = "";
         namesurl = "";

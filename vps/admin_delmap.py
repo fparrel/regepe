@@ -5,6 +5,9 @@ from db import DbDelMap
 import os
 
 if __name__=='__main__':
+    if len(sys.argv)!=2 or sys.argv[1] in ('-h','--help'):
+        print 'Usage: %s mapid' % sys.argv[0]
+        exit()
     mapid = sys.argv[1]
     # Delete map
     DbDelMap(mapid)

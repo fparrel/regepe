@@ -23,7 +23,7 @@ from dem import GetEleFromLatLon
 from computeprofile import ComputeProfile
 from demize import Demize
 from generate_id import uniqid
-from config import keysnpwds
+from config import keysnpwds, config
 
 
 # Create flask application
@@ -120,7 +120,7 @@ def showmap(mapid,map_type):
     _mapdb={}
     for key in mapdb:
         _mapdb[key] = mapdb[key].decode('utf-8') # We must convert each utf8 string into unicode for jinja2
-    out = render_template('showmap.html',mapid=mapid,type=map_type,mapdb=_mapdb,mapdata=mapdata,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
+    out = render_template('showmap.html',domain=config['domain'],mapid=mapid,type=map_type,mapdb=_mapdb,mapdata=mapdata,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
     mapdb.close()
     return out
 
@@ -618,7 +618,7 @@ def delmaps(mapidsliststr,user,sess):
 @application.route('/prepare/<map_type>/<pts>',defaults={'names':None})
 @application.route('/prepare/<map_type>/<pts>/<names>')
 def prepare(map_type,pts,names):
-    return render_template('prepare.html',map_type=map_type,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
+    return render_template('prepare.html',domain=config['domain'],map_type=map_type,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
 @application.route('/ele/<float:lat>/<float:lon>')
 def getele(lat,lon):
