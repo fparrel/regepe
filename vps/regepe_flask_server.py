@@ -228,7 +228,7 @@ def upload():
         inputfile.append(file)
     # In case of import from URL
     if request.form.has_key('fromurl') and len(request.form['fromurl'])>0:
-        inputfile.append(request.form('fromurl').encode('ascii'))
+        inputfile.append(request.form.get('fromurl').encode('ascii'))
     if len(inputfile)<1:
         return 'Error while uploading file'
     # Track selection in case file contains several tracks
