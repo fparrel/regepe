@@ -13,7 +13,7 @@ def readConfig():
     return conf
 
 # Load keys and password
-keysnpwds=readKeysAndPasswords('config/keysnpwds-test.json')
+keysnpwds=readKeysAndPasswords('config/keysnpwds.json')
 config=readConfig()
 
 domain = config['domain']
