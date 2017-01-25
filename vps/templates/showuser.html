@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>Replay your GPS Tracks with REGEPE</title>
+<html><head><title>{{_('Replay your GPS Tracks with REGEPE')}}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
 <link type="text/css" rel="StyleSheet" href="/static/styles/inputform.css" />
@@ -9,42 +9,42 @@
 		<div id="header">
 			<div id="header_search">
 				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
-				<input type="button" value="Search" onclick="onSearchClick();"/>
+				<input type="button" value="{{_('Search')}}" onclick="onSearchClick();"/>
 				<div id="header_lang">
 					<a href="/"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
 					<a href="/fr/"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
 				</div>
 			</div>
 			<div id="header_home">
-				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>{{_('Home')}}</a>
 			</div>
 			<div id="header_mobile">
-				<a href="/static/mobile.html"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+				<a href="/mobile"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>{{_('Get app')}}</a>
 			</div>
 			<div id="header_submit">
-				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>{{_('Submit track')}}</a>
 			</div>
 			<div id="header_prepare">
-				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>{{_('Prepare itinerary')}}</a>
 			</div>
 			<div id="header_mapofmaps">
-				<a href="mapofmaps.html"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+				<a href="/mapofmaps"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>{{_('Browse tracks')}}</a>
 			</div>
 			<div id="header_login">
 				<form action="">
 					<div>
-						User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
-						Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
-						<input type="button" value="Login" onclick="onLoginClick();"/><br/>
-						<a href="/registerform">Register</a> |
-						<a href="/static/forgotpwd.html">Forgot password?</a>
+						{{_('User: ')}}<input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+						{{_('Password: ')}}<input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+						<input type="button" value="{{_('Login')}}" onclick="onLoginClick();"/><br/>
+						<a href="/registerform">{{_('Register')}}</a> |
+						<a href="/forgotpwd">{{_('Forgot password?')}}</a>
 					</div>
 				</form>
 			</div>
 		</div>
 		<div id="body">
-			<h1>User {{ user }}</h1>
-            <table id="search_results_table"><thead><tr><th id="sortby_date" onclick="onSortClick(event);">Date</th><th id="sortby_desc" onclick="onSortClick(event);">Description</th><th>Preview</th></tr></thead><tbody id="search_tbody">
+			<h1>{{_('User ')}}{{ user }}</h1>
+            <table id="search_results_table"><thead><tr><th id="sortby_date" onclick="onSortClick(event);">{{_('Date')}}</th><th id="sortby_desc" onclick="onSortClick(event);">{{_('Description')}}</th><th>{{_('Preview')}}</th></tr></thead><tbody id="search_tbody">
 {% for map in maps %}
                 <tr><td>{{ map.date }}</td><td><a href="/showmap/{{ map.mapid }}"/>{{ map.desc }}</a></td><td><img src="/thumbnail/{{ map.mapid }}" width="130" height="110"/></td></tr>
 {% endfor %}
@@ -53,11 +53,11 @@
         <div id="footer_push"></div>
 	</div>
 	<div id="footer">
-		<b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
+		<b>{{_('Contact:')}}</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
 	</div>
 </div>
 </body>
 </html>
+<script type="text/javascript" src="/i18n.js/header"></script>
 <script type="text/javascript" src="/static/javascript/xmlhttprequest.js"></script>
 <script type="text/javascript" src="/static/javascript/header.js"></script>
-<script type="text/javascript" src="/static/javascript/db.js"></script>

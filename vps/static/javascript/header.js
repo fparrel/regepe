@@ -1,5 +1,4 @@
 
-
 function trim(stringToTrim) {
 	return stringToTrim.replace(/^\s+|\s+$/g,"");
 }
@@ -13,7 +12,7 @@ function onSearchClick() {
         client.send();
         client.onreadystatechange = onSearchReqAnswer;
         backup_header_search = document.getElementById("header_search").innerHTML;
-        document.getElementById("header_search").innerHTML = 'Searching... <img src="/static/images/loading.svg" width="16" height="16"/>';
+        document.getElementById("header_search").innerHTML = SEARCHING+' <img src="/static/images/loading.svg" width="16" height="16"/>';
     }
 }
 
@@ -142,7 +141,7 @@ function onSearchReqAnswer() {
                 map_list_contents = map_list_contents + '<tr><td>'+startdate+'</td><td><a href="/showmap/'+mapid+'"/>'+desc+'</a></td><td>'+user+'</td><td><img src="/thumbnail/'+mapid+'" width="130" height="110"/></td></tr>';
             }
             if (map_list_contents.length>0) {
-                document.getElementById("body").innerHTML = '<h1>Search results</h1><table id="search_results_table"><thead><tr><th id="sortby_date">Date</th><th id="sortby_desc">Description</th><th id="sortby_user">User</th><th>Preview</th></tr></thead><tbody id="search_tbody">'+map_list_contents+'</tbody></table>';
+                document.getElementById("body").innerHTML =SEARCH_RESULTS_TABLE_BEGIN+map_list_contents+SEARCH_RESULTS_TABLE_END;
                 if(document.getElementById("sortby_date").addEventListener) {
 			document.getElementById("sortby_date").addEventListener("click",onSortClick,false);
 		}
@@ -163,7 +162,7 @@ function onSearchReqAnswer() {
 		}
             }
             else {
-                document.getElementById("body").innerHTML = '<b>No map found</b><br/>' + document.getElementById("body").innerHTML;
+                document.getElementById("body").innerHTML = NO_MAP_FOUND + document.getElementById("body").innerHTML;
             }
         }
     }
@@ -174,8 +173,8 @@ function displayLogged(user,sess) {
     if (typeof after_login_callback!='undefined') {
         after_login_callback(user,sess);
     }
-    document.getElementById("header_login").innerHTML = 'Logged as <a href="/userhome/'+user+'">'+user+'</a><br/>'+
-        '<form><input type="button" value="Logout" onclick="onLogoutClick();"/></form>';
+    document.getElementById("header_login").innerHTML = LOGGED_AS + ' <a href="/userhome/' + user + '">' + user +
+        '</a><br/><form><input type="button" value="' + LOGOUT + '" onclick="onLogoutClick();"/></form>';
 }
 
 function setSessionCookie(user,sessid) {
@@ -203,7 +202,7 @@ function onLoginReqAnswer() {
 			var sess = this.responseXML.getElementsByTagName("sess")[0].childNodes[0].nodeValue;
             if (user=='NoUser') {
                 var errorstring = this.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
-                document.getElementById("header_login").innerHTML = 'Login failed ('+errorstring+')<br/>' + backup_header_login;
+                document.getElementById("header_login").innerHTML = LOGIN_FAILED + errorstring + '<br/>' + backup_header_login;
             }
             else {
                 setSessionCookie(user,sess);
@@ -220,7 +219,7 @@ function onCheckSessionAnswer() {
             var user = this.responseXML.getElementsByTagName("user")[0].childNodes[0].nodeValue;
             var sess = this.responseXML.getElementsByTagName("sess")[0].childNodes[0].nodeValue;
             if (result!='OK') {
-                document.getElementById("header_login").innerHTML = 'Session expired, please re-login<br/>' + backup_header_login;
+                document.getElementById("header_login").innerHTML = SESSION_EXPIRED + backup_header_login;
             }
             else {
                 displayLogged(user,sess);
@@ -237,7 +236,7 @@ function doCheckSessionServer(user,sess) {
     client.send();
     client.onreadystatechange = onCheckSessionAnswer;
     backup_header_login = document.getElementById("header_login").innerHTML;
-    document.getElementById("header_login").innerHTML = 'Login... <img src="/static/images/loading.svg" width="16" height="16"/>';
+    document.getElementById("header_login").innerHTML = LOGGING + ' <img src="/static/images/loading.svg" width="16" height="16"/>';
 }
 
 function onLoginClick() {
@@ -248,12 +247,11 @@ function onLoginClick() {
     client.send();
     client.onreadystatechange = onLoginReqAnswer;
     backup_header_login = document.getElementById("header_login").innerHTML;
-    document.getElementById("header_login").innerHTML = 'Login... <img src="/static/images/loading.svg" width="16" height="16"/>';
+    document.getElementById("header_login").innerHTML = LOGGING + ' <img src="/static/images/loading.svg" width="16" height="16"/>';
 }
 
 function onLogoutClick() {
-    document.getElementById("header_login").innerHTML =
-        '<form>User: <input id="login_user" name="user" type="text"/>Password: <input id="login_password" name="password" type="password"/><input type="button" value="Login" onclick="onLoginClick();"/><br/><a href="/registerform">Register</a> | <a href="/static/forgotpwd.html">Forgot password?</a></form>';
+    document.getElementById("header_login").innerHTML = HEADER_LOGIN_INIT;
     removeSessionCookie();
 }
 

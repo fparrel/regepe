@@ -9,6 +9,8 @@ import os
 
 from log import Warn
 
+from flask_babel import gettext
+
 class Date:
     'Contains a date, with writable attributes'
     def __init__(self,year,month,day):
@@ -22,7 +24,7 @@ def ParseNmeaLatOrLonVal(strofval):
     # example: 4512.4589 -> 45 degrees + 12.4589 minutes
     pointid = strofval.find('.')
     if pointid==-1:
-        raise Exception('Cannot parse this nmea data "%s"' % strofval)
+        raise Exception(gettext('Cannot parse this nmea data "%s"') % strofval)
     deg = float(strofval[0:pointid-2])
     minutes = float(strofval[pointid-2:])
     return (deg + minutes/60)
@@ -55,7 +57,7 @@ def ParseGgaSentence(sentence,current_date):
         except ValueError:
             ele = None
     if sentence[10]!='M':
-        raise Exeception('NMEA parse error: unit not supported')
+        raise Exeception(gettext('NMEA parse error: unit not supported'))
     #11,12: height of geoid
     #13: time in seconds since last DGPS update
     #14: DGPS station ID number

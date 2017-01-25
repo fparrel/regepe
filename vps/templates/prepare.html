@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
-<title>Replay your GPS tracks with ReGePe</title>
+<title>{{_('Replay your GPS tracks with ReGePe')}}</title>
 <meta http-equiv="X-UA-Compatible" content="IE=7"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
@@ -20,35 +20,35 @@
 		<div id="header">
 			<div id="header_search">
 				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
-				<input type="button" value="Search" onclick="onSearchClick();"/>
+				<input type="button" value="{{_('Search')}}" onclick="onSearchClick();"/>
 				<div id="header_lang">
 					<a href="/"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
 					<a href="/fr/prepare"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
 				</div>
 			</div>
 			<div id="header_home">
-				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>{{_('Home')}}</a>
 			</div>
 			<div id="header_mobile">
-				<a href="/static/mobile.html"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+				<a href="/mobile"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>{{_('Get app')}}</a>
 			</div>
 			<div id="header_submit">
-				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>{{_('Submit track')}}</a>
 			</div>
 			<div id="header_prepare">
-				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>{{_('Prepare itinerary')}}</a>
 			</div>
 			<div id="header_mapofmaps">
-				<a href="mapofmaps.html"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+				<a href="/mapofmaps"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>{{_('Browse tracks')}}</a>
 			</div>
 			<div id="header_login">
 				<form action="">
 					<div>
-						User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
-						Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
-						<input type="button" value="Login" onclick="onLoginClick();"/><br/>
-						<a href="/registerform">Register</a> |
-						<a href="/static/forgotpwd.html">Forgot password?</a>
+						{{_('User: ')}}<input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+						{{_('Password: ')}}<input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+						<input type="button" value="{{_('Login')}}" onclick="onLoginClick();"/><br/>
+						<a href="/registerform">{{_('Register')}}</a> |
+						<a href="/forgotpwd">{{_('Forgot password?')}}</a>
 					</div>
 				</form>
 			</div>
@@ -58,24 +58,24 @@
                 <div id="maptotal" style="float: left;">
                     <div id="mapresizer" style="height:500px;width:500px;resize:both; border:2px solid;overflow:auto;padding:8px;">
 {% if map_type=="GMaps" %}
-                        <div id="map" style="height:100%;width:100%;" class="map" title="Click on map to add a point" onmousewheel="onMapMouseWheel(event);" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+                        <div id="map" style="height:100%;width:100%;" class="map" title="{{_('Click on map to add a point')}}" onmousewheel="onMapMouseWheel(event);" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 {% elif map_type=="GeoPortal" %}
-                        <div id="map" style="height:500px;width:500px;" title="Click on map to add a point" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+                        <div id="map" style="height:500px;width:500px;" title="{{_('Click on map to add a point')}}" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 {% endif %}
                     </div>
-                    <div>Switch to: {% if map_type=="GMaps" %}<a id="switch2GeoPortal" href="/prepare/GeoPortal"/>Geo Portal</a>{% else %}<a id="switch2GeoPortal" href="/prepare/GMaps"/>Google Maps</a>{% endif %}
+                    <div>{{_('Switch to: ')}}{% if map_type=="GMaps" %}<a id="switch2GeoPortal" href="/prepare/GeoPortal"/>Geo Portal</a>{% else %}<a id="switch2GeoPortal" href="/prepare/GMaps"/>Google Maps</a>{% endif %}
                     </div>
                 </div>
-                <div id="wpts" style="float: left; margin:10px;overflow:auto; height: 500px; width:170px;"><b>Waypoints</b></div>
+                <div id="wpts" style="float: left; margin:10px;overflow:auto; height: 500px; width:170px;"><b>{{_('Waypoints')}}</b></div>
             </div>
             <div style="clear:both;"></div>
             <div id="wpttools">
-                <input id="clearbtn" type="button" value="Clear" onclick="onClearClick();"/>
-                <input id="deletebtn" type="button" value="Delete selected point" onclick="onDeleteClick();"/>
+                <input id="clearbtn" type="button" value="{{_('Clear')}}" onclick="onClearClick();"/>
+                <input id="deletebtn" type="button" value="{{_('Delete selected point')}}" onclick="onDeleteClick();"/>
             </div>
-            <div id="itiinfos" style="margin-top:10px;"><b>Length:</b> <span id="length"></span> <b>D+:</b> <span id="dplus"></span> <b>D-:</b> <span id="dminus"></span></div>
+            <div id="itiinfos" style="margin-top:10px;"><b>{{_('Length:')}}</b> <span id="length"></span> <b>{{_('D+:')}}</b> <span id="dplus"></span> <b>{{_('D-:')}}</b> <span id="dminus"></span></div>
             <div id="profile" style="margin-top:10px;">
-                <input id="compprofilebtn" type="button" value="Compute Profile" onclick="onComputeProfileClick();"/><img id="compprofileloading" />
+                <input id="compprofilebtn" type="button" value="{{_('Compute Profile')}}" onclick="onComputeProfileClick();"/><img id="compprofileloading" />
                 <div style="clear:both;"></div>
                 <div id="profile_infos" style="float: left; line-height:1.5em; height:6em; border: 1px solid; display: none;">&nbsp;</div>
                 <div id="curpt_infos" style="float: left; line-height:1.5em; height:6em; border: 1px solid; display: none;">&nbsp;</div>
@@ -89,29 +89,29 @@
                 </div>
             </div>
             <div id="export" style="margin-top:10px;">
-                <b>Export to file:</b> 
+                <b>{{_('Export to file:')}}</b> 
                 <select id="exportformat" name="exportformat" onchange="onExportFmtChange();">
                     <option value="wpt">.wpt (OziExplorer)</option>
                     <option value="gpx">GPX</option>
                 </select>
                 <select id="exportallnamed" name="exportallnamed" onchange="onExportAllOrNamedChange();">
-                    <option value="all">All points</option>
-                    <option value="named">Only labeled points</option>
+                    <option value="all">{{_('All points')}}</option>
+                    <option value="named">{{_('Only labeled points')}}</option>
                 </select>
-                <a id="exporthref" href="">Export</a>
+                <a id="exporthref" href="">{{_('Export')}}</a>
             </div>
             <div id="geturl" style="margin-top:10px;">
-                <b>Share:</b> <input id="geturlbtn" type="button" value="Send as URL" onclick="onGetUrlClick();" />
+                <b>{{_('Share:')}}</b> <input id="geturlbtn" type="button" value="{{_('Send as URL')}}" onclick="onGetUrlClick();" />
                 <input id="urllnk" type="text" value="" size="30" style="visibility:hidden;"/>
             </div>
             <div id="printmap" style="margin-top:10px;">
-                <input type="button" value="Print Map" onclick="onBuildMapClick();"/>
+                <input type="button" value="{{_('Print Map')}}" onclick="onBuildMapClick();"/>
             </div>
         </div>
         <div id="footer_push"></div>
     </div>
 	<div id="footer">
-		<b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
+		<b>{{_('Contact:')}}</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
 	</div>
 </body>
 </html>
@@ -123,10 +123,11 @@
 body{display:inline;}
 </style>
 {% endif %}
+<script type="text/javascript" src="/i18n.js/header"></script>
+<script type="text/javascript" src="/i18n.js/prepare"></script>
 <script type="text/javascript" src="/static/javascript/utils.js"></script>
 <script type="text/javascript" src="/static/javascript/xmlhttprequest.js"></script>
 <script type="text/javascript" src="/static/javascript/header.js"></script>
-<script type="text/javascript" src="/static/javascript/db.js"></script>
 <script type="text/javascript">
 
 /* Creates a point object */
@@ -239,7 +240,7 @@ function onExportClick() {
     var exportformat = document.getElementById('exportformat').value;
     var exporthref = document.createElement('a');
     exporthref.setAttribute('href','/prepare/export/'+exportformat+'/'+ptliststr+'/'+namesurl);
-    exporthref.innerHTML = 'Export';
+    exporthref.innerHTML = '{{_("Export")}}';
     exporthref.setAttribute('onclick','this.innerHTML="";');
     document.getElementById('export').appendChild(exporthref);
 }
@@ -375,7 +376,7 @@ function addWpt(pt,index) {
 
 /* Clear the waypoint list that is on the right of map */
 function clearWpts() {
-    document.getElementById('wpts').innerHTML = '<b>Waypoints</b>';
+    document.getElementById('wpts').innerHTML = '<b>{{_("Waypoints")}}</b>';
 }
 
 /* Clear the waypoint list that is on the right of map */
@@ -397,7 +398,7 @@ function selectWpt(index) {
 
 /* When user wants to clear map */
 function onClearClick() {
-    if (confirm("Clear track?")) {
+    if (confirm("{{_('Clear track?')}}")) {
         points = [];
         wptlbl = [];
         redrawLine();
@@ -481,10 +482,10 @@ function refreshSelInfos(up) {
         document.getElementById("markerright").style.display = "inline";
         var hdist = (dists[i2]-dists[i1]);
         var vdist = (eles[i2]-eles[i1]);
-        profile_infos += "<b>Selection</b><br/>Dist: "+Math.round(hdist)+"m<br/>Vert dst:"+Math.round(vdist)+"m";
+        profile_infos += "<b>{{_('Selection')}}</b><br/>{{_('Dist: ')}}"+Math.round(hdist)+"m<br/>{{_('Vert dst:')}}"+Math.round(vdist)+"m";
         if(hdist>0) {
             var slope = vdist * 100.0 / hdist;
-            profile_infos += "<br/>Slope:"+Math.round(slope)+"% "+Math.round(Math.atan(vdist/hdist)*180/Math.PI)+"&deg;";
+            profile_infos += "<br/>{{_('Slope:')}}"+Math.round(slope)+"% "+Math.round(Math.atan(vdist/hdist)*180/Math.PI)+"&deg;";
         }
     }
     else {
@@ -494,13 +495,13 @@ function refreshSelInfos(up) {
         document.getElementById("markerpt").style.left = posxFromPtIndex(i0) + "px";
         //document.getElementById("markerpt").style.left = "100px";
         document.getElementById("markerpt").style.display = "inline";
-        curpt_infos += "<b>Current point</b><br/>Ele:"+eles[i0]+"m";
+        curpt_infos += "<b>{{_('Current point')}}</b><br/>{{_('Ele:')}}"+eles[i0]+"m";
         if(i0<eles.length-1) {
             var hdist = (dists[i0+1]-dists[i0]);
             var vdist = (eles[i0+1]-eles[i0]);
             if(hdist>0) {
                 var slope = vdist * 100.0 / hdist;
-                curpt_infos += "<br/>Slope:"+Math.round(slope)+"% "+Math.round(Math.atan(vdist/hdist)*180/Math.PI)+"&deg;";
+                curpt_infos += "<br/>{{_('Slope:')}}"+Math.round(slope)+"% "+Math.round(Math.atan(vdist/hdist)*180/Math.PI)+"&deg;";
             }
         }
         //curpt_infos += i0;
@@ -654,7 +655,7 @@ function onBuildMapClick() {
     var e = myWindow.document.createElement("div");
     myWindow.document.body.appendChild(e);
     //document.getElementById('printmap').innerHTML='';
-    tiles = getTiles("${GeoPortalApiKey}",15,e);
+    tiles = getTiles("{{GeoPortalApiKey}}",15,e);
 }
 
 /*function addWptToGraph(pt) {

@@ -10,7 +10,7 @@ function getPwdFromCookie(mapid) {
 }
 
 function putToDb(mapid,pwd,ele,val) {
-  document.getElementById(ele).innerHTML = "Sending...";
+  document.getElementById(ele).innerHTML = SENDING;
   var url = "/dbput/" + encodeURIComponent(mapid) + "/" + encodeURIComponent(pwd) + "/" + encodeURIComponent(ele) + "/" + encodeURIComponent(val);
   var user_sess = getSessionFromCookie();
   if (user_sess.length>0) {
@@ -38,7 +38,7 @@ function putToDbNoAck(mapid,pwd,ele,val) {
 }
 
 function getFromDb(mapid,ele) {
-	document.getElementById(ele).innerHTML = "Retrieving...";
+	document.getElementById(ele).innerHTML = RETRIEVING;
 	var url = "/dbget/" + encodeURIComponent(mapid) + "/" + encodeURIComponent(ele);
 	var req = new XMLHttpRequest();
 	req.open("GET", url, true);

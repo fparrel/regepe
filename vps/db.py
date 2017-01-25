@@ -8,6 +8,7 @@ import re
 #from log import Log
 import operator
 import itertools
+from flask_babel import gettext
 
 DBTYPES = ('users','maps')
 
@@ -49,7 +50,7 @@ def DbChkPwd(mapid,inputpwd):
 def DbPutWithoutPassword(mapid,ele,val):
     # Check ele
     if ele not in ELELIST['maps']:
-        raise Exception('Invalid element')
+        raise Exception(gettext('Invalid element'))
     # Target map db
     dbfile = 'data/maps/%s.db' % mapid
     # Write value
@@ -65,7 +66,7 @@ def DbPutWithoutPassword(mapid,ele,val):
 def DbPut(mapid,pwd,ele,val):
     # Check ele
     if ele not in ELELIST['maps']:
-        raise Exception('Invalid element')
+        raise Exception(gettext('Invalid element'))
     # Target map db
     dbfile = 'data/maps/%s.db' % mapid
     # Check pwd
@@ -75,14 +76,14 @@ def DbPut(mapid,pwd,ele,val):
     db.close()
     #Log('DbPut close db r %s\n'%mapid)
     if pwd!=rightpwd:
-        raise Exception('Bad password')
+        raise Exception(gettext('Bad password'))
     DbPutWithoutPassword(mapid,ele,val)
 
 
 def DbGet(mapid,ele):
     # Check ele
     if ele not in ELELIST['maps']:
-        raise Exception('Invalid element')
+        raise Exception(gettext('Invalid element'))
     # Target map db
     dbfile = 'data/maps/%s.db' % mapid
     # Read value
@@ -90,7 +91,7 @@ def DbGet(mapid,ele):
     try:
         db = anydbm.open(dbfile, 'r')
     except Exception, e:
-        raise Exception('Cannot open %s: %s' %(dbfile,e))
+        raise Exception(gettext('Cannot open %s: %s') %(dbfile,e))
     try:
         value = db[ele]
     except KeyError:
@@ -106,7 +107,7 @@ def DbGetMulitple(mapid,elelst):
     try:
         db = anydbm.open(dbfile, 'r')
     except Exception, e:
-        raise Exception('Cannot open %s: %s' %(dbfile,e))
+        raise Exception(gettext('Cannot open %s: %s') %(dbfile,e))
     out={}
     for ele in elelst:
         try:
@@ -156,7 +157,7 @@ def DbSearchWord(ele,word):
         DbBuildWordList(ele)
     # Check ele
     if ele not in ELELIST['maps']:
-        raise Exception('Invalid element')
+        raise Exception(gettext('Invalid element'))
     # Search
     #Log('DbSearchWord open db r %s_INV\n'%ele.upper())
     dbinv = anydbm.open('data/'+ele.upper()+'_INV.db','r')
@@ -171,10 +172,10 @@ def DbSearchWord(ele,word):
 
 def DbBuildInvert(dbtype,ele,invfunc):
     if dbtype not in DBTYPES:
-        raise Exception('Invalid database type')
+        raise Exception(gettext('Invalid database type'))
     # Check ele
     if ele not in ELELIST[dbtype]:
-        raise Exception('Invalid element')
+        raise Exception(gettext('Invalid element'))
     #print '<!-- DbBuildInvert -->\n'
     # Target inv db
     dbfileinv = 'data/'+ele.upper()+'_INV.db'
@@ -276,7 +277,7 @@ def DbGetListOfDates():
 def DbAddComment(mapid,user,comment):
     mapfile = 'data/maps/%s.db' % mapid
     if not os.access(mapfile,os.F_OK):
-        raise Exception('Invalid map id %s' % mapid)
+        raise Exception(gettext('Invalid map id %s') % mapid)
     d = getCurrentDate()
     lock = FileLock(mapfile,5)
     lock.acquire()
@@ -291,7 +292,7 @@ def DbAddComment(mapid,user,comment):
     last_comment_id += 1
     if last_comment_id>99999:
         lock.release()
-        raise Exception('Max comments reached')
+        raise Exception(gettext('Max comments reached'))
     #Log('DbAddComment open db c %s\n' % mapfile)
     db = anydbm.open(mapfile,'c')
     db['last_comment_id'] = str(last_comment_id)
@@ -303,7 +304,7 @@ def DbAddComment(mapid,user,comment):
 def DbGetComments(mapid):
     mapfile = 'data/maps/%s.db' % mapid
     if not os.access(mapfile,os.F_OK):
-        raise Exception('Invalid map id %s' % mapid)
+        raise Exception(gettext('Invalid map id %s') % mapid)
     #Log('DbGetComments open db r %s\n' % mapfile)
     db = anydbm.open(mapfile,'r')
     out = []

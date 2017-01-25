@@ -194,7 +194,7 @@ function updatePauses() {
     }
     if(!pauses_updating) {
         pauses_updating=1;
-        document.getElementById("pauses").innerHTML='Computing...';
+        document.getElementById("pauses").innerHTML=COMPUTING;
         pauses=getPauses(pauses_time,pauses_dist,pauses_spd);
         //console.log("pauses=%o",pauses);
         var i;var pauseshtml='';var totalpauses=0;

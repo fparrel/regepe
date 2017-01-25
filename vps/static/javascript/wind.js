@@ -1,3 +1,4 @@
+
 function MaxSpd(spd,dst,time,ptidfrom,ptidto,course) {
     this.spd=spd;
     this.dst=dst;
@@ -102,13 +103,13 @@ function vmgToHtml(spdobj) {
 
 function vmgsToHtml(spdobjarr) {
     if(spdobjarr.type=='time') {
-        return '<div class="best_spd_sub_group"><h5>Best VMG on '+secondsToTimeString(spdobjarr.interval)+'</h5>'+spdobjarr.map(vmgToHtml).join('<br/>')+'</div>';
+        return '<div class="best_spd_sub_group"><h5>'+BEST_VMG_ON+secondsToTimeString(spdobjarr.interval)+'</h5>'+spdobjarr.map(vmgToHtml).join('<br/>')+'</div>';
     }
     else if(spdobjarr.type=='dist') {
         if(spdobjarr.interval==1852)
-            return '<div class="best_spd_sub_group"><h5>Best VMG on 1 nautical mile</h5>'+spdobjarr.map(vmgToHtml).join('<br/>')+'</div>';
+            return '<div class="best_spd_sub_group"><h5>'+BEST_VMG_ON_1_NAUT_MILE+'</h5>'+spdobjarr.map(vmgToHtml).join('<br/>')+'</div>';
         else
-            return '<div class="best_spd_sub_group"><h5>Best VMG on '+spdobjarr.interval+'m</h5>'+spdobjarr.map(vmgToHtml).join('<br/>')+'</div>';
+            return '<div class="best_spd_sub_group"><h5>'+BEST_VMG_ON+spdobjarr.interval+'m</h5>'+spdobjarr.map(vmgToHtml).join('<br/>')+'</div>';
     }
     return '';
 }

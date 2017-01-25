@@ -3,6 +3,8 @@
 import anydbm
 import cgi
 from urllib import urlopen
+from log import Warn
+from flask_babel import gettext
 
 
 def GetTimeZoneWebService(lat,lng):
@@ -15,10 +17,10 @@ def GetTimeZoneWebService(lat,lng):
             j = ret.index('</',i+7)
             tz = float(ret[i+8:j])
         except:
-            raise Exception('Cannot parse result from TimeZone server %s, assuming GMT+0'%ret)
+            raise Exception(gettext('Cannot parse result from TimeZone server %s, assuming GMT+0')%ret)
     except IOError:
         #raise Exception('Sorry, outage on TimeZone server, assuming GMT+0')
-        print 'Sorry, outage on TimeZone server, assuming GMT+0'
+        Warn('Sorry, outage on TimeZone server, assuming GMT+0')
         return 0.0
     return tz
 

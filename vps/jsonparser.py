@@ -4,6 +4,8 @@ from model import Bounds,Point,Track
 #Datetime
 import datetime,time
 import json
+#i18n
+from flask_babel import gettext
 
 
 def ConvertDate(datetimestr):
@@ -17,7 +19,7 @@ def ConvertDate(datetimestr):
                 #d = datetime(*(time.strptime(datetimestr,'%Y-%m-%d %H:%M:%S')[0:6]))
                 d = datetime.datetime(*(time.strptime(datetimestr,'%Y-%m-%d %H:%M:%S')[0:6]))
             except ValueError:
-                raise Exception('Cannot convert date %s' % datetimestr)
+                raise Exception(gettext('Cannot convert date %s') % datetimestr)
         return d
     else:
         return None

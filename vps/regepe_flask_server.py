@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask,render_template,send_file,Response,flash,request,redirect
 from werkzeug.utils import secure_filename
 import json
@@ -24,11 +26,31 @@ from computeprofile import ComputeProfile
 from demize import Demize
 from generate_id import uniqid
 from config import keysnpwds, config
+from flask_babel import Babel,gettext
 
 
 # Create flask application
 application = Flask(__name__)
 application.config['UPLOAD_FOLDER'] = 'uploads'
+
+babel = Babel(application)
+
+LANGUAGES = {
+    'en': 'English',
+    'fr': 'Francais',
+    'es': 'Español'
+}
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(LANGUAGES.keys())
+    #return 'es'
+    #return 'fr'
+
+@application.route('/i18n.js/<item>')
+def i18n(item):
+    assert(item in ('header','map','prepare'))
+    return render_template('i18n_%s.js'%item)
 
 
 ## Index page
@@ -149,13 +171,13 @@ def sendcomment(mapid,comment):
             if CheckSession(user,sess):
                 pass
             else:
-                raise Exception('Invalid session, please re-login')
+                raise Exception(gettext('Invalid session, please re-login'))
         else:
             user = request.remote_addr
         if not CheckValidMapId(mapid):
-            raise Exception('Invalid map id')
+            raise Exception(gettext('Invalid map id'))
         if not CheckValidFreetext(comment):
-            raise Exception('Invalid map id')
+            raise Exception(gettext('Invalid map id'))
         DbAddComment(mapid,user,comment)
         result = 'OK'
     except Exception, e:
@@ -190,9 +212,9 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
                     DbPutWithoutPassword(mapid,ele,val)
                     message = 'OK'
                 else:
-                    raise Exception('Map %s does not belong to user %s, but to user %s' % (mapid,user,map_user))
+                    raise Exception(gettext('Map %s does not belong to user %s, but to user %s') % (mapid,user,map_user))
             else:
-                raise Exception('Invalid session, please re-login')
+                raise Exception(gettext('Invalid session, please re-login'))
         else:
             DbPut(mapid,pwd,ele.encode('ascii'),val.encode('utf8'))
             message = 'OK'
@@ -230,7 +252,7 @@ def upload():
     if request.form.has_key('fromurl') and len(request.form['fromurl'])>0:
         inputfile.append(request.form.get('fromurl').encode('ascii'))
     if len(inputfile)<1:
-        return 'Error while uploading file'
+        return gettext('Error while uploading file')
     # Track selection in case file contains several tracks
     if request.form.has_key('trk_select'):
         trk_id = int(request.form['trk_select'])
@@ -259,7 +281,7 @@ def upload():
             elif type(options[key])==str:
                 options[key]=request.form[key]
             else:
-                raise Exception('type %s not handled',type(options[key]))
+                raise Exception(gettext('type %s not handled'),type(options[key]))
     Log('start BuildMap',submit_id)
     pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user,options)
     Log('end BuildMap',submit_id)
@@ -365,12 +387,12 @@ def auth(mapid,pwd,user,sess):
             if len(map_user)>0 and map_user==user:
                 pass
             else:
-                raise Exception('Map %s does not belong to user %s, but to user %s' % (mapid,user,map_user))
+                raise Exception(gettext('Map %s does not belong to user %s, but to user %s') % (mapid,user,map_user))
         else:
-            raise Exception('Invalid session, please re-login')
+            raise Exception(gettext('Invalid session, please re-login'))
     else:
         if not DbChkPwd(mapid,pwd):
-            raise Exception('You do not have the map\'s password in your browser\'s cookies')
+            raise Exception(gettext('You do not have the map\'s password in your browser\'s cookies'))
 
 @application.route('/delmap/<mapid>/<pwd>',defaults={'user':None,'sess':None})
 @application.route('/delmap/<mapid>/<pwd>/<user>/<sess>')
@@ -381,7 +403,7 @@ def delmap(mapid,pwd,user,sess):
         DbDelMap(mapid)
         mapfile = 'data/mapdata/%s.json.gz' % mapid
         os.remove(mapfile)
-        message = 'Map deleted'
+        message = gettext('Map deleted')
     except Exception, e:
         message = str(e)
     return render_template('map_deleted.html',message=message)
@@ -462,7 +484,7 @@ def demize(index,mapid,pwd,user,sess):
 ## User services
 
 def CheckHumain(humaincheck):
-    return ((humaincheck.strip().lower()=='earth')or(humaincheck.strip().lower()=='the earth'))
+    return ((humaincheck.strip().lower()==gettext('earth'))or(humaincheck.strip().lower()==gettext('the earth')))
 
 @application.route('/registerform')
 def registerform():
@@ -477,9 +499,9 @@ def register():
     pwd2 = request.form['pwd2']
     humaincheck = request.form['humaincheck']
     if not CheckHumain(humaincheck):
-        return render_template('register.html',error_message='Humain check error')
+        return render_template('register.html',error_message=gettext('Humain check error'))
     if pwd1!=pwd2:
-        return render_template('register.html',error_message='Password check error')
+        return render_template('register.html',error_message=gettext('Password check error'))
     activation_id = ReserveUser(user.encode('ascii'),mail.encode('ascii'),pwd1.encode('utf8'))
     SendActivationMail(mail,user,activation_id)
     return render_template('user_registered.html',user=user)
@@ -522,6 +544,10 @@ def chksess(user,sess):
     out = '<answer><result>%s</result><user>%s</user><sess>%s</sess></answer>' % (result,user,sess)
     return Response(out, mimetype='text/xml')
 
+@application.route('/forgotpwd')
+def forgotpwd():
+    return render_template('forgotpwd.html')
+
 @application.route('/resendpwd', methods=['POST'])
 def resendpwd():
     user_mail = request.form['user_mail'].encode('ascii').lower()
@@ -551,7 +577,7 @@ def userhome(user):
 @application.route('/mergemaps/<mapidsliststr>/<user>/<sess>')
 def mergemaps(mapidsliststr,user,sess):
     if not CheckSession(user,sess):
-        message = 'Cannot identify user %s %s'%(user,sess)
+        message = gettext('Cannot identify user %s %s')%(user,sess)
     else:
         mapids = mapidsliststr.split(',')
         ptlistmerged = {}
@@ -592,7 +618,7 @@ def mergemaps(mapidsliststr,user,sess):
 @application.route('/delmaps/<mapidsliststr>/<user>/<sess>')
 def delmaps(mapidsliststr,user,sess):
     if not CheckSession(user,sess):
-        message = 'Cannot identify user %s %s'%(user,sess)
+        message = gettext('Cannot identify user %s %s')%(user,sess)
     else:
         try:
             mapids = mapidsliststr.split(',')
@@ -602,12 +628,12 @@ def delmaps(mapidsliststr,user,sess):
                 if len(map_user)>0 and map_user==user:
                     DbDelMap(mapid)
                     os.remove('data/mapdata/%s.json.gz'%mapid)
-                    message += 'Map %s deleted. '%mapid
+                    message += gettext('Map %s deleted. ')%mapid
                 else:
-                    message += 'Map %s do not belong to you'%mapid
+                    message += gettext('Map %s do not belong to you')%mapid
                     break
         except Exception, e:
-            message += 'Error: %s'%e
+            message += gettext('Error: %s')%e
     return render_template('map_deleted.html',message=message)
 
 
@@ -632,7 +658,7 @@ def PtStr2FloatArray(ptstr):
 def profile(ptliststr,width,height):
     ptlist = map(PtStr2FloatArray,ptliststr.split('~'))
     if(len(ptlist)<2):
-        return Response('Error: Cannot compute profile for only one point', mimetype='text/plain')
+        return Response(gettext('Error: Cannot compute profile for only one point'), mimetype='text/plain')
     nbpts = 400
     return Response('\n'.join(map(str,ComputeProfile(ptlist,nbpts,width,height))), mimetype='text/plain')
 
@@ -640,6 +666,17 @@ def profile(ptliststr,width,height):
 def prepare_export(format,ptlist,names):
     # TODO: build it from client side
     pass
+
+## Misc
+
+@application.route('/mobile')
+def mobile():
+    return render_template('mobile.html')
+
+@application.route('/tour')
+def tour():
+    return render_template('tour.html')
+
 
 ## Program entry point
 

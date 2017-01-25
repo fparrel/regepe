@@ -10,6 +10,9 @@ from db import DbGet
 import datetime
 import time
 from options import options_default
+# i18n
+from flask_babel import gettext
+
 
 def getDate(mapid):
     date = None
@@ -35,7 +38,7 @@ def convdate(s,d):
         else:
             t = datetime.datetime(int(s[0:4]),int(s[5:7]),int(s[8:10]),int(s[11:13]),int(s[14:16]),int(s[17:19]))
     except ValueError,e:
-        raise Exception('Cannot parse date %s: %s'%(s,str(e)))
+        raise Exception(gettext('Cannot parse date %s: %s')%(s,str(e)))
     return t
 
 def convpt(pt,d,spdunit):
@@ -44,7 +47,7 @@ def convpt(pt,d,spdunit):
     elif len(pt)==8:
         return Point(pt[0],pt[1],pt[3],pt[4],pt[6],convdate(pt[2],d),spdunit,pt[7])
     else:
-        raise Exception('error in convpt')
+        raise Exception(gettext('Error in mapparser:convpt'))
 
 def ParseMap(mapid):
     
