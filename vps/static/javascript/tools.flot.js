@@ -1,12 +1,12 @@
 
 function onSelClearClick() {
-    if (confirm("Remove selected part from the track?")) { 
+    if (confirm(CLEAR_QUESTION)) { 
         cutMap('clear');
     }
 }
 
 function onSelCropClick() {
-    if (confirm("Keep only the selected part of track?")) { 
+    if (confirm(CROP_QUESTION)) { 
         cutMap('crop');
     }
 }
@@ -57,7 +57,7 @@ function cutMap(action) {
 }
 
 function onMapDeleteClick() {
-    if (confirm("Confirm deletion of this map?")) { 
+    if (confirm(DELETE_QUESTION)) { 
         var pwd = getPwdFromCookie(mapid);
         var url = '/delmap/'+mapid+'/'+pwd;
         var user_sess = getSessionFromCookie();
@@ -103,15 +103,15 @@ function onDemizeAnswer() {
                 req.send(null);
             }
             else if (result=='Done') {
-                document.getElementById('demizeresults').innerHTML = 'Done';
+                document.getElementById('demizeresults').innerHTML = DONE;
                 window.location.reload();
             }
             else {
-                document.getElementById('demizeresults').innerHTML = '<b>Error:</b> '+result;
+                document.getElementById('demizeresults').innerHTML = '<b>'+ERROR+':</b> '+result;
             }
         }
         else if (this.status == 500) {
-            document.getElementById('demizeresults').innerHTML = 'Internal Error, please retry';
+            document.getElementById('demizeresults').innerHTML = INTERNAL_ERROR_RETRY;
         }
     }
 }

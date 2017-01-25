@@ -125,11 +125,11 @@ function initGeoportalMap() {
 			strokeDashstyle: "solid"
 		};
 		
-		track_layer = new OpenLayers.Layer.Vector('Track');
+		track_layer = new OpenLayers.Layer.Vector(TRACK);
 		
 		VISU.getMap().addLayer(track_layer);
         
-		markers_layer = new OpenLayers.Layer.Vector('Marks');
+		markers_layer = new OpenLayers.Layer.Vector(MARKS);
 		VISU.getMap().addLayer(markers_layer);
 		drag = new OpenLayers.Control.DragFeature(markers_layer, {onComplete: onMarkerDrag, onStart: onMarkerSelect});
 		VISU.getMap().addControl(drag);
@@ -167,7 +167,7 @@ var iv = Geoportal.load('map',
                 {
                    //OPTIONS
                    onView : initGeoportalMap,
-                    language:'en',
+                    language:LANG,
                     viewerClass:'Geoportal.Viewer.Default',
                     overlays:{} //remove blue pin
                 }

@@ -10,6 +10,9 @@ from model import Bounds,Point,Track
 # For unzip .kmz
 from unzip import iszip,unzipOne
 import StringIO
+# For i18n
+from flask_babel import gettext
+
 
 class KmlTuple:
     # lat
@@ -21,7 +24,7 @@ class KmlTuple:
             self.lon = float(splitresult[0])
             self.lat = float(splitresult[1])
         else:
-            raise Exception("Error while parsing kml file")
+            raise Exception(gettext("Error while parsing kml file"))
         if len(splitresult)==3:
             self.ele = int(float(splitresult[2]))
         else:
@@ -142,7 +145,7 @@ def ParseKmlFile(inputfile,trk_id,trk_seg_id):
     kml = KmlFile(tree.getroot(),xmlns)
     placemark = kml.GetFromId(trk_id)
     if placemark==None:
-        raise Exception('Placemark not found in kml file')
+        raise Exception(gettext('Placemark not found in kml file'))
     return map(KmlTuple.ToPoint,placemark.geometry.coordinates.tuples)
 
 
@@ -154,7 +157,7 @@ def ParseKmlFile2(inputfile,path_to_linestring):
     kml = KmlFile(tree.getroot(),xmlns)
     placemark = kml.GetFromPath(path_to_linestring)
     if placemark==None:
-        raise Exception('Path not found in kml file')
+        raise Exception(gettext('Path not found in kml file'))
     return map(KmlTuple.ToPoint,placemark.geometry.coordinates.tuples)
 
 

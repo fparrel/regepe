@@ -46,10 +46,12 @@ from figures import Figures
 
 import traceback
 
+from flask_babel import gettext
+
 
 def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
     if not light:
-        SetProgress(submitid,'Remove staying points')
+        SetProgress(submitid,gettext('Remove staying points'))
     nbptsbefore = len(track)
     if not light:
         pauses = track.RemoveStayingPoints4(3.0,30,0.2)
@@ -57,13 +59,13 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
         Log('RemoveStayingPoints4 %d points -> %d points' % (nbptsbefore,len(track)),submitid)
         SetProgress(submitid,'%d points -> %d points' % (nbptsbefore,len(track)))
     if not options['flat'] and options['usedem'] and not light:
-        SetProgress(submitid,'Getting elevations from DEM')
+        SetProgress(submitid,gettext('Getting elevations from DEM'))
         track.GetEleFromDEM()
     #print('DEBUG: %d points -> %d points' % (nbptsbefore,len(track)))
     #for pt in track.ptlist:
     #    print('DEBUG:ProcessTrkSegWithProgress: la=%s lg=%s e=%s s=%s c=%s t=%s' % (pt.lat,pt.lon,pt.ele,pt.spd,pt.course,pt.datetime))
     if not light:
-        SetProgress(submitid,'Computing figures')
+        SetProgress(submitid,gettext('Computing figures'))
     figures = Figures(track,options)
     charts = []
     if type=='dyg':
@@ -75,7 +77,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
         trksegcompressed = track
     if not track.nospeeds:
         if not light:
-            SetProgress(submitid,'Building speed chart')
+            SetProgress(submitid,gettext('Building speed chart'))
         try:
             Log('ProcessTrkSegWithProgress: spd chart',submitid)
             data = (trksegcompressed.ComputeTimes(),trksegcompressed.GetSpeeds(options['spdunit']))
@@ -86,7 +88,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
         #charts.append(MyXYChart((trksegcompressed.ComputeDistances(),trksegcompressed.GetSpeeds(options['spdunit'])),'','spddistchart','Speed in '+options['spdunit']+' against distance in m',len(track),trksegcompressed.ptindexlist))
     if not options['flat']:
         if not light:
-            SetProgress(submitid,'Building vert charts')
+            SetProgress(submitid,gettext('Building vert charts'))
         try:
             # Elevation
             #dists = trksegcompressed.ComputeDistances()
@@ -109,7 +111,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
         except Exception, e:
             Warn('Cannot make vert charts %s\n'%e)
             if not light:
-                SetProgress(submitid,'Warning: asking for vertical anlysis on flat track')
+                SetProgress(submitid,gettext('Warning: asking for vertical anlysis on flat track'))
     # Add a dummy chart for allowing selection in case there is no chart
     if options['flat'] and track.nospeeds:
         if options['wind']:
@@ -117,7 +119,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
     if options['wind']:
         Log("ProcessTrkSegWithProgress: polar charts",submitid)
         if not light:
-            SetProgress(submitid,'Building polar')
+            SetProgress(submitid,gettext('Building polar'))
         if track.nospeeds:
             (angles,distances) = track.ComputePolarDist(360)
             charts.append(MyPolar((distances,),'','polarchart','Distance (m) / Absolute course (&deg;)','m',type=type))
@@ -128,25 +130,25 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
             except Exception, e:
                 Warn('Cannot build polar: %s\n'%e)
     if not light:
-        SetProgress(submitid,'Building map')
+        SetProgress(submitid,gettext('Building map'))
     Log("ProcessTrkSegWithProgress: BuildPage",submitid)
-    
+
     if not track.nospeeds and options['maxspd']:
         Log("ProcessTrkSegWithProgress: BuildMaxSpeeds",submitid)
         try:
             charts.append(ChartStringWithTitle(BuildMaxSpeeds(figures),'maxspd','Max speed analysis',type=type))
         except Exception, e:
             Warn('Cannot BuildMaxSpeeds: %s\n'%e)
-    
+
     if track.hasHearthRate():
         try:
             charts.append(MyXYChart((trksegcompressed.ComputeTimes(),trksegcompressed.getHearthRate()),'','hrtimechart','Hearth Rate (bps)','Hearth Rate',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Hr',unity='bps'))
         except Exception, e:
             Warn('Cannot Build hearth rate %s\n'%e)
-    
+
     Log("ProcessTrkSegWithProgress: BuildPage",submitid)
     out = BuildPage(track,charts,figures,options['spdunit'],mapid,options)
-    
+
     #f = open(fname_out,'w')
     #f.write(out)
     Log("ProcessTrkSegWithProgress: compress and write",submitid)
@@ -239,7 +241,7 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
                 else:
                     moveid = inputfile[inputfile.rfind('/')+1:]
                 if not moveid.startswith('move'):
-                    raise Exception('URL must follow pattern: "http[s]://www.movescount.com/[fr/]moves/move[XXXXX]"')
+                    raise Exception(gettext('URL must follow pattern: "http[s]://www.movescount.com/[fr/]moves/move[XXXXX]"'))
                 moveid = moveid[4:]
                 inputfile = urlopen('http://www.movescount.com/Move/Track2/%s'%moveid)
                 filetype = JSON_MOVESCOUNT
@@ -258,7 +260,7 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
                 filetype = XML_SPORTSTRACKLIVE
                 inputfile = urlopen('http://www.sportstracklive.com/live/xml/mapdata?g=_FIAE`FN??&z=10&what=t&op=track&id=%s'%id)
             else:
-                raise Exception('URL must start with "http[s]://www.kitetracker.com/gps/tracking?r=", "http[s]://connect.garmin.com/modern/activity/", "http[s]://www.movescount.com/[fr/]moves/" or "http[s]://www.strava.com/activities/"')
+                raise Exception(gettext('URL must start with "http[s]://www.kitetracker.com/gps/tracking?r=", "http[s]://connect.garmin.com/modern/activity/", "http[s]://www.movescount.com/[fr/]moves/" or "http[s]://www.strava.com/activities/"'))
         else:
             filetype = GetFileType(inputfile)
         if (filetype==GPX):
@@ -313,7 +315,7 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
             # ignore empty files
             continue
         else:
-            raise Exception('Unknown file type')
+            raise Exception(gettext('Unknown file type'))
         ptlist_all.extend(ptlist)
     # count number of points without datetime
     nb_pt_wo_datetime = 0
@@ -343,17 +345,17 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
     # sort by datetime if applicable
     if nb_pt_wo_datetime==0:
         ptlist_all.sort(key=lambda pt:pt.datetime)
-    
+
     # build track and map
     track = Track(ptlist_all)
-    
+
     return BuildMapFromTrack(track,mapid,submitid,desc,user,options)
 
 def BuildMapFromTrack(track,mapid,submitid,desc,user,options):
     #ProcessTrkSegWithProgress(track,mapid,submitid)
-    SetProgress(submitid,'Generating uuid')
+    SetProgress(submitid,gettext('Generating uuid'))
     pwd = str(uuid.uuid4())
-    SetProgress(submitid,'Writing to DB')
+    SetProgress(submitid,gettext('Writing to DB'))
     DbSetPassword(mapid,pwd)
     DbPut(mapid,pwd,'trackdesc',desc)
     DbPut(mapid,pwd,'trackuser',user)

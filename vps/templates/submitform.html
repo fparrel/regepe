@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>Replay your GPS Tracks with REGEPE</title>
+<html><head><title>{{_('Replay your GPS Tracks with REGEPE')}}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
 <link type="text/css" rel="StyleSheet" href="/static/styles/inputform.css" />
@@ -8,93 +8,93 @@
 	<div id="header">
 		<div id="header_search">
 			<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
-			<input type="button" value="Search" onclick="onSearchClick();"/>
+			<input type="button" value="{{_('Search')}}" onclick="onSearchClick();"/>
 			<div id="header_lang">
 				<a href="/submitform"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
 				<a href="/fr/submitform"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
 			</div>
 		</div>
 		<div id="header_home">
-			<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>Home</a>
+			<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>{{_('Home')}}</a>
 		</div>
 		<div id="header_mobile">
-			<a href="/static/mobile.html"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>Get app</a>
+			<a href="/mobile"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>{{_('Get app')}}</a>
 		</div>
 		<div id="header_submit">
-			<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>Submit track</a>
+			<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>{{_('Submit track')}}</a>
 		</div>
 		<div id="header_prepare">
-			<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>Prepare itinerary</a>
+			<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>{{_('Prepare itinerary')}}</a>
 		</div>
 		<div id="header_mapofmaps">
-			<a href="/mapofmaps"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>Browse tracks</a>
+			<a href="/mapofmaps"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>{{_('Browse tracks')}}</a>
 		</div>
 		<div id="header_login">
 			<form action="">
 				<div>
-					User: <input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
-					Password: <input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
-					<input type="button" value="Login" onclick="onLoginClick();"/><br/>
-					<a href="/registerform">Register</a> |
-					<a href="/static/forgotpwd.html">Forgot password?</a>
+					{{_('User: ')}}<input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
+					{{_('Password: ')}}<input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
+					<input type="button" value="{{_('Login')}}" onclick="onLoginClick();"/><br/>
+					<a href="/registerform">{{_('Register')}}</a> |
+					<a href="/forgotpwd">{{_('Forgot password?')}}</a>
 				</div>
 			</form>
 		</div>
 	</div>
     <div id="wrapper">
         <div id="body">
-            <h1>Submit a track (Do not forget to choose right activity profile!)</h1>
+            <h1>{{_('Submit a track (Do not forget to choose right activity profile!)')}}</h1>
             <form name="uploadform" action="/upload" method="POST" enctype="multipart/form-data">
-				<h2>Source</h2>
+				<h2>{{_('Source')}}</h2>
 				<div id="file_and_preview">
 					<div id="file_and_desc">
 						<div id="file_and_trk_select_div">
 							<div id="file_select_div">
-								Gpx/Kml/Nmea/Sbp file(s) to analyze: <input id="file" name="file[]" type="file" onchange="input_file_change(event,this);" multiple="true"><br/>
-								<small><b>Note:</b> You can select more than one file using Ctrl or Shift key (not available on all broswers), the files will be concatenated in a single track.</small>
+								{{_('Gpx/Kml/Nmea/Sbp file(s) to analyze: ')}}<input id="file" name="file[]" type="file" onchange="input_file_change(event,this);" multiple="true"><br/>
+								<small><b>{{_('Note:')}}</b> {{_('You can select more than one file using Ctrl or Shift key (not available on all broswers), the files will be concatenated in a single track.')}}</small>
 							</div>
 							<div id="trk_select_div" style="display: none;">
 								<br/>
-								File contains several tracks. Select a track: 
+								{{_('File contains several tracks. Select a track: ')}}
 								<select id="trk_select" name="trk_select" onchange="trk_select_change(event,this);"></select>
 							</div>
 							<div id="fromurl">
-								<br/><b>Import from URL:</b> <input id="url" name="fromurl" type="text" onchange="">
+								<br/><b>{{_('Import from URL:')}}</b> <input id="url" name="fromurl" type="text" onchange="">
 							</div>
 						</div>
 						<div id="desc_div">
-							<b>Description:</b><br/>
+							<b>{{_('Description:')}}</b><br/>
 							<textarea rows="3" cols="30" id="trackdesc_inputtxtbox" name="desc"></textarea>
 						</div>
 					</div>
 					<div id="preview_div">
-						<b>Preview of track start point:</b><br/>
+						<b>{{_('Preview of track start point:')}}</b><br/>
 						<div id="preview_map" style="height:200px;width:240px;"></div>
 						<div id="preview_time"></div>
 					</div>
 				</div>
 				<div style="clear:both;"></div>
-				<h2>Options</h2>
+				<h2>{{_('Options')}}</h2>
 				<div id="options_div">
-					Activity profile: <br/><div id="activity_select"></div><br/>
+					{{_('Activity profile: ')}}<br/><div id="activity_select"></div><br/>
 					<hr/>
-					Map type: <br/><div id="map_type_select"></div><br/>
-					Speed unit: 
+					{{_('Map type: ')}}<br/><div id="map_type_select"></div><br/>
+					{{_('Speed unit: ')}}
 					<select id="spdunit" name="spdunit">
-						<option value="m/s">m/s</option>
-						<option value="km/h">km/h</option>
-						<option value="knots">knots</option>
-						<option value="mph">mph</option>
+						<option value="m/s">{{_('m/s')}}</option>
+						<option value="km/h">{{_('km/h')}}</option>
+						<option value="knots">{{_('knots')}}</option>
+						<option value="mph">{{_('mph')}}</option>
 					</select><br/>
-					Max speeds analysis: <input id="maxspd" type="checkbox" name="maxspd" value="yes">(<a href="javascript:toogleHideShow('help_maxspd');">?</a>)<div id="help_maxspd" style="display:none;">Add max speed on 50,100,200,500 meters, and max speed on 2,5,10 seconds.</div><br/>
-					Flat track: <input id="flat" type="checkbox" name="flat" value="yes" onchange="flat_change(this);"> (<a href="javascript:toogleHideShow('help_flat');">?</a>)<div id="help_flat" style="display:none;">If selected, doesn't compute any figure related to elevation.</div><br/>
-					Draw polar: <input id="wind" type="checkbox" name="wind" value="yes"> (<a href="javascript:toogleHideShow('help_wind');">?</a>)<div id="help_wind" style="display:none;">If selected, compute figures related to course. Usefull for any wind related activity.</div><br/>
+					{{_('Max speeds analysis: ')}}<input id="maxspd" type="checkbox" name="maxspd" value="yes">(<a href="javascript:toogleHideShow('help_maxspd');">?</a>)<div id="help_maxspd" style="display:none;">{{_('Add max speed on 50,100,200,500 meters, and max speed on 2,5,10 seconds.')}}</div><br/>
+					{{_('Flat track: ')}}<input id="flat" type="checkbox" name="flat" value="yes" onchange="flat_change(this);"> (<a href="javascript:toogleHideShow('help_flat');">?</a>)<div id="help_flat" style="display:none;">{{_("If selected, doesn't compute any figure related to elevation.")}}</div><br/>
+					{{_('Draw polar: ')}}<input id="wind" type="checkbox" name="wind" value="yes"> (<a href="javascript:toogleHideShow('help_wind');">?</a>)<div id="help_wind" style="display:none;">{{_('If selected, compute figures related to course. Usefull for any wind related activity.')}}</div><br/>
 				</div>
 			<div style="clear:both;"></div>
-				<h2>Send</h2>
+				<h2>{{_('Send')}}</h2>
 				<div id="send_div">
 					<input id="submit_id" name="submit_id" type="hidden" value="-1"/>
-					<input value="Build track analysis" type="submit" onclick="submit_click();"/>
+					<input value="{{_('Build track analysis')}}" type="submit" onclick="submit_click();"/>
 				</div>
 				<div id="form_session">
 					<input id="user" name="user" type="hidden" value="NoUser"/>
@@ -111,11 +111,12 @@
         <div id="footer_push"></div>
     </div>
 	<div id="footer">
-		<b>Contact:</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
+		<b>{{_('Contact:')}}</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
 	</div>
 </body>
 </html>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{GMapsApiKey}}" type="text/javascript"></script>
+<script type="text/javascript" src="/i18n.js/header"></script>
 <script src="/static/javascript/xmlhttprequest.js" type="text/javascript"></script>
 <script src="/static/javascript/header.js" type="text/javascript"></script>
 <script src="/static/javascript/utils.js" type="text/javascript"></script>
@@ -163,7 +164,7 @@ function getprogress_callback() {
 
 function submit_click() {
     console.log("submit_click()");
-    document.getElementById("progress_status").innerHTML = 'Uploading file...<br/>';
+    document.getElementById("progress_status").innerHTML = '{{_("Uploading file...")}}<br/>';
     progress_timer = setTimeout("getprogress_callback()",500);
     //getprogress_callback();
 }
@@ -419,7 +420,7 @@ function update_trkselect(trknames,reset) {
     else {
         var new_select = document.createElement('div');
         trkselect_fileid++;
-        new_select.innerHTML = 'File contains several tracks. Select a track: <select id="trk_select'+trkselect_fileid+'" name="trk_select'+trkselect_fileid+'" onchange="trk_select_change(event,this);"></select>';
+        new_select.innerHTML = '{{_("File contains several tracks. Select a track: ")}}<select id="trk_select'+trkselect_fileid+'" name="trk_select'+trkselect_fileid+'" onchange="trk_select_change(event,this);"></select>';
         document.getElementById("trk_select_div").appendChild(new_select);
         add_to_trkselect(document.getElementById("trk_select"+trkselect_fileid),trknames);
     }
@@ -693,14 +694,14 @@ function add_uncompressed_contents_to_form(contents) {
 
 var map_types = [
 	new MapType("GMaps","Google Maps","gmaps.png"),
-	new MapType("GeoPortal", "Geo Portal (France only)","geoportal.png")
+	new MapType("GeoPortal", "{{_('Geo Portal (France only)')}}","geoportal.png")
 ];
 
 var activities = [
-	new Activity("hiking","Hiking, Skitouring, Ski, Snowboard, Bike","km/h",false,false,true,"GeoPortal",["Bike-icon.svg","skitouring.svg","hiking.svg"]),
-	new Activity("kayak","Surfing, Sea Kayak, Motor boat","knots",true,false,true,"GMaps",["kayak.svg","surf3.svg"]),
-	new Activity("sailing","Windsurf, Kite, Sailing","knots",true,true,true,"GMaps",["kitesurfing.svg","windsurf1.svg"]),
-	new Activity("flying","Snowkite, Free-flying, Air Balloon","km/h",false,true,true,"GeoPortal",["Ballooning_pictogram.svg","delta3.svg","skikite.svg"])
+	new Activity("hiking","{{_('Hiking, Skitouring, Ski, Snowboard, Bike')}}","km/h",false,false,true,"GeoPortal",["Bike-icon.svg","skitouring.svg","hiking.svg"]),
+	new Activity("kayak","{{_('Surfing, Sea Kayak, Motor boat')}}","knots",true,false,true,"GMaps",["kayak.svg","surf3.svg"]),
+	new Activity("sailing","{{_('Windsurf, Kite, Sailing')}}","knots",true,true,true,"GMaps",["kitesurfing.svg","windsurf1.svg"]),
+	new Activity("flying","{{_('Snowkite, Free-flying, Air Balloon')}}","km/h",false,true,true,"GeoPortal",["Ballooning_pictogram.svg","delta3.svg","skikite.svg"])
 ];
 
 for (i in activities) {

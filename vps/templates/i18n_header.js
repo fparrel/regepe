@@ -1,0 +1,18 @@
+const SEARCHING='{{_("Searching...")}}';
+const SEARCH_RESULTS_TABLE_BEGIN='{{_("<h1>Search results</h1><table id=\"search_results_table\"><thead><tr><th id=\"sortby_date\">Date</th><th id=\"sortby_desc\">Description</th><th id=\"sortby_user\">User</th><th>Preview</th></tr></thead><tbody id=\"search_tbody\">")}}';
+const SEARCH_RESULTS_TABLE_END='{{_("</tbody></table>")}}';
+const NO_MAP_FOUND='{{_("<b>No map found</b><br/>")}}';
+const LOGGED_AS='{{_("Logged as")}}';
+const LOGOUT='{{_("Logout")}}';
+const LOGIN_FAILED='{{_("Login failed: ")}}';
+const SESSION_EXPIRED='{{_("Session expired, please re-login<br/>")}}';
+const LOGGING='{{_("Logging... ")}}';
+const HEADER_LOGIN_INIT='{{_("<form>User: <input id=\"login_user\" name=\"user\" type=\"text\"/>Password: <input id=\"login_password\" name=\"password\" type=\"password\"/><input type=\"button\" value=\"Login\" onclick=\"onLoginClick();\"/><br/><a href=\"/registerform\">Register</a> | <a href=\"/forgotpwd\">Forgot password?</a></form>")}}';
+const KNOTS='{{_("knots")}}';
+const SSW='{{_("SSW")}}';
+const SW='{{_("SW")}}';
+const WSW='{{_("WSW")}}';
+const W='{{_("W")}}';
+const WNW='{{_("WNW")}}';
+const NW='{{_("NW")}}';
+const NNW='{{_("NNW")}}';

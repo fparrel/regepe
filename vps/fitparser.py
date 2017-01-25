@@ -9,6 +9,10 @@ import struct
 #only for unittests
 import os
 
+#i18n
+from flask_babel import gettext
+
+
 fieldDefNbName=[[] for i in range(0,255)]
 #file_id
 fieldDefNbName[0]=['type','manufacturer','product','serial_number','time_created','number','','','product_name']
@@ -111,7 +115,7 @@ class FitDecoder:
                 print 'Cannot read more'
                 return False
             if archi!=0:
-                raise Exception('big endian not implemented')
+                raise Exception(gettext('big endian not implemented'))
             fields = map(lambda i:DecodeField(self.fd.read(3),msgnb),range(0,nbfields))
             #print 'fields',msgnb,fitMsgNbName[msgnb],locmsgtype,fields
             self.fields[locmsgtype] = fields
@@ -183,7 +187,7 @@ def ParseFitFile(inputfile,trk_id,trk_seg_id):
     hdr = inputfile.read(hdrsize-1)
     (protocol_version,profile_version,data_size,data_type,crc) = struct.unpack("<BHI4sH",hdr)
     if data_type!='.FIT':
-        raise Exception('ParseFitFile: .FIT not found in header')
+        raise Exception(gettext('ParseFitFile: .FIT not found in header'))
     #TODO: CRC check
 
     dec = FitDecoder(inputfile)

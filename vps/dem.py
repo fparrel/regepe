@@ -9,6 +9,7 @@ import zipfile
 import struct
 import datetime
 from urllib import urlopen
+from flask_babel import gettext
 
 
 def GetEleFromServer(lat,lon):
@@ -18,7 +19,7 @@ def GetEleFromServer(lat,lon):
         f = urlopen(query_str)
         ele = int(f.read())
     except IOError:
-        raise Exception('Sorry, outage on DEM server, please resend the map without the DEM option checked')
+        raise Exception(gettext('Sorry, outage on DEM server, please resend the map without the DEM option checked'))
     return ele
 
 

@@ -1,0 +1,1435 @@
+# French translations for PROJECT.
+# Copyright (C) 2017 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-01-25 15:36+0100\n"
+"PO-Revision-Date: 2017-01-25 17:49+0100\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: computeprofile.py:46
+#, python-format
+msgid "Cannot get elevations: ele=%s"
+msgstr "Impossible d'obtenir les altitudes : ele = %s"
+
+#: db.py:53 db.py:69 db.py:86 db.py:160 db.py:178
+msgid "Invalid element"
+msgstr "Élément non valide"
+
+#: db.py:79 users.py:130
+msgid "Bad password"
+msgstr "Mot de passe incorrect"
+
+#: db.py:94 db.py:110
+#, python-format
+msgid "Cannot open %s: %s"
+msgstr "Impossible d’ouvrir \"%s\": %s"
+
+#: db.py:175
+msgid "Invalid database type"
+msgstr "Type de base de données non valide"
+
+#: db.py:280 db.py:307
+#, python-format
+msgid "Invalid map id %s"
+msgstr "Identifiant de trace non valide %s"
+
+#: db.py:295
+msgid "Max comments reached"
+msgstr "Nombre maximum de commentaires atteint"
+
+#: dem.py:22
+msgid ""
+"Sorry, outage on DEM server, please resend the map without the DEM option "
+"checked"
+msgstr ""
+"Désolé, le serveur d'altitudes ne répond pas, veuillez renvoyer la carte sans "
+"l’option \"DEM\""
+
+#: fitparser.py:118
+msgid "big endian not implemented"
+msgstr "Type de fichier FIT non implémenté"
+
+#: fitparser.py:190
+msgid "ParseFitFile: .FIT not found in header"
+msgstr ""
+"Erreur lors de l'analyse du fichier: \".FIT\" non trouvé dans l’en-tête du "
+"fichier"
+
+#: gpxparser.py:59 jsonparser.py:22
+#, python-format
+msgid "Cannot convert date %s"
+msgstr "Impossible de convertir la date \"%s\""
+
+#: gpxparser.py:203
+msgid "No track found in file"
+msgstr "Aucune trace trouvée dans le fichier"
+
+#: kmlparser.py:27
+msgid "Error while parsing kml file"
+msgstr "Erreur d'analyse du fichier kml"
+
+#: kmlparser.py:148
+msgid "Placemark not found in kml file"
+msgstr "Aucun tag \"Placemark\" trouvé dans le fichier kml"
+
+#: kmlparser.py:160
+msgid "Path not found in kml file"
+msgstr "Aucun tag \"Path\" trouvé dans le fichier kml"
+
+#: mapparser.py:41
+#, python-format
+msgid "Cannot parse date %s: %s"
+msgstr "Erreur d'analyse de la date \"%s\": %s"
+
+#: mapparser.py:50
+msgid "Error in mapparser:convpt"
+msgstr "Erreur dans la fonction mapparser:convpt"
+
+#: model.py:103
+#, python-format
+msgid "Unknown speed unit: %s"
+msgstr "Unité de vitesse inconnue: \"%s\""
+
+#: model.py:118 model.py:148
+#, python-format
+msgid "Speed conversion from %s to %s not supported"
+msgstr "Conversion de vitesse de %s à %s non implémentée"
+
+#: model.py:175
+msgid "Empty track"
+msgstr "Trace vide"
+
+#: model.py:745
+msgid "Unit of points speed must be m/s"
+msgstr "L'unité de vitesse des points doit être m/s"
+
+#: nmeaparser.py:27
+#, python-format
+msgid "Cannot parse this nmea data \"%s\""
+msgstr "Impossible de processer cette phrase NMEA: \"%s\""
+
+#: nmeaparser.py:60
+msgid "NMEA parse error: unit not supported"
+msgstr "Erreur lors de la lecture du fichier NMEA: unité non supportée"
+
+#: orchestrator.py:54
+msgid "Remove staying points"
+msgstr "Suppression des points statiques"
+
+#: orchestrator.py:62
+msgid "Getting elevations from DEM"
+msgstr "Recalcul des altitudes"
+
+#: orchestrator.py:68
+msgid "Computing figures"
+msgstr "Calcul des statistiques"
+
+#: orchestrator.py:80
+msgid "Building speed chart"
+msgstr "Géneration du graph des vitesses"
+
+#: orchestrator.py:91
+msgid "Building vert charts"
+msgstr "Génération du graph des vitesses verticales"
+
+#: orchestrator.py:114
+msgid "Warning: asking for vertical anlysis on flat track"
+msgstr "Attention: analyse verticale demandée sur une trace plane"
+
+#: orchestrator.py:122
+msgid "Building polar"
+msgstr "Génération de la courbe polaire"
+
+#: orchestrator.py:133
+msgid "Building map"
+msgstr "Génération de la carte"
+
+#: orchestrator.py:244
+msgid ""
+"URL must follow pattern: \"http[s]://www.movescount.com/[fr/]moves/"
+"move[XXXXX]\""
+msgstr ""
+"L'adresse URL doit être de la forme \"http[s]://www.movescount.com/[fr/]moves/"
+"move[XXXXX]\""
+
+#: orchestrator.py:263
+msgid ""
+"URL must start with \"http[s]://www.kitetracker.com/gps/tracking?r=\", "
+"\"http[s]://connect.garmin.com/modern/activity/\", \"http[s]://www.movescount."
+"com/[fr/]moves/\" or \"http[s]://www.strava.com/activities/\""
+msgstr ""
+"L'adresse URL doit commencer par \"http[s]://www.kitetracker.com/gps/tracking?"
+"r=\", \"http[s]://connect.garmin.com/modern/activity/\", \"http[s]://www."
+"movescount.com/[fr/]moves/\" ou \"http[s]://www.strava.com/activities/\""
+
+#: orchestrator.py:318
+msgid "Unknown file type"
+msgstr "Type de fichier non reconnu"
+
+#: orchestrator.py:356
+msgid "Generating uuid"
+msgstr "Génération de l'identifiant"
+
+#: orchestrator.py:358
+msgid "Writing to DB"
+msgstr "Ecriture dans la base de données"
+
+#: regepe_flask_server.py:172 regepe_flask_server.py:215
+#: regepe_flask_server.py:390
+msgid "Invalid session, please re-login"
+msgstr "Session invalide, merci de vous reconnecter"
+
+#: regepe_flask_server.py:176 regepe_flask_server.py:178
+msgid "Invalid map id"
+msgstr "Identifiant de trace invalide"
+
+#: regepe_flask_server.py:213 regepe_flask_server.py:388
+#, python-format
+msgid "Map %s does not belong to user %s, but to user %s"
+msgstr ""
+"La trace %s n'appartient pas à l'utilisateur %s, mais à l'utilisateur %s"
+
+#: regepe_flask_server.py:253
+msgid "Error while uploading file"
+msgstr "Erreur lors de l'envoi du fichier"
+
+#: regepe_flask_server.py:282
+#, python-format
+msgid "type %s not handled"
+msgstr "type %s non géré"
+
+#: regepe_flask_server.py:393
+msgid "You do not have the map's password in your browser's cookies"
+msgstr ""
+"Vous n'avez pas le mot de passe de la carte dans les cookies de votre "
+"navigateur web"
+
+#: regepe_flask_server.py:404
+msgid "Map deleted"
+msgstr "Trace supprimée"
+
+#: regepe_flask_server.py:485
+msgid "earth"
+msgstr "terre"
+
+#: regepe_flask_server.py:485
+msgid "the earth"
+msgstr "la terre"
+
+#: regepe_flask_server.py:500
+msgid "Humain check error"
+msgstr "Epreuve anti-robot échouée"
+
+#: regepe_flask_server.py:502
+msgid "Password check error"
+msgstr "Echec de vérification du mot de passe"
+
+#: regepe_flask_server.py:578 regepe_flask_server.py:619
+#, python-format
+msgid "Cannot identify user %s %s"
+msgstr "Impossible d'identifier l'utilisateur %s: %s"
+
+#: regepe_flask_server.py:629
+#, python-format
+msgid "Map %s deleted. "
+msgstr "Trace %s supprimée. "
+
+#: regepe_flask_server.py:631
+#, python-format
+msgid "Map %s do not belong to you"
+msgstr "La trace %s ne vous appartient pas"
+
+#: regepe_flask_server.py:634
+#, python-format
+msgid "Error: %s"
+msgstr "Erreur: %s"
+
+#: regepe_flask_server.py:659
+msgid "Error: Cannot compute profile for only one point"
+msgstr "Erreur: impossible de générer un profile pour un seul point"
+
+#: tz.py:20
+#, python-format
+msgid "Cannot parse result from TimeZone server %s, assuming GMT+0"
+msgstr ""
+
+#: unzip.py:6
+#, python-format
+msgid "%s is not a zip file"
+msgstr ""
+
+#: unzip.py:10
+#, python-format
+msgid "%s contains more than one file"
+msgstr ""
+
+#: users.py:24
+msgid "ReGePe (Replay your GPS Tracks) account creation"
+msgstr ""
+
+#: users.py:25
+#, python-format
+msgid "Your accound will be created when you visit http://%s/activate/%s/%s"
+msgstr ""
+
+#: users.py:34
+msgid "ReGePe (Replay your GPS Tracks) forgoten password reminder"
+msgstr ""
+
+#: users.py:35
+#, python-format
+msgid ""
+"You receive this mail because someone, has requested a forgotten password "
+"reminder from %s.\n"
+"Your password is %s"
+msgstr ""
+
+#: users.py:52 users.py:78 users.py:148 users.py:168
+#, python-format
+msgid "Invalid user name \"%s\""
+msgstr ""
+
+#: users.py:54
+msgid "The password you have chosen is too short"
+msgstr ""
+
+#: users.py:56
+msgid "The password you have chosen is too long"
+msgstr ""
+
+#: users.py:58 users.py:170
+#, python-format
+msgid "Invalid email \"%s\""
+msgstr ""
+
+#: users.py:61
+#, python-format
+msgid "User %s already exists"
+msgstr ""
+
+#: users.py:63
+#, python-format
+msgid "Mail %s already associated with an user"
+msgstr ""
+
+#: users.py:81 users.py:151
+#, python-format
+msgid "User %s doesn't exists"
+msgstr ""
+
+#: users.py:86
+#, python-format
+msgid "User \"%s\" already activated"
+msgstr ""
+
+#: users.py:89
+#, python-format
+msgid "Bad activation id \"%s\" for user \"%s\""
+msgstr ""
+
+#: users.py:96 users.py:110
+msgid "Invalid user name or email"
+msgstr ""
+
+#: users.py:103 users.py:119
+#, python-format
+msgid "Cannot found user from email \"%s\""
+msgstr ""
+
+#: users.py:122
+#, python-format
+msgid "Cannot found user \"%s\""
+msgstr ""
+
+#: users.py:128
+msgid "User not activated"
+msgstr ""
+
+#: templates/forgotpwd.html:2 templates/resendpwd_error.html:2
+#: templates/resendpwd_ok.html:2
+msgid "Replay your GPS Tracks with REGEPE - Forgotten password"
+msgstr ""
+
+#: templates/forgotpwd.html:12 templates/index.html:15
+#: templates/map_action_error.html:12 templates/map_deleted.html:12
+#: templates/mapofmaps.html:12 templates/mobile.html:12
+#: templates/prepare.html:23 templates/register.html:12
+#: templates/resendpwd_error.html:12 templates/resendpwd_ok.html:12
+#: templates/showmap.html:30 templates/showuser.html:12
+#: templates/submitform.html:11 templates/tour.html:12
+#: templates/user_activate_error.html:12 templates/user_activated.html:12
+#: templates/userhome.html:15
+msgid "Search"
+msgstr ""
+
+#: templates/forgotpwd.html:19 templates/index.html:22
+#: templates/map_action_error.html:19 templates/map_deleted.html:19
+#: templates/mapofmaps.html:19 templates/mobile.html:19
+#: templates/prepare.html:30 templates/register.html:19
+#: templates/resendpwd_error.html:19 templates/resendpwd_ok.html:19
+#: templates/showmap.html:37 templates/showuser.html:19
+#: templates/submitform.html:18 templates/tour.html:19
+#: templates/user_activate_error.html:19 templates/user_activated.html:19
+#: templates/userhome.html:22
+msgid "Home"
+msgstr ""
+
+#: templates/forgotpwd.html:22 templates/index.html:25
+#: templates/map_action_error.html:22 templates/map_deleted.html:22
+#: templates/mapofmaps.html:22 templates/mobile.html:22
+#: templates/prepare.html:33 templates/register.html:22
+#: templates/resendpwd_error.html:22 templates/resendpwd_ok.html:22
+#: templates/showmap.html:40 templates/showuser.html:22
+#: templates/submitform.html:21 templates/tour.html:22
+#: templates/user_activate_error.html:22 templates/user_activated.html:22
+#: templates/userhome.html:25
+msgid "Get app"
+msgstr ""
+
+#: templates/forgotpwd.html:25 templates/index.html:28
+#: templates/map_action_error.html:25 templates/map_deleted.html:25
+#: templates/mapofmaps.html:25 templates/mobile.html:25
+#: templates/prepare.html:36 templates/register.html:25
+#: templates/resendpwd_error.html:25 templates/resendpwd_ok.html:25
+#: templates/showmap.html:43 templates/showuser.html:25
+#: templates/submitform.html:24 templates/tour.html:25
+#: templates/user_activate_error.html:25 templates/user_activated.html:25
+#: templates/userhome.html:28
+msgid "Submit track"
+msgstr ""
+
+#: templates/forgotpwd.html:28 templates/index.html:31
+#: templates/map_action_error.html:28 templates/map_deleted.html:28
+#: templates/mapofmaps.html:28 templates/mobile.html:28
+#: templates/prepare.html:39 templates/register.html:28
+#: templates/resendpwd_error.html:28 templates/resendpwd_ok.html:28
+#: templates/showmap.html:46 templates/showuser.html:28
+#: templates/submitform.html:27 templates/tour.html:28
+#: templates/user_activate_error.html:28 templates/user_activated.html:28
+#: templates/userhome.html:31
+msgid "Prepare itinerary"
+msgstr ""
+
+#: templates/forgotpwd.html:31 templates/index.html:34
+#: templates/map_action_error.html:31 templates/map_deleted.html:31
+#: templates/mapofmaps.html:31 templates/mobile.html:31
+#: templates/prepare.html:42 templates/register.html:31
+#: templates/resendpwd_error.html:31 templates/resendpwd_ok.html:31
+#: templates/showmap.html:49 templates/showuser.html:31
+#: templates/submitform.html:30 templates/tour.html:31
+#: templates/user_activate_error.html:31 templates/user_activated.html:31
+#: templates/userhome.html:34
+msgid "Browse tracks"
+msgstr ""
+
+#: templates/forgotpwd.html:36 templates/index.html:38
+#: templates/map_action_error.html:36 templates/map_deleted.html:36
+#: templates/mapofmaps.html:36 templates/mobile.html:36
+#: templates/prepare.html:47 templates/register.html:36
+#: templates/resendpwd_error.html:36 templates/resendpwd_ok.html:36
+#: templates/showmap.html:53 templates/showmap.html:124
+#: templates/showuser.html:36 templates/submitform.html:35
+#: templates/tour.html:36 templates/user_activate_error.html:36
+#: templates/user_activated.html:36 templates/userhome.html:39
+msgid "User: "
+msgstr ""
+
+#: templates/forgotpwd.html:37 templates/index.html:39
+#: templates/map_action_error.html:37 templates/map_deleted.html:37
+#: templates/mapofmaps.html:37 templates/mobile.html:37
+#: templates/prepare.html:48 templates/register.html:37
+#: templates/resendpwd_error.html:37 templates/resendpwd_ok.html:37
+#: templates/showmap.html:54 templates/showuser.html:37
+#: templates/submitform.html:36 templates/tour.html:37
+#: templates/user_activate_error.html:37 templates/user_activated.html:37
+#: templates/userhome.html:40
+msgid "Password: "
+msgstr ""
+
+#: templates/forgotpwd.html:38 templates/index.html:40
+#: templates/map_action_error.html:38 templates/map_deleted.html:38
+#: templates/mapofmaps.html:38 templates/mobile.html:38
+#: templates/prepare.html:49 templates/register.html:38
+#: templates/resendpwd_error.html:38 templates/resendpwd_ok.html:38
+#: templates/showmap.html:55 templates/showuser.html:38
+#: templates/submitform.html:37 templates/tour.html:38
+#: templates/user_activate_error.html:38 templates/user_activated.html:38
+#: templates/userhome.html:41
+msgid "Login"
+msgstr ""
+
+#: templates/forgotpwd.html:39 templates/index.html:41
+#: templates/map_action_error.html:39 templates/map_deleted.html:39
+#: templates/mapofmaps.html:39 templates/mobile.html:39
+#: templates/prepare.html:50 templates/register.html:39
+#: templates/register.html:46 templates/register.html:54
+#: templates/resendpwd_error.html:39 templates/resendpwd_ok.html:39
+#: templates/showmap.html:56 templates/showuser.html:39
+#: templates/submitform.html:38 templates/tour.html:39
+#: templates/user_activate_error.html:39 templates/user_activated.html:39
+#: templates/userhome.html:42
+msgid "Register"
+msgstr ""
+
+#: templates/forgotpwd.html:40 templates/forgotpwd.html:46
+#: templates/index.html:42 templates/map_action_error.html:40
+#: templates/map_deleted.html:40 templates/mapofmaps.html:40
+#: templates/mobile.html:40 templates/prepare.html:51 templates/register.html:40
+#: templates/resendpwd_error.html:40 templates/resendpwd_ok.html:40
+#: templates/showmap.html:57 templates/showuser.html:40
+#: templates/submitform.html:39 templates/tour.html:40
+#: templates/user_activate_error.html:40 templates/user_activated.html:40
+#: templates/userhome.html:43
+msgid "Forgot password?"
+msgstr ""
+
+#: templates/forgotpwd.html:48
+msgid "User/Email:"
+msgstr ""
+
+#: templates/forgotpwd.html:49 templates/register.html:53
+msgid "What is the name of the planet you live on? (Anti-Robot):"
+msgstr ""
+
+#: templates/forgotpwd.html:50
+msgid "Send me a forgotten password mail"
+msgstr ""
+
+#: templates/forgotpwd.html:56 templates/index.html:66
+#: templates/map_action_error.html:53 templates/map_deleted.html:52
+#: templates/mapofmaps.html:53 templates/mobile.html:62
+#: templates/prepare.html:114 templates/register.html:60
+#: templates/resendpwd_error.html:51 templates/resendpwd_ok.html:51
+#: templates/showuser.html:56 templates/submitform.html:114
+#: templates/tour.html:74 templates/user_activate_error.html:52
+#: templates/user_activated.html:52 templates/userhome.html:64
+msgid "Contact:"
+msgstr ""
+
+#: templates/i18n_header.js:1
+msgid "Searching..."
+msgstr ""
+
+#: templates/i18n_header.js:2
+msgid ""
+"<h1>Search results</h1><table id=\"search_results_table\"><thead><tr><th id="
+"\"sortby_date\">Date</th><th id=\"sortby_desc\">Description</th><th id="
+"\"sortby_user\">User</th><th>Preview</th></tr></thead><tbody id=\"search_tbody"
+"\">"
+msgstr ""
+
+#: templates/i18n_header.js:3
+msgid "</tbody></table>"
+msgstr ""
+
+#: templates/i18n_header.js:4
+msgid "<b>No map found</b><br/>"
+msgstr ""
+
+#: templates/i18n_header.js:5
+msgid "Logged as"
+msgstr ""
+
+#: templates/i18n_header.js:6
+msgid "Logout"
+msgstr ""
+
+#: templates/i18n_header.js:7
+msgid "Login failed: "
+msgstr ""
+
+#: templates/i18n_header.js:8
+msgid "Session expired, please re-login<br/>"
+msgstr ""
+
+#: templates/i18n_header.js:9
+msgid "Logging... "
+msgstr ""
+
+#: templates/i18n_header.js:10
+msgid ""
+"<form>User: <input id=\"login_user\" name=\"user\" type=\"text\"/>Password: "
+"<input id=\"login_password\" name=\"password\" type=\"password\"/><input type="
+"\"button\" value=\"Login\" onclick=\"onLoginClick();\"/><br/><a href=\"/"
+"registerform\">Register</a> | <a href=\"/forgotpwd\">Forgot password?</a></"
+"form>"
+msgstr ""
+
+#: templates/i18n_header.js:11 templates/submitform.html:86
+msgid "knots"
+msgstr ""
+
+#: templates/i18n_header.js:12
+msgid "SSW"
+msgstr ""
+
+#: templates/i18n_header.js:13
+msgid "SW"
+msgstr ""
+
+#: templates/i18n_header.js:14
+msgid "WSW"
+msgstr ""
+
+#: templates/i18n_header.js:15
+msgid "W"
+msgstr ""
+
+#: templates/i18n_header.js:16
+msgid "WNW"
+msgstr ""
+
+#: templates/i18n_header.js:17
+msgid "NW"
+msgstr ""
+
+#: templates/i18n_header.js:18
+msgid "NNW"
+msgstr ""
+
+#: templates/i18n_map.js:1
+msgid "Best VMG on "
+msgstr ""
+
+#: templates/i18n_map.js:2
+msgid "Best VMG on 1 nautical mile"
+msgstr ""
+
+#: templates/i18n_map.js:3
+msgid "Remove selected part from the track?"
+msgstr ""
+
+#: templates/i18n_map.js:4
+msgid "Keep only the selected part of track?"
+msgstr ""
+
+#: templates/i18n_map.js:5
+msgid "Confirm deletion of this map?"
+msgstr ""
+
+#: templates/i18n_map.js:6
+msgid "Done"
+msgstr ""
+
+#: templates/i18n_map.js:7
+msgid "Internal Error, please retry"
+msgstr ""
+
+#: templates/i18n_map.js:8 templates/showmap.html:160 templates/showmap.html:300
+msgid "Computing..."
+msgstr ""
+
+#: templates/i18n_map.js:9 templates/i18n_prepare.js:1
+msgid "Track"
+msgstr ""
+
+#: templates/i18n_map.js:10
+msgid "Current"
+msgstr ""
+
+#: templates/i18n_map.js:11 templates/prepare.html:485
+msgid "Selection"
+msgstr ""
+
+#: templates/i18n_map.js:12 templates/i18n_prepare.js:3
+msgid "en"
+msgstr ""
+
+#: templates/i18n_map.js:13
+msgid "No"
+msgstr ""
+
+#: templates/i18n_map.js:14 templates/showmap.html:117
+msgid "Yes"
+msgstr ""
+
+#: templates/i18n_map.js:15 templates/showmap.html:79
+msgid "Play"
+msgstr ""
+
+#: templates/i18n_map.js:16
+msgid "Stop"
+msgstr ""
+
+#: templates/i18n_map.js:17
+msgid "Instant speed"
+msgstr ""
+
+#: templates/i18n_map.js:18 templates/showmap.html:295
+msgid "Speed"
+msgstr ""
+
+#: templates/i18n_map.js:19
+msgid "Elevation"
+msgstr ""
+
+#: templates/i18n_map.js:20
+msgid "Course"
+msgstr ""
+
+#: templates/i18n_map.js:21
+msgid "Heart rate"
+msgstr ""
+
+#: templates/i18n_map.js:22
+msgid "Direct distance"
+msgstr ""
+
+#: templates/i18n_map.js:23
+msgid "Distance on path"
+msgstr ""
+
+#: templates/i18n_map.js:24
+msgid "Speed on path"
+msgstr ""
+
+#: templates/i18n_map.js:25
+msgid "Direct speed"
+msgstr ""
+
+#: templates/i18n_map.js:26
+msgid "Height gain/loss"
+msgstr ""
+
+#: templates/i18n_map.js:27
+msgid "Slope"
+msgstr ""
+
+#: templates/i18n_map.js:28
+msgid "Vert. spd"
+msgstr ""
+
+#: templates/i18n_map.js:29
+msgid "Course abs."
+msgstr ""
+
+#: templates/i18n_map.js:30
+msgid "Course rel."
+msgstr ""
+
+#: templates/i18n_map.js:31
+msgid "Angle"
+msgstr ""
+
+#: templates/i18n_map.js:32
+msgid "Time delta"
+msgstr ""
+
+#: templates/i18n_map.js:33
+msgid "No selection"
+msgstr ""
+
+#: templates/i18n_map.js:34 templates/showmap.html:132
+msgid "Cancel"
+msgstr ""
+
+#: templates/i18n_map.js:35 templates/showmap.html:133
+msgid "OK"
+msgstr ""
+
+#: templates/i18n_map.js:36
+msgid "Error"
+msgstr ""
+
+#: templates/i18n_map.js:37
+msgid ""
+"<a href=\"javascript:void(0);return false;\" onclick=\"toogleAddComment();"
+"\">Add</a>"
+msgstr ""
+
+#: templates/i18n_map.js:38
+msgid ""
+"Bad/noisy elevations? Get clean elevation from Digital Elevation Model --&gt; "
+"<input id=\"demizebtn\" type=\"button\" value=\"DEMize\" onclick="
+"\"onDemizeClick();\"/><div id=\"demizeresults\" style=\"display: inline; "
+"marginLeft: 5px;\"></div>"
+msgstr ""
+
+#: templates/i18n_map.js:39
+msgid "Sending..."
+msgstr ""
+
+#: templates/i18n_map.js:40
+msgid "Retrieving..."
+msgstr ""
+
+#: templates/i18n_prepare.js:2
+msgid "Marks"
+msgstr ""
+
+#: templates/index.html:2 templates/index.html:48 templates/mapofmaps.html:2
+#: templates/mobile.html:2 templates/showuser.html:2 templates/submitform.html:2
+#: templates/tour.html:2 templates/userhome.html:2
+msgid "Replay your GPS Tracks with REGEPE"
+msgstr ""
+
+#: templates/index.html:49
+msgid "Last updates"
+msgstr ""
+
+#: templates/index.html:49
+msgid "All updates"
+msgstr ""
+
+#: templates/index.html:54
+msgid "by"
+msgstr ""
+
+#: templates/index.html:54 templates/userhome.html:55
+msgid "View"
+msgstr ""
+
+#: templates/index.html:58
+msgid "Take tour"
+msgstr ""
+
+#: templates/map_action_error.html:2
+msgid "Replay your GPS Tracks with REGEPE - Map change"
+msgstr ""
+
+#: templates/map_action_error.html:46
+msgid "Map change"
+msgstr ""
+
+#: templates/map_action_error.html:48
+msgid "Back to map"
+msgstr ""
+
+#: templates/map_deleted.html:2
+msgid "Replay your GPS Tracks with REGEPE - Delete map"
+msgstr ""
+
+#: templates/map_deleted.html:46
+msgid "Map deletion"
+msgstr ""
+
+#: templates/mapofmaps.html:46
+msgid "Map of tracks"
+msgstr ""
+
+#: templates/mapofmaps.html:47
+msgid "Loading... "
+msgstr ""
+
+#: templates/mobile.html:46
+msgid ""
+"Don't have a GPS device. No problem, download our application and use the "
+"builtin GPS of your smartphone."
+msgstr ""
+
+#: templates/mobile.html:47
+msgid "Mobile applications"
+msgstr ""
+
+#: templates/mobile.html:48
+msgid "Android Regepe Tracker"
+msgstr ""
+
+#: templates/mobile.html:49
+msgid ""
+"For biking, hiking, skiing...<br/>Record your GPS track with your Android "
+"device. Display speed, slope, vertical speed, elapsed time..."
+msgstr ""
+
+#: templates/mobile.html:50 templates/mobile.html:54 templates/mobile.html:57
+msgid "Download"
+msgstr ""
+
+#: templates/mobile.html:51
+msgid "Android Nautic Regepe Tracker"
+msgstr ""
+
+#: templates/mobile.html:52
+msgid ""
+"For sailing, windsurfing, kitesurfing...<br/>Record your GPS track with your "
+"Android device. Display speed polar, max speed..."
+msgstr ""
+
+#: templates/mobile.html:55
+msgid "Android Snowkite Regepe Tracker"
+msgstr ""
+
+#: templates/mobile.html:56
+msgid ""
+"For snowkite, paragliding...<br/>Record your GPS track with your Android "
+"device. Display speed polar, vertical speed..."
+msgstr ""
+
+#: templates/prepare.html:4 templates/showmap.html:5
+msgid "Replay your GPS tracks with ReGePe"
+msgstr ""
+
+#: templates/prepare.html:61 templates/prepare.html:63
+msgid "Click on map to add a point"
+msgstr ""
+
+#: templates/prepare.html:66
+msgid "Switch to: "
+msgstr ""
+
+#: templates/prepare.html:69 templates/prepare.html:379
+msgid "Waypoints"
+msgstr ""
+
+#: templates/prepare.html:73 templates/showmap.html:273
+msgid "Clear"
+msgstr ""
+
+#: templates/prepare.html:74
+msgid "Delete selected point"
+msgstr ""
+
+#: templates/prepare.html:76 templates/showmap.html:152
+msgid "Length:"
+msgstr ""
+
+#: templates/prepare.html:76 templates/showmap.html:153
+msgid "D+:"
+msgstr ""
+
+#: templates/prepare.html:76 templates/showmap.html:154
+msgid "D-:"
+msgstr ""
+
+#: templates/prepare.html:78
+msgid "Compute Profile"
+msgstr ""
+
+#: templates/prepare.html:92
+msgid "Export to file:"
+msgstr ""
+
+#: templates/prepare.html:98
+msgid "All points"
+msgstr ""
+
+#: templates/prepare.html:99
+msgid "Only labeled points"
+msgstr ""
+
+#: templates/prepare.html:101 templates/prepare.html:243
+msgid "Export"
+msgstr ""
+
+#: templates/prepare.html:104
+msgid "Share:"
+msgstr ""
+
+#: templates/prepare.html:104
+msgid "Send as URL"
+msgstr ""
+
+#: templates/prepare.html:108
+msgid "Print Map"
+msgstr ""
+
+#: templates/prepare.html:401
+msgid "Clear track?"
+msgstr ""
+
+#: templates/prepare.html:485
+msgid "Dist: "
+msgstr ""
+
+#: templates/prepare.html:485
+msgid "Vert dst:"
+msgstr ""
+
+#: templates/prepare.html:488 templates/prepare.html:504
+msgid "Slope:"
+msgstr ""
+
+#: templates/prepare.html:498
+msgid "Current point"
+msgstr ""
+
+#: templates/prepare.html:498
+msgid "Ele:"
+msgstr ""
+
+#: templates/register.html:2
+msgid "Replay your GPS Tracks with REGEPE - Register"
+msgstr ""
+
+#: templates/register.html:49
+msgid "Mail:"
+msgstr ""
+
+#: templates/register.html:50
+msgid "User:"
+msgstr ""
+
+#: templates/register.html:51
+msgid "Password:"
+msgstr ""
+
+#: templates/register.html:52
+msgid "Confirm password:"
+msgstr ""
+
+#: templates/resendpwd_ok.html:46
+msgid "A password reminder mail has been sent to "
+msgstr ""
+
+#: templates/showmap.html:65 templates/showmap.html:67
+msgid "Click on track to change current point"
+msgstr ""
+
+#: templates/showmap.html:71 templates/showmap.html:77
+msgid "Scroll one point"
+msgstr ""
+
+#: templates/showmap.html:73
+msgid "Move current point"
+msgstr ""
+
+#: templates/showmap.html:80
+msgid "Playing speed"
+msgstr ""
+
+#: templates/showmap.html:85
+msgid "Snake length:"
+msgstr ""
+
+#: templates/showmap.html:86
+msgid "Snake length"
+msgstr ""
+
+#: templates/showmap.html:97
+msgid "Use WindDir"
+msgstr ""
+
+#: templates/showmap.html:99
+msgid "Wind direction:"
+msgstr ""
+
+#: templates/showmap.html:100
+msgid "Wind dir"
+msgstr ""
+
+#: templates/showmap.html:103
+msgid "180 &deg; (S)"
+msgstr ""
+
+#: templates/showmap.html:106
+msgid "Use Buoy"
+msgstr ""
+
+#: templates/showmap.html:117
+msgid "Center map : "
+msgstr ""
+
+#: templates/showmap.html:122
+msgid "Map infos:"
+msgstr ""
+
+#: templates/showmap.html:125
+msgid "Description: "
+msgstr ""
+
+#: templates/showmap.html:138
+msgid "Date: "
+msgstr ""
+
+#: templates/showmap.html:144
+msgid "Top10 speeds"
+msgstr ""
+
+#: templates/showmap.html:150
+msgid "Global figures"
+msgstr ""
+
+#: templates/showmap.html:151
+msgid "Duration:"
+msgstr ""
+
+#: templates/showmap.html:155
+msgid "Ele. min:"
+msgstr ""
+
+#: templates/showmap.html:156
+msgid "Ele. max:"
+msgstr ""
+
+#: templates/showmap.html:157
+msgid "Mean speed:"
+msgstr ""
+
+#: templates/showmap.html:158
+msgid "Mean spd when in motion:"
+msgstr ""
+
+#: templates/showmap.html:165
+msgid "Current point:"
+msgstr ""
+
+#: templates/showmap.html:169
+msgid "Current selection:"
+msgstr ""
+
+#: templates/showmap.html:177
+msgid "Polar"
+msgstr ""
+
+#: templates/showmap.html:182
+msgid "Tools"
+msgstr ""
+
+#: templates/showmap.html:183
+msgid "Comments"
+msgstr ""
+
+#: templates/showmap.html:184
+msgid "Pauses"
+msgstr ""
+
+#: templates/showmap.html:192
+msgid "Zoom"
+msgstr ""
+
+#: templates/showmap.html:192
+msgid "Reset Zoom"
+msgstr ""
+
+#: templates/showmap.html:206 templates/showmap.html:208
+#: templates/showmap.html:210 templates/showmap.html:213
+msgid "in"
+msgstr ""
+
+#: templates/showmap.html:206 templates/showmap.html:208
+#: templates/showmap.html:210 templates/showmap.html:213
+msgid "at"
+msgstr ""
+
+#: templates/showmap.html:208
+msgid "kts"
+msgstr ""
+
+#: templates/showmap.html:226
+msgid "Best speeds on distance"
+msgstr ""
+
+#: templates/showmap.html:229
+msgid "Best nautical mile (1852m)"
+msgstr ""
+
+#: templates/showmap.html:239
+msgid "Best speeds on time"
+msgstr ""
+
+#: templates/showmap.html:248
+msgid "Best vertical speeds on distance"
+msgstr ""
+
+#: templates/showmap.html:250
+msgid "Climbing"
+msgstr ""
+
+#: templates/showmap.html:257
+msgid "Best vertical speeds on time"
+msgstr ""
+
+#: templates/showmap.html:273
+msgid "Selection:"
+msgstr ""
+
+#: templates/showmap.html:274
+msgid "Crop"
+msgstr ""
+
+#: templates/showmap.html:275
+msgid "Map:"
+msgstr ""
+
+#: templates/showmap.html:275 templates/userhome.html:51
+msgid "Delete"
+msgstr ""
+
+#: templates/showmap.html:276
+msgid "Export as gpx"
+msgstr ""
+
+#: templates/showmap.html:277
+msgid "Submit deleted points"
+msgstr ""
+
+#: templates/showmap.html:277
+msgid " Submit points deleted by pressing DEL key on map"
+msgstr ""
+
+#: templates/showmap.html:280
+msgid "Add"
+msgstr ""
+
+#: templates/showmap.html:284
+msgid "Pause min. time:"
+msgstr ""
+
+#: templates/showmap.html:285
+msgid "Time"
+msgstr ""
+
+#: templates/showmap.html:289
+msgid "Pause max. distance:"
+msgstr ""
+
+#: templates/showmap.html:290
+msgid "Distance"
+msgstr ""
+
+#: templates/showmap.html:294
+msgid "Pause max. speed:"
+msgstr ""
+
+#: templates/showmap.html:305
+msgid "Other tracks nearby"
+msgstr ""
+
+#: templates/showmap.html:306
+msgid "Near maps"
+msgstr ""
+
+#: templates/showuser.html:46 templates/user_activated.html:46
+#: templates/userhome.html:49
+msgid "User "
+msgstr ""
+
+#: templates/showuser.html:47
+msgid "Date"
+msgstr ""
+
+#: templates/showuser.html:47
+msgid "Description"
+msgstr ""
+
+#: templates/showuser.html:47
+msgid "Preview"
+msgstr ""
+
+#: templates/submitform.html:46
+msgid "Submit a track (Do not forget to choose right activity profile!)"
+msgstr ""
+
+#: templates/submitform.html:48
+msgid "Source"
+msgstr ""
+
+#: templates/submitform.html:53
+msgid "Gpx/Kml/Nmea/Sbp file(s) to analyze: "
+msgstr ""
+
+#: templates/submitform.html:54
+msgid "Note:"
+msgstr ""
+
+#: templates/submitform.html:54
+msgid ""
+"You can select more than one file using Ctrl or Shift key (not available on "
+"all broswers), the files will be concatenated in a single track."
+msgstr ""
+
+#: templates/submitform.html:58 templates/submitform.html:423
+msgid "File contains several tracks. Select a track: "
+msgstr ""
+
+#: templates/submitform.html:62
+msgid "Import from URL:"
+msgstr ""
+
+#: templates/submitform.html:66
+msgid "Description:"
+msgstr ""
+
+#: templates/submitform.html:71
+msgid "Preview of track start point:"
+msgstr ""
+
+#: templates/submitform.html:77
+msgid "Options"
+msgstr ""
+
+#: templates/submitform.html:79
+msgid "Activity profile: "
+msgstr ""
+
+#: templates/submitform.html:81
+msgid "Map type: "
+msgstr ""
+
+#: templates/submitform.html:82
+msgid "Speed unit: "
+msgstr ""
+
+#: templates/submitform.html:84
+msgid "m/s"
+msgstr ""
+
+#: templates/submitform.html:85
+msgid "km/h"
+msgstr ""
+
+#: templates/submitform.html:87
+msgid "mph"
+msgstr ""
+
+#: templates/submitform.html:89
+msgid "Max speeds analysis: "
+msgstr ""
+
+#: templates/submitform.html:89
+msgid "Add max speed on 50,100,200,500 meters, and max speed on 2,5,10 seconds."
+msgstr ""
+
+#: templates/submitform.html:90
+msgid "Flat track: "
+msgstr ""
+
+#: templates/submitform.html:90
+msgid "If selected, doesn't compute any figure related to elevation."
+msgstr ""
+
+#: templates/submitform.html:91
+msgid "Draw polar: "
+msgstr ""
+
+#: templates/submitform.html:91
+msgid ""
+"If selected, compute figures related to course. Usefull for any wind related "
+"activity."
+msgstr ""
+
+#: templates/submitform.html:94
+msgid "Send"
+msgstr ""
+
+#: templates/submitform.html:97
+msgid "Build track analysis"
+msgstr ""
+
+#: templates/submitform.html:167
+msgid "Uploading file..."
+msgstr ""
+
+#: templates/submitform.html:697
+msgid "Geo Portal (France only)"
+msgstr ""
+
+#: templates/submitform.html:701
+msgid "Hiking, Skitouring, Ski, Snowboard, Bike"
+msgstr ""
+
+#: templates/submitform.html:702
+msgid "Surfing, Sea Kayak, Motor boat"
+msgstr ""
+
+#: templates/submitform.html:703
+msgid "Windsurf, Kite, Sailing"
+msgstr ""
+
+#: templates/submitform.html:704
+msgid "Snowkite, Free-flying, Air Balloon"
+msgstr ""
+
+#: templates/tour.html:46
+msgid "Tour"
+msgstr ""
+
+#: templates/tour.html:48
+msgid ""
+"With your GPS device, record your GPS position track to a GPX/Kml/Nmea file"
+msgstr ""
+
+#: templates/tour.html:49
+msgid "Go to submit page by clicking on:"
+msgstr ""
+
+#: templates/tour.html:49
+msgid "Submit a track"
+msgstr ""
+
+#: templates/tour.html:51
+msgid "Choose the file containing your track:"
+msgstr ""
+
+#: templates/tour.html:53
+msgid "Choose an activity:"
+msgstr ""
+
+#: templates/tour.html:55
+msgid "Submit your track:"
+msgstr ""
+
+#: templates/tour.html:57
+msgid "Get a view of your track, and:"
+msgstr ""
+
+#: templates/tour.html:59
+msgid ""
+"If you selected a wind-related activity, you will get directional figures "
+"such as VMG, polar, ..."
+msgstr ""
+
+#: templates/tour.html:61
+msgid "PS:"
+msgstr ""
+
+#: templates/tour.html:61
+msgid ""
+"Do not forget to check the wind direction detected by the software. It can be "
+"changed if it is wrong or in case of changing wind"
+msgstr ""
+
+#: templates/tour.html:63
+msgid ""
+"If you selected a ground or air activity, you will get vertical figures such "
+"as vertical speed, ..."
+msgstr ""
+
+#: templates/user_activate_error.html:2 templates/user_activated.html:2
+msgid "Replay your GPS Tracks with REGEPE - User activation"
+msgstr ""
+
+#: templates/user_activate_error.html:46
+msgid "User activation error"
+msgstr ""
+
+#: templates/user_activate_error.html:47
+msgid "Error while activating user: "
+msgstr ""
+
+#: templates/user_activated.html:47
+msgid "User has been activated. Thanks for registering"
+msgstr ""
+
+#: templates/userhome.html:50
+msgid "My tracks"
+msgstr ""
+
+#: templates/userhome.html:51
+msgid "Selection: "
+msgstr ""
+
+#: templates/userhome.html:51
+msgid "Merge"
+msgstr ""
+
+#: templates/userhome.html:102
+msgid "Confirm deletion of "
+msgstr ""
+
+#: templates/userhome.html:102
+msgid " map(s)?"
+msgstr ""

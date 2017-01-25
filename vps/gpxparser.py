@@ -12,6 +12,8 @@ import time
 # Model classes
 from model import Bounds,Point,Track
 
+#i18n
+from flask_babel import gettext
 
 # gpx creator="KeyMaze 500-700 PC Software" -> spdunit = hectometres/heure
 
@@ -54,7 +56,7 @@ class GpxPoint:
                     # Python 2.4
                     self.datetime = datetime(*(time.strptime(datetimestr,'%Y-%m-%dT%H:%M:%S')[0:6]))
                 except ValueError:
-                    raise Exception('Cannot convert date %s' % datetimestr)
+                    raise Exception(gettext('Cannot convert date %s') % datetimestr)
         else:
             self.datetime = None
         for e in trkptxmlelement:
@@ -198,7 +200,7 @@ def ParseGpxFile(inputfile,trk_id,trk_seg_id):
     if len(gpx.tracklist)<1:
         # Try with <rte>
         if len(gpx.routelist)<1:
-            raise Exception('No track found in file')
+            raise Exception(gettext('No track found in file'))
         else:
             return map(GpxRoutePoint.ToPoint,gpx.routelist[trk_id].ptlist)
     return map(GpxPoint.ToPoint,reduce(lambda x,y:x+y,gpx.tracklist[trk_id].trkseglist).ptlist)

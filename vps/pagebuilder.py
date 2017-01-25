@@ -158,7 +158,7 @@ class MyXYChart(MyChart):
         if max_y-min_y==0:
             max_y = min_y + 1.0
             scaling_y = 0.2
-        
+
         self.marginsize = 0
         self.pt2px = None
         self.data = list(data)
@@ -229,7 +229,7 @@ def BuildMaxSpeeds(figures):
     if not figures.options['flat']:
         out.extend([MaxSpeedToJson('dist_vert',i,'m',mxspdsdst_vert[i]) for i in sorted(mxspdsdst_vert.keys())])
         out.extend([MaxSpeedToJson('dist_time',i,'s',mxspdtime_vert[i]) for i in sorted(mxspdtime_vert.keys())])
-        
+
     return ','.join(out)
 
 def TimeDeltaFormat(t):

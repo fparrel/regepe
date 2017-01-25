@@ -1,3 +1,4 @@
+
 /* 
 ********************
 * Global variables *
@@ -123,18 +124,18 @@ function toogleCenterMap() {
 	if (typeof center_map == "undefined") center_map=1;
 	if (center_map) {
 		center_map=0;
-		document.getElementById('center_map_toogle').innerHTML="No";
+		document.getElementById('center_map_toogle').innerHTML=NO;
 	}
 	else {
 		center_map=1;
-		document.getElementById('center_map_toogle').innerHTML="Yes";
+		document.getElementById('center_map_toogle').innerHTML=YES;
 	}
 }
 
 function setAutoPlayToOff() {
 	if (typeof auto_play == "undefined") auto_play=0;
     auto_play=0;
-    document.getElementById('toogle_auto_play').innerHTML="Play";
+    document.getElementById('toogle_auto_play').innerHTML=PLAY;
     clearInterval(auto_play_interval_id);
 }
 
@@ -172,7 +173,7 @@ function toogleAutoPlay() {
             currentpointslider.setValue(currentpointslider.getMinimum());
         }
 		auto_play=1;
-		document.getElementById('toogle_auto_play').innerHTML="Stop";
+		document.getElementById('toogle_auto_play').innerHTML=STOP;
 		auto_play_interval_id = setInterval("autoPlayCallback();",100);
 	}
 }
@@ -279,15 +280,15 @@ function refreshCurrentPointInfos(point_id) {
         infos = infos + '<b>Time:</b> '+track_points[point_id].time;
     }
     if(track_points[point_id].spd>=0.0) {
-		infos = infos + '<br/><b>Speed:</b> '+track_points[point_id].spd.toFixed(2)+' '+spdunit;
-        updateChartMarkerValue("spdtime",track_points[point_id].spd.toFixed(2)+' '+spdunit,'Instant speed');
+		infos = infos + '<br/><b>'+SPEED+':</b> '+track_points[point_id].spd.toFixed(2)+' '+spdunit;
+        updateChartMarkerValue("spdtime",track_points[point_id].spd.toFixed(2)+' '+spdunit,INSTANT_SPEED);
     }
     if (!flat) {
-        infos = infos + '<br/><b>Elevation:</b> '+track_points[point_id].ele+' m';
-        updateChartMarkerValue("eledist",track_points[point_id].ele+' m','Elevation');
+        infos = infos + '<br/><b>'+ELEVATION+':</b> '+track_points[point_id].ele+' m';
+        updateChartMarkerValue("eledist",track_points[point_id].ele+' m',ELEVATION);
     }
     if (wind) {
-        infos = infos + '<br/><b>Course:</b> '+track_points[point_id].course+'&deg;';
+        infos = infos + '<br/><b>'+COURSE+':</b> '+track_points[point_id].course+'&deg;';
         if(track_points[point_id].spd>=0.0) {
             if(winddirorbuoy) {
                 infos = infos + '<br/><b>VMG:</b> '+(track_points[point_id].spd*Math.cos((track_points[point_id].course - winddir)*Math.PI/180)).toFixed(2)+' '+spdunit;
@@ -298,7 +299,7 @@ function refreshCurrentPointInfos(point_id) {
         }
     }
     if(typeof track_points[point_id].hr!='undefined') {
-        infos = infos + '<br/><b>Heart rate:</b> '+track_points[point_id].hr;
+        infos = infos + '<br/><b>'+HEART_RATE':</b> '+track_points[point_id].hr;
     }
     if(typeof track_points[point_id].cumul_dplus!='undefined') {
         infos += '<br/><b>D+:</b> '+track_points[point_id].cumul_dplus;
@@ -367,22 +368,22 @@ function refreshSelectionInfos(pt1_id, pt_cur, pt2_id) {
         //infos = infos + pt1_id+','+pt2_id+'<br/>';
         var lenpath=computeLengtOnPath(parseInt(pt1_id), parseInt(pt2_id));
         infos = infos +
-		'<b>Direct distance:</b> '+Math.round(hdist)+' m<br/>' +
-        '<b>Distance on path:</b> '+Math.round(lenpath)+' m';
+		'<b>'+DIRECT_DISTANCE+':</b> '+Math.round(hdist)+' m<br/>' +
+        '<b>'+PATH_DISTANCE+':</b> '+Math.round(lenpath)+' m';
         if (timediff>=0) {
-            infos = infos + '<br/><b>Speed:</b> '+convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit;
-            updateSelChartMarkerValue('spdtime',[convertSpeed(lenpath/timediff,spdunit).toFixed(2)+ ' '+spdunit,convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit],['Speed on path','Direct speed']);
+            infos = infos + '<br/><b>'+SPEED+':</b> '+convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit;
+            updateSelChartMarkerValue('spdtime',[convertSpeed(lenpath/timediff,spdunit).toFixed(2)+ ' '+spdunit,convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit],[PATH_SPEED,DIRECT_SPEED]);
         }
 		if (!flat) {
             var infoselechart = [Math.round(vdist)+' m',Math.round(slope)+'%'];
-            var infoseletitle = ['Height gain/loss','Slope'];
+            var infoseletitle = [ELE_GAIN,SLOPE];
 			infos = infos +
 			'<br/><b>D:</b> '+Math.round(vdist)+' m<br/>' +
-			'<b>Slope:</b> '+Math.round(slope)+' %';
+			'<b>'+SLOPE+':</b> '+Math.round(slope)+' %';
             if (timediff>=0) {
-                infos = infos + '<br/><b>Vert. spd:</b> '+Math.round(vdist*3600/timediff)+' m/h';
+                infos = infos + '<br/><b>'+VERTICAL_SPEED+':</b> '+Math.round(vdist*3600/timediff)+' m/h';
                 infoselechart.push(Math.round(vdist*3600/timediff)+' m/h');
-                infoseletitle[infoseletitle.length] = 'Vert. speed';
+                infoseletitle[infoseletitle.length] = VERTICAL_SPEED;
             }
             updateSelChartMarkerValue('eledist',infoselechart,infoseletitle);
 		}
@@ -391,8 +392,8 @@ function refreshSelectionInfos(pt1_id, pt_cur, pt2_id) {
 				track_points[pt1_id].lat,track_points[pt1_id].lon,
 				track_points[pt2_id].lat,track_points[pt2_id].lon);
 			infos = infos +
-			'<br/><b>Course abs.:</b> ' + Math.round(course)+'&deg;'+
-            '<br/><b>Course rel.:</b> ' + tom180p180(Math.round(course - winddir))+'&deg;';
+			'<br/><b>'+COURSE_ABS+':</b> ' + Math.round(course)+'&deg;'+
+            '<br/><b>'+COURSE_REL+':</b> ' + tom180p180(Math.round(course - winddir))+'&deg;';
             if (timediff>=0) {
                 if(winddirorbuoy) {
                     infos = infos +
@@ -405,7 +406,7 @@ function refreshSelectionInfos(pt1_id, pt_cur, pt2_id) {
             }
             if(pt_cur!=-1) {
                 infos = infos +
-                '<br/><b>Angle:</b> ' + Math.round(computeAngle(
+                '<br/><b>'+ANGLE+':</b> ' + Math.round(computeAngle(
                     track_points[pt1_id].lat,track_points[pt1_id].lon,
                     track_points[pt_cur].lat,track_points[pt_cur].lon,
                     track_points[pt2_id].lat,track_points[pt2_id].lon))+'&deg;';            
@@ -413,12 +414,12 @@ function refreshSelectionInfos(pt1_id, pt_cur, pt2_id) {
             
 		}
         if (timediff>=0) {
-            infos = infos + '<br/><b>Time delta:</b> '+secondsToTimeString(timediff);
+            infos = infos + '<br/><b>'+TIME_DELTA+':</b> '+secondsToTimeString(timediff);
         }
 		document.getElementById('selection_infos').innerHTML=infos;
 	}
 	else {
-		document.getElementById('selection_infos').innerHTML = 'No selection';
+		document.getElementById('selection_infos').innerHTML = NO_SELECTION;
 	}
 }
 
@@ -451,14 +452,12 @@ function guessWindDir() {
     return min_angle;
 }
 
-COMMENT_ADD = '<a href="javascript:void(0);return false;" onclick="toogleAddComment();">Add</a>';
-
 function toogleAddComment() {
     document.getElementById('comments').innerHTML = '<table><tbody><tr><td>'+
         '<textarea rows="5" cols="20" id="comment_inputtxtbox"></textarea>'+
         '</td><td style="vertical-align:bottom;">'+
-        '<input id="comment_cancelbtn" type="button" value="Cancel" onclick="onCommentCancelClick();"/><br/>'+
-        '<input id="comment_okbtn" type="button" value="OK" onclick="onCommentOkClick();"/>'+
+        '<input id="comment_cancelbtn" type="button" value="'+CANCEL+'" onclick="onCommentCancelClick();"/><br/>'+
+        '<input id="comment_okbtn" type="button" value="'+OK+'" onclick="onCommentOkClick();"/>'+
         '</td></tr></tbody></table>';
 }
 
@@ -470,7 +469,7 @@ function onCommentOkClick() {
     var comment = document.getElementById('comment_inputtxtbox').value;
     if (comment.length>0) {
         sendComment(comment);
-        document.getElementById('comments').innerHTML = 'Sending...';
+        document.getElementById('comments').innerHTML = SENDING;
     }
 }
 
@@ -495,7 +494,7 @@ function onSendCommentAnswer() {
                 fillComments();
             }
             else {
-                document.getElementById('comments').innerHTML = '<b>Error:</b> '+result;
+                document.getElementById('comments').innerHTML = '<b>'+ERROR+':</b> '+result;
             }
         }
     }
@@ -592,7 +591,7 @@ function loadWindDir() {
 function addDemizeButton() {
     var demizebtndiv = document.createElement('div');
     demizebtndiv.style.marginTop = '15px';
-    demizebtndiv.innerHTML = 'Bad/noisy elevations? Get clean elevation from Digital Elevation Model --&gt; <input id="demizebtn" type="button" value="DEMize" onclick="onDemizeClick();"/><div id="demizeresults" style="display: inline; marginLeft: 5px;"></div>';
+    demizebtndiv.innerHTML = DEMIZE_HTML;
     document.getElementById('eledistchart').appendChild(demizebtndiv);
 }
 

@@ -8,8 +8,10 @@ from mymath import fsum
 # Digital Elevation Model API
 from dem import GetEleFromLatLonList
 
-from log import Log
+from log import Log,Warn
 from datetime import timedelta
+
+from flask_babel import gettext
 
 class Bounds:
     "Keeps map bounds"
@@ -98,7 +100,7 @@ class Point:
                 self.spdunit = 'm/s'
                 self.spd_converted = {'mph': spd, 'm/s': self.spd}
             else:
-                raise Exception("Unknown speed unit: %s" % spdunit)
+                raise Exception(gettext("Unknown speed unit: %s") % spdunit)
         self.course = course
         self.datetime = datetime
         self.priority = 0
@@ -113,7 +115,7 @@ class Point:
             if self.spdunit=='m/s' or self.spdunit==None:
                 self.spd_converted[unit] = self.spd * Point.spd_converter[unit]
             else:
-                raise ValueError('Speed conversion from %s to %s not supported' % (self.spdunit,unit))
+                raise ValueError(gettext('Speed conversion from %s to %s not supported') % (self.spdunit,unit))
     def Distance(self,other):
         "Return distance in meters from self to other"
         return GeodeticDistGreatCircle(self.lat,self.lon,other.lat,other.lon)
@@ -143,7 +145,7 @@ class Point:
                 else:
                     self.spd_converted[unit] = self.spd * Point.spd_converter[unit]
             else:
-                raise ValueError('Speed conversion from %s to %s not supported' % (self.spdunit,unit))
+                raise ValueError(gettext('Speed conversion from %s to %s not supported') % (self.spdunit,unit))
     def GetSpeed(self,unit):
         if not self.spd_converted.has_key(unit):
             self.ConvertSpeed(unit)
@@ -170,7 +172,7 @@ class Track:
             for pt in ptlist:
                 self.bounds.Extend(pt.lat,pt.lon)
         if(len(ptlist)<1):
-            raise Exception('Empty track')
+            raise Exception(gettext('Empty track'))
         self.ptlist = ptlist
         self.ptindexlist = ptindexlist
         self.nospeeds = False
@@ -216,10 +218,10 @@ class Track:
                 maxprio = self.ptlist[i].priority
                 maxprio_i = i
         if maxprio>0:
-            print('MostImportant'+str(i)+': '+str(self.ptlist[i])+' spd='+str(self.ptlist[i].spd))
+            #print('MostImportant'+str(i)+': '+str(self.ptlist[i])+' spd='+str(self.ptlist[i].spd))
             return maxprio_i
         else:
-            print('MostImportant'+str(a))
+            #print('MostImportant'+str(a))
             return a
     def CompressPtlistPriority(self,nbpts):
         "Return a list of points built by keeping only 'nbpts' points from the list of points"
@@ -241,7 +243,7 @@ class Track:
             if self.ptlist[i].priority>1:
                 nbpts -= 1
         if nbptsinitial - nbpts > nbptsinitial / 2:
-            print('WARNING: CompressPtlistPriority2: use standard compression')
+            Warn('WARNING: CompressPtlistPriority2: use standard compression')
             # If too much important points, use standard compression
             return self.CompressPtlist(nbptsinitial)
         idlist = list(map(int, frange6(0,len(self.ptlist),float(len(self.ptlist))/float(nbpts))))
@@ -322,8 +324,8 @@ class Track:
                 #  under thresholdspeed and not moving farther than thresholddist
                 #  to initial position
                 if TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[j].datetime) > thresholdtime:
-                    print('DEBUG: RemoveStayingPoints3: pause found: %s %s' % (self.ptlist[j].datetime,self.ptlist[i].datetime))
-                    print('DEBUG: dist:%dm time=%ds' % (self.ptlist[j].Distance(self.ptlist[i]),TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[j].datetime)))
+                    #print('DEBUG: RemoveStayingPoints3: pause found: %s %s' % (self.ptlist[j].datetime,self.ptlist[i].datetime))
+                    #print('DEBUG: dist:%dm time=%ds' % (self.ptlist[j].Distance(self.ptlist[i]),TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[j].datetime)))
                     for k in range(j,i):
                         idlist.remove(k)
                         removedptsidlist.append(k)
@@ -740,7 +742,7 @@ class Track:
         if len(self.ptlist)==0:
             return 0.0
         if self.ptlist[0].spdunit!='m/s':
-            raise ValueError('unit of points speed must be m/s')
+            raise ValueError(gettext('Unit of points speed must be m/s'))
         # if you know how to optimize the following loop (sum,map,list...), send me a mail
         out = 0.0
         for i in range(0,len(self.ptlist)-1):

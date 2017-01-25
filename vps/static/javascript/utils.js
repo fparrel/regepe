@@ -1,3 +1,4 @@
+
 function getStyle(x,styleProp)
 {
 	if (typeof x.currentStyle!="undefined")
@@ -85,7 +86,7 @@ function computeCourse(lat1,lon1,lat2,lon2) {
 /* Convert an input speed in m/s to the given speed unit */
 function convertSpeed(speedms,spdunit) {
 	if (spdunit=='m/s') return (speedms);
-	if (spdunit=='knots') return (speedms*1.94384449);
+	if (spdunit==KNOTS) return (speedms*1.94384449);
 	if (spdunit=='km/h') return (speedms*3.6);
 	if (spdunit=='mph') return (speedms*2.23693629);
 }
@@ -122,19 +123,19 @@ function degreesToCardinalDir(angle) {
     } else if(angle<191.25) {
         return 'S';
     } else if(angle<213.75) {
-        return 'SSW';
+        return SSW;
     } else if(angle<236.25) {
-        return 'SW';
+        return SW;
     } else if(angle<258.75) {
-        return 'WSW';
+        return WSW;
     } else if(angle<281.25) {
-        return 'W';
+        return W;
     } else if(angle<303.75) {
-        return 'WNW';
+        return WNW;
     } else if(angle<326.25) {
-        return 'NW';
+        return NW;
     } else if(angle<348.75) {
-        return 'NNW';
+        return NNW;
     } else if(angle<371.25) {
         return 'N';
     }
