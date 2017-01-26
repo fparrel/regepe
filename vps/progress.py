@@ -11,9 +11,9 @@ def GetProgress(submitid):
     return out
 
 def SetProgress(submitid,progress):
-    sys.stderr.write('SetProgress(%s,%s)\n'%(submitid,progress))
+    #sys.stderr.write('SetProgress(%s,%s)\n'%(submitid,progress.decode('utf8')))
     db = anydbm.open("data/PROGRESS.db", "c")
-    db[submitid] = progress
+    db[submitid] = progress.encode('utf8')
     db.close()
 
 
