@@ -306,8 +306,8 @@ Switch to: {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google
   <h2 id="aftertabs">{{_('Other tracks nearby')}}</h2>
   <div id="near_maps">{{_('Near maps')}}</div>
 </div>
-<script type="text/javascript" src="/i18n.js/header"></script>
-<script type="text/javascript" src="/i18n.js/map"></script>
+<script type="text/javascript" charset="utf-8" src="/i18n.js/header"></script>
+<script type="text/javascript" charset="utf-8" src="/i18n.js/map"></script>
 {% if type=="GMaps" %}
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 {% elif type=="GeoPortal" %}

@@ -86,7 +86,7 @@ function computeCourse(lat1,lon1,lat2,lon2) {
 /* Convert an input speed in m/s to the given speed unit */
 function convertSpeed(speedms,spdunit) {
 	if (spdunit=='m/s') return (speedms);
-	if (spdunit==KNOTS) return (speedms*1.94384449);
+	if (spdunit=='knots') return (speedms*1.94384449);
 	if (spdunit=='km/h') return (speedms*3.6);
 	if (spdunit=='mph') return (speedms*2.23693629);
 }

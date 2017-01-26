@@ -900,12 +900,12 @@ if (wind) {
         if (last_point_id!=-1) {
             refreshCurrentPointInfos(last_point_id);
         }
-        /* dontsavewind: saveWindDir is not called on map loading */
+        // dontsavewind: saveWindDir is not called on map loading
         if(dontsavewind) {
             dontsavewind = 0;
         }
         else {
-            if(typeof windsave_timeout!='undefined') {
+            if(typeof windsave_timeout!=='undefined') {
                 clearTimeout(windsave_timeout);
             }
             windsave_timeout = setTimeout("saveWindDir();",5000);
@@ -931,7 +931,7 @@ computeSpeedIfNeeded();
 $(function() {
     var i,j;
     for(i=0,j=0;i<chart.length;i++) {
-        if(chart[i]['type']=='line') {
+        if(chart[i]['type']==='line') {
             chartdata[j] = [chart[i]];
             placeholder[j] = $("#chart"+chart[i]['name']);
             placeholder[j][0].chartid=j;

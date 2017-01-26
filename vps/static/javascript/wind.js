@@ -91,12 +91,12 @@ function computeBestVMGs() {
 function vmgToHtml(spdobj) {
     if(spdobj.spd==0.0)
         return '';
-    //return convertSpeed(spdobj.spd,spdunit).toFixed(2)+' '+spdunit+' '+spdobj.dst.toFixed(0)+' m in '+spdobj.time+' s at <a href="#" onclick="javascript:refreshSelection('+spdobj.ptidfrom+','+spdobj.ptidto+')">'+track_points[spdobj.ptidfrom].time+'</a>';
-    if(spdunit=='knots') {
-      spdunitdisp='kts';
+    var spdunitdisp;
+    if(spdunit==='knots') {
+        spdunitdisp=KTS;
     }
     else {
-      spdunitdisp=spdunit;
+        spdunitdisp=spdunit;
     }
     return '<span class="spdnb">'+convertSpeed(spdobj.spd,spdunit).toFixed(2)+'</span> '+spdunitdisp+' @ <a href="#" onclick="javascript:refreshSelection('+spdobj.ptidfrom+','+spdobj.ptidto+')">'+track_points[spdobj.ptidfrom].time+'</a> '+tom180p180(Math.round(spdobj.course-winddir))+'&deg;';
 }

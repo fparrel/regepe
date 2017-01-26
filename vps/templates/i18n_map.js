@@ -34,3 +34,4 @@ const COMMENT_ADD='{{_("<a href=\"javascript:void(0);return false;\" onclick=\"t
 const DEMIZE_HTML='{{_("Bad/noisy elevations? Get clean elevation from Digital Elevation Model --&gt; <input id=\"demizebtn\" type=\"button\" value=\"DEMize\" onclick=\"onDemizeClick();\"/><div id=\"demizeresults\" style=\"display: inline; marginLeft: 5px;\"></div>")|replace("'","\\'")}}';
 const SENDING='{{_("Sending...")}}';
 const RETRIEVING='{{_("Retrieving...")}}';
+const KTS='{{_("kts")}}';
