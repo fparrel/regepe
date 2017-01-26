@@ -612,7 +612,7 @@ def retrievemap(mapid):
 
 @application.route('/<lang>/userhome/<user>')
 @application.route('/userhome/<user>',defaults={'lang':None})
-def userhome(user):
+def userhome(lang,user):
     if lang!=None:
         session['lang']=lang
     mapids = DbGetMapsOfUser(user.encode('ascii'))
