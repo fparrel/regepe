@@ -235,7 +235,7 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
             if CheckSession(user,sess):
                 map_user = DbGet(mapid,'trackuser')
                 if len(map_user)>0 and map_user==user:
-                    DbPutWithoutPassword(mapid,ele,val)
+                    DbPutWithoutPassword(mapid,ele.encode('ascii'),val.encode('utf8'))
                     message = 'OK'
                 else:
                     raise Exception(gettext('Map %s does not belong to user %s, but to user %s') % (mapid,user,map_user))
