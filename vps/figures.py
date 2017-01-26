@@ -87,8 +87,8 @@ class Figures:
         if not self.options['flat']:
             maxspdsdist_vert = [[MaxSpdZero for i in range(0,nbmax)] for i in range(0,len(Figures.max_spd_dists_vert))]
             maxspdstime_vert = [[MaxSpdZero for i in range(0,nbmax)] for i in range(0,len(Figures.max_spd_times_vert))]
+            maxelediff = max(eles)-min(eles)
 
-        maxelediff = max(eles)-min(eles)
         Log('computeMaxSpeeds: start loop')
         for i in range(0,len(self.trkseg.ptlist)):
 
