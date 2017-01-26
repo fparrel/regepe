@@ -11,8 +11,9 @@
 				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
 				<input type="button" value="{{_('Search')}}" onclick="onSearchClick();"/>
 				<div id="header_lang">
-					<a href="/"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
+					<a href="/en/mapofmaps"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
 					<a href="/fr/mapofmaps"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
+					<a href="/es/mapofmaps"><img width="16" height="11" src="/static/images/FlagES.jpg" alt="Espanol"/></a>
 				</div>
 			</div>
 			<div id="header_home">
@@ -54,10 +55,10 @@
 	</div>
 </body>
 </html>
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{GMapsApiKey}}" type="text/javascript"></script>
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{GMapsApiKey}}"></script>
 <script type="text/javascript" src="/i18n.js/header"></script>
-<script src="/static/javascript/xmlhttprequest.js" type="text/javascript"></script>
-<script src="/static/javascript/header.js" type="text/javascript"></script>
+<script type="text/javascript" src="/static/javascript/xmlhttprequest{{minify}}.js"></script>
+<script type="text/javascript" src="/static/javascript/header{{minify}}.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 

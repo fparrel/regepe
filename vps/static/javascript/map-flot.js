@@ -299,7 +299,7 @@ function refreshCurrentPointInfos(point_id) {
         }
     }
     if(typeof track_points[point_id].hr!='undefined') {
-        infos = infos + '<br/><b>'+HEART_RATE':</b> '+track_points[point_id].hr;
+        infos = infos + '<br/><b>'+HEART_RATE+':</b> '+track_points[point_id].hr;
     }
     if(typeof track_points[point_id].cumul_dplus!='undefined') {
         infos += '<br/><b>D+:</b> '+track_points[point_id].cumul_dplus;
