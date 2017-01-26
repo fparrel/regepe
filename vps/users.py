@@ -32,7 +32,7 @@ def SendForgotPasswordMail(user):
     pwd = db['pwd']
     db.close()
     subject = gettext('ReGePe (Replay your GPS Tracks) forgoten password reminder')
-    body = gettext('You receive this mail because someone, has requested a forgotten password reminder from %s.\nYour password is %s') % (config['domain'],pwd)
+    body = gettext('You receive this mail because someone has requested a forgotten password reminder from %s.\nYour password is %s') % (config['domain'],pwd)
     sendmail(mail,subject,body)
     return mail
 

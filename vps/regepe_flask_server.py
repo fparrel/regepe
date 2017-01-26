@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask,render_template,send_file,Response,flash,request,redirect
+from flask import Flask,render_template,send_file,Response,flash,request,redirect,session
 from werkzeug.utils import secure_filename
 import json
 import os.path
@@ -32,6 +32,10 @@ from flask_babel import Babel,gettext
 # Create flask application
 application = Flask(__name__)
 application.config['UPLOAD_FOLDER'] = 'uploads'
+application.secret_key = keysnpwds['secret_key']
+
+
+## Internationalization (i18n)
 
 babel = Babel(application)
 
@@ -43,21 +47,37 @@ LANGUAGES = {
 
 @babel.localeselector
 def get_locale():
-    return request.accept_languages.best_match(LANGUAGES.keys())
+    # Uncomment for testing a specific language
     #return 'es'
     #return 'fr'
+    # Check if there is a lang in session
+    if session.has_key('lang'):
+        return session['lang']
+    # Else guess the lang from browser request
+    return request.accept_languages.best_match(LANGUAGES.keys())
 
 @application.route('/i18n.js/<item>')
-def i18n(item):
-    assert(item in ('header','map','prepare'))
+def i18n_js(item):
+    """ Translation strings for javascript """
+    assert(item in ('header','map','prepare')) #basic security check
     return render_template('i18n_%s.js'%item)
+
+@application.route('/<lang>/testi18n.js')
+def test_i18n_js(lang):
+    """ To test i18n for javascript because js escaping is not well handled by jinja2 """
+    session['lang']=lang
+    return '<html><head></head><body>Press Ctrl+Maj+K and check no errors in console<script>'+render_template('i18n_header.js')+render_template('i18n_map.js')+'</script>'
 
 
 ## Index page
 
-@application.route('/',defaults={'limit':10})
-@application.route('/indexall',defaults={'limit':-1})
-def index(limit):
+@application.route('/',defaults={'lang':None,'limit':10})
+@application.route('/indexall',defaults={'lang':None,'limit':-1})
+@application.route('/<lang>/',defaults={'limit':10})
+@application.route('/<lang>/indexall',defaults={'limit':10})
+def index(lang,limit):
+    if lang!=None:
+        session['lang']=lang
     maplist = DbGetListOfDates()
     cptr = 0
     mapsout = []
@@ -123,11 +143,17 @@ def thumbnail(mapid):
 
 ## Show map
 
-@application.route('/showmap/<mapid>', defaults={'map_type': None})
-@application.route('/showmap/<mapid>/<map_type>')
-@application.route('/showmap-flot.php',defaults={'mapid':None,'map_type': None})
-@application.route('/showmap.php',defaults={'mapid':None,'map_type': None})
-def showmap(mapid,map_type):
+@application.route('/<lang>/showmap/<mapid>', defaults={'map_type': None})
+@application.route('/<lang>/showmap/<mapid>/<map_type>')
+@application.route('/<lang>/showmap-flot.php',defaults={'mapid':None,'map_type': None})
+@application.route('/<lang>/showmap.php',defaults={'mapid':None,'map_type': None})
+@application.route('/showmap/<mapid>', defaults={'lang':None,'map_type': None})
+@application.route('/showmap/<mapid>/<map_type>',defaults={'lang':None})
+@application.route('/showmap-flot.php',defaults={'lang':None,'mapid':None,'map_type': None})
+@application.route('/showmap.php',defaults={'lang':None,'mapid':None,'map_type': None})
+def showmap(lang,mapid,map_type):
+    if lang!=None:
+        session['lang']=lang
     if mapid==None:
         mapid=request.args.get('mapid')
     # Read map data
@@ -227,8 +253,11 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
 
 ## Send map
 
-@application.route('/submitform')
-def submitform():
+@application.route('/<lang>/submitform')
+@application.route('/submitform',defaults={'lang':None})
+def submitform(lang):
+    if lang!=None:
+        session['lang']=lang
     return render_template('submitform.html',GMapsApiKey=keysnpwds['GMapsApiKey'])
 
 @application.route('/upload', methods=['POST'])
@@ -337,8 +366,11 @@ def map_retrieve_infos_showuser(mapid):
     startdate = DbGet(mapid,'date')
     return {'mapid':mapid,'desc':trackdesc,'date':startdate}
 
-@application.route('/showuser/<user>')
-def showuser(user):
+@application.route('/<lang>/showuser/<user>')
+@application.route('/showuser/<user>',defaults={'lang':None})
+def showuser(lang,user):
+    if lang!=None:
+        session['lang']=lang
     mapids = DbGetMapsOfUser(user.encode('ascii'))
     maps = map(map_retrieve_infos_showuser,mapids)
     return render_template('showuser.html',user=user,maps=maps)
@@ -352,8 +384,11 @@ def userinfo(user):
 
 ## Browse maps
 
-@application.route('/mapofmaps')
-def mapofmaps():
+@application.route('/<lang>/mapofmaps')
+@application.route('/mapofmaps',defaults={'lang':None})
+def mapofmaps(lang):
+    if lang!=None:
+        session['lang']=lang
     return render_template('mapofmaps.html',GMapsApiKey=keysnpwds['GMapsApiKey'])
 
 def map_search_result2(lat,lon,mapid):
@@ -486,9 +521,12 @@ def demize(index,mapid,pwd,user,sess):
 def CheckHumain(humaincheck):
     return ((humaincheck.strip().lower()==gettext('earth'))or(humaincheck.strip().lower()==gettext('the earth')))
 
-@application.route('/registerform')
-def registerform():
+@application.route('/<lang>/registerform')
+@application.route('/registerform',defaults={'lang':None})
+def registerform(lang):
     """ Display register form """
+    if lang!=None:
+        session['lang']=lang
     return render_template('register.html')
 
 @application.route('/register', methods=['POST'])
@@ -544,8 +582,11 @@ def chksess(user,sess):
     out = '<answer><result>%s</result><user>%s</user><sess>%s</sess></answer>' % (result,user,sess)
     return Response(out, mimetype='text/xml')
 
-@application.route('/forgotpwd')
-def forgotpwd():
+@application.route('/<lang>/forgotpwd')
+@application.route('/forgotpwd',defaults={'lang':None})
+def forgotpwd(lang):
+    if lang!=None:
+        session['lang']=lang
     return render_template('forgotpwd.html')
 
 @application.route('/resendpwd', methods=['POST'])
@@ -569,8 +610,11 @@ def retrievemap(mapid):
     user = DbGet(mapid,'trackuser')
     return {'mapid':mapid,'lat':lat,'lon':lon,'desc':desc,'date':startdate,'user':user}
 
-@application.route('/userhome/<user>')
+@application.route('/<lang>/userhome/<user>')
+@application.route('/userhome/<user>',defaults={'lang':None})
 def userhome(user):
+    if lang!=None:
+        session['lang']=lang
     mapids = DbGetMapsOfUser(user.encode('ascii'))
     return render_template('userhome.html',user=user,maps=map(retrievemap,mapids),GMapsApiKey=keysnpwds['GMapsApiKey'])
 
@@ -639,11 +683,17 @@ def delmaps(mapidsliststr,user,sess):
 
 ## Prepare
 
-@application.route('/prepare',defaults={'map_type':'GeoPortal','pts':[],'names':[]})
-@application.route('/prepare/<map_type>',defaults={'pts':[],'names':[]})
-@application.route('/prepare/<map_type>/<pts>',defaults={'names':None})
-@application.route('/prepare/<map_type>/<pts>/<names>')
-def prepare(map_type,pts,names):
+@application.route('/<lang>/prepare',defaults={'map_type':'GeoPortal','pts':[],'names':[]})
+@application.route('/<lang>/prepare/<map_type>',defaults={'pts':[],'names':[]})
+@application.route('/<lang>/prepare/<map_type>/<pts>',defaults={'names':None})
+@application.route('/<lang>/prepare/<map_type>/<pts>/<names>')
+@application.route('/prepare',defaults={'lang':None,'map_type':'GeoPortal','pts':[],'names':[]})
+@application.route('/prepare/<map_type>',defaults={'lang':None,'pts':[],'names':[]})
+@application.route('/prepare/<map_type>/<pts>',defaults={'lang':None,'names':None})
+@application.route('/prepare/<map_type>/<pts>/<names>',defaults={'lang':None})
+def prepare(lang,map_type,pts,names):
+    if lang!=None:
+        session['lang']=lang
     return render_template('prepare.html',domain=config['domain'],map_type=map_type,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
 @application.route('/ele/<float:lat>/<float:lon>')
@@ -667,15 +717,32 @@ def prepare_export(format,ptlist,names):
     # TODO: build it from client side
     pass
 
+
 ## Misc
 
-@application.route('/mobile')
-def mobile():
+@application.route('/<lang>/mobile')
+@application.route('/mobile',defaults={'lang':None})
+def mobile(lang):
+    if lang!=None:
+        session['lang']=lang
     return render_template('mobile.html')
-
-@application.route('/tour')
-def tour():
+    
+@application.route('/<lang>/tour')
+@application.route('/tour',defaults={'lang':None})
+def tour(lang):
+    if lang!=None:
+        session['lang']=lang
     return render_template('tour.html')
+
+
+## Add .min.js in all templates if debug mode is true
+
+@application.context_processor
+def inject_min_js():
+    if application.debug:
+        return {'minify':''}
+    else:
+        return {'minify':'.min'}
 
 
 ## Program entry point
