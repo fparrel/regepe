@@ -71,7 +71,7 @@ class Point:
     # course: course in degrees
     # datetime: date and time
     # priority: is the point important
-    # hr: hearth rate
+    # hr: heart rate
     spd_converter = {'knots': 1.94384449, 'km/h': 3.6, 'mph': 2.23693629}
     def __init__(self,lat,lon,ele,spd,course,datetime,spdunit='m/s',hr=None):
         "Create a Point"
@@ -924,9 +924,9 @@ class Track:
             return (self.ptlist[-1].datetime.day!=self.ptlist[0].datetime.day)or(self.ptlist[-1].datetime.month!=self.ptlist[0].datetime.month)or(self.ptlist[-1].datetime.year!=self.ptlist[0].datetime.year)
         except:
             return False
-    def hasHearthRate(self):
+    def hasHeartRate(self):
         return sum(map(lambda pt:hasattr(pt,'hr'),self.ptlist))>len(self.ptlist)/2
-    def getHearthRate(self):
+    def getHeartRate(self):
         prev_hr = None
         for pt in self.ptlist:
             if not hasattr(pt,'hr'):
