@@ -140,11 +140,11 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
         except Exception, e:
             Warn('Cannot BuildMaxSpeeds: %s\n'%e)
 
-    if track.hasHearthRate():
+    if track.hasHeartRate():
         try:
-            charts.append(MyXYChart((trksegcompressed.ComputeTimes(),trksegcompressed.getHearthRate()),'','hrtimechart','Hearth Rate (bps)','Hearth Rate',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Hr',unity='bps'))
+            charts.append(MyXYChart((trksegcompressed.ComputeTimes(),trksegcompressed.getHeartRate()),'','hrtimechart','Heart Rate (bps)','Heart Rate',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Hr',unity='bps'))
         except Exception, e:
-            Warn('Cannot Build hearth rate %s\n'%e)
+            Warn('Cannot Build heart rate %s\n'%e)
 
     Log("ProcessTrkSegWithProgress: BuildPage",submitid)
     out = BuildPage(track,charts,figures,options['spdunit'],mapid,options)
