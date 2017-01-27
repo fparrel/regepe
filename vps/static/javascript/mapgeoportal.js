@@ -71,10 +71,11 @@ function initGeoportalMap() {
     VISU = iv.getViewer();
 	//geoportalLoadVISU("GeoportalVisuDiv", "normal", "FXX");
 	if (VISU.getMap().allowedGeoportalLayers) {
-		
+
 		// Add bg layer: IGN MAP
-		VISU.addGeoportalLayer('GEOGRAPHICALGRIDSYSTEMS.MAPS:WMSC',{visibility: true,opacity: 0.8});
-		
+		//VISU.addGeoportalLayer('GEOGRAPHICALGRIDSYSTEMS.MAPS:WMSC',{visibility: true,opacity: 0.8});
+        // now added by loader at init time
+
 		// Set controls
         /*
 		VISU.openLayersPanel(false);
@@ -84,8 +85,8 @@ function initGeoportalMap() {
         */
         //needed for good computation of bounds
         //VISU.getMap().setCenterAtLonLat(track_points[0].lon,track_points[0].lat, 5);
-		
-		
+
+
 		// create line and markers styles
 		start_icon = {externalGraphic:'/static/images/MarkerStart.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};
 		end_icon = {externalGraphic:'/static/images/MarkerEnd.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};
@@ -263,6 +264,11 @@ var iv = Geoportal.load('map',
                    onView : initGeoportalMap,
                     language:LANG,
                     viewerClass:'Geoportal.Viewer.Default',
-                    overlays:{} //remove blue pin
+                    overlays:{}, //remove blue pin
+                    layers:['ORTHOIMAGERY.ORTHOPHOTOS','GEOGRAPHICALGRIDSYSTEMS.MAPS'],
+                    layersOptions:{
+                        'ORTHOIMAGERY.ORTHOPHOTOS':{ visibility:false, opacity:1.0 }, //aerial photo: hidden by default
+                        'GEOGRAPHICALGRIDSYSTEMS.MAPS':{ visibility:true, opacity:0.85 } //IGN map: visible with high opacity
+                    }
                 }
     );
