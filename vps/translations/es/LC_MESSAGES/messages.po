@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-27 01:21+0100\n"
-"PO-Revision-Date: 2017-01-27 02:02+0100\n"
+"POT-Creation-Date: 2017-01-27 10:19+0100\n"
+"PO-Revision-Date: 2017-01-27 10:25+0100\n"
 "Last-Translator: \n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: computeprofile.py:46
 #, python-format
@@ -28,7 +28,7 @@ msgstr "No se puede obtener las altitudes: ele=%s"
 msgid "Invalid element"
 msgstr "Elemento inválido"
 
-#: db.py:79 users.py:130
+#: db.py:79 users.py:132
 msgid "Bad password"
 msgstr "Contraseña equivocada"
 
@@ -178,7 +178,7 @@ msgstr "Generando la mapa"
 msgid "Max speed analysis"
 msgstr "Mejores Velocidades"
 
-#: orchestrator.py:151 templates/showmap.html:175
+#: orchestrator.py:151
 msgid "Heart Rate"
 msgstr "Puslo"
 
@@ -249,35 +249,38 @@ msgstr "tierra"
 msgid "the earth"
 msgstr "la tierra"
 
-#: regepe_flask_server.py:540
+#: regepe_flask_server.py:540 regepe_flask_server.py:599
 msgid "Humain check error"
 msgstr "Prueba anti robot no aprobada"
 
 #: regepe_flask_server.py:542
-msgid "Password check error"
-msgstr "Contraseña incorrecta"
+msgid ""
+"The two password you entered are different. Please enter twice the same password"
+msgstr ""
+"Las dos contraseñas que ha introducido no coinciden. Por favor, introduzca la "
+"misma contraseña dos veces"
 
-#: regepe_flask_server.py:624 regepe_flask_server.py:665
+#: regepe_flask_server.py:625 regepe_flask_server.py:666
 #, python-format
 msgid "Cannot identify user %s %s"
 msgstr "No se puede identificar el usuario %s: %s"
 
-#: regepe_flask_server.py:675
+#: regepe_flask_server.py:676
 #, python-format
 msgid "Map %s deleted. "
 msgstr "Mapa %s borrada."
 
-#: regepe_flask_server.py:677
+#: regepe_flask_server.py:678
 #, python-format
 msgid "Map %s do not belong to you"
 msgstr "La mapa %s no te pertenece"
 
-#: regepe_flask_server.py:680
+#: regepe_flask_server.py:681
 #, python-format
 msgid "Error: %s"
 msgstr "Error: %s"
 
-#: regepe_flask_server.py:711
+#: regepe_flask_server.py:712
 msgid "Error: Cannot compute profile for only one point"
 msgstr "Error: no se puede generar un perfil de altitudes por un solo punto"
 
@@ -323,7 +326,7 @@ msgstr ""
 "contraseña desde de %s.\n"
 "Tu contraseña es %s"
 
-#: users.py:52 users.py:78 users.py:148 users.py:168
+#: users.py:52 users.py:78 users.py:150 users.py:170
 #, python-format
 msgid "Invalid user name \"%s\""
 msgstr "Nombre de usuario inválido \"%s\""
@@ -336,7 +339,7 @@ msgstr "La contraseña es demasiado corta"
 msgid "The password you have chosen is too long"
 msgstr "La contraseña es demasiado larga"
 
-#: users.py:58 users.py:170
+#: users.py:58 users.py:172
 #, python-format
 msgid "Invalid email \"%s\""
 msgstr "Formato de correo electrónico inválido: \"%s\""
@@ -353,7 +356,7 @@ msgstr ""
 "La dirección de correo electrónico %s esta ya registrada. Si has olvidado tu "
 "nombre de usuario pincha \"Contraseña olvidada?\""
 
-#: users.py:81 users.py:151
+#: users.py:81 users.py:153
 #, python-format
 msgid "User %s doesn't exists"
 msgstr "El usuario %s no existe"
@@ -368,21 +371,21 @@ msgstr "El usuario %s esta ya activado"
 msgid "Bad activation id \"%s\" for user \"%s\""
 msgstr "El identificador de activación \"%s\" por el usuario \"%s\" no esta válido"
 
-#: users.py:96 users.py:110
+#: users.py:96 users.py:112
 msgid "Invalid user name or email"
 msgstr "Usuario o mail inválido"
 
-#: users.py:103 users.py:119
+#: users.py:104 users.py:121
 #, python-format
 msgid "Cannot found user from email \"%s\""
 msgstr "No se encuentra el usuario cuyo correo electrónico es \"%s\""
 
-#: users.py:122
+#: users.py:124
 #, python-format
 msgid "Cannot found user \"%s\""
 msgstr "No se encuentra el usuario \"%s\""
 
-#: users.py:128
+#: users.py:130
 msgid "User not activated"
 msgstr "Usuario no activado"
 
@@ -398,7 +401,7 @@ msgstr "Analiza tus rutas GPS con ReGePe - Contraseña olvidada"
 #: templates/resendpwd_ok.html:12 templates/showmap.html:30
 #: templates/showuser.html:12 templates/submitform.html:12 templates/tour.html:12
 #: templates/user_activate_error.html:12 templates/user_activated.html:12
-#: templates/userhome.html:15
+#: templates/user_registered.html:12 templates/userhome.html:15
 msgid "Search"
 msgstr "Buscar"
 
@@ -409,7 +412,7 @@ msgstr "Buscar"
 #: templates/resendpwd_ok.html:20 templates/showmap.html:38
 #: templates/showuser.html:20 templates/submitform.html:20 templates/tour.html:20
 #: templates/user_activate_error.html:20 templates/user_activated.html:20
-#: templates/userhome.html:23
+#: templates/user_registered.html:20 templates/userhome.html:23
 msgid "Home"
 msgstr "Inicio"
 
@@ -420,7 +423,7 @@ msgstr "Inicio"
 #: templates/resendpwd_ok.html:23 templates/showmap.html:41
 #: templates/showuser.html:23 templates/submitform.html:23 templates/tour.html:23
 #: templates/user_activate_error.html:23 templates/user_activated.html:23
-#: templates/userhome.html:26
+#: templates/user_registered.html:23 templates/userhome.html:26
 msgid "Get app"
 msgstr "Aplicación Android"
 
@@ -431,7 +434,7 @@ msgstr "Aplicación Android"
 #: templates/resendpwd_ok.html:26 templates/showmap.html:44
 #: templates/showuser.html:26 templates/submitform.html:26 templates/tour.html:26
 #: templates/user_activate_error.html:26 templates/user_activated.html:26
-#: templates/userhome.html:29
+#: templates/user_registered.html:26 templates/userhome.html:29
 msgid "Submit track"
 msgstr "Enviar ruta"
 
@@ -442,7 +445,7 @@ msgstr "Enviar ruta"
 #: templates/resendpwd_ok.html:29 templates/showmap.html:47
 #: templates/showuser.html:29 templates/submitform.html:29 templates/tour.html:29
 #: templates/user_activate_error.html:29 templates/user_activated.html:29
-#: templates/userhome.html:32
+#: templates/user_registered.html:29 templates/userhome.html:32
 msgid "Prepare itinerary"
 msgstr "Trazar ruta"
 
@@ -453,7 +456,7 @@ msgstr "Trazar ruta"
 #: templates/resendpwd_ok.html:32 templates/showmap.html:50
 #: templates/showuser.html:32 templates/submitform.html:32 templates/tour.html:32
 #: templates/user_activate_error.html:32 templates/user_activated.html:32
-#: templates/userhome.html:35
+#: templates/user_registered.html:32 templates/userhome.html:35
 msgid "Browse tracks"
 msgstr "Exploara rutas"
 
@@ -465,7 +468,7 @@ msgstr "Exploara rutas"
 #: templates/showmap.html:125 templates/showuser.html:37
 #: templates/submitform.html:37 templates/tour.html:37
 #: templates/user_activate_error.html:37 templates/user_activated.html:37
-#: templates/userhome.html:40
+#: templates/user_registered.html:37 templates/userhome.html:40
 msgid "User: "
 msgstr "Usuario: "
 
@@ -476,7 +479,7 @@ msgstr "Usuario: "
 #: templates/resendpwd_ok.html:38 templates/showmap.html:55
 #: templates/showuser.html:38 templates/submitform.html:38 templates/tour.html:38
 #: templates/user_activate_error.html:38 templates/user_activated.html:38
-#: templates/userhome.html:41
+#: templates/user_registered.html:38 templates/userhome.html:41
 msgid "Password: "
 msgstr "Contraseña: "
 
@@ -487,7 +490,7 @@ msgstr "Contraseña: "
 #: templates/resendpwd_ok.html:39 templates/showmap.html:56
 #: templates/showuser.html:39 templates/submitform.html:39 templates/tour.html:39
 #: templates/user_activate_error.html:39 templates/user_activated.html:39
-#: templates/userhome.html:42
+#: templates/user_registered.html:39 templates/userhome.html:42
 msgid "Login"
 msgstr "Conectar"
 
@@ -499,7 +502,7 @@ msgstr "Conectar"
 #: templates/showmap.html:57 templates/showuser.html:40
 #: templates/submitform.html:40 templates/tour.html:40
 #: templates/user_activate_error.html:40 templates/user_activated.html:40
-#: templates/userhome.html:43
+#: templates/user_registered.html:40 templates/userhome.html:43
 msgid "Register"
 msgstr "Inscribirse"
 
@@ -510,7 +513,7 @@ msgstr "Inscribirse"
 #: templates/resendpwd_ok.html:41 templates/showmap.html:58
 #: templates/showuser.html:41 templates/submitform.html:41 templates/tour.html:41
 #: templates/user_activate_error.html:41 templates/user_activated.html:41
-#: templates/userhome.html:44
+#: templates/user_registered.html:41 templates/userhome.html:44
 msgid "Forgot password?"
 msgstr "Contraseña olvidada?"
 
@@ -533,7 +536,7 @@ msgstr "Mandar un recordatorio de contraseña"
 #: templates/resendpwd_ok.html:52 templates/showuser.html:57
 #: templates/submitform.html:115 templates/tour.html:75
 #: templates/user_activate_error.html:53 templates/user_activated.html:53
-#: templates/userhome.html:65
+#: templates/user_registered.html:53 templates/userhome.html:65
 msgid "Contact:"
 msgstr "Contacto:"
 
@@ -1264,7 +1267,7 @@ msgid "Near maps"
 msgstr "Mapas cerca"
 
 #: templates/showuser.html:47 templates/user_activated.html:47
-#: templates/userhome.html:50
+#: templates/user_registered.html:47 templates/userhome.html:50
 msgid "User "
 msgstr "Usuario "
 
@@ -1458,6 +1461,18 @@ msgstr "Error durante la activación del usuario: "
 msgid "User has been activated. Thanks for registering"
 msgstr "El usuario ha sido activado. Gracias para tu inscripción"
 
+#: templates/user_registered.html:2
+msgid "Replay your GPS Tracks with REGEPE - Registration"
+msgstr "Analiza tus rutas GPS con ReGePe - Inscribirse"
+
+#: templates/user_registered.html:48
+msgid ""
+"User has been registered. Please check your mails (including SPAM) to activate "
+"account."
+msgstr ""
+"El usuario ha sido registrado. Por favor, consultar su correo electrónico "
+"(incluyendo SPAM) para activar la cuenta."
+
 #: templates/userhome.html:51
 msgid "My tracks"
 msgstr "Mis rutas"
@@ -1475,3 +1490,6 @@ msgstr "Fusionar"
 
 #~ msgid "Current point"
 #~ msgstr "Punto corriente"
+
+#~ msgid "Password check error"
+#~ msgstr "Contraseña incorrecta"

@@ -49,20 +49,20 @@ def GetUserByEmail(mail):
 
 def ReserveUser(user,mail,pwd):
     if not CheckValidUserName(user):
-        raise Exception(gettext('Invalid user name "%s"') % user)
+        return None,gettext('Invalid user name "%s"') % user
     if len(pwd)<5:
-        raise Exception(gettext('The password you have chosen is too short'))
+        return None,gettext('The password you have chosen is too short')
     if len(pwd)>99:
-        raise Exception(gettext('The password you have chosen is too long'))
+        return None,gettext('The password you have chosen is too long')
     if not CheckValidEmail(mail):
-        raise Exception(gettext('Invalid email "%s"') % mail)
+        return None,gettext('Invalid email "%s"') % mail
     chk = ChkAlreadyExists(mail,user)
     if chk=='user':
-        raise Exception(gettext('User %s already exists') % user)
+        return None,gettext('User %s already exists') % user
     elif chk=='mail'!=None:
-        raise Exception(gettext('Mail %s already associated with an user') % mail)
+        return None,gettext('Mail %s already associated with an user') % mail
     elif chk!='none':
-        raise Exception('Problem with ChkAlreadyExists')
+        return None,'Problem with ChkAlreadyExists'
     dbfile = 'data/users/%s.db' % user
     activation_id = str(uuid4())
     db = anydbm.open(dbfile, 'c')
@@ -71,7 +71,7 @@ def ReserveUser(user,mail,pwd):
     db['pwd'] = pwd
     db.close()
     TriggerRebuildOfInv('mail')
-    return activation_id
+    return activation_id,None
 
 def ActivateUser(user,activationid):
     if not CheckValidUserName(user):
@@ -93,15 +93,17 @@ def ActivateUser(user,activationid):
 
 def GetUserFromUserOrEmail(userormail):
     if not (CheckValidUserName(userormail) or CheckValidEmail(userormail)):
-        raise Exception(gettext('Invalid user name or email'))
+        return None,gettext('Invalid user name or email')
+        #raise Exception(gettext('Invalid user name or email'))
     dbfile = 'data/users/%s.db' % userormail
     if os.access(dbfile,os.F_OK):
         user = userormail
     else:
         user = GetUserByEmail(userormail)
         if user==None:
-            raise Exception(gettext('Cannot found user from email "%s"') % userormail)
-    return user
+            return None,gettext('Cannot found user from email "%s"') % userormail
+            #raise Exception(gettext('Cannot found user from email "%s"') % userormail)
+    return user,None
 
 MAX_NB_SESSIONS = 8
 

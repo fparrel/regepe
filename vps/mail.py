@@ -15,6 +15,7 @@ def sendmail(email,subject,body):
     from_addr = 'info@%s' % config['domain']
     cmd = 'echo "From: %s\nTo: %s\nSubject: %s\n\n%s" | /usr/sbin/sendmail -t' % (from_addr,email, subject, body)
     try:
-        os.system(cmd)
+        retv = os.system(cmd.encode('utf8'))
+        Log('sendmail retv=%d'%retv)
     except Exception, err:
         Warn('sendmail error: %s'%err)
