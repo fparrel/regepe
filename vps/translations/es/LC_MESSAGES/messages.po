@@ -7,21 +7,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-26 18:25+0100\n"
-"PO-Revision-Date: 2017-01-26 16:00+0100\n"
+"POT-Creation-Date: 2017-01-27 01:21+0100\n"
+"PO-Revision-Date: 2017-01-27 02:02+0100\n"
 "Last-Translator: \n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: computeprofile.py:46
 #, python-format
 msgid "Cannot get elevations: ele=%s"
-msgstr "No se puede obtener las altituds: ele=%s"
+msgstr "No se puede obtener las altitudes: ele=%s"
 
 #: db.py:53 db.py:69 db.py:86 db.py:160 db.py:178
 msgid "Invalid element"
@@ -38,7 +39,7 @@ msgstr "No se puede abrir %s: %s"
 
 #: db.py:175
 msgid "Invalid database type"
-msgstr "Typo de base de datos inválido"
+msgstr "Tipo de base de datos inválido"
 
 #: db.py:280 db.py:307
 #, python-format
@@ -47,15 +48,14 @@ msgstr "Identificador de mapa inválido: %s"
 
 #: db.py:295
 msgid "Max comments reached"
-msgstr "Maximo numero de commentarios sobrepasado"
+msgstr "Máximo numero de comentarios sobrepasado"
 
 #: dem.py:22
 msgid ""
-"Sorry, outage on DEM server, please resend the map without the DEM option"
-" checked"
+"Sorry, outage on DEM server, please resend the map without the DEM option checked"
 msgstr ""
-"Lo siento, el servidor de altiduds no contesta. Vuelve a mandar la traza "
-"sin la opcion \"DEM\""
+"Lo siento, el servidor de altitudes no contesta. Vuelve a mandar la traza sin la "
+"opción \"DEM\""
 
 #: fitparser.py:118
 msgid "big endian not implemented"
@@ -76,11 +76,11 @@ msgstr "Ninguna ruta encontrado en el fichero"
 
 #: kmlparser.py:27
 msgid "Error while parsing kml file"
-msgstr "Error durante el analizis del fichero .kml"
+msgstr "Error durante el análisis del fichero .kml"
 
 #: kmlparser.py:148
 msgid "Placemark not found in kml file"
-msgstr "Eliqueta \"Placemark\" no encontrado en el fichero kml"
+msgstr "Etiqueta \"Placemark\" no encontrado en el fichero kml"
 
 #: kmlparser.py:160
 msgid "Path not found in kml file"
@@ -89,7 +89,7 @@ msgstr "Etiqueta \"Path\" no encontrado en el fichero kml"
 #: mapparser.py:41
 #, python-format
 msgid "Cannot parse date %s: %s"
-msgstr "No se puede analizar la fetcha \"%s\": %s"
+msgstr "No se puede analizar la fecha \"%s\": %s"
 
 #: mapparser.py:50
 msgid "Error in mapparser:convpt"
@@ -107,7 +107,7 @@ msgstr "La conversión de velocidad de %s a %s no esta gestionada"
 
 #: model.py:175
 msgid "Empty track"
-msgstr "Ruta vacia"
+msgstr "Ruta vacía"
 
 #: model.py:745
 msgid "Unit of points speed must be m/s"
@@ -116,11 +116,11 @@ msgstr "El unidad de velocidad de los puntos debe ser m/s"
 #: nmeaparser.py:27
 #, python-format
 msgid "Cannot parse this nmea data \"%s\""
-msgstr "No se puede analisar esta entrada NMEA: \"%s\""
+msgstr "No se puede analizar esta entrada NMEA: \"%s\""
 
 #: nmeaparser.py:60
 msgid "NMEA parse error: unit not supported"
-msgstr "Error de analisis del fichero NMEA: unidad no gestionada"
+msgstr "Error de análisis del fichero NMEA: unidad no gestionada"
 
 #: orchestrator.py:54
 msgid "Remove staying points"
@@ -128,7 +128,7 @@ msgstr "Quitando los puntos fijos"
 
 #: orchestrator.py:62
 msgid "Getting elevations from DEM"
-msgstr "Recuperando las altituds del Modelo Digital de Altituds"
+msgstr "Recuperando las altitudes del Modelo Digital de Altitudes"
 
 #: orchestrator.py:68
 msgid "Computing figures"
@@ -138,63 +138,86 @@ msgstr "Calculando statisticas"
 msgid "Building speed chart"
 msgstr "Generando la gráfica de velocidad"
 
-#: orchestrator.py:91
+#: orchestrator.py:84 templates/i18n_map.js:15 templates/showmap.html:296
+msgid "Speed"
+msgstr "Velocidad"
+
+#: orchestrator.py:92
 msgid "Building vert charts"
 msgstr "Generando las gráficas de análisis de altituds"
 
-#: orchestrator.py:114
-msgid "Warning: asking for vertical anlysis on flat track"
-msgstr "Aviso: altituds análisis pedida en una ruta plana"
+#: orchestrator.py:100
+msgid "Profile"
+msgstr "Perfil altitudes"
 
-#: orchestrator.py:122
+#: orchestrator.py:106
+msgid "Vertical Speed"
+msgstr "Velocidad subida/bajada"
+
+#: orchestrator.py:113
+msgid "Power"
+msgstr "Potencia"
+
+#: orchestrator.py:118
+msgid "Warning: asking for vertical anlysis on flat track"
+msgstr "Aviso: análisis de altitudes pedida por una ruta plana"
+
+#: orchestrator.py:122 templates/i18n_map.js:17
+msgid "Course"
+msgstr "Curso"
+
+#: orchestrator.py:127
 msgid "Building polar"
 msgstr "Generando la gráfica polar"
 
-#: orchestrator.py:133
+#: orchestrator.py:138
 msgid "Building map"
 msgstr "Generando la mapa"
 
-#: orchestrator.py:244
-msgid ""
-"URL must follow pattern: "
-"\"http[s]://www.movescount.com/[fr/]moves/move[XXXXX]\""
-msgstr ""
-"La direción URL debe estar de forma: "
-"\"http[s]://www.movescount.com/[fr/]moves/move[XXXXX]\""
+#: orchestrator.py:144
+msgid "Max speed analysis"
+msgstr "Mejores Velocidades"
 
-#: orchestrator.py:263
+#: orchestrator.py:151 templates/showmap.html:175
+msgid "Heart Rate"
+msgstr "Puslo"
+
+#: orchestrator.py:251
+msgid ""
+"URL must follow pattern: \"http[s]://www.movescount.com/[fr/]moves/move[XXXXX]\""
+msgstr ""
+"La dirección URL debe estar de forma: \"http[s]://www.movescount.com/[fr/]moves/"
+"move[XXXXX]\""
+
+#: orchestrator.py:270
 msgid ""
 "URL must start with \"http[s]://www.kitetracker.com/gps/tracking?r=\", "
-"\"http[s]://connect.garmin.com/modern/activity/\", "
-"\"http[s]://www.movescount.com/[fr/]moves/\" or "
-"\"http[s]://www.strava.com/activities/\""
+"\"http[s]://connect.garmin.com/modern/activity/\", \"http[s]://www.movescount."
+"com/[fr/]moves/\" or \"http[s]://www.strava.com/activities/\""
 msgstr ""
-"La direción URL debe empezar por "
-"\"http[s]://www.kitetracker.com/gps/tracking?r=\" o "
-"\"http[s]://connect.garmin.com/modern/activity/\" o "
-"\"http[s]://www.movescount.com/[fr/]moves/\" o "
-"\"http[s]://www.strava.com/activities/\""
+"La dirección URL debe empezar por \"http[s]://www.kitetracker.com/gps/tracking?r="
+"\" o \"http[s]://connect.garmin.com/modern/activity/\" o \"http[s]://www."
+"movescount.com/[fr/]moves/\" o \"http[s]://www.strava.com/activities/\""
 
-#: orchestrator.py:318
+#: orchestrator.py:325
 msgid "Unknown file type"
-msgstr "Typo de fichero no reconocido"
+msgstr "Tipo de fichero no reconocido"
 
-#: orchestrator.py:356
+#: orchestrator.py:363
 msgid "Generating uuid"
 msgstr "Generando identificador"
 
-#: orchestrator.py:358
+#: orchestrator.py:365
 msgid "Writing to DB"
 msgstr "Escribiendo en la base de datos"
 
-#: regepe_flask_server.py:200 regepe_flask_server.py:243
-#: regepe_flask_server.py:427
+#: regepe_flask_server.py:200 regepe_flask_server.py:243 regepe_flask_server.py:427
 msgid "Invalid session, please re-login"
 msgstr "Sesión no valida, por favor vuelve a identificarte"
 
 #: regepe_flask_server.py:204 regepe_flask_server.py:206
 msgid "Invalid map id"
-msgstr "Identificator de mapa no válido"
+msgstr "Identificador de mapa no válido"
 
 #: regepe_flask_server.py:241 regepe_flask_server.py:425
 #, python-format
@@ -212,7 +235,7 @@ msgstr "tipo %s no gestionado"
 
 #: regepe_flask_server.py:430
 msgid "You do not have the map's password in your browser's cookies"
-msgstr "No tienes el cookie de identificación de la mapa en tu navigador web"
+msgstr "No tienes el cookie de identificación de la mapa en tu navegador web"
 
 #: regepe_flask_server.py:441
 msgid "Map deleted"
@@ -228,7 +251,7 @@ msgstr "la tierra"
 
 #: regepe_flask_server.py:540
 msgid "Humain check error"
-msgstr "Pruba anti robot no aprobada"
+msgstr "Prueba anti robot no aprobada"
 
 #: regepe_flask_server.py:542
 msgid "Password check error"
@@ -256,14 +279,14 @@ msgstr "Error: %s"
 
 #: regepe_flask_server.py:711
 msgid "Error: Cannot compute profile for only one point"
-msgstr "Error: no se puede generar un perfil de altituds por un solo punto"
+msgstr "Error: no se puede generar un perfil de altitudes por un solo punto"
 
 #: tz.py:20
 #, python-format
 msgid "Cannot parse result from TimeZone server %s, assuming GMT+0"
 msgstr ""
-"No se puede análisar el resultado del servidor de zona horaria, cambiado "
-"a la zona GMT+0: %s"
+"No se puede analizar el resultado del servidor de zona horaria, cambiado a la "
+"zona GMT+0: %s"
 
 #: unzip.py:6
 #, python-format
@@ -283,8 +306,7 @@ msgstr "ReGePe - creación de cuenta"
 #, python-format
 msgid "Your accound will be created when you visit http://%s/activate/%s/%s"
 msgstr ""
-"Tu cuenta debe ser activada vistando esta direción: "
-"http://%s/activate/%s/%s"
+"Tu cuenta debe ser activada visitando esta dirección: http://%s/activate/%s/%s"
 
 #: users.py:34
 msgid "ReGePe (Replay your GPS Tracks) forgoten password reminder"
@@ -297,8 +319,8 @@ msgid ""
 "reminder from %s.\n"
 "Your password is %s"
 msgstr ""
-"Has recibido ese correo electrónico porque algien a pedido un "
-"recordatoria de contraseña desede de %s.\n"
+"Has recibido ese correo electrónico porque alguien a pedido un recordatoria de "
+"contraseña desde de %s.\n"
 "Tu contraseña es %s"
 
 #: users.py:52 users.py:78 users.py:148 users.py:168
@@ -308,11 +330,11 @@ msgstr "Nombre de usuario inválido \"%s\""
 
 #: users.py:54
 msgid "The password you have chosen is too short"
-msgstr "La contraseña es dematiado corta"
+msgstr "La contraseña es demasiado corta"
 
 #: users.py:56
 msgid "The password you have chosen is too long"
-msgstr "La contraseña es dematiado larga"
+msgstr "La contraseña es demasiado larga"
 
 #: users.py:58 users.py:170
 #, python-format
@@ -328,8 +350,8 @@ msgstr "El usuario %s ya existe. Por favor elige otro nombre de usuario"
 #, python-format
 msgid "Mail %s already associated with an user"
 msgstr ""
-"La dirección de correo electrónico %s esta ya registrada. Si has ovlidado"
-" tu nombre de usuario pincha \"Contraseña olivdada?\""
+"La dirección de correo electrónico %s esta ya registrada. Si has olvidado tu "
+"nombre de usuario pincha \"Contraseña olvidada?\""
 
 #: users.py:81 users.py:151
 #, python-format
@@ -353,12 +375,12 @@ msgstr "Usuario o mail inválido"
 #: users.py:103 users.py:119
 #, python-format
 msgid "Cannot found user from email \"%s\""
-msgstr "No se encontra el usuario cuyo correo electrónico es \"%s\""
+msgstr "No se encuentra el usuario cuyo correo electrónico es \"%s\""
 
 #: users.py:122
 #, python-format
 msgid "Cannot found user \"%s\""
-msgstr "No se encontra el usuario \"%s\""
+msgstr "No se encuentra el usuario \"%s\""
 
 #: users.py:128
 msgid "User not activated"
@@ -371,11 +393,10 @@ msgstr "Analiza tus rutas GPS con ReGePe - Contraseña olvidada"
 
 #: templates/forgotpwd.html:12 templates/index.html:15
 #: templates/map_action_error.html:12 templates/map_deleted.html:12
-#: templates/mapofmaps.html:12 templates/mobile.html:12
-#: templates/prepare.html:23 templates/register.html:12
-#: templates/resendpwd_error.html:12 templates/resendpwd_ok.html:12
-#: templates/showmap.html:30 templates/showuser.html:12
-#: templates/submitform.html:12 templates/tour.html:12
+#: templates/mapofmaps.html:12 templates/mobile.html:12 templates/prepare.html:23
+#: templates/register.html:12 templates/resendpwd_error.html:12
+#: templates/resendpwd_ok.html:12 templates/showmap.html:30
+#: templates/showuser.html:12 templates/submitform.html:12 templates/tour.html:12
 #: templates/user_activate_error.html:12 templates/user_activated.html:12
 #: templates/userhome.html:15
 msgid "Search"
@@ -383,11 +404,10 @@ msgstr "Buscar"
 
 #: templates/forgotpwd.html:20 templates/index.html:23
 #: templates/map_action_error.html:20 templates/map_deleted.html:20
-#: templates/mapofmaps.html:20 templates/mobile.html:20
-#: templates/prepare.html:31 templates/register.html:20
-#: templates/resendpwd_error.html:20 templates/resendpwd_ok.html:20
-#: templates/showmap.html:38 templates/showuser.html:20
-#: templates/submitform.html:20 templates/tour.html:20
+#: templates/mapofmaps.html:20 templates/mobile.html:20 templates/prepare.html:31
+#: templates/register.html:20 templates/resendpwd_error.html:20
+#: templates/resendpwd_ok.html:20 templates/showmap.html:38
+#: templates/showuser.html:20 templates/submitform.html:20 templates/tour.html:20
 #: templates/user_activate_error.html:20 templates/user_activated.html:20
 #: templates/userhome.html:23
 msgid "Home"
@@ -395,11 +415,10 @@ msgstr "Inicio"
 
 #: templates/forgotpwd.html:23 templates/index.html:26
 #: templates/map_action_error.html:23 templates/map_deleted.html:23
-#: templates/mapofmaps.html:23 templates/mobile.html:23
-#: templates/prepare.html:34 templates/register.html:23
-#: templates/resendpwd_error.html:23 templates/resendpwd_ok.html:23
-#: templates/showmap.html:41 templates/showuser.html:23
-#: templates/submitform.html:23 templates/tour.html:23
+#: templates/mapofmaps.html:23 templates/mobile.html:23 templates/prepare.html:34
+#: templates/register.html:23 templates/resendpwd_error.html:23
+#: templates/resendpwd_ok.html:23 templates/showmap.html:41
+#: templates/showuser.html:23 templates/submitform.html:23 templates/tour.html:23
 #: templates/user_activate_error.html:23 templates/user_activated.html:23
 #: templates/userhome.html:26
 msgid "Get app"
@@ -407,11 +426,10 @@ msgstr "Aplicación Android"
 
 #: templates/forgotpwd.html:26 templates/index.html:29
 #: templates/map_action_error.html:26 templates/map_deleted.html:26
-#: templates/mapofmaps.html:26 templates/mobile.html:26
-#: templates/prepare.html:37 templates/register.html:26
-#: templates/resendpwd_error.html:26 templates/resendpwd_ok.html:26
-#: templates/showmap.html:44 templates/showuser.html:26
-#: templates/submitform.html:26 templates/tour.html:26
+#: templates/mapofmaps.html:26 templates/mobile.html:26 templates/prepare.html:37
+#: templates/register.html:26 templates/resendpwd_error.html:26
+#: templates/resendpwd_ok.html:26 templates/showmap.html:44
+#: templates/showuser.html:26 templates/submitform.html:26 templates/tour.html:26
 #: templates/user_activate_error.html:26 templates/user_activated.html:26
 #: templates/userhome.html:29
 msgid "Submit track"
@@ -419,11 +437,10 @@ msgstr "Enviar ruta"
 
 #: templates/forgotpwd.html:29 templates/index.html:32
 #: templates/map_action_error.html:29 templates/map_deleted.html:29
-#: templates/mapofmaps.html:29 templates/mobile.html:29
-#: templates/prepare.html:40 templates/register.html:29
-#: templates/resendpwd_error.html:29 templates/resendpwd_ok.html:29
-#: templates/showmap.html:47 templates/showuser.html:29
-#: templates/submitform.html:29 templates/tour.html:29
+#: templates/mapofmaps.html:29 templates/mobile.html:29 templates/prepare.html:40
+#: templates/register.html:29 templates/resendpwd_error.html:29
+#: templates/resendpwd_ok.html:29 templates/showmap.html:47
+#: templates/showuser.html:29 templates/submitform.html:29 templates/tour.html:29
 #: templates/user_activate_error.html:29 templates/user_activated.html:29
 #: templates/userhome.html:32
 msgid "Prepare itinerary"
@@ -431,11 +448,10 @@ msgstr "Trazar ruta"
 
 #: templates/forgotpwd.html:32 templates/index.html:35
 #: templates/map_action_error.html:32 templates/map_deleted.html:32
-#: templates/mapofmaps.html:32 templates/mobile.html:32
-#: templates/prepare.html:43 templates/register.html:32
-#: templates/resendpwd_error.html:32 templates/resendpwd_ok.html:32
-#: templates/showmap.html:50 templates/showuser.html:32
-#: templates/submitform.html:32 templates/tour.html:32
+#: templates/mapofmaps.html:32 templates/mobile.html:32 templates/prepare.html:43
+#: templates/register.html:32 templates/resendpwd_error.html:32
+#: templates/resendpwd_ok.html:32 templates/showmap.html:50
+#: templates/showuser.html:32 templates/submitform.html:32 templates/tour.html:32
 #: templates/user_activate_error.html:32 templates/user_activated.html:32
 #: templates/userhome.html:35
 msgid "Browse tracks"
@@ -443,23 +459,22 @@ msgstr "Exploara rutas"
 
 #: templates/forgotpwd.html:37 templates/index.html:39
 #: templates/map_action_error.html:37 templates/map_deleted.html:37
-#: templates/mapofmaps.html:37 templates/mobile.html:37
-#: templates/prepare.html:48 templates/register.html:37
-#: templates/resendpwd_error.html:37 templates/resendpwd_ok.html:37
-#: templates/showmap.html:54 templates/showmap.html:125
-#: templates/showuser.html:37 templates/submitform.html:37
-#: templates/tour.html:37 templates/user_activate_error.html:37
-#: templates/user_activated.html:37 templates/userhome.html:40
+#: templates/mapofmaps.html:37 templates/mobile.html:37 templates/prepare.html:48
+#: templates/register.html:37 templates/resendpwd_error.html:37
+#: templates/resendpwd_ok.html:37 templates/showmap.html:54
+#: templates/showmap.html:125 templates/showuser.html:37
+#: templates/submitform.html:37 templates/tour.html:37
+#: templates/user_activate_error.html:37 templates/user_activated.html:37
+#: templates/userhome.html:40
 msgid "User: "
 msgstr "Usuario: "
 
 #: templates/forgotpwd.html:38 templates/index.html:40
 #: templates/map_action_error.html:38 templates/map_deleted.html:38
-#: templates/mapofmaps.html:38 templates/mobile.html:38
-#: templates/prepare.html:49 templates/register.html:38
-#: templates/resendpwd_error.html:38 templates/resendpwd_ok.html:38
-#: templates/showmap.html:55 templates/showuser.html:38
-#: templates/submitform.html:38 templates/tour.html:38
+#: templates/mapofmaps.html:38 templates/mobile.html:38 templates/prepare.html:49
+#: templates/register.html:38 templates/resendpwd_error.html:38
+#: templates/resendpwd_ok.html:38 templates/showmap.html:55
+#: templates/showuser.html:38 templates/submitform.html:38 templates/tour.html:38
 #: templates/user_activate_error.html:38 templates/user_activated.html:38
 #: templates/userhome.html:41
 msgid "Password: "
@@ -467,11 +482,10 @@ msgstr "Contraseña: "
 
 #: templates/forgotpwd.html:39 templates/index.html:41
 #: templates/map_action_error.html:39 templates/map_deleted.html:39
-#: templates/mapofmaps.html:39 templates/mobile.html:39
-#: templates/prepare.html:50 templates/register.html:39
-#: templates/resendpwd_error.html:39 templates/resendpwd_ok.html:39
-#: templates/showmap.html:56 templates/showuser.html:39
-#: templates/submitform.html:39 templates/tour.html:39
+#: templates/mapofmaps.html:39 templates/mobile.html:39 templates/prepare.html:50
+#: templates/register.html:39 templates/resendpwd_error.html:39
+#: templates/resendpwd_ok.html:39 templates/showmap.html:56
+#: templates/showuser.html:39 templates/submitform.html:39 templates/tour.html:39
 #: templates/user_activate_error.html:39 templates/user_activated.html:39
 #: templates/userhome.html:42
 msgid "Login"
@@ -479,9 +493,8 @@ msgstr "Conectar"
 
 #: templates/forgotpwd.html:40 templates/index.html:42
 #: templates/map_action_error.html:40 templates/map_deleted.html:40
-#: templates/mapofmaps.html:40 templates/mobile.html:40
-#: templates/prepare.html:51 templates/register.html:40
-#: templates/register.html:47 templates/register.html:55
+#: templates/mapofmaps.html:40 templates/mobile.html:40 templates/prepare.html:51
+#: templates/register.html:40 templates/register.html:47 templates/register.html:55
 #: templates/resendpwd_error.html:40 templates/resendpwd_ok.html:40
 #: templates/showmap.html:57 templates/showuser.html:40
 #: templates/submitform.html:40 templates/tour.html:40
@@ -490,15 +503,14 @@ msgstr "Conectar"
 msgid "Register"
 msgstr "Inscribirse"
 
-#: templates/forgotpwd.html:41 templates/forgotpwd.html:47
-#: templates/index.html:43 templates/map_action_error.html:41
-#: templates/map_deleted.html:41 templates/mapofmaps.html:41
-#: templates/mobile.html:41 templates/prepare.html:52
+#: templates/forgotpwd.html:41 templates/forgotpwd.html:47 templates/index.html:43
+#: templates/map_action_error.html:41 templates/map_deleted.html:41
+#: templates/mapofmaps.html:41 templates/mobile.html:41 templates/prepare.html:52
 #: templates/register.html:41 templates/resendpwd_error.html:41
 #: templates/resendpwd_ok.html:41 templates/showmap.html:58
-#: templates/showuser.html:41 templates/submitform.html:41
-#: templates/tour.html:41 templates/user_activate_error.html:41
-#: templates/user_activated.html:41 templates/userhome.html:44
+#: templates/showuser.html:41 templates/submitform.html:41 templates/tour.html:41
+#: templates/user_activate_error.html:41 templates/user_activated.html:41
+#: templates/userhome.html:44
 msgid "Forgot password?"
 msgstr "Contraseña olvidada?"
 
@@ -516,12 +528,12 @@ msgstr "Mandar un recordatorio de contraseña"
 
 #: templates/forgotpwd.html:57 templates/index.html:67
 #: templates/map_action_error.html:54 templates/map_deleted.html:53
-#: templates/mapofmaps.html:54 templates/mobile.html:63
-#: templates/prepare.html:115 templates/register.html:61
-#: templates/resendpwd_error.html:52 templates/resendpwd_ok.html:52
-#: templates/showuser.html:57 templates/submitform.html:115
-#: templates/tour.html:75 templates/user_activate_error.html:53
-#: templates/user_activated.html:53 templates/userhome.html:65
+#: templates/mapofmaps.html:54 templates/mobile.html:63 templates/prepare.html:115
+#: templates/register.html:61 templates/resendpwd_error.html:52
+#: templates/resendpwd_ok.html:52 templates/showuser.html:57
+#: templates/submitform.html:115 templates/tour.html:75
+#: templates/user_activate_error.html:53 templates/user_activated.html:53
+#: templates/userhome.html:65
 msgid "Contact:"
 msgstr "Contacto:"
 
@@ -535,16 +547,14 @@ msgstr "Buscando..."
 
 #: templates/i18n_header.js:4
 msgid ""
-"<h1>Search results</h1><table id=\"search_results_table\"><thead><tr><th "
-"id=\"sortby_date\">Date</th><th id=\"sortby_desc\">Description</th><th "
-"id=\"sortby_user\">User</th><th>Preview</th></tr></thead><tbody "
-"id=\"search_tbody\">"
+"<h1>Search results</h1><table id=\"search_results_table\"><thead><tr><th id="
+"\"sortby_date\">Date</th><th id=\"sortby_desc\">Description</th><th id="
+"\"sortby_user\">User</th><th>Preview</th></tr></thead><tbody id=\"search_tbody\">"
 msgstr ""
-"<h1>Resultados de busqueda</h1><table "
-"id=\"search_results_table\"><thead><tr><th "
-"id=\"sortby_date\">Date</th><th id=\"sortby_desc\">Descripción</th><th "
-"id=\"sortby_user\">Usuario</th><th>Miniatura</th></tr></thead><tbody "
-"id=\"search_tbody\">"
+"<h1>Resultados de busqueda</h1><table id=\"search_results_table\"><thead><tr><th "
+"id=\"sortby_date\">Date</th><th id=\"sortby_desc\">Descripción</th><th id="
+"\"sortby_user\">Usuario</th><th>Miniatura</th></tr></thead><tbody id="
+"\"search_tbody\">"
 
 #: templates/i18n_header.js:5
 msgid "</tbody></table>"
@@ -576,18 +586,16 @@ msgstr "Conectando... "
 
 #: templates/i18n_header.js:12
 msgid ""
-"<form>User: <input id=\"login_user\" name=\"user\" "
-"type=\"text\"/>Password: <input id=\"login_password\" name=\"password\" "
-"type=\"password\"/><input type=\"button\" value=\"Login\" "
-"onclick=\"onLoginClick();\"/><br/><a href=\"/registerform\">Register</a> "
-"| <a href=\"/forgotpwd\">Forgot password?</a></form>"
+"<form>User: <input id=\"login_user\" name=\"user\" type=\"text\"/>Password: "
+"<input id=\"login_password\" name=\"password\" type=\"password\"/><input type="
+"\"button\" value=\"Login\" onclick=\"onLoginClick();\"/><br/><a href=\"/"
+"registerform\">Register</a> | <a href=\"/forgotpwd\">Forgot password?</a></form>"
 msgstr ""
-"<form>Usuario: <input id=\"login_user\" name=\"user\" "
-"type=\"text\"/>Contraseña: <input id=\"login_password\" name=\"password\""
-" type=\"password\"/><input type=\"button\" value=\"Conectar\" "
-"onclick=\"onLoginClick();\"/><br/><a "
-"href=\"/registerform\">Inscribirse</a> | <a "
-"href=\"/forgotpwd\">Contraseña olvidada?</a></form>"
+"<form>Usuario: <input id=\"login_user\" name=\"user\" type=\"text\"/>Contraseña: "
+"<input id=\"login_password\" name=\"password\" type=\"password\"/><input type="
+"\"button\" value=\"Conectar\" onclick=\"onLoginClick();\"/><br/><a href=\"/"
+"registerform\">Inscribirse</a> | <a href=\"/forgotpwd\">Contraseña olvidada?</"
+"a></form>"
 
 #: templates/i18n_header.js:13 templates/submitform.html:87
 msgid "knots"
@@ -643,7 +651,7 @@ msgstr "Borrar ruta?"
 
 #: templates/i18n_header.js:28
 msgid "Selection"
-msgstr "Selection"
+msgstr "Selección"
 
 #: templates/i18n_header.js:29
 msgid "Dist: "
@@ -671,7 +679,7 @@ msgstr "Subiendo fichero al servidor..."
 
 #: templates/i18n_header.js:37 templates/submitform.html:59
 msgid "File contains several tracks. Select a track: "
-msgstr "El fichero contiene mas de una ruta. Seleciona la ruta: "
+msgstr "El fichero contiene mas de una ruta. Selecciona la ruta: "
 
 #: templates/i18n_header.js:38
 msgid "Geo Portal (France only)"
@@ -679,11 +687,11 @@ msgstr "Geo Portal (Francia solo)"
 
 #: templates/i18n_header.js:39
 msgid "Hiking, Skitouring, Ski, Snowboard, Bike"
-msgstr "Senderismo, eski de montaña, eski, snowboard, bici..."
+msgstr "Senderismo, esquí de montaña, esquí de pista, snowboard, bici..."
 
 #: templates/i18n_header.js:40
 msgid "Surfing, Sea Kayak, Motor boat"
-msgstr "Surfear, kayak, barco con motor..."
+msgstr "Surf,  kayak, barco con motor..."
 
 #: templates/i18n_header.js:41
 msgid "Windsurf, Kite, Sailing"
@@ -707,15 +715,15 @@ msgstr "Mejores VMG en "
 
 #: templates/i18n_map.js:2
 msgid "Best VMG on 1 nautical mile"
-msgstr "Mejores VMG en una mila nautica"
+msgstr "Mejores VMG en una milla nautica"
 
 #: templates/i18n_map.js:3
 msgid "Remove selected part from the track?"
-msgstr "Quitar la parte selectionada de la ruta?"
+msgstr "Quitar la parte seleccionada de la ruta?"
 
 #: templates/i18n_map.js:4
 msgid "Keep only the selected part of track?"
-msgstr "Guardar solo la parte selectionada y borar el resto?"
+msgstr "Guardar solo la parte seleccionada y borrar el resto?"
 
 #: templates/i18n_map.js:5
 msgid "Confirm deletion of this map?"
@@ -729,8 +737,7 @@ msgstr "Hecho"
 msgid "Internal Error, please retry"
 msgstr "Error interna, por favor vuelve a ententarlo"
 
-#: templates/i18n_map.js:8 templates/showmap.html:161
-#: templates/showmap.html:301
+#: templates/i18n_map.js:8 templates/showmap.html:161 templates/showmap.html:301
 msgid "Computing..."
 msgstr "Calculando..."
 
@@ -758,17 +765,9 @@ msgstr "Stop"
 msgid "Instant speed"
 msgstr "Velocidad instantánea"
 
-#: templates/i18n_map.js:15 templates/showmap.html:296
-msgid "Speed"
-msgstr "Velocidad"
-
 #: templates/i18n_map.js:16
 msgid "Elevation"
 msgstr "Altitud"
-
-#: templates/i18n_map.js:17
-msgid "Course"
-msgstr "Curso"
 
 #: templates/i18n_map.js:18
 msgid "Heart rate"
@@ -792,7 +791,7 @@ msgstr "Velocidad directa"
 
 #: templates/i18n_map.js:23
 msgid "Height gain/loss"
-msgstr "Differencia de altituds"
+msgstr "Diferencia de altitudes"
 
 #: templates/i18n_map.js:24
 msgid "Vert. spd"
@@ -816,7 +815,7 @@ msgstr "Duración"
 
 #: templates/i18n_map.js:29
 msgid "No selection"
-msgstr "Nada selectionado"
+msgstr "Nada seleccionado"
 
 #: templates/i18n_map.js:30 templates/showmap.html:133
 msgid "Cancel"
@@ -832,23 +831,23 @@ msgstr "Error"
 
 #: templates/i18n_map.js:33
 msgid ""
-"<a href=\"javascript:void(0);return false;\" "
-"onclick=\"toogleAddComment();\">Add</a>"
+"<a href=\"javascript:void(0);return false;\" onclick=\"toogleAddComment();"
+"\">Add</a>"
 msgstr ""
-"<a href=\"javascript:void(0);return false;\" "
-"onclick=\"toogleAddComment();\">Añadir</a>"
+"<a href=\"javascript:void(0);return false;\" onclick=\"toogleAddComment();"
+"\">Añadir</a>"
 
 #: templates/i18n_map.js:34
 msgid ""
-"Bad/noisy elevations? Get clean elevation from Digital Elevation Model "
-"--&gt; <input id=\"demizebtn\" type=\"button\" value=\"DEMize\" "
-"onclick=\"onDemizeClick();\"/><div id=\"demizeresults\" style=\"display: "
-"inline; marginLeft: 5px;\"></div>"
+"Bad/noisy elevations? Get clean elevation from Digital Elevation Model --&gt; "
+"<input id=\"demizebtn\" type=\"button\" value=\"DEMize\" onclick="
+"\"onDemizeClick();\"/><div id=\"demizeresults\" style=\"display: inline; "
+"marginLeft: 5px;\"></div>"
 msgstr ""
-"Altituds falsas o alteradas? Consigue altituds limpias con el Modelo "
-"Digital de Altituds --&gt; <input id=\"demizebtn\" type=\"button\" "
-"value=\"Recalcular altituds\" onclick=\"onDemizeClick();\"/><div "
-"id=\"demizeresults\" style=\"display: inline; marginLeft: 5px;\"></div>"
+"Altituds falsas o alteradas? Consigue altituds limpias con el Modelo Digital de "
+"Altituds --&gt; <input id=\"demizebtn\" type=\"button\" value=\"Recalcular "
+"altitudes\" onclick=\"onDemizeClick();\"/><div id=\"demizeresults\" style="
+"\"display: inline; marginLeft: 5px;\"></div>"
 
 #: templates/i18n_map.js:35
 msgid "Sending..."
@@ -863,8 +862,8 @@ msgid "kts"
 msgstr "nds"
 
 #: templates/index.html:2 templates/index.html:49 templates/mapofmaps.html:2
-#: templates/mobile.html:2 templates/showuser.html:2
-#: templates/submitform.html:2 templates/tour.html:2 templates/userhome.html:2
+#: templates/mobile.html:2 templates/showuser.html:2 templates/submitform.html:2
+#: templates/tour.html:2 templates/userhome.html:2
 msgid "Replay your GPS Tracks with REGEPE"
 msgstr "Analiza tus rutas GPS con ReGePe"
 
@@ -886,7 +885,7 @@ msgstr "Ver"
 
 #: templates/index.html:59
 msgid "Take tour"
-msgstr "Hechar un vistazo"
+msgstr "Echar un vistazo"
 
 #: templates/map_action_error.html:2
 msgid "Replay your GPS Tracks with REGEPE - Map change"
@@ -918,11 +917,11 @@ msgstr "Cargando... "
 
 #: templates/mobile.html:47
 msgid ""
-"Don't have a GPS device. No problem, download our application and use the"
-" builtin GPS of your smartphone."
+"Don't have a GPS device. No problem, download our application and use the "
+"builtin GPS of your smartphone."
 msgstr ""
-"No tienes un aparato GPS pero tienes un teléfono Android: descarga "
-"nuestra aplicación para grabar la ruta utilisando el GPS de tu teléfono."
+"No tienes un aparato GPS pero tienes un teléfono Android: descarga nuestra "
+"aplicación para grabar la ruta utilizando el GPS de tu teléfono."
 
 #: templates/mobile.html:48
 msgid "Mobile applications"
@@ -934,12 +933,12 @@ msgstr "Android Regepe Tracker"
 
 #: templates/mobile.html:50
 msgid ""
-"For biking, hiking, skiing...<br/>Record your GPS track with your Android"
-" device. Display speed, slope, vertical speed, elapsed time..."
+"For biking, hiking, skiing...<br/>Record your GPS track with your Android "
+"device. Display speed, slope, vertical speed, elapsed time..."
 msgstr ""
-"Por el senderismo, la bici, el eski...<br/>Graba tu ruta GPS con tu "
-"teléfono Android. Visualiza en directo tu velocidad, la pendiente, la "
-"velocidad de subida/bajada, la duración de la ruta..."
+"Por el senderismo, la bici, el eski...<br/>Graba tu ruta GPS con tu teléfono "
+"Android. Visualiza en directo tu velocidad, la pendiente, la velocidad de subida/"
+"bajada, la duración de la ruta..."
 
 #: templates/mobile.html:51 templates/mobile.html:55 templates/mobile.html:58
 msgid "Download"
@@ -951,12 +950,11 @@ msgstr "Android Nautic Regepe Tracker"
 
 #: templates/mobile.html:53
 msgid ""
-"For sailing, windsurfing, kitesurfing...<br/>Record your GPS track with "
-"your Android device. Display speed polar, max speed..."
+"For sailing, windsurfing, kitesurfing...<br/>Record your GPS track with your "
+"Android device. Display speed polar, max speed..."
 msgstr ""
-"Por la vela, el windsurf, el kitesurf...<br/>Graba tu ruta GPS con el "
-"teléfono Android. Visualiza en directo la polar de las velocidades, la "
-"velocidad maximal..."
+"Por la vela, el windsurf, el kitesurf...<br/>Graba tu ruta GPS con el teléfono "
+"Android. Visualiza en directo la polar de las velocidades, la velocidad máxima..."
 
 #: templates/mobile.html:56
 msgid "Android Snowkite Regepe Tracker"
@@ -964,12 +962,12 @@ msgstr "Android Snowkite Regepe Tracker"
 
 #: templates/mobile.html:57
 msgid ""
-"For snowkite, paragliding...<br/>Record your GPS track with your Android "
-"device. Display speed polar, vertical speed..."
+"For snowkite, paragliding...<br/>Record your GPS track with your Android device. "
+"Display speed polar, vertical speed..."
 msgstr ""
-"Por el snowkite, el parapente...<br/>Graba tu ruta GPS con el teléfono "
-"Android. Visualiza en directo la polar de las velocidades, la velocidad "
-"de subida/bajada, la velocidad maximal..."
+"Por el snowkite, el parapente...<br/>Graba tu ruta GPS con el teléfono Android. "
+"Visualiza en directo la polar de las velocidades, la velocidad de subida/bajada, "
+"la velocidad máxima..."
 
 #: templates/prepare.html:4 templates/showmap.html:5
 msgid "Replay your GPS tracks with ReGePe"
@@ -989,7 +987,7 @@ msgstr "Borrar"
 
 #: templates/prepare.html:75
 msgid "Delete selected point"
-msgstr "Borrar el punto selectionado"
+msgstr "Borrar el punto seleccionado"
 
 #: templates/prepare.html:77 templates/showmap.html:153
 msgid "Length:"
@@ -1045,11 +1043,11 @@ msgstr "Nombre de usuario:"
 
 #: templates/register.html:52
 msgid "Password:"
-msgstr "Contrtaseña:"
+msgstr "Contraseña:"
 
 #: templates/register.html:53
 msgid "Confirm password:"
-msgstr "Confirmar contrtaseña:"
+msgstr "Confirmar contraseña:"
 
 #: templates/resendpwd_ok.html:47
 msgid "A password reminder mail has been sent to "
@@ -1081,7 +1079,7 @@ msgstr "Largo del serpiente"
 
 #: templates/showmap.html:98
 msgid "Use WindDir"
-msgstr "Utilisar la direción del viento"
+msgstr "Utilizar la dirección del viento"
 
 #: templates/showmap.html:100
 msgid "Wind direction:"
@@ -1113,7 +1111,7 @@ msgstr "Descripción: "
 
 #: templates/showmap.html:139
 msgid "Date: "
-msgstr "Date: "
+msgstr "Fecha: "
 
 #: templates/showmap.html:145
 msgid "Top10 speeds"
@@ -1141,11 +1139,11 @@ msgstr "Velocidad media:"
 
 #: templates/showmap.html:159
 msgid "Mean spd when in motion:"
-msgstr "Velocidad media en movimento:"
+msgstr "Velocidad media en movimiento:"
 
 #: templates/showmap.html:170
 msgid "Current selection:"
-msgstr "Selection:"
+msgstr "Selección:"
 
 #: templates/showmap.html:178
 msgid "Polar"
@@ -1171,13 +1169,13 @@ msgstr "Zoom"
 msgid "Reset Zoom"
 msgstr "Restaurar zoom"
 
-#: templates/showmap.html:207 templates/showmap.html:209
-#: templates/showmap.html:211 templates/showmap.html:214
+#: templates/showmap.html:207 templates/showmap.html:209 templates/showmap.html:211
+#: templates/showmap.html:214
 msgid "in"
 msgstr "en"
 
-#: templates/showmap.html:207 templates/showmap.html:209
-#: templates/showmap.html:211 templates/showmap.html:214
+#: templates/showmap.html:207 templates/showmap.html:209 templates/showmap.html:211
+#: templates/showmap.html:214
 msgid "at"
 msgstr "a"
 
@@ -1187,7 +1185,7 @@ msgstr "Mejores velocidades por distancia"
 
 #: templates/showmap.html:230
 msgid "Best nautical mile (1852m)"
-msgstr "Mejores milas nauticas (1852m)"
+msgstr "Mejores millas náuticas (1852m)"
 
 #: templates/showmap.html:240
 msgid "Best speeds on time"
@@ -1207,7 +1205,7 @@ msgstr "Mejores velocidades de subida por duración"
 
 #: templates/showmap.html:274
 msgid "Selection:"
-msgstr "Selection:"
+msgstr "Selección:"
 
 #: templates/showmap.html:275
 msgid "Crop"
@@ -1231,7 +1229,7 @@ msgstr "Enviar puntos borrados"
 
 #: templates/showmap.html:278
 msgid " Submit points deleted by pressing DEL key on map"
-msgstr " Enviar los puntos que has borrado teclando DEL/<Suppr.> en la mapa"
+msgstr " Enviar los puntos que has borrado tecleando DEL o Borrar en la mapa"
 
 #: templates/showmap.html:281
 msgid "Add"
@@ -1268,11 +1266,11 @@ msgstr "Mapas cerca"
 #: templates/showuser.html:47 templates/user_activated.html:47
 #: templates/userhome.html:50
 msgid "User "
-msgstr "Usuario"
+msgstr "Usuario "
 
 #: templates/showuser.html:48
 msgid "Date"
-msgstr "Date"
+msgstr "Fecha"
 
 #: templates/showuser.html:48
 msgid "Description"
@@ -1300,11 +1298,11 @@ msgstr "Nota:"
 
 #: templates/submitform.html:55
 msgid ""
-"You can select more than one file using Ctrl or Shift key (not available "
-"on all broswers), the files will be concatenated in a single track."
+"You can select more than one file using Ctrl or Shift key (not available on all "
+"broswers), the files will be concatenated in a single track."
 msgstr ""
-"Se peude selecionar mas de uno fichero con la tecla Ctrl o Shift. Vamos a"
-" concatenar los ficheros en una sola ruta."
+"Se puede seleccionar mas de uno fichero con la tecla Ctrl o Shift. Vamos a "
+"concatenar los ficheros en una sola ruta."
 
 #: templates/submitform.html:63
 msgid "Import from URL:"
@@ -1348,13 +1346,12 @@ msgstr "mph"
 
 #: templates/submitform.html:90
 msgid "Max speeds analysis: "
-msgstr "Análisis de velocidades"
+msgstr "Análisis de velocidades: "
 
 #: templates/submitform.html:90
 msgid "Add max speed on 50,100,200,500 meters, and max speed on 2,5,10 seconds."
 msgstr ""
-"Añade las velocidades maximales en  50,100,200 y 500 metros y 2,5 y 10 "
-"segundos."
+"Añade las velocidades maximales en  50,100,200 y 500 metros y 2,5 y 10 segundos."
 
 #: templates/submitform.html:91
 msgid "Flat track: "
@@ -1370,11 +1367,11 @@ msgstr "Trazar polar: "
 
 #: templates/submitform.html:92
 msgid ""
-"If selected, compute figures related to course. Usefull for any wind "
-"related activity."
+"If selected, compute figures related to course. Usefull for any wind related "
+"activity."
 msgstr ""
-"Para trazar un gráfico polar y calcular datos relacionado con el curso. "
-"Para las actividades con viento."
+"Para trazar un gráfico polar y calcular datos relacionado con el curso. Para las "
+"actividades con viento."
 
 #: templates/submitform.html:95
 msgid "Send"
@@ -1389,14 +1386,12 @@ msgid "Tour"
 msgstr "Presentación"
 
 #: templates/tour.html:49
-msgid ""
-"With your GPS device, record your GPS position track to a GPX/Kml/Nmea "
-"file"
+msgid "With your GPS device, record your GPS position track to a GPX/Kml/Nmea file"
 msgstr "Con tu aparato GPS, graba tu ruta en un fichero gpx, kml, nmea, sbp or fit"
 
 #: templates/tour.html:50
 msgid "Go to submit page by clicking on:"
-msgstr "Vete a la pagina de envio:"
+msgstr "Vete a la pagina de envío:"
 
 #: templates/tour.html:50
 msgid "Submit a track"
@@ -1412,19 +1407,19 @@ msgstr "Elige un tipo de actividad:"
 
 #: templates/tour.html:56
 msgid "Submit your track:"
-msgstr "Envia tu ruta:"
+msgstr "Envía tu ruta:"
 
 #: templates/tour.html:58
 msgid "Get a view of your track, and:"
-msgstr "Puedes visualisar tu ruta en mapa GoogleMaps o GeoPortail, y tambien:"
+msgstr "Puedes visualizar tu ruta en mapa GoogleMaps o GeoPortail, y también:"
 
 #: templates/tour.html:60
 msgid ""
-"If you selected a wind-related activity, you will get directional figures"
-" such as VMG, polar, ..."
+"If you selected a wind-related activity, you will get directional figures such "
+"as VMG, polar, ..."
 msgstr ""
-"Para las actividades de viento, calculamos datos relacionado con el "
-"curso, como la VMG, el gráfico polar..."
+"Para las actividades de viento, calculamos datos relacionado con el curso, como "
+"la VMG, el gráfico polar..."
 
 #: templates/tour.html:62
 msgid "PS:"
@@ -1432,20 +1427,20 @@ msgstr "PS:"
 
 #: templates/tour.html:62
 msgid ""
-"Do not forget to check the wind direction detected by the software. It "
-"can be changed if it is wrong or in case of changing wind"
+"Do not forget to check the wind direction detected by the software. It can be "
+"changed if it is wrong or in case of changing wind"
 msgstr ""
-"No olvides de comprobar que la direción del viento detectada esta buena. "
-"Si no, cambia la."
+"No olvides de comprobar que la dirección del viento detectada esta buena. Si no, "
+"cambia la."
 
 #: templates/tour.html:64
 msgid ""
-"If you selected a ground or air activity, you will get vertical figures "
-"such as vertical speed, ..."
+"If you selected a ground or air activity, you will get vertical figures such as "
+"vertical speed, ..."
 msgstr ""
-"Para las actividades en montaña or en el aire, calculamos todo tipo de "
-"datos relactionado con la altitud como la velocidad de subida, la "
-"velocidad de bajada, ..."
+"Para las actividades en montaña or en el aire, calculamos todo tipo de datos "
+"relacionado con la altitud como la velocidad de subida, la velocidad de "
+"bajada, ..."
 
 #: templates/user_activate_error.html:2 templates/user_activated.html:2
 msgid "Replay your GPS Tracks with REGEPE - User activation"
@@ -1469,7 +1464,7 @@ msgstr "Mis rutas"
 
 #: templates/userhome.html:52
 msgid "Selection: "
-msgstr "Seleción: "
+msgstr "Selección: "
 
 #: templates/userhome.html:52
 msgid "Merge"
@@ -1480,4 +1475,3 @@ msgstr "Fusionar"
 
 #~ msgid "Current point"
 #~ msgstr "Punto corriente"
-
