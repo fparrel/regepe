@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-27 01:21+0100\n"
-"PO-Revision-Date: 2017-01-27 01:29+0100\n"
+"POT-Creation-Date: 2017-01-27 10:19+0100\n"
+"PO-Revision-Date: 2017-01-27 10:21+0100\n"
 "Last-Translator: \n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: computeprofile.py:46
 #, python-format
@@ -28,7 +28,7 @@ msgstr "Impossible d'obtenir les altitudes: ele = %s"
 msgid "Invalid element"
 msgstr "Élément non valide"
 
-#: db.py:79 users.py:130
+#: db.py:79 users.py:132
 msgid "Bad password"
 msgstr "Mot de passe incorrect"
 
@@ -181,7 +181,7 @@ msgstr "Génération de la carte"
 msgid "Max speed analysis"
 msgstr "Analyse des vitesses"
 
-#: orchestrator.py:151 templates/showmap.html:175
+#: orchestrator.py:151
 msgid "Heart Rate"
 msgstr "Pouls"
 
@@ -255,35 +255,38 @@ msgstr "terre"
 msgid "the earth"
 msgstr "la terre"
 
-#: regepe_flask_server.py:540
+#: regepe_flask_server.py:540 regepe_flask_server.py:599
 msgid "Humain check error"
 msgstr "Epreuve anti-robot échouée"
 
 #: regepe_flask_server.py:542
-msgid "Password check error"
-msgstr "Echec de vérification du mot de passe"
+msgid ""
+"The two password you entered are different. Please enter twice the same password"
+msgstr ""
+"Les deux mots de passe que vous avez saisi sont différents. Merci de retaper "
+"deux fois le même mot de passe."
 
-#: regepe_flask_server.py:624 regepe_flask_server.py:665
+#: regepe_flask_server.py:625 regepe_flask_server.py:666
 #, python-format
 msgid "Cannot identify user %s %s"
 msgstr "Impossible d'identifier l'utilisateur %s: %s"
 
-#: regepe_flask_server.py:675
+#: regepe_flask_server.py:676
 #, python-format
 msgid "Map %s deleted. "
 msgstr "Trace %s supprimée. "
 
-#: regepe_flask_server.py:677
+#: regepe_flask_server.py:678
 #, python-format
 msgid "Map %s do not belong to you"
 msgstr "La trace %s ne vous appartient pas"
 
-#: regepe_flask_server.py:680
+#: regepe_flask_server.py:681
 #, python-format
 msgid "Error: %s"
 msgstr "Erreur: %s"
 
-#: regepe_flask_server.py:711
+#: regepe_flask_server.py:712
 msgid "Error: Cannot compute profile for only one point"
 msgstr "Erreur: impossible de générer un profile pour un seul point"
 
@@ -330,7 +333,7 @@ msgstr ""
 "%s.\n"
 "Votre mot de passe est %s"
 
-#: users.py:52 users.py:78 users.py:148 users.py:168
+#: users.py:52 users.py:78 users.py:150 users.py:170
 #, python-format
 msgid "Invalid user name \"%s\""
 msgstr "Nom d'utilisateur invalide: \"%s\""
@@ -343,7 +346,7 @@ msgstr "Votre mot de passe est trop court"
 msgid "The password you have chosen is too long"
 msgstr "Votre mot de passe est trop long"
 
-#: users.py:58 users.py:170
+#: users.py:58 users.py:172
 #, python-format
 msgid "Invalid email \"%s\""
 msgstr "Format d'adresse mail non valide \"%s\""
@@ -360,7 +363,7 @@ msgstr ""
 "L'adresse mail %s est déjà associée à un utilisteur. Si vous avez oublié votre "
 "mot de passe, cliquez sur \"Mot de passe oublié?\""
 
-#: users.py:81 users.py:151
+#: users.py:81 users.py:153
 #, python-format
 msgid "User %s doesn't exists"
 msgstr "L'utilisateur %s n'existe pas sur ce site"
@@ -375,21 +378,21 @@ msgstr "L'utilisateur \"%s\" est déjà activé"
 msgid "Bad activation id \"%s\" for user \"%s\""
 msgstr "Mauvais code d'activation \"%s\" pour l'utilisateur \"%s\""
 
-#: users.py:96 users.py:110
+#: users.py:96 users.py:112
 msgid "Invalid user name or email"
 msgstr "Format de nom d'utilisateur ou d'adresse mail non valide"
 
-#: users.py:103 users.py:119
+#: users.py:104 users.py:121
 #, python-format
 msgid "Cannot found user from email \"%s\""
 msgstr "Impossible de trouver l'utilisateur correspondant à l'adresse mail \"%s\""
 
-#: users.py:122
+#: users.py:124
 #, python-format
 msgid "Cannot found user \"%s\""
 msgstr "Impossible de trouver l'utilisateur \"%s\""
 
-#: users.py:128
+#: users.py:130
 msgid "User not activated"
 msgstr ""
 "Utilisateur non activé. Veuillez regarder vos mail (SPAM inclu) et cliquer sur "
@@ -407,7 +410,7 @@ msgstr "Analysez vos traces GPS avec ReGePe - Mot de passe oublié"
 #: templates/resendpwd_ok.html:12 templates/showmap.html:30
 #: templates/showuser.html:12 templates/submitform.html:12 templates/tour.html:12
 #: templates/user_activate_error.html:12 templates/user_activated.html:12
-#: templates/userhome.html:15
+#: templates/user_registered.html:12 templates/userhome.html:15
 msgid "Search"
 msgstr "Recherche"
 
@@ -418,7 +421,7 @@ msgstr "Recherche"
 #: templates/resendpwd_ok.html:20 templates/showmap.html:38
 #: templates/showuser.html:20 templates/submitform.html:20 templates/tour.html:20
 #: templates/user_activate_error.html:20 templates/user_activated.html:20
-#: templates/userhome.html:23
+#: templates/user_registered.html:20 templates/userhome.html:23
 msgid "Home"
 msgstr "Acceuil"
 
@@ -429,7 +432,7 @@ msgstr "Acceuil"
 #: templates/resendpwd_ok.html:23 templates/showmap.html:41
 #: templates/showuser.html:23 templates/submitform.html:23 templates/tour.html:23
 #: templates/user_activate_error.html:23 templates/user_activated.html:23
-#: templates/userhome.html:26
+#: templates/user_registered.html:23 templates/userhome.html:26
 msgid "Get app"
 msgstr "Application Android"
 
@@ -440,7 +443,7 @@ msgstr "Application Android"
 #: templates/resendpwd_ok.html:26 templates/showmap.html:44
 #: templates/showuser.html:26 templates/submitform.html:26 templates/tour.html:26
 #: templates/user_activate_error.html:26 templates/user_activated.html:26
-#: templates/userhome.html:29
+#: templates/user_registered.html:26 templates/userhome.html:29
 msgid "Submit track"
 msgstr "Envoyer une trace"
 
@@ -451,7 +454,7 @@ msgstr "Envoyer une trace"
 #: templates/resendpwd_ok.html:29 templates/showmap.html:47
 #: templates/showuser.html:29 templates/submitform.html:29 templates/tour.html:29
 #: templates/user_activate_error.html:29 templates/user_activated.html:29
-#: templates/userhome.html:32
+#: templates/user_registered.html:29 templates/userhome.html:32
 msgid "Prepare itinerary"
 msgstr "Préparer un itinéraire"
 
@@ -462,7 +465,7 @@ msgstr "Préparer un itinéraire"
 #: templates/resendpwd_ok.html:32 templates/showmap.html:50
 #: templates/showuser.html:32 templates/submitform.html:32 templates/tour.html:32
 #: templates/user_activate_error.html:32 templates/user_activated.html:32
-#: templates/userhome.html:35
+#: templates/user_registered.html:32 templates/userhome.html:35
 msgid "Browse tracks"
 msgstr "Carte des traces"
 
@@ -474,7 +477,7 @@ msgstr "Carte des traces"
 #: templates/showmap.html:125 templates/showuser.html:37
 #: templates/submitform.html:37 templates/tour.html:37
 #: templates/user_activate_error.html:37 templates/user_activated.html:37
-#: templates/userhome.html:40
+#: templates/user_registered.html:37 templates/userhome.html:40
 msgid "User: "
 msgstr "Utilisateur: "
 
@@ -485,7 +488,7 @@ msgstr "Utilisateur: "
 #: templates/resendpwd_ok.html:38 templates/showmap.html:55
 #: templates/showuser.html:38 templates/submitform.html:38 templates/tour.html:38
 #: templates/user_activate_error.html:38 templates/user_activated.html:38
-#: templates/userhome.html:41
+#: templates/user_registered.html:38 templates/userhome.html:41
 msgid "Password: "
 msgstr "Mot de passe: "
 
@@ -496,7 +499,7 @@ msgstr "Mot de passe: "
 #: templates/resendpwd_ok.html:39 templates/showmap.html:56
 #: templates/showuser.html:39 templates/submitform.html:39 templates/tour.html:39
 #: templates/user_activate_error.html:39 templates/user_activated.html:39
-#: templates/userhome.html:42
+#: templates/user_registered.html:39 templates/userhome.html:42
 msgid "Login"
 msgstr "Connexion"
 
@@ -508,7 +511,7 @@ msgstr "Connexion"
 #: templates/resendpwd_ok.html:40 templates/showmap.html:57
 #: templates/showuser.html:40 templates/submitform.html:40 templates/tour.html:40
 #: templates/user_activate_error.html:40 templates/user_activated.html:40
-#: templates/userhome.html:43
+#: templates/user_registered.html:40 templates/userhome.html:43
 msgid "Register"
 msgstr "S'enregistrer"
 
@@ -519,7 +522,7 @@ msgstr "S'enregistrer"
 #: templates/resendpwd_ok.html:41 templates/showmap.html:58
 #: templates/showuser.html:41 templates/submitform.html:41 templates/tour.html:41
 #: templates/user_activate_error.html:41 templates/user_activated.html:41
-#: templates/userhome.html:44
+#: templates/user_registered.html:41 templates/userhome.html:44
 msgid "Forgot password?"
 msgstr "Mot de passe oublié?"
 
@@ -543,7 +546,7 @@ msgstr "Envoyer un mail de mot de passe oublié"
 #: templates/resendpwd_ok.html:52 templates/showuser.html:57
 #: templates/submitform.html:115 templates/tour.html:75
 #: templates/user_activate_error.html:53 templates/user_activated.html:53
-#: templates/userhome.html:65
+#: templates/user_registered.html:53 templates/userhome.html:65
 msgid "Contact:"
 msgstr "Contact:"
 
@@ -1279,7 +1282,7 @@ msgid "Near maps"
 msgstr "Traces à proximité"
 
 #: templates/showuser.html:47 templates/user_activated.html:47
-#: templates/userhome.html:50
+#: templates/user_registered.html:47 templates/userhome.html:50
 msgid "User "
 msgstr "Utilisateur "
 
@@ -1481,6 +1484,18 @@ msgstr "Erreur lors de l'activation du compte: "
 msgid "User has been activated. Thanks for registering"
 msgstr "Le compte utilisateur a été activé. Merci de vous avoir enregistré"
 
+#: templates/user_registered.html:2
+msgid "Replay your GPS Tracks with REGEPE - Registration"
+msgstr "Analysez vos traces GPS avec ReGePe - Enregistrement"
+
+#: templates/user_registered.html:48
+msgid ""
+"User has been registered. Please check your mails (including SPAM) to activate "
+"account."
+msgstr ""
+"L'utilisateur a été enregistré. Veuillez s'il vous plaît vérifier vos emails (y "
+"compris le SPAM) pour activer le compte."
+
 #: templates/userhome.html:51
 msgid "My tracks"
 msgstr "Mes traces"
@@ -1498,3 +1513,6 @@ msgstr "Fusionner"
 
 #~ msgid "Current point"
 #~ msgstr "Point courrant"
+
+#~ msgid "Password check error"
+#~ msgstr "Echec de vérification du mot de passe"

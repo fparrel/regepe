@@ -539,8 +539,10 @@ def register():
     if not CheckHumain(humaincheck):
         return render_template('register.html',error_message=gettext('Humain check error'))
     if pwd1!=pwd2:
-        return render_template('register.html',error_message=gettext('Password check error'))
-    activation_id = ReserveUser(user.encode('ascii'),mail.encode('ascii'),pwd1.encode('utf8'))
+        return render_template('register.html',error_message=gettext('The two password you entered are different. Please enter twice the same password'))
+    activation_id,err_msg = ReserveUser(user.encode('ascii'),mail.encode('ascii'),pwd1.encode('utf8'))
+    if activation_id==None:
+        return render_template('register.html',error_message=err_msg)
     SendActivationMail(mail,user,activation_id)
     return render_template('user_registered.html',user=user)
 
@@ -594,12 +596,11 @@ def resendpwd():
     user_mail = request.form['user_mail'].encode('ascii').lower()
     humaincheck = request.form['humaincheck']
     if not CheckHumain(humaincheck):
-        return render_template('resendpwd_error.html',error_message='Humain check error')
-    try:
-        user = GetUserFromUserOrEmail(user_mail)
-        mail = SendForgotPasswordMail(user)
-    except Exception, e:
-        return render_template('resendpwd_error.html',error_message=str(e))
+        return render_template('resendpwd_error.html',error_message=gettext('Humain check error'))
+    user,err_str = GetUserFromUserOrEmail(user_mail)
+    if user==None:
+        return render_template('resendpwd_error.html',error_message=err_str)
+    mail = SendForgotPasswordMail(user)
     return render_template('resendpwd_ok.html',mail=mail)
 
 
