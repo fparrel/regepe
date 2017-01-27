@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-01-27 22:54+0100\n"
-"PO-Revision-Date: 2017-01-27 22:55+0100\n"
+"PO-Revision-Date: 2017-01-27 23:18+0100\n"
 "Last-Translator: \n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgstr "Génération du graph des vitesses verticales"
 
 #: orchestrator.py:100
 msgid "Profile"
-msgstr "Proile"
+msgstr "Profile"
 
 #: orchestrator.py:106
 msgid "Vertical Speed"
