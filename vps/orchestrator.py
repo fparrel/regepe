@@ -81,6 +81,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
         try:
             Log('ProcessTrkSegWithProgress: spd chart',submitid)
             data = (trksegcompressed.ComputeTimes(),trksegcompressed.GetSpeeds(options['spdunit']))
+            dummy=gettext('Speed') # For allowing translation in jinja2 template
             charts.append(MyXYChart(data,'','spdtimechart','Speed (%s)'%(options['spdunit']),'Speed',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Spd',unity=options['spdunit']))
         except Exception, e:
             Warn('Cannot make speed against time chart %s %s\n'%(e,traceback.format_exc()))
@@ -96,17 +97,20 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
             #chart = MyXYChart([dists,eles],'','eledistchart','Elevation in m against distance in m',len(track),trksegcompressed.ptindexlist)
             #charts.append(chart)
             Log("ProcessTrkSegWithProgress: vert charts",submitid)
+            dummy=gettext('Profile') # For allowing translation in jinja2 template
             charts.append(MyXYChart([trksegcompressed.ComputeDistances(),trksegcompressed.GetElevations()],'','eledistchart','Profile (m)','Profile',len(track),trksegcompressed.ptindexlist,type=type,labelx='Dst',labely='Ele',unitx='m',unity='m'))
             if not track.nospeeds:
                 # Vert speed
                 #charts.append(MyXYChart([trksegcompressed.ComputeDistances(),map(MetersPerSecToMetersPerHour,trksegcompressed.ComputeMeanVertSpeeds(10.0))],'','vertspdchart','Vertical Speed in m/h against distance in m',len(track),trksegcompressed.ptindexlist))
                 # Vert speed against time
+                dummy=gettext('Vertical Speed') # For allowing translation in jinja2 template
                 charts.append(MyXYChart((trksegcompressed.ComputeTimes(),map(MetersPerSecToMetersPerHour,Filter(trksegcompressed.ComputeInstantVertSpeeds(),Mean,10))),'','vspdtimechart','Vertical Speed (m/h)','Vertical Speed',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Spd',unity='m/h'))
             # Slope
             #Log("Before slope chart %s\n"%submitid)
             #charts.append(MyXYChart([trksegcompressed.ComputeDistances(),map(lambda x:ApplyThreshold(float(x*100),50.0),trksegcompressed.ComputeMeanSlope(10.0,trksegcompressed.ComputeLengthFromDist()*0.001))],'','slopechart','Slope in percent against distance in m',len(track),trksegcompressed.ptindexlist))
             if not track.nospeeds:
                 # Power
+                dummy=gettext('Power') # For allowing translation in jinja2 template
                 charts.append(MyXYChart([trksegcompressed.ComputeDistances(),trksegcompressed.ComputeBikePower2(10.0,trksegcompressed.ComputeLengthFromDist()*0.001)],'','bikepowerchart','Bike Power (W)','Power',len(track),trksegcompressed.ptindexlist,type=type,labelx='Dst',labely='Pw',unitx='m',unity='W'))
         except Exception, e:
             Warn('Cannot make vert charts %s\n'%e)
@@ -115,6 +119,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
     # Add a dummy chart for allowing selection in case there is no chart
     if options['flat'] and track.nospeeds:
         if options['wind']:
+            dummy=gettext('Course') # For allowing translation in jinja2 template
             charts.append(MyXYChart([trksegcompressed.ComputeDistances(),map(lambda pt:pt.course,trksegcompressed.ptlist)],'','coursechart','Course (&deg;)','Course',len(track),trksegcompressed.ptindexlist,type=type))
     if options['wind']:
         Log("ProcessTrkSegWithProgress: polar charts",submitid)
@@ -136,12 +141,14 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
     if not track.nospeeds and options['maxspd']:
         Log("ProcessTrkSegWithProgress: BuildMaxSpeeds",submitid)
         try:
+            dummy=gettext('Max speed analysis') # For allowing translation in jinja2 template
             charts.append(ChartStringWithTitle(BuildMaxSpeeds(figures),'maxspd','Max speed analysis',type=type))
         except Exception, e:
             Warn('Cannot BuildMaxSpeeds: %s\n'%e)
 
     if track.hasHeartRate():
         try:
+            dummy=gettext('Heart Rate') # For allowing translation in jinja2 template
             charts.append(MyXYChart((trksegcompressed.ComputeTimes(),trksegcompressed.getHeartRate()),'','hrtimechart','Heart Rate (bps)','Heart Rate',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Hr',unity='bps'))
         except Exception, e:
             Warn('Cannot Build heart rate %s\n'%e)
