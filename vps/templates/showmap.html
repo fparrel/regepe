@@ -113,7 +113,7 @@
               </tbody></table>
 			<table class="mapfooter"><tbody><tr>
                     <td class="mapfooterleft">
-Switch to: {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google Maps</a>{% else %}<a href='/showmap/{{ mapid }}/GeoPortal'>GeoPortal</a>{% endif %}
+{{_('Switch to:')}} {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google Maps</a>{% else %}<a href='/showmap/{{ mapid }}/GeoPortal'>GeoPortal</a>{% endif %}
                     </td>
                     <td class="mapfooterright">{{_('Center map : ')}}<a id="center_map_toogle" href="javascript:void(0);" onclick="toogleCenterMap()">{{_('Yes')}}</a></td>
               </tr></tbody></table>
@@ -196,22 +196,22 @@ Switch to: {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google
 		{% if chart.name=="maxspd" %}
 {% macro convert_time(value,unit) -%}
     {% if unit=="s" and value>=60 %}
-        {% if value>=3600 %}{{ (value/3600)|int }}h{% endif %}{% if value%3600!=0 %}{{ ((value/60)%60)|int }}min{% endif %}{% if value%60!=0 %}{{ value%60 }}s{% endif %}
+        {% if value>=3600 %}{{ (value/3600)|int }}h{% endif %}{% if value%3600!=0 %}{{ ((value/60)%60)|int }}min{% endif %}{% if value%60!=0 %}{{ (value%60)|int }}s{% endif %}
     {% else %}
-        {{ value }}{{ unit }}
+        {{ value|int }}{{ unit }}
     {% endif %}
 {%- endmacro %}
 {% macro convert_maxspds(maxspds) -%}
 	{% for maxspd in maxspds %}
         {% if maxspd.type=="vert" %}
-					<span class="spdnb">{{ "%d"|format(maxspd.dst*3600/maxspd.time) }}</span> m/h {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+					<span class="spdnb">{{ "%d"|format(maxspd.dst*3600/maxspd.time) }}</span> m/h {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
 		{% elif mapdata.spdunit=="knots" %}
-					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*1.94384449/maxspd.time) }}</span> {{_('kts')}} {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*1.94384449/maxspd.time) }}</span> {{_('kts')}} {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
 		{% elif mapdata.spdunit=="km/h" %}
-					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*3.6/maxspd.time) }}</span> km/h {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+					<span class="spdnb">{{ "%.2f"|format(maxspd.dst*3.6/maxspd.time) }}</span> km/h {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
 		{% elif mapdata.spdunit=="mph" %}
 		{% else %}
-					<span class="spdnb">{{ "%.2f"|format(maxspd.dst/maxspd.time) }}</span> m/s {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
+					<span class="spdnb">{{ "%.2f"|format(maxspd.dst/maxspd.time) }}</span> m/s {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
 		{% endif %}
 	{% endfor %}
 {%- endmacro %}
