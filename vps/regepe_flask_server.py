@@ -311,6 +311,7 @@ def upload():
                 options[key]=request.form[key]
             else:
                 raise Exception(gettext('type %s not handled')%type(options[key]))
+    Log('options=%s'%options,submit_id)
     Log('start BuildMap',submit_id)
     pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user,options)
     Log('end BuildMap',submit_id)
