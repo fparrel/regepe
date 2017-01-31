@@ -11,7 +11,13 @@ from dem import GetEleFromLatLonList
 from log import Log,Warn
 from datetime import timedelta
 
-from flask_babel import gettext
+# i18n
+try:
+    from flask_babel import gettext
+except:
+    # Allow importing this file even if flask_babel is not installed
+    def gettext(txt):
+        return txt
 
 class Bounds:
     "Keeps map bounds"
@@ -501,11 +507,16 @@ class Track:
     def ComputeSlope(self):
         "Compute list of slopes"
         self.ComputeDistancesCache()
+        # Slops already computed, return them
+        if len(self.ptlist)>0 and hasattr(self.ptlist[0],"slope"):
+            return [lambda pt:pt.slope for pt in self.ptlist]
+        # compute slopes
         prevpt = None
         i = 0
+        slopes = []
         for pt in self.ptlist:
             if prevpt==None:
-                slopes = [0.0]
+                slope = 0.0
             else:
                 if self.dists[i]<1.0:
                     slope = 0.0
@@ -514,11 +525,13 @@ class Track:
                         slope = (pt.ele-prevpt.ele)/self.dists[i]
                     except ZeroDivisionError:
                         slope = 0.0
-                    if slope>0.5:
-                        slope = 0.5
-                    if slope<-0.5:
-                        slope = -0.5
-                slopes.append(slope)
+                    # Limit to +-100% (+-45 degrees)
+                    if slope>1.0:
+                        slope = 1.0
+                    elif slope<-1.0:
+                        slope = -1.0
+            slopes.append(slope)
+            pt.slope = slope
             prevpt = pt
             i+=1
         return slopes

@@ -8,7 +8,14 @@ import re
 #from log import Log
 import operator
 import itertools
-from flask_babel import gettext
+
+# i18n
+try:
+    from flask_babel import gettext
+except:
+    # Allow importing this file even if flask_babel is not installed
+    def gettext(txt):
+        return txt
 
 DBTYPES = ('users','maps')
 

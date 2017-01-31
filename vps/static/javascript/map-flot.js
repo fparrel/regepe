@@ -934,6 +934,8 @@ $(function() {
         if(chart[i]['type']==='line') {
             chartdata[j] = [chart[i]];
             placeholder[j] = $("#chart"+chart[i]['name']);
+            $("#chartzoombtn"+chart[i]['name']).attr("onclick","onChartZoom(this,"+j+");");
+            $("#chartzoomresetbtn"+chart[i]['name']).attr("onclick","onChartZoomReset(this,"+j+");");
             placeholder[j][0].chartid=j;
             chartzoombtn[j] = $("#chartzoombtn"+chart[i]['name'])[0];
             chartzoomresetbtn[j] = $("#chartzoomresetbtn"+chart[i]['name'])[0];
