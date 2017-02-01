@@ -16,9 +16,11 @@
 <script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
 <script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
 <script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>
-<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
-<script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+{% if mapdata.wind %}
+<script type="text/javascript" src="/static/javascript/raphael-min.js"></script>
+<script type="text/javascript" src="/static/javascript/d3.v3{{minify}}.js"></script>
 <script type="text/javascript" src="/static/javascript/d3polar.js"></script>
+{% endif %}
 <link type="text/css" rel="StyleSheet" href="/static/styles/slider-flot.css" />
 <link type="text/css" rel="StyleSheet" href="/static/styles/mapstyle-flot.css" />
 <link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
