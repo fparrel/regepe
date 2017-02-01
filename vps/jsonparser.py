@@ -5,7 +5,11 @@ from model import Bounds,Point,Track
 import datetime,time
 import json
 #i18n
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 
 def ConvertDate(datetimestr):

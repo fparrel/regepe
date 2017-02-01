@@ -13,7 +13,11 @@ import time
 from model import Bounds,Point,Track
 
 #i18n
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 # gpx creator="KeyMaze 500-700 PC Software" -> spdunit = hectometres/heure
 

@@ -4,7 +4,11 @@ import anydbm
 import cgi
 from urllib import urlopen
 from log import Warn
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 
 def GetTimeZoneWebService(lat,lng):

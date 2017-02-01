@@ -10,7 +10,11 @@ import struct
 import os
 
 #i18n
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 
 fieldDefNbName=[[] for i in range(0,255)]

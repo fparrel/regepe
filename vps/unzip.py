@@ -1,5 +1,9 @@
 import zipfile
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 def unzipOne(fname):
     if not zipfile.is_zipfile(fname):

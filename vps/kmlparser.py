@@ -11,7 +11,11 @@ from model import Bounds,Point,Track
 from unzip import iszip,unzipOne
 import StringIO
 # For i18n
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 
 class KmlTuple:

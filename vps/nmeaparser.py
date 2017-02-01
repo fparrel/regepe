@@ -9,7 +9,11 @@ import os
 
 from log import Warn
 
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 class Date:
     'Contains a date, with writable attributes'

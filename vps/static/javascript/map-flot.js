@@ -927,6 +927,8 @@ fillComments();
 
 computeSpeedIfNeeded();
 
+if((wind)&&(!flat))
+    drawD3Polar3D();
 
 $(function() {
     var i,j;

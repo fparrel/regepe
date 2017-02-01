@@ -46,8 +46,11 @@ from figures import Figures
 
 import traceback
 
-from flask_babel import gettext
-
+try:
+    from flask_babel import gettext
+except:
+    def gettext(text):
+        return text
 
 def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
     if not light:
@@ -107,6 +110,8 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
                 charts.append(MyXYChart((trksegcompressed.ComputeTimes(),map(MetersPerSecToMetersPerHour,Filter(trksegcompressed.ComputeInstantVertSpeeds(),Mean,10))),'','vspdtimechart','Vertical Speed (m/h)','Vertical Speed',len(track),trksegcompressed.ptindexlist,True,track.ptlist[0].datetime,type=type,labely='Spd',unity='m/h'))
             # Slope
             #Log("Before slope chart %s\n"%submitid)
+            #charts.append(MyXYChart([trksegcompressed.ComputeDistances(),trksegcompressed.ComputeSlope()],'','slopechart','Slope in percent against distance in m','Slope',len(track),trksegcompressed.ptindexlist,type=type,labelx='Dst',labely='Slop',unitx='m',unity='1'))
+            #charts.append(MyXYChart(spd_for_slope(track),'','spdslopchart','Slope in percent against distance in m','spd slop',len(track),None,type=type,labelx='Dst',labely='Slop',unitx='m',unity='1'))
             #charts.append(MyXYChart([trksegcompressed.ComputeDistances(),map(lambda x:ApplyThreshold(float(x*100),50.0),trksegcompressed.ComputeMeanSlope(10.0,trksegcompressed.ComputeLengthFromDist()*0.001))],'','slopechart','Slope in percent against distance in m',len(track),trksegcompressed.ptindexlist))
             if not track.nospeeds:
                 # Power
@@ -118,6 +123,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
                 SetProgress(submitid,gettext('Warning: asking for vertical anlysis on flat track'))
     # Add a dummy chart for allowing selection in case there is no chart
     if options['flat'] and track.nospeeds:
+    #if True:
         if options['wind']:
             dummy=gettext('Course') # For allowing translation in jinja2 template
             charts.append(MyXYChart([trksegcompressed.ComputeDistances(),map(lambda pt:pt.course,trksegcompressed.ptlist)],'','coursechart','Course (&deg;)','Course',len(track),trksegcompressed.ptindexlist,type=type))
