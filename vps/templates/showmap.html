@@ -9,21 +9,21 @@
 <meta property="og:description" content="{{ mapdb.trackdesc }}"/>
 <meta property="og:image" content="http://{{ domain }}/thumbnail/{{ mapid }}"/>
 <meta http-equiv="X-UA-Compatible" content="IE=7"/>
-<script type="text/javascript" src="/static/javascript/range.js"></script>
-<script type="text/javascript" src="/static/javascript/timer.js"></script>
-<script type="text/javascript" src="/static/javascript/slider.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>
+<script type="text/javascript" src="/static/javascript/range{{minify}}.js"></script>
+<script type="text/javascript" src="/static/javascript/timer{{minify}}.js"></script>
+<script type="text/javascript" src="/static/javascript/slider{{minify}}.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery{{minify}}.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot{{minify}}.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.selection{{minify}}.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.time{{minify}}.js"></script>
 {% if mapdata.wind %}
-<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
+<script type="text/javascript" src="/static/javascript/raphael-min.js"></script>
 <script type="text/javascript" src="/static/javascript/d3.v3{{minify}}.js"></script>
-{% if not mapdata.flat %}
+    {% if not mapdata.flat %}
 <script type="text/javascript" src="/static/javascript/x3dom-full{{minify}}.js"></script>
 <link type="text/css" rel="stylesheet" href="/static/styles/x3dom.css" />
-{% endif %}
-<script type="text/javascript" src="/static/javascript/d3polar.js"></script>
+    {% endif %}
+<script type="text/javascript" src="/static/javascript/d3polar{{minify}}.js"></script>
 {% endif %}
 <link type="text/css" rel="StyleSheet" href="/static/styles/slider-flot.css" />
 <link type="text/css" rel="StyleSheet" href="/static/styles/mapstyle-flot.css" />
