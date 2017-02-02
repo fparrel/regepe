@@ -217,8 +217,9 @@
 		{% endif %}
 	{% endfor %}
 {%- endmacro %}
-			{% set lasttype = "n/a" %}
+			{% set lasttype = "n/a" %}{% set v={'lasttype':'n/a'} %}
 			{% for content in chart.contents %}
+				{% set lasttype=v['lasttype'] %}
 				{% if content.maxspds|length > 0 %}
 					{% if content.type=="dist" %}
 						{% if content.type!=lasttype %}
@@ -261,7 +262,7 @@
 						{% endif %}
 				<div class="best_spd_sub_group"><h5>{{convert_time(content.interval_value,content.interval_unit)}}</h5>{{convert_maxspds(content.maxspds)}}</div>
 					{% endif %}
-					{% set lasttype = content.type %}
+					{% set lasttype = content.type %}{% if v.update({'lasttype':content.type}) %}{%endif%}
 				{% endif %}
 			{% endfor %}
 				<div style="clear: both;"></div>
