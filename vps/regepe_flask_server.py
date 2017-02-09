@@ -273,8 +273,10 @@ def upload():
         # Save each uploaded file
         if not os.path.isdir(application.config['UPLOAD_FOLDER']):
             os.mkdir(application.config['UPLOAD_FOLDER'])
-        Log('Saving file',submit_id)
-        file.save(os.path.join(application.config['UPLOAD_FOLDER'], secure_filename('%s_%s.gpx'%(submit_id,i))))
+        p=os.path.join(application.config['UPLOAD_FOLDER'], secure_filename('%s_%s.gpx'%(submit_id,i)))
+        Log('Saving file to %s'%p,submit_id)
+        file.save(p)
+        Log('File saved',submit_id)
         i+=1
         inputfile.append(file)
     # In case of import from URL
@@ -289,10 +291,12 @@ def upload():
         trk_id = 0
     trk_seg_id = 0
     # Get track description
+    Log('Get track desc',submit_id)
     desc = request.form['desc'].encode('utf8')
+    Log('Check session',submit_id)
     # Check session
     user = request.form['user']
-    sys.stderr.write('%s\n'%(request.form))
+    #sys.stderr.write('%s\n'%(request.form))
     if user=='NoUser' or user=='':
         user = 'unknown'
     else:
@@ -559,6 +563,7 @@ def activate(user,activationid):
 @application.route('/login/<user>/<pwd>')
 def login(user,pwd):
     """ Check login/password return sesssion_id """
+    user = user.lower()
     try:
         (user,sessid) = Login(user,pwd)
     except Exception, e:
