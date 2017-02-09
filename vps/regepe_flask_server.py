@@ -559,6 +559,7 @@ def activate(user,activationid):
 @application.route('/login/<user>/<pwd>')
 def login(user,pwd):
     """ Check login/password return sesssion_id """
+    user = user.lower()
     try:
         (user,sessid) = Login(user,pwd)
     except Exception, e:
