@@ -5,7 +5,11 @@ from uuid import uuid4
 from mail import sendmail
 from db import RebuildNeeded,TriggerRebuildOfInv,DbBuildInvert,DumpDb
 from config import config
-from flask_babel import gettext
+try:
+    from flask_babel import gettext
+except:
+    def gettext(t):
+        return t
 from log import Warn
 
 VALID_USERNAME_PATTERN = re.compile('^[a-z0-9_]+$')
@@ -177,7 +181,7 @@ def ChkAlreadyExists(mail,user):
         return 'mail'
     return 'none'
 
-def DumpUser(user):
+def DumpUser(user,show_password=False):
     dbfile = 'data/users/%s.db' % user
     db = anydbm.open(dbfile, 'r')
     if db.has_key('mail'):
@@ -193,8 +197,8 @@ def DumpUser(user):
             print '%s=%s' % (k,db[k])
     if db.has_key('nb_sessions'):
         print 'nb_sessions=%s'%(db['nb_sessions'])
-    #if db.has_key('pwd'):
-    #    print 'pwd=%s'%db['pwd']
+    if show_password and db.has_key('pwd'):
+        print 'pwd=%s'%db['pwd']
     db.close()
 
 ## UNIT TESTS ##
