@@ -329,7 +329,7 @@ def upload():
 
 @application.route('/getprogress/<submitid>')
 def getprogress(submitid):
-    return GetProgress(submitid.encode('ascii')).encode('ascii')
+    return GetProgress(submitid.encode('ascii')).decode('utf8')
 
 
 ## Search
