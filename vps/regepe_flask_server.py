@@ -308,7 +308,11 @@ def upload():
     for key in options:
         if request.form.has_key(key):
             if type(options[key])==bool:
-                options[key]=request.form[key]=='yes'
+                if request.form.get(key):
+                    options[key]=True
+                else:
+                    options[key]=False
+                #options[key]=(request.form[key]=='yes')
             elif type(options[key])==int:
                 options[key]=int(request.form[key])
             elif type(options[key])==str or type(options[key])==unicode:
@@ -329,7 +333,7 @@ def upload():
 
 @application.route('/getprogress/<submitid>')
 def getprogress(submitid):
-    return GetProgress(submitid.encode('ascii')).encode('ascii')
+    return GetProgress(submitid.encode('ascii')).decode('utf8')
 
 
 ## Search
