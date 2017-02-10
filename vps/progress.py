@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 
 import anydbm
 import sys
@@ -32,13 +33,13 @@ def TestPolling(submitid):
     print('end of test')
 
 def DumpProgress():
-    db = anydbm.open("PROGRESS.db", "r")
+    db = anydbm.open("data/PROGRESS.db", "r")
     for k,v in db.iteritems():
         print('%s %s' % (k,v))
     db.close()    
 
 def main():
-    #SetProgress(1234,'In progress')
+    SetProgress('e2d97351e3933','In progrès'.decode('utf8'))
     #print(GetProgress(1234))
     DumpProgress()
 
