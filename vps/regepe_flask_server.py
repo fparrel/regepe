@@ -308,7 +308,11 @@ def upload():
     for key in options:
         if request.form.has_key(key):
             if type(options[key])==bool:
-                options[key]=request.form[key]=='yes'
+                if request.form.get(key):
+                    options[key]=True
+                else:
+                    options[key]=False
+                #options[key]=(request.form[key]=='yes')
             elif type(options[key])==int:
                 options[key]=int(request.form[key])
             elif type(options[key])==str or type(options[key])==unicode:
