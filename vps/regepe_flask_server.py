@@ -707,6 +707,15 @@ def prepare(lang,map_type,pts,names):
         session['lang']=lang
     return render_template('prepare.html',domain=config['domain'],map_type=map_type,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
+# Backward compatibility
+@application.route('/prepare.php?ptlist=<ptlist>',defaults={'lang':None})
+#@application.route('/fr/prepare.php',defaults={'lang':'fr'})
+def prepare_php(lang):
+    pts=request.args.get('ptlist')
+    maptype=request.args.get('maptype')
+    names=request.args.get('names')
+    return prepare(lang,maptype,pts,names)
+
 @application.route('/ele/<float:lat>/<float:lon>')
 def getele(lat,lon):
     return Response('%d'%GetEleFromLatLon(lat,lon), mimetype='text/plain')
