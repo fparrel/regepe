@@ -12,12 +12,7 @@ from log import Log,Warn
 from datetime import timedelta
 
 # i18n
-try:
-    from flask_babel import gettext
-except:
-    # Allow importing this file even if flask_babel is not installed
-    def gettext(txt):
-        return txt
+from flask_babel import gettext
 
 class Bounds:
     "Keeps map bounds"

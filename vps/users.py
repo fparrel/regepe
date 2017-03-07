@@ -5,11 +5,7 @@ from uuid import uuid4
 from mail import sendmail
 from db import RebuildNeeded,TriggerRebuildOfInv,DbBuildInvert,DumpDb
 from config import config
-try:
-    from flask_babel import gettext
-except:
-    def gettext(t):
-        return t
+from flask_babel import gettext
 from log import Warn
 
 VALID_USERNAME_PATTERN = re.compile('^[a-z0-9_]+$')
