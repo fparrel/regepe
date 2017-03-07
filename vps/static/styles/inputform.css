@@ -124,3 +124,33 @@
 .bar {
 	background-color: blue;
 }
+@media screen and (max-width:980px) {
+	#map_of_maps {
+		display: none;
+	}
+}
+#searchicon {
+	width:12px;
+	height:12px;
+}
+#loginbtn {
+	display:none;
+}
+@media screen and (max-width:900px) {
+	.hdrtxt {
+		display:none;
+	}
+	#header_login {
+		/*display: inline-table;*/
+		display:none;
+	}
+	#loginbtn {
+		display:inline-block;
+	}
+}
+@media screen and (max-width:640px) {
+	#previewout {
+		display:none;
+	}
+}
+
