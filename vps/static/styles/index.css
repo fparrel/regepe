@@ -1,0 +1,17 @@
+
+.maplistitm:hover {
+	/*background: lightblue;*/
+	background: #BDE34A;
+}
+
+@media screen and (max-width:980px) {
+	#map_of_maps {
+		display: none;
+	}
+}
+
+@media screen and (max-width:640px) {
+	#previewout {
+		display:none;
+	}
+}
