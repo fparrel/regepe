@@ -1,7 +1,15 @@
 
+body {
+	position:static;
+}
+
 .maplistitm:hover {
 	/*background: lightblue;*/
 	background: #BDE34A;
+}
+
+table {
+	border-collapse:collapse;
 }
 
 @media screen and (max-width:980px) {

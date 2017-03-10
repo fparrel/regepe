@@ -1,51 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>{{_('Replay your GPS Tracks with REGEPE')}}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf8">
-<link type="text/css" rel="StyleSheet" href="/static/styles/common.css" />
-<style type="text/css">
-table { border-collapse:collapse;}
-</style>
-</head>
-<body>
-    <div id="wrapper">
-		<div id="header">
-			<div id="header_search">
-				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
-				<input type="button" value="{{_('Search')}}" onclick="onSearchClick();"/>
-				<div id="header_lang">
-					<a href="/en/userhome/{{ user }}"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
-					<a href="/fr/userhome/{{ user }}"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
-					<a href="/es/userhome/{{ user }}"><img width="16" height="11" src="/static/images/FlagES.jpg" alt="Espanol"/></a>
-				</div>
-			</div>
-			<div id="header_home">
-				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>{{_('Home')}}</a>
-			</div>
-			<div id="header_mobile">
-				<a href="/mobile"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>{{_('Get app')}}</a>
-			</div>
-			<div id="header_submit">
-				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>{{_('Submit track')}}</a>
-			</div>
-			<div id="header_prepare">
-				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>{{_('Prepare itinerary')}}</a>
-			</div>
-			<div id="header_mapofmaps">
-				<a href="/mapofmaps"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>{{_('Browse tracks')}}</a>
-			</div>
-			<div id="header_login">
-				<form action="">
-					<div>
-						{{_('User: ')}}<input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
-						{{_('Password: ')}}<input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
-						<input type="button" value="{{_('Login')}}" onclick="onLoginClick();"/><br/>
-						<a href="/registerform">{{_('Register')}}</a> |
-						<a href="/forgotpwd">{{_('Forgot password?')}}</a>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div id="body">
+{% extends 'base.html' %}
+{% block headext %}
+<style type="text/css">table { border-collapse:collapse;}</style>
+{% endblock %}
+{% block urlext %}userhome/{{ user }}{% endblock %}
+{% block body %}
 			<h1>{{_('User ')}}{{ user }}</h1>
 			<h2>{{_('My tracks')}}</h2>
 			{{_('Selection: ')}}<input type="button" value="{{_('Delete')}}" onclick="onDeleteClick();"/> <input type="button" value="{{_('Merge')}}" onclick="onMergeClick();"/><br/>
@@ -58,17 +16,9 @@ table { border-collapse:collapse;}
 			</div>
 			<div id="previewout" style="position: absolute; margin-left: 50%; heigth:110px;width:130px;"><img style="visibility:hidden;" width="130" height="110" name="preview" id="preview"></div>
 			<div id="map_of_maps" style="height:300px;width:400px;right:0; position: absolute; margin-right: 10px;"></div>
-			<div id="footer_push"></div>
-	</div>
-	<div id="footer">
-		<b>{{_('Contact:')}}</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
-	</div>
-</div>
-</body>
-</html>
-<script type="text/javascript" src="/i18n.js/header"></script>
-<script type="text/javascript" src="/static/javascript/xmlhttprequest{{minify}}.js"></script>
-<script type="text/javascript" src="/static/javascript/header{{minify}}.js"></script>
+{% endblock %}
+{% block jsext %}
 <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ GMapsApiKey }}"></script>
 <script type="text/javascript" src="/static/javascript/preview{{minify}}.js"></script>
 <script type="text/javascript" src="/static/javascript/userhome{{minify}}.js"></script>
+{% endblock %}
