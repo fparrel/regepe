@@ -159,6 +159,9 @@ h3:hover {
 	font-size:12px;
 	background-color:ThreeDFace;
 }
+#use_buoy_btn {
+	width:95px;
+}
 .best_spd_main_group {
 }
 .best_spd_sub_group {

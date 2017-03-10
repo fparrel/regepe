@@ -136,3 +136,10 @@ img {
 		display:inline-block;
 	}
 }
+
+#login_user {
+	width:80px;
+}
+#login_password {
+	width:80px;
+}
