@@ -405,7 +405,7 @@ def map_search_result2(lat,lon,mapid):
     startdate = DbGet(mapid,'date')
     trackuser = DbGet(mapid,'trackuser')
     try:
-        desc = trackdesc.encode('ascii', 'xmlcharrefreplace')
+        desc = trackdesc.encode('ascii', 'xmlcharrefreplace').replace('<','&lt;').replace('>','&gt;')
     except:
         desc = trackdesc
     return('<map mapid="%s" lat="%s" lon="%s" date="%s" user="%s">%s</map>' % (mapid,lat,lon,startdate,trackuser,desc))
