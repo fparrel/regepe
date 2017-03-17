@@ -69,7 +69,6 @@ function on_activity_change(selectbox) {
 function activity_change(activity) {
     document.getElementById("spdunit").value = activity.spdunit;
     document.getElementById("flat").checked = activity.flat;
-    flat_change(document.getElementById("flat"));
     document.getElementById("wind").checked = activity.wind;
     document.getElementById("maxspd").checked = activity.maxspd;
     document.getElementById("map_type_select"+activity.maptype).checked = "true";
@@ -461,15 +460,6 @@ function input_file_change(event,element) {
             }
         }
     }
-}
-
-function flat_change(checkbox) {
-	if (checkbox.checked) {
-		//document.getElementById("usedem_div").style.display = "none";
-	}
-	else {
-		//document.getElementById("usedem_div").style.display = "inline";
-	}
 }
 
 function trk_select_change(event,selectbox) {
