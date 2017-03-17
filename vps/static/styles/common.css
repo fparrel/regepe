@@ -125,7 +125,7 @@ img {
 #loginbtn {
 	display:none;
 }
-@media screen and (max-width:900px) {
+@media only screen and (max-width:900px) {
 	.hdrtxt {
 		display:none;
 	}
