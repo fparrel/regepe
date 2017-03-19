@@ -12,6 +12,20 @@ table {
 	border-collapse:collapse;
 }
 
+#tracklist {
+	width:600px;
+	left:0;
+	margin-left:10px;
+}
+
+#tracklistunlimited {
+	width:600px;
+	left:0;
+	margin-left:10px;
+	overflow: auto;
+	height:320px;
+}
+
 @media screen and (max-width:980px) {
 	#map_of_maps {
 		display: none;
@@ -20,6 +34,22 @@ table {
 
 @media screen and (max-width:640px) {
 	#previewout {
+		display:none;
+	}
+}
+
+@media screen and (max-width:400px) {
+	#tracklist,#tracklistunlimited {
+		width:100%;
+		margin-left:0px;
+	}
+	h1 {
+		font-size:16px;
+	}
+	h2 {
+		font-size:14px;
+	}
+	#footer {
 		display:none;
 	}
 }

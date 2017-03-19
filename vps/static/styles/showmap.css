@@ -402,3 +402,9 @@ h3:hover {
 }
 
 /* end slider */
+
+@media only screen and (max-width:400px) {
+	#map {
+		width:100%;
+	}
+}

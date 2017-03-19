@@ -566,7 +566,7 @@ var activities = [
 ];
 
 for (i in activities) {
-	document.getElementById("activity_select").innerHTML += '<div><span><input type="radio" id="activity'+i+'" name="activity" onchange="on_activity_change(this);" value="'+activities[i].name+'">'+activities[i].caption+''+activities[i].pictureslist.map(function(pict){return '</input></span><img src="/static/images/'+pict+'" width="60" height="60" />'}).join('')+'<div style="clear:both"></div></div>';
+	document.getElementById("activity_select").innerHTML += '<div><input type="radio" id="activity'+i+'" name="activity" onchange="on_activity_change(this);" value="'+activities[i].name+'"></input><label for="activity'+i+'"><span class="activitytxt">'+activities[i].caption+'</span>'+activities[i].pictureslist.map(function(pict){return '<img src="/static/images/'+pict+'" width="60" height="60" />'}).join('')+'</label><div style="clear:both"></div></div>';
     //options[i] = new Option(activities[i].caption,activities[i].name);
 }
 
