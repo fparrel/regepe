@@ -91,3 +91,17 @@
 .bar {
 	background-color: blue;
 }
+
+@media only screen and (max-width:400px) {
+	.activitytxt {
+		display:none;
+	}
+	#progress_div {
+		width:100%;
+		padding:0px;
+	}
+	#options_div {
+		width:100%;
+		padding:0px;
+	}
+}
