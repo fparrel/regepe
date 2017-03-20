@@ -6,7 +6,7 @@
             <h1>{{_('Replay your GPS Tracks with REGEPE')}}</h1>
 			<h2>{% if limit>-1 %}{{_('Last updates')}} | <a href="/indexall">{{_('All updates')}}</a>{% else %}<a href="/">{{_('Last updates')}}</a> | {{_('All updates')}}{% endif %}</h2>
 			<div style="position: absolute;">
-				<div style='width:600px; left:0; margin-left : 10px; {% if limit==-1 %}overflow: auto; height:320px;{% endif %}'>
+				<div id="tracklist" {% if limit==-1 %}id="tracklistunlimitedstyle"{% endif %}>
 					<table style="position: static;"><thead></thead><tbody>
 					{% for map in maps %}
 						<tr class="maplistitm" id="row{{ map.mapid }}" style="cursor:pointer;" onclick="changePreview('{{ map.mapid }}','{{ map.lat }}','{{ map.lon }}','{{ map.desc | replace("\'"," ") }}')"><td>{{ map.date }}</td><td>{{ map.desc }}</td><td> {{_('by')}} {{ map.user }}</td><td style="font-size:10px;"><a href="showmap/{{ map.mapid }}">{{_('View')}}</a></tr>
