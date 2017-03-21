@@ -769,5 +769,13 @@ def inject_min_js():
 
 if __name__ == '__main__':
     # Start web server
-    application.run(port=8080,debug=True)
+    if len(sys.argv)==2:
+        if sys.argv[1] in ('-h','--help'):
+            print 'Usage: %s [bindingip]' % sys.argv[0]
+            exit()
+        else:
+            host = sys.argv[1]
+    else:
+        host = "127.0.0.1"
+    application.run(port=8080,debug=True,host=host)
 
