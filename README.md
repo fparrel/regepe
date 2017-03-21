@@ -28,13 +28,15 @@ None, it costs me money (but not a lot)
 CGI was the only solution to use python on OVH's cheap shared hosting. Other solutions whould have need a VM rental, was too expensive. But since OVH proposes a cheap VPS solution, website has been migrated from WAMP+cgi-bin Python to nginx uswgi python flask
 
 ## What are the future features to implement?
-* Better smartphone display (responsive web design)
+* Better smartphone display for showmap page (responsive web design)
 * Fix for a bug that I found with VMG and vmax
 * "Share" button
 * Allow keeping logging on several devices
+* Fix a strange issue we have with uswgi
 
 ## How is the code organized?
 ### New VPS (Virtual Private Server) version
+Cf. quickstart for testing
 `vps/*.py` contains all the code
 `vps/regepe_flask_server.py` is the program entry point. Either via uwsgi on production or launching `python regepe_flask_server.py` for debugging
 `vps/config` contains configuration data such as keys and domain name. Obviously not commited to Git
@@ -49,6 +51,7 @@ CGI was the only solution to use python on OVH's cheap shared hosting. Other sol
 `vps/babel.cfg`, `vps/translations_*.sh` are the script used for Babel translations
 `vps/minify.sh` is the minify script used for putting code on production
 `vps_tools` contains some tools usefull for debugging
+
 ### Legacy WAMP Version
 The testing can be done even with WAMP+Python on Windows or with Apache+PHP+Python on Ubuntu (LAMP)  
 `wamp-src` contains the WAMP version of the code with keys and password hidden  
