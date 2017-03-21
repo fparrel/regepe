@@ -2,10 +2,13 @@
 Source code of regepe.com
 
 ## Quickstart
-`git clone https://github.com/fparrel/regepe`
-`docker build -t regepe .`
-`docker run -d -p 8080:8080 regepe`
-`lynx localhost:8080`
+```
+git clone https://github.com/fparrel/regepe
+cd regepe
+docker build -t regepe .
+docker run -d -p 8080:8080 regepe
+lynx localhost:8080`
+```
 
 ## What is regepe.com
 It's a website allowing to analyze and keep the results of GPS tracking for outdoor sports.
