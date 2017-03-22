@@ -4,7 +4,8 @@ FROM centos:7
 RUN rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
 # Install nginx + uwsgi + python + flask
 # Note: gcc and python-devel are needed for pip install uwsgi
-RUN yum install -y nginx python python-devel python-setuptools gcc sudo
+# java is needed for minify tool
+RUN yum install -y nginx python python-devel python-setuptools gcc sudo java
 RUN easy_install pip
 RUN pip install uwsgi flask flask_babel
 
@@ -20,14 +21,17 @@ COPY regepe-nginx.conf /etc/nginx/nginx.conf
 # Some modification for nginx + uwsgi
 RUN chown -R nginx.nginx /regepe
 RUN chmod -R a+r /regepe 
+RUN mkdir /var/log/uwsgi
+RUN chmod 777 /var/log/uwsgi
 
-# Expose ports
-EXPOSE 80
-EXPOSE 8080
+# Minify and compile translations
+RUN cd /regepe/vps && ./minify.sh && ./translations_compile.sh
 
 # Debug
-ENTRYPOINT cd /regepe/vps && python regepe_flask_server.py 0.0.0.0
+#EXPOSE 8080
+#ENTRYPOINT cd /regepe/vps && python regepe_flask_server.py 0.0.0.0
 
 # Prod
-#ENTRYPOINT sudo -u nginx uwsgi --ini /regepe/uwsgi-regepe.ini & nginx && while true; do echo 'regepe alive'; sleep 10; done
+EXPOSE 80
+CMD cd /regepe/vps && uwsgi --ini /regepe/uwsgi-regepe.ini & nginx && while true; do echo 'regepe alive'; sleep 10; done
 
