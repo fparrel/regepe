@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Launch me
+# Launch me: ./wamp-tools/translate.py
 # Check missing translations in diff.txt
 # If needed add line to filter.txt
 # Add translations in translations.txt
@@ -158,9 +158,10 @@ def dictToList(d):
     return out
 
 def main():
+    print 'Launch me from ./wamp-tools/translate.py'
     totrans = listToDict(processall())
-    translated = parseTranslations('translations.txt')
-    filter = parseTranslations('filter.txt',list=True)
+    translated = parseTranslations('wamp-tools/translations.txt')
+    filter = parseTranslations('wamp-tools/filter.txt',list=True)
     #print totrans
     #print translated
     diff = {}
@@ -190,8 +191,8 @@ def main():
             if len(item)>0:
                 diff[fname] = item
     #print diff
-    dictToFile(diff,'diff.txt')
-    buildtraduced('translations.txt')
+    dictToFile(diff,'wamp-tools/diff.txt')
+    buildtraduced('wamp-tools/translations.txt')
     #listtotraduce('totraduce2.csv')
 
 if __name__=='__main__':

@@ -6,8 +6,8 @@ Source code of regepe.com
 git clone https://github.com/fparrel/regepe
 cd regepe
 docker build -t regepe .
-docker run -d -p 8080:8080 regepe
-lynx localhost:8080`
+docker run -d -p 80:80 regepe
+lynx localhost
 ```
 
 ## What is regepe.com

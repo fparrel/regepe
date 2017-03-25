@@ -6,8 +6,8 @@ ELELIST = {'maps':('trackdesc','trackuser','startpoint','date','winddir','demize
 
 
 
-src_dir = 'lamp-prod'
-dest_dir = 'lamp-test'
+src_dir = '../lamp-prod'
+dest_dir = '../lamp-test'
 onlyshow = False
 
 def copy(src,dst):
@@ -28,7 +28,7 @@ def mkdir(dir):
 
 for arg in sys.argv[1:]:
     if arg in ('-h','--help'):
-        print 'Usage: copydata.py [-s] [--src=wamp-src|wamp-test|lamp-test|lamp-prod] [--dst=wamp-src|wamp-test|lamp-test|lamp-prod]'
+        print 'Usage: copydata.py [-s] [--src=[../]wamp-src|[../]wamp-test|[../]lamp-test|[../]lamp-prod] [--dst=[../]wamp-src|[../]wamp-test|[../]lamp-test|[../]lamp-prod]'
         print 'Default source is %s and default destination is %s' % (src_dir,dest_dir)
         exit(0)
     elif arg=='-s':
@@ -37,13 +37,13 @@ for arg in sys.argv[1:]:
         showdiffs = True
     elif arg.startswith('--src='):
         src_dir = arg[6:]
-        assert(src_dir in ('wamp-src','wamp-test','lamp-test','lamp-prod'))
+        assert(src_dir in ('../wamp-src','../wamp-test','../lamp-test','../lamp-prod','wamp-src','wamp-test','lamp-test','lamp-prod'))
     elif arg.startswith('--dst='):
         dest_dir = arg[6:]
-        assert(dest_dir in ('wamp-src','wamp-test','lamp-test','lamp-prod'))
+        assert(dest_dir in ('../wamp-src','../wamp-test','../lamp-test','../lamp-prod','wamp-src','wamp-test','lamp-test','lamp-prod'))
     elif arg.startswith('--dest='):
         dest_dir = arg[7:]
-        assert(dest_dir in ('wamp-src','wamp-test','lamp-test','lamp-prod'))
+        assert(dest_dir in ('../wamp-src','../wamp-test','../lamp-test','../lamp-prod','wamp-src','wamp-test','lamp-test','lamp-prod'))
 
 mkdir('%s/www/maps'%dest_dir)
 mkdir('%s/cgi-bin/maps'%dest_dir)
