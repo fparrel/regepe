@@ -9,7 +9,7 @@
 				<div id="tracklist" {% if limit==-1 %}id="tracklistunlimitedstyle"{% endif %}>
 					<table style="position: static;"><thead></thead><tbody>
 					{% for map in maps %}
-						<tr class="maplistitm" id="row{{ map.mapid }}" style="cursor:pointer;" onclick="changePreview('{{ map.mapid }}','{{ map.lat }}','{{ map.lon }}','{{ map.desc | replace("\'"," ") | replace("\n"," ") }}')"><td>{{ map.date }}</td><td>{{ map.desc }}</td><td> {{_('by')}} {{ map.user }}</td><td style="font-size:10px;"><a href="showmap/{{ map.mapid }}">{{_('View')}}</a></tr>
+						<tr class="maplistitm" id="row{{ map.mapid }}" style="cursor:pointer;" onclick="changePreview('{{ map.mapid }}','{{ map.lat }}','{{ map.lon }}','{{ map.desc | replace("\'"," ") | replace("\n"," ") | replace("\r"," ") }}')"><td>{{ map.date }}</td><td>{{ map.desc }}</td><td> {{_('by')}} {{ map.user }}</td><td style="font-size:10px;"><a href="showmap/{{ map.mapid }}">{{_('View')}}</a></tr>
 					{% endfor %}
 					</tbody></table>
 				</div>
