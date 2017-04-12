@@ -91,6 +91,14 @@ function convertSpeed(speedms,spdunit) {
 	if (spdunit=='mph') return (speedms*2.23693629);
 }
 
+/* Convert an input in the given speed unit to m/s */
+function convertSpeedToMS(speed,spdunit) {
+	if (spdunit=='m/s') return (speed);
+	if (spdunit=='knots') return (speed*0.514444444);
+	if (spdunit=='km/h') return (speed*0.277777777778);
+	if (spdunit=='mph') return (speedspeedms*0.44704);
+}
+
 /* Compute an angle given 3 points */
 function computeAngle(lat1,lon1,lat2,lon2,lat3,lon3) {
     var a1 = computeCourse(lat1,lon1,lat2,lon2);
