@@ -368,6 +368,7 @@ function refreshSelectionInfos(pt1_id, pt_cur, pt2_id) {
         //infos = infos + pt1_id+','+pt2_id+'<br/>';
         var lenpath=computeLengtOnPath(parseInt(pt1_id), parseInt(pt2_id));
         infos = infos +
+        //pt1_id+' '+pt2_id+'<br/>'+
 		'<b>'+DIRECT_DISTANCE+':</b> '+Math.round(hdist)+' m<br/>' +
         '<b>'+PATH_DISTANCE+':</b> '+Math.round(lenpath)+' m';
         if (timediff>=0) {
