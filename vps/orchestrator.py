@@ -22,6 +22,7 @@ from stravaparser import UrlOpenStrava,ParseJsonStravaFile
 from sportstrackliveparser import ParseSportsTrackLiveFile
 from sbpparser import ParseSbpFile
 from fitparser import ParseFitFile
+from igcparser import ParseIgcFile
 from model import Track
 from pagebuilder import BuildPage,MyPolar,MyXYChart,ChartString,ChartStringWithTitle,BuildMaxSpeeds
 from progress import SetProgress
@@ -180,6 +181,7 @@ SBP = 9
 JSON_STRAVA = 10
 FIT = 11
 XML_SPORTSTRACKLIVE = 12
+IGC = 13
 UNKNOWN = 0
 EMPTY = -1
 
@@ -209,7 +211,7 @@ def GetFileType(inputfile):
             return KMZ
         if line[:3]=='RGP':
             return RGP
-        if line[3:5]=='[{':
+        if line[:2]=='{"':
             return JSON
         if line[6]=='\xFD':
             return SBP
@@ -228,7 +230,8 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
             #http://www.kitetracker.com/data/loadtrack?riderId=ksf15&sessionId=17
             #http://connect.garmin.com/modern/activity/601780115
             #http://www.movescount.com/fr/moves/move41779004
-            #https://www.strava.com/activities/505558211
+            #https://www.strava.com/activities/505558211i
+            #http://www.victorb.fr/visugps/visugps.html?track=http://www.logfly.org/Visu/20171113001853698.igc
             if inputfile.startswith('http://www.kitetracker.com/gps/tracking?r=') or inputfile.startswith('https://www.kitetracker.com/gps/tracking?r='):
                 qry = dict(parse_qsl(urlparse(inputfile).query))
                 (riderid,sessionid) = qry['r'].split('_')
@@ -266,8 +269,14 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
                 id = inputfile[foundid+1:foundfull]
                 filetype = XML_SPORTSTRACKLIVE
                 inputfile = urlopen('http://www.sportstracklive.com/live/xml/mapdata?g=_FIAE`FN??&z=10&what=t&op=track&id=%s'%id)
+            elif inputfile.startswith('http://www.victorb.fr/visugps/visugps.html?track=') or inputfile.startswith('https://www.victorb.fr/visugps/visugps.html?track='):
+                trackurl=inputfile[inputfile.find('track=')+len('track='):]
+                url = 'http://www.victorb.fr/visugps/php/vg_proxy.php?track=%s'%trackurl
+                print 'url=',url
+                inputfile = urlopen(url)
+                filetype = IGC
             else:
-                raise Exception(gettext('URL must start with "http[s]://www.kitetracker.com/gps/tracking?r=", "http[s]://connect.garmin.com/modern/activity/", "http[s]://www.movescount.com/[fr/]moves/" or "http[s]://www.strava.com/activities/"'))
+                raise Exception(gettext('URL must start with "http[s]://www.kitetracker.com/gps/tracking?r=", "http[s]://connect.garmin.com/modern/activity/", "http[s]://www.movescount.com/[fr/]moves/" or "http[s]://www.strava.com/activities/" or "http[s]://www.sportstracklive.com/track/map#" or "http[s]://www.victorb.fr/visugps/visugps.html?track="'))
         else:
             filetype = GetFileType(inputfile)
         if (filetype==GPX):
@@ -318,6 +327,9 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
         elif (filetype==FIT):
             inputfile.seek(0,0)
             ptlist = ParseFitFile(inputfile,trk_id,trk_seg_id)
+        elif (filetype==IGC):
+            # do not seek 0 for url
+            ptlist = ParseIgcFile(inputfile,trk_id,trk_seg_id)
         elif (filetype==EMPTY):
             # ignore empty files
             continue

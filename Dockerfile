@@ -23,6 +23,7 @@ RUN chown -R nginx.nginx /regepe
 RUN chmod -R a+r /regepe 
 RUN mkdir /var/log/uwsgi
 RUN chmod 777 /var/log/uwsgi
+RUN chmod o+x /regepe/vps/static
 
 # Minify and compile translations
 RUN cd /regepe/vps && ./minify.sh && ./translations_compile.sh
