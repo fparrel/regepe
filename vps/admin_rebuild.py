@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import sys
+import os.path
+import gzip
 from mapparser import ParseMap
 from model import Track
 from orchestrator import ProcessTrkSegWithProgress,BuildMap
@@ -56,8 +58,15 @@ if __name__=='__main__':
             options['maxspd']=True
             options['map_type']='GeoPortal'
         fname = 'uploads/%s_0.gpx'%mapid
+        if not os.path.isfile(fname):
+            fname = 'data/mapdata/%s.json.gz'%mapid
+        if fname.endswith('.gz'):
+            fd = gzip.open(fname,'r')
+        else:
+            fd = open(fname,'r')
         trk_id = 0
         trk_seg_id = 0
         desc = DbGet(mapid,'trackdesc')
         user = DbGet(mapid,'trackuser')
-        pwd = BuildMap(open(fname,"r"),mapid,trk_id,trk_seg_id,mapid,desc,user,options)
+        pwd = BuildMap(fd,mapid,trk_id,trk_seg_id,mapid,desc,user,options)
+
