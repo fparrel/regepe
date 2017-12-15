@@ -15,7 +15,7 @@ if __name__=='__main__':
     mapid = sys.argv[1]
     if len(sys.argv)==2:
         options,ptlist = ParseMap(mapid)
-        track = Track(ptlist)
+        track = Track(ptlist,forcespdcomp=True)
         Backup(mapid)
         ProcessTrkSegWithProgress(track,mapid,mapid,True,options)
     else:
