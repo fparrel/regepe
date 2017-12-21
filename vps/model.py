@@ -163,7 +163,7 @@ class Track:
     # dists: distance between this point and the previous one (zero for first point)
     bike_power_friction = 0.016975308641975308641975308641975
     bike_power_climbing = 0.0272
-    def __init__(self,ptlist,bounds=None,ptindexlist=None):
+    def __init__(self,ptlist,bounds=None,ptindexlist=None,forcespdcomp=False):
         "Create a Track from a list of Points and a Bounds"
         self.dists=None
         self.bounds = Bounds()
@@ -178,7 +178,7 @@ class Track:
         self.ptindexlist = ptindexlist
         self.nospeeds = False
         Log('Track: ComputeSpeed/Course/FillEleWhenNeeded')
-        self.ComputeSpeedWhenNeeded()
+        self.ComputeSpeedWhenNeeded(force=forcespdcomp)
         self.ComputeCourseWhenNeeded()
         self.FillEleWhenNeeded()
         Log('Track: CheckSpeedUnitAndCorrectIfNeeded')
