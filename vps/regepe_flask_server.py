@@ -10,7 +10,7 @@ import urllib
 from db import DbGetListOfDates,DbGet,DbGetComments,DbGetMulitple,DbGetNearbyPoints,DbPut,DbPutWithoutPassword,DbSearchWord,DbGetMapsOfUser,DbGetAllMaps,DbAddComment,CheckValidMapId,CheckValidFreetext,DbDelMap,DbChkPwd
 import anydbm
 import traceback
-from progress import GetProgress
+from progress import GetProgress,SetProgress
 from users import CheckSession,Login,ActivateUser,SendActivationMail,ReserveUser,GetUserFromUserOrEmail,SendForgotPasswordMail
 import sys
 from orchestrator import BuildMap,ProcessTrkSegWithProgress,BuildMapFromTrack
@@ -321,7 +321,12 @@ def upload():
                 raise Exception(gettext('type %s not handled')%type(options[key]))
     Log('options=%s'%options,submit_id)
     Log('start BuildMap',submit_id)
-    pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user,options)
+    try:
+        pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user,options)
+    except Exception,e:
+        Log(str(e))
+        SetProgress(submit_id,str(e))
+        return str(e)
     Log('end BuildMap',submit_id)
     return '''<script type="text/javascript">
     var date = new Date();
@@ -491,6 +496,7 @@ def clearmap(mapid,pwd,pt1,pt2,user,sess):
 
 def removepoints(ptlist,ptidxtodel):
     l=range(0,len(ptlist))
+    Log('removepoints: %s %s'%(ptidxtodel,len(ptlist)))
     for i in ptidxtodel:
         l.remove(i)
     return ([ptlist[i] for i in l],0 in ptidxtodel)
@@ -769,5 +775,13 @@ def inject_min_js():
 
 if __name__ == '__main__':
     # Start web server
-    application.run(port=8080,debug=True)
+    if len(sys.argv)==2:
+        if sys.argv[1] in ('-h','--help'):
+            print 'Usage: %s [bindingip]' % sys.argv[0]
+            exit()
+        else:
+            host = sys.argv[1]
+    else:
+        host = "127.0.0.1"
+    application.run(port=8080,debug=True,host=host)
 

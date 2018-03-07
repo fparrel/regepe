@@ -88,7 +88,7 @@ wamp-test/
 wamp-src/www/fr/
 
 #work files
-diff.txt
+wamp-tools/diff.txt
 
 #Garbage
 wamp-src/www/testwmts.php

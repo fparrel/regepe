@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-{% block doctype %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.1//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd">{% endblock %}
-{% block htmltag %}<html xmlns="http://www.w3.org/1999/xhtml" version="XHTML+RDFa 1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml-rdfa-2.xsd" lang="en" xml:lang="en" dir="ltr" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://ogp.me/ns/fb#">{% endblock %}
+{% block doctype %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.1//EN" "https://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd">{% endblock %}
+{% block htmltag %}<html xmlns="https://www.w3.org/1999/xhtml" version="XHTML+RDFa 1.1" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.w3.org/1999/xhtml https://www.w3.org/MarkUp/SCHEMA/xhtml-rdfa-2.xsd" lang="en" xml:lang="en" dir="ltr" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://ogp.me/ns/fb#">{% endblock %}
 {% block headext %}
 <link type="text/css" rel="StyleSheet" href="/static/styles/showmap.css" />
 <meta name="description" content="{{ mapdb.trackdesc }}"/>
-<link rel="image_src" href="http://{{ domain }}/thumbnail/{{ mapid }}"/>
+<link rel="image_src" href="https://{{ domain }}/thumbnail/{{ mapid }}"/>
 <meta property="og:title" content="ReGePe's GPS Track replay"/>
 <meta property="og:description" content="{{ mapdb.trackdesc }}"/>
-<meta property="og:image" content="http://{{ domain }}/thumbnail/{{ mapid }}"/>
+<meta property="og:image" content="https://{{ domain }}/thumbnail/{{ mapid }}"/>
 <meta http-equiv="X-UA-Compatible" content="IE=7"/>
 <script type="text/javascript" src="/static/javascript/d3.v3{{minify}}.js"></script>
 <script type="text/javascript" src="/static/javascript/d3polar{{minify}}.js"></script>
@@ -281,9 +281,9 @@
 <script type="text/javascript" src="/static/javascript/raphael-min.js"></script>
 {% endif %}
 {% if type=="GMaps" %}
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 {% elif type=="GeoPortal" %}
-<script type="text/javascript" charset="utf-8" src='http://api.ign.fr/geoportail/api/js/latest/Geoportal.js'></script>
+<script type="text/javascript" charset="utf-8" src='https://api.ign.fr/geoportail/api/js/latest/Geoportal.js'></script>
 {% endif %}
 <script type="text/javascript" src="/static/javascript/utils{{minify}}.js"></script>
 <script type="text/javascript" src="/static/javascript/chartandpoint{{minify}}.js"></script>
