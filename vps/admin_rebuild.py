@@ -9,6 +9,7 @@ from orchestrator import ProcessTrkSegWithProgress,BuildMap
 from backup import Backup
 from db import DbGet
 from options import options_default
+import os.path
 
 if __name__=='__main__':
     if len(sys.argv) not in (2,3) or sys.argv[1] in ('-h','--help'):
@@ -23,6 +24,9 @@ if __name__=='__main__':
     else:
         type = sys.argv[2]
         options = options_default
+        fname = 'uploads/%s_0.gpx'%mapid
+        if not os.path.isfile(fname):
+            options,ptlist = ParseMap(mapid)
         if type=='kite':
             options['wind']=True
             options['flat']=True
@@ -59,14 +63,12 @@ if __name__=='__main__':
             options['map_type']='GeoPortal'
         fname = 'uploads/%s_0.gpx'%mapid
         if not os.path.isfile(fname):
-            fname = 'data/mapdata/%s.json.gz'%mapid
-        if fname.endswith('.gz'):
-            fd = gzip.open(fname,'r')
+            track = Track(ptlist)
+            Backup(mapid)
+            ProcessTrkSegWithProgress(track,mapid,mapid,True,options)
         else:
-            fd = open(fname,'r')
-        trk_id = 0
-        trk_seg_id = 0
-        desc = DbGet(mapid,'trackdesc')
-        user = DbGet(mapid,'trackuser')
-        pwd = BuildMap(fd,mapid,trk_id,trk_seg_id,mapid,desc,user,options)
-
+            trk_id = 0
+            trk_seg_id = 0
+            desc = DbGet(mapid,'trackdesc')
+            user = DbGet(mapid,'trackuser')
+            pwd = BuildMap(open(fname,"r"),mapid,trk_id,trk_seg_id,mapid,desc,user,options)
