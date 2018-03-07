@@ -26,18 +26,21 @@ function computeBestVMGs() {
     var jees_time = [];
     for(i=0;i<maxspds_time_on.length;i++) {
         maxspds_time.push([MaxSpdZero,MaxSpdZero,MaxSpdZero,MaxSpdZero,MaxSpdZero,MaxSpdZero]);
-        //maxspds_time.push([new MaxSpd(0,0,0,0,0),new MaxSpd(0,0,0,0,0),new MaxSpd(0,0,0,0,0),new MaxSpd(0,0,0,0,0),new MaxSpd(0,0,0,0,0),new MaxSpd(0,0,0,0,0)]);
         jees_time.push(0);
     }
     
     /* Compute distances from speed */
     var dsts=[];var cur_dst=0.0;var tms=[];var vmgs=[];
+    //var cur_dst_from_spd=0.0;var dsts_from_spd=[];
     for(i=0;i<track_points.length-1;i++) {
-        cur_dst += track_points[i].spd * (parseTimeString(track_points[i+1].time)-parseTimeString(track_points[i].time));
+        //cur_dst_from_spd += convertSpeedToMS(track_points[i].spd,spdunit) * (parseTimeString(track_points[i+1].time)-parseTimeString(track_points[i].time));
+        //dsts_from_spd.push(cur_dst_from_spd);
+        cur_dst += geodeticDist(track_points[i].lat,track_points[i].lon,track_points[i+1].lat,track_points[i+1].lon);
         dsts.push(cur_dst);
         tms.push(parseTimeString(track_points[i].time));
         vmgs.push(track_points[i].spd * Math.cos((track_points[i].course - winddir)*Math.PI/180));
     }
+
     /* Build max speeds */
     for(i=0;i<track_points.length;i++) {
         for(maxspds_idx=0;maxspds_idx<maxspds_dist.length;maxspds_idx++) {
@@ -48,7 +51,7 @@ function computeBestVMGs() {
                     track_points[i].lat,track_points[i].lon);
                 var vmg = geodeticDist(track_points[i].lat,track_points[i].lon,track_points[j].lat,track_points[j].lon) * Math.cos((course - winddir)*Math.PI/180) / (tms[i]-tms[j]);
                 if(vmg>maxspds_dist[maxspds_idx][maxspds_dist[maxspds_idx].length-1].spd) {
-                    for(k=0;k<maxspds_dist.length;k++) {
+                    for(k=0;k<maxspds_dist[maxspds_idx].length;k++) {
                         if(vmg>maxspds_dist[maxspds_idx][k].spd) {
                             maxspds_dist[maxspds_idx].splice(k,1,new MaxSpd(vmg,dsts[i]-dsts[j],tms[i]-tms[j],j,i,course));
                             break;

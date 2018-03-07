@@ -1,9 +1,9 @@
-
-/*
-* {
-	margin: 0;
+@viewport {
+   width: device-width;
+   zoom: 1;
 }
-*/
+
+/* global page layout */
 
 body {
 	margin:0;
@@ -13,12 +13,29 @@ body {
 	height:100%; /* for sticky footer */
 }
 
-
-/*
-html {
-	height: 100%;
+#footer {
+	border-top:1px solid #9ac1c9;
+	margin: 0;
+	/*margin-left:0px;*/
+	font-size:10px;
+	height: 30px;
+	text-align:center;
 }
-*/
+
+#footer_push {
+	margin: 0;
+	height: 30px;
+	clear: both;
+}
+
+#wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 0 -32px;
+}
+
+/* header */
 
 #header {
 	border-bottom:1px solid #9ac1c9;
@@ -85,17 +102,10 @@ input[type=button]:hover,#header_login input[type=button]:hover {
 	font-weight: normal;
 }
 
-
-
 #header_lang {
-	/*position:absolute;
-	top:40px;
-	left:8px;
-	float:left;*/
+
 	margin-top:4px;
 }
-
-
 
 #body {
 	clear:both;
@@ -106,17 +116,46 @@ input[type=button]:hover,#header_login input[type=button]:hover {
 #footer {
 	border-top:1px solid #9ac1c9;
 	text-align:center;
-	/*position: relative;
-	margin-top: -150px;
-	height: 150px;
-	clear:both;*/
 }
 
 img {
 	border:0px;
 }
 
-.maplistitm:hover {
-	/*background: lightblue;*/
-	background: #BDE34A;
+#searchicon {
+	width:12px;
+	height:12px;
+}
+#loginbtn {
+	display:none;
+}
+@media only screen and (max-width:900px) {
+	.hdrtxt {
+		display:none;
+	}
+	#header_login {
+		display:none;
+	}
+	#loginbtn {
+		display:inline-block;
+	}
+}
+@media only screen and (max-width:400px) {
+	#search_txtbox {
+		width:100px;
+	}
+	#body {
+		margin:2px;
+	}
+	#header_search,#header_submit,#header_mapofmaps,#header_login,#header_register,#header_home,#header_prepare,#header_mobile {
+		margin-top:2px;
+		margin-left:2px;
+	}
+}
+
+#login_user {
+	width:80px;
+}
+#login_password {
+	width:80px;
 }

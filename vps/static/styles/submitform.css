@@ -1,42 +1,9 @@
 
-#footer {
-	border-top:1px solid #9ac1c9;
-	margin: 0;
-	/*margin-left:0px;*/
-	font-size:10px;
-	height: 30px;
-	text-align:center;
-}
-
-#footer_push {
-	margin: 0;
-	height: 30px;
-	clear: both;
-}
-
-#wrapper {
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0 0 -32px;
-}
-
-/*body {
-	font-family: verdana, arial, sans-serif;
-	font-size:12px;
-}*/
-
-
 #file_and_preview {
 	margin-top:10px;
 	padding-bottom:10px;
 }
-/*
-#file_and_preview div {
-	padding:10px;
-	border:1px solid #bbb;
-	float:left;
-}*/
+
 #file_and_trk_select_div {
   	width:300px;
 	min-height:120px;
@@ -44,6 +11,7 @@
 	border:1px solid #bbb;
 	padding:10px;
 }
+
 #preview_div {
 	margin-left:10px;
 	width:250px;
@@ -80,10 +48,6 @@
 	border:1px solid #bbb;
 }
 
-#debug_box {
-	clear:both;
-}
-
 #desc_div {
 	clear:both;
 	float:left;
@@ -96,6 +60,7 @@
 #file_and_desc {
 	float:left;
 }
+
 #activity_select {
 	display: inline-block;
 }
@@ -108,6 +73,7 @@
 	float: right;
 	margin: 1px;
 }
+
 #map_type_select img {
 	vertical-align:middle;
 	border: 1px solid black;
@@ -121,6 +87,21 @@
 	position: relative;
 	top: 20px;
 }
+
 .bar {
 	background-color: blue;
+}
+
+@media only screen and (max-width:400px) {
+	.activitytxt {
+		display:none;
+	}
+	#progress_div {
+		width:100%;
+		padding:0px;
+	}
+	#options_div {
+		width:100%;
+		padding:0px;
+	}
 }

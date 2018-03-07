@@ -1,60 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://ogp.me/ns/fb#">
-<head>
-<title>{{_('Replay your GPS tracks with ReGePe')}}</title>
-<meta http-equiv="X-UA-Compatible" content="IE=7"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
-<script type="text/javascript" src='/static/javascript/g.raphael-min.js'></script>
-<script type="text/javascript" src='/static/javascript/g.line-min.js'></script>
-<script type="text/javascript" src="/static/javascript/jquery.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>
-<link type="text/css" rel="StyleSheet" href="/static/styles/mapstyle.css" />
-<link type="text/css" rel="StyleSheet" href="/static/styles/header.css" />
-<meta name="robots" content="noindex">
-</head>
-<body>
-    <div id="wrapper">
-		<div id="header">
-			<div id="header_search">
-				<input name="search_req" id="search_txtbox" type="text" onkeypress="onSearchTxtboxKeypress(this,event);"/>
-				<input type="button" value="{{_('Search')}}" onclick="onSearchClick();"/>
-				<div id="header_lang">
-					<a href="/en/prepare"><img width="16" height="11" src="/static/images/FlagEN.jpg" alt="English"/></a>
-					<a href="/fr/prepare"><img width="16" height="11" src="/static/images/FlagFR.jpg" alt="Francais"/></a>
-					<a href="/es/prepare"><img width="16" height="11" src="/static/images/FlagES.jpg" alt="Espanol"/></a>
-				</div>
-			</div>
-			<div id="header_home">
-				<a href="/"><img src="/static/images/home32x32.png" width="32" height="32" alt="Home"/>{{_('Home')}}</a>
-			</div>
-			<div id="header_mobile">
-				<a href="/mobile"><img src="/static/images/android32x32.png" width="32" height="32" alt="Get app"/>{{_('Get app')}}</a>
-			</div>
-			<div id="header_submit">
-				<a href="/submitform"><img src="/static/images/Up32x32.png" width="32" height="32" alt="Submit"/>{{_('Submit track')}}</a>
-			</div>
-			<div id="header_prepare">
-				<a href="/prepare"><img src="/static/images/map_edit.png" width="32" height="32" alt="Prepare"/>{{_('Prepare itinerary')}}</a>
-			</div>
-			<div id="header_mapofmaps">
-				<a href="/mapofmaps"><img src="/static/images/WorldSearch32x32.png" width="32" height="32" alt="Browse"/>{{_('Browse tracks')}}</a>
-			</div>
-			<div id="header_login">
-				<form action="">
-					<div>
-						{{_('User: ')}}<input id="login_user" name="user" type="text" onkeypress="onUserTxtboxKeypress(this,event);"/>
-						{{_('Password: ')}}<input id="login_password" name="password" type="password" onkeypress="onPwdTxtboxKeypress(this,event);"/>
-						<input type="button" value="{{_('Login')}}" onclick="onLoginClick();"/><br/>
-						<a href="/registerform">{{_('Register')}}</a> |
-						<a href="/forgotpwd">{{_('Forgot password?')}}</a>
-					</div>
-				</form>
-			</div>
-		</div>
-        <div id="body">
+{% extends 'base.html' %}
+{% block title %}{{_('Replay your GPS Tracks with REGEPE - Prepare itinerary')}}{% endblock %}
+{% block urlext %}prepare{% endblock %}
+{% block body %}
             <div id="mapnwpts" style="float:left; margin:10px 0px;">
                 <div id="maptotal" style="float: left;">
                     <div id="mapresizer" style="height:500px;width:500px;resize:both; border:2px solid;overflow:auto;padding:8px;">
@@ -108,26 +55,24 @@
             <div id="printmap" style="margin-top:10px;">
                 <input type="button" value="{{_('Print Map')}}" onclick="onBuildMapClick();"/>
             </div>
-        </div>
-        <div id="footer_push"></div>
-    </div>
-	<div id="footer">
-		<b>{{_('Contact:')}}</b> <a href="mailto:info@regepe.com">info@regepe.com</a>
-	</div>
-</body>
-</html>
+{% endblock %}
+{% block jsext %}
+<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
+<script type="text/javascript" src='/static/javascript/g.raphael-min.js'></script>
+<script type="text/javascript" src='/static/javascript/g.line-min.js'></script>
+<script type="text/javascript" src="/static/javascript/jquery.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>
 {% if map_type=="GMaps" %}
 <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 {% elif map_type=="GeoPortal" %}
-<script type="text/javascript" charset="utf-8" src='http://api.ign.fr/geoportail/api/js/2.0.0/Geoportal.js'></script>
+<script type="text/javascript" charset="utf-8" src='https://api.ign.fr/geoportail/api/js/2.0.0/Geoportal.js'></script>
 <style type="text/css" media="print">
 body{display:inline;}
 </style>
 {% endif %}
-<script type="text/javascript" src="/i18n.js/header"></script>
 <script type="text/javascript" src="/static/javascript/utils{{minify}}.js"></script>
-<script type="text/javascript" src="/static/javascript/xmlhttprequest{{minify}}.js"></script>
-<script type="text/javascript" src="/static/javascript/header{{minify}}.js"></script>
 <script type="text/javascript">
 domain="{{domain}}";
 map_type="{{map_type}}";
@@ -139,3 +84,4 @@ GeoPortalApiKey="{{ GeoPortalApiKey }}";
 {% elif map_type=="GeoPortal" %}
 <script type="text/javascript" src="/static/javascript/preparegeoportal{{minify}}.js"></script>  
 {% endif %}
+{% endblock %}

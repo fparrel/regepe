@@ -48,7 +48,7 @@ if(typeof(namesurl)!='undefined') {
 		pts_from_url[j].name=names[j];
 	}
 }
-console.log("pts_from_url="+pts_from_url);
+console.log("pts_from_url=%o",pts_from_url);
 
 // list of points object, map_type dependant
 // fields:

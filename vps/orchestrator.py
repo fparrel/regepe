@@ -16,7 +16,7 @@ from kmlparser import ParseKmlFile
 from nmeaparser import ParseNmeaFile
 from rgpparser import ParseRegepeFile
 from jsonparser import ParseJsonFile
-from garminparser import ParseJsonGarminFile
+from garminparser import ParseJsonGarminFile,ParseJsonGarmingFileCourse
 from movescountparser import ParseJsonMoveCountFile
 from stravaparser import UrlOpenStrava,ParseJsonStravaFile
 from sportstrackliveparser import ParseSportsTrackLiveFile
@@ -181,6 +181,7 @@ KMZ = 4
 RGP = 5
 JSON = 6
 JSON_GARMIN = 7
+JSON_GARMIN_COURSE = 13
 JSON_MOVESCOUNT = 8
 SBP = 9
 JSON_STRAVA = 10
@@ -248,6 +249,13 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
                     sessionid = inputfile[inputfile.rfind('/')+1:]
                 inputfile = urlopen('http://connect.garmin.com/proxy/activity-service-1.2/json/activityDetails/%s'%sessionid)
                 filetype = JSON_GARMIN
+            elif inputfile.startswith('https://connect.garmin.com/modern/course/'):
+                if inputfile.strip().endswith('/'):
+                    sessionid = inputfile[inputfile.rfind('/',0,-1)+1:-1]
+                else:
+                    sessionid = inputfile[inputfile.rfind('/')+1:]
+                inputfile = urlopen('https://connect.garmin.com/modern/proxy/course-service/course/%s'%sessionid)
+                filetype = JSON_GARMIN_COURSE
             elif inputfile.startswith('http://www.movescount.com/fr/moves/') or inputfile.startswith('http://www.movescount.com/fr/moves/') or inputfile.startswith('http://www.movescount.com/moves/'):
                 if inputfile.strip().endswith('/'):
                     moveid = inputfile[inputfile.rfind('/',0,-1)+1:-1]
@@ -306,6 +314,8 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
             # do not seek 0 for url/json
             #inputfile.seek(0,0)
             ptlist = ParseJsonGarminFile(inputfile,trk_id,trk_seg_id)
+        elif (filetype==JSON_GARMIN_COURSE):
+            ptlist = ParseJsonGarmingFileCourse(inputfile,trk_id,trk_seg_id)
         elif (filetype==JSON_MOVESCOUNT):
             # do not seek 0 for url/json
             #inputfile.seek(0,0)

@@ -10,7 +10,7 @@ import urllib
 from db import DbGetListOfDates,DbGet,DbGetComments,DbGetMulitple,DbGetNearbyPoints,DbPut,DbPutWithoutPassword,DbSearchWord,DbGetMapsOfUser,DbGetAllMaps,DbAddComment,CheckValidMapId,CheckValidFreetext,DbDelMap,DbChkPwd
 import anydbm
 import traceback
-from progress import GetProgress
+from progress import GetProgress,SetProgress
 from users import CheckSession,Login,ActivateUser,SendActivationMail,ReserveUser,GetUserFromUserOrEmail,SendForgotPasswordMail
 import sys
 from orchestrator import BuildMap,ProcessTrkSegWithProgress,BuildMapFromTrack
@@ -273,8 +273,10 @@ def upload():
         # Save each uploaded file
         if not os.path.isdir(application.config['UPLOAD_FOLDER']):
             os.mkdir(application.config['UPLOAD_FOLDER'])
-        Log('Saving file',submit_id)
-        file.save(os.path.join(application.config['UPLOAD_FOLDER'], secure_filename('%s_%s.gpx'%(submit_id,i))))
+        p=os.path.join(application.config['UPLOAD_FOLDER'], secure_filename('%s_%s.gpx'%(submit_id,i)))
+        Log('Saving file to %s'%p,submit_id)
+        file.save(p)
+        Log('File saved',submit_id)
         i+=1
         inputfile.append(file)
     # In case of import from URL
@@ -289,10 +291,12 @@ def upload():
         trk_id = 0
     trk_seg_id = 0
     # Get track description
+    Log('Get track desc',submit_id)
     desc = request.form['desc'].encode('utf8')
+    Log('Check session',submit_id)
     # Check session
     user = request.form['user']
-    sys.stderr.write('%s\n'%(request.form))
+    #sys.stderr.write('%s\n'%(request.form))
     if user=='NoUser' or user=='':
         user = 'unknown'
     else:
@@ -304,7 +308,11 @@ def upload():
     for key in options:
         if request.form.has_key(key):
             if type(options[key])==bool:
-                options[key]=request.form[key]=='yes'
+                if request.form.get(key):
+                    options[key]=True
+                else:
+                    options[key]=False
+                #options[key]=(request.form[key]=='yes')
             elif type(options[key])==int:
                 options[key]=int(request.form[key])
             elif type(options[key])==str or type(options[key])==unicode:
@@ -313,7 +321,12 @@ def upload():
                 raise Exception(gettext('type %s not handled')%type(options[key]))
     Log('options=%s'%options,submit_id)
     Log('start BuildMap',submit_id)
-    pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user,options)
+    try:
+        pwd = BuildMap(inputfile,submit_id,trk_id,trk_seg_id,submit_id,desc,user,options)
+    except Exception,e:
+        Log(str(e))
+        SetProgress(submit_id,str(e))
+        return str(e)
     Log('end BuildMap',submit_id)
     return '''<script type="text/javascript">
     var date = new Date();
@@ -325,7 +338,7 @@ def upload():
 
 @application.route('/getprogress/<submitid>')
 def getprogress(submitid):
-    return GetProgress(submitid.encode('ascii')).encode('ascii')
+    return GetProgress(submitid.encode('ascii')).decode('utf8')
 
 
 ## Search
@@ -397,7 +410,7 @@ def map_search_result2(lat,lon,mapid):
     startdate = DbGet(mapid,'date')
     trackuser = DbGet(mapid,'trackuser')
     try:
-        desc = trackdesc.encode('ascii', 'xmlcharrefreplace')
+        desc = trackdesc.encode('ascii', 'xmlcharrefreplace').replace('<','&lt;').replace('>','&gt;')
     except:
         desc = trackdesc
     return('<map mapid="%s" lat="%s" lon="%s" date="%s" user="%s">%s</map>' % (mapid,lat,lon,startdate,trackuser,desc))
@@ -483,6 +496,7 @@ def clearmap(mapid,pwd,pt1,pt2,user,sess):
 
 def removepoints(ptlist,ptidxtodel):
     l=range(0,len(ptlist))
+    Log('removepoints: %s %s'%(ptidxtodel,len(ptlist)))
     for i in ptidxtodel:
         l.remove(i)
     return ([ptlist[i] for i in l],0 in ptidxtodel)
@@ -559,6 +573,7 @@ def activate(user,activationid):
 @application.route('/login/<user>/<pwd>')
 def login(user,pwd):
     """ Check login/password return sesssion_id """
+    user = user.lower()
     try:
         (user,sessid) = Login(user,pwd)
     except Exception, e:
@@ -698,6 +713,15 @@ def prepare(lang,map_type,pts,names):
         session['lang']=lang
     return render_template('prepare.html',domain=config['domain'],map_type=map_type,GMapsApiKey=keysnpwds['GMapsApiKey'],GeoPortalApiKey=keysnpwds['GeoPortalApiKey'])
 
+# Backward compatibility
+@application.route('/prepare.php?ptlist=<ptlist>',defaults={'lang':None})
+#@application.route('/fr/prepare.php',defaults={'lang':'fr'})
+def prepare_php(lang):
+    pts=request.args.get('ptlist')
+    maptype=request.args.get('maptype')
+    names=request.args.get('names')
+    return prepare(lang,maptype,pts,names)
+
 @application.route('/ele/<float:lat>/<float:lon>')
 def getele(lat,lon):
     return Response('%d'%GetEleFromLatLon(lat,lon), mimetype='text/plain')
@@ -751,5 +775,13 @@ def inject_min_js():
 
 if __name__ == '__main__':
     # Start web server
-    application.run(port=8080,debug=True)
+    if len(sys.argv)==2:
+        if sys.argv[1] in ('-h','--help'):
+            print 'Usage: %s [bindingip]' % sys.argv[0]
+            exit()
+        else:
+            host = sys.argv[1]
+    else:
+        host = "127.0.0.1"
+    application.run(port=8080,debug=True,host=host)
 

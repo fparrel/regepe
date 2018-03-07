@@ -177,7 +177,7 @@ def ChkAlreadyExists(mail,user):
         return 'mail'
     return 'none'
 
-def DumpUser(user):
+def DumpUser(user,show_password=False):
     dbfile = 'data/users/%s.db' % user
     db = anydbm.open(dbfile, 'r')
     if db.has_key('mail'):
@@ -193,8 +193,8 @@ def DumpUser(user):
             print '%s=%s' % (k,db[k])
     if db.has_key('nb_sessions'):
         print 'nb_sessions=%s'%(db['nb_sessions'])
-    #if db.has_key('pwd'):
-    #    print 'pwd=%s'%db['pwd']
+    if show_password and db.has_key('pwd'):
+        print 'pwd=%s'%db['pwd']
     db.close()
 
 ## UNIT TESTS ##
