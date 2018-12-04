@@ -96,6 +96,15 @@ def index(lang,limit):
             break
     return render_template('index.html',limit=limit,maps=mapsout,GMapsApiKey=keysnpwds['GMapsApiKey'])
 
+## GPX Export
+
+@application.route('/togpx/<mapid>')
+def togpx(mapid):
+    # Read map data
+    f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
+    mapdata=json.load(f)
+    f.close()
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"><trk><trkseg>' + ''.join(map(lambda p:'<trkpt lat="%f" lon="%f"></trkpt>'%(p[0],p[1]),mapdata['points'])) + '</trkseg></trk></gpx>'
 
 ## Thumbnails
 
