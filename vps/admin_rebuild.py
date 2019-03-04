@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 import sys
+import os.path
 from mapparser import ParseMap
 from model import Track
 from orchestrator import ProcessTrkSegWithProgress,BuildMap
 from backup import Backup
 from db import DbGet
 from options import options_default
-import os.path
 
 if __name__=='__main__':
     if len(sys.argv) not in (2,3) or sys.argv[1] in ('-h','--help'):
@@ -16,7 +16,7 @@ if __name__=='__main__':
     mapid = sys.argv[1]
     if len(sys.argv)==2:
         options,ptlist = ParseMap(mapid)
-        track = Track(ptlist)
+        track = Track(ptlist,forcespdcomp=True)
         Backup(mapid)
         ProcessTrkSegWithProgress(track,mapid,mapid,True,options)
     else:
