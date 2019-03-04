@@ -2,14 +2,12 @@
 
 import sys
 import os.path
-import gzip
 from mapparser import ParseMap
 from model import Track
 from orchestrator import ProcessTrkSegWithProgress,BuildMap
 from backup import Backup
 from db import DbGet
 from options import options_default
-import os.path
 
 if __name__=='__main__':
     if len(sys.argv) not in (2,3) or sys.argv[1] in ('-h','--help'):
