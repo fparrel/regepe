@@ -26,8 +26,8 @@ from computeprofile import ComputeProfile
 from demize import Demize
 from generate_id import uniqid
 from config import keysnpwds, config
-from flask_babel import Babel,gettext
-
+from flask_babel import Babel, gettext
+from thumbnail import selectPointsForThumbnail, thumbnailUrlMapbox 
 
 # Create flask application
 application = Flask(__name__)
@@ -96,6 +96,15 @@ def index(lang,limit):
             break
     return render_template('index.html',limit=limit,maps=mapsout,GMapsApiKey=keysnpwds['GMapsApiKey'])
 
+## GPX Export
+
+@application.route('/togpx/<mapid>')
+def togpx(mapid):
+    # Read map data
+    f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
+    mapdata=json.load(f)
+    f.close()
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"><trk><trkseg>' + ''.join(map(lambda p:'<trkpt lat="%f" lon="%f"></trkpt>'%(p[0],p[1]),mapdata['points'])) + '</trkseg></trk></gpx>'
 
 ## Thumbnails
 
@@ -108,29 +117,18 @@ if not os.path.isdir('data/thumbnail_cache'):
 @application.route('/thumbnail.php',defaults={'mapid':None})
 def thumbnail(mapid):
     if mapid==None:
-        mapid=request.args.get('mapid')
-    filename='data/thumbnail_cache/%s.png'%mapid
+        mapid = request.args.get('mapid')
+    filename = 'data/thumbnail_cache/%s.png'%mapid
     if os.path.isfile(filename):
         # Return image in cache
         return send_file(filename, mimetype='image/png')
     else:
-        # Read map data
-        f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
-        mapdata=json.load(f)
-        f.close()
-        # Find most interesting points + sampling
-        i=0
-        step = round((mapdata['nbpts']-1)/20)
-        if step<1:
-            step = 1
-        pt_selected=[]
-        for pt in mapdata['points']:
-            if i==0 or pt[0]==mapdata['minlat'] or pt[0]==mapdata['maxlat'] or pt[1]==mapdata['minlon'] or pt[1]==mapdata['maxlon'] or i%step==0:
-                pt_selected.append((pt[0],pt[1]))
-            i+=1
-        pt_selected.append((pt[0],pt[1]))
-        # Build gmaps url
-        url = 'http://maps.googleapis.com/maps/api/staticmap?size=130x110&maptype=terrain&markers=size:tiny|%s,%s|%s,%s&path=weight:3|%s'%(pt_selected[0][0],pt_selected[0][1],pt_selected[-1][0],pt_selected[-1][1],'|'.join(map(lambda ll:'%s,%s'%ll,pt_selected)))
+        ptlist = selectPointsForThumbnail(mapid)
+        # Build map image url
+        url = thumbnailUrlMapbox(ptlist)
+        furl = open('data/thumbnail_cache/%s.url'%(mapid),'w')
+        furl.write(url)
+        furl.close()
         # Download png, put it in cache and send it
         f = urllib.urlopen(url)
         fcache = open(filename,'wb')
