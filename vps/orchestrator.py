@@ -212,7 +212,7 @@ def GetFileType(inputfile):
             return KMZ
         if line[:3]=='RGP':
             return RGP
-        if line[:2]=='{"':
+        if line[:2]=='{"' or line[3:5]=='[{':
             return JSON
         if line[6]=='\xFD':
             return SBP
