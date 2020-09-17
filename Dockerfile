@@ -7,7 +7,9 @@ RUN rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos
 # java is needed for minify tool
 RUN yum install -y nginx python python-devel python-setuptools gcc sudo java
 RUN easy_install pip
-RUN pip install uwsgi flask flask_babel
+RUN pip install uwsgi flask flask_babel polyline
+
+VOLUME /regepe
 
 # Copy regepe code
 COPY . /regepe
@@ -29,10 +31,10 @@ RUN chmod o+x /regepe/vps/static
 RUN cd /regepe/vps && ./minify.sh && ./translations_compile.sh
 
 # Debug
-#EXPOSE 8080
-#ENTRYPOINT cd /regepe/vps && python regepe_flask_server.py 0.0.0.0
+EXPOSE 8080
+ENTRYPOINT cd /regepe/vps && python regepe_flask_server.py 0.0.0.0
 
 # Prod
-EXPOSE 80
-CMD cd /regepe/vps && uwsgi --ini /regepe/uwsgi-regepe.ini & nginx && while true; do echo 'regepe alive'; sleep 10; done
+#EXPOSE 80
+#CMD cd /regepe/vps && uwsgi --ini /regepe/uwsgi-regepe.ini & nginx && while true; do echo 'regepe alive'; sleep 10; done
 

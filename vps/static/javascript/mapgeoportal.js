@@ -1,23 +1,4 @@
 
-/*
-********************
-* Global variables *
-********************
-------------------
-GeoPortal objects:
-------------------
-VISU
-selbegin_icon
-selend_icon
-arrow_icons
-trackseg_style
-curpt_layer
-curpt_vector
-hasmoved
-curtrackseg
-
-*/
-
 function onMarkerDrag(e) {
    var pos = e.geometry;
     if (pos) {
@@ -39,70 +20,10 @@ function onMarkerDrag(e) {
     }
 }
 
-var map_track_points;
-var track_layer;
-var start_feature;
-var end_feature;
-var track_feature;
-
-function redrawTrack() {
-	map_track_points = [];
-	var bounds = new OpenLayers.Bounds();
-        var i;
-	for(i=0;i<track_points.length;i++) {
-		var pt = new OpenLayers.Geometry.Point(track_points[i].lon,track_points[i].lat);
-		pt = pt.transform(OpenLayers.Projection.CRS84, VISU.getMap().getProjection());
-		map_track_points[i] = pt;
-		bounds.extend(pt);
-	}
-	if(typeof(start_feature)!='undefined')
-		track_layer.removeFeatures([start_feature,end_feature,track_feature]);
-	start_feature = new OpenLayers.Feature.Vector(map_track_points[0],null,start_icon);
-	end_feature = new OpenLayers.Feature.Vector(map_track_points[map_track_points.length-1],null,end_icon);
-	track_feature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(map_track_points),null,track_style);
-	track_layer.addFeatures([track_feature]);
-	return bounds;
-}
-
-/* Called by geoportal api to init the map */
-function initGeoportalMap() {
-    
-    // Load gp visualisation box for france
-    VISU = iv.getViewer();
-	//geoportalLoadVISU("GeoportalVisuDiv", "normal", "FXX");
-	if (VISU.getMap().allowedGeoportalLayers) {
-
-		// Add bg layer: IGN MAP
-		//VISU.addGeoportalLayer('GEOGRAPHICALGRIDSYSTEMS.MAPS:WMSC',{visibility: true,opacity: 0.8});
-        // now added by loader at init time
-
-		// Set controls
-        /*
-		VISU.openLayersPanel(false);
-		VISU.setLayersPanelVisibility(true);
-		VISU.openToolsPanel(false);
-        VISU.setInformationPanelVisibility(false);
-        */
-        //needed for good computation of bounds
-        //VISU.getMap().setCenterAtLonLat(track_points[0].lon,track_points[0].lat, 5);
-
-
+/*
 		// create line and markers styles
 		start_icon = {externalGraphic:'/static/images/MarkerStart.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};
 		end_icon = {externalGraphic:'/static/images/MarkerEnd.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};
-		selbegin_icon = {externalGraphic:'/static/images/MarkerSelBegin.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};
-		selend_icon = {externalGraphic:'/static/images/MarkerSelEnd.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};		
-		arrow_icons = [];
-		for (var angle=0;angle<360;angle += 15) {
-			arrow_icons.push({externalGraphic:'/static/images/Arrow' + angle + '.png',  graphicWidth:15, graphicHeight:15, graphicXOffset:-8, graphicYOffset:-8});
-		}
-		
-		track_style = {
-			strokeColor: "#FFBB00",
-			strokeWidth: 5,
-			strokeOpacity: 1.0,
-			strokeDashstyle: "solid"
-		};
 		
 		trackseg_style = {
 			strokeColor: "#aaaaaa",
@@ -111,62 +32,23 @@ function initGeoportalMap() {
 			strokeDashstyle: "solid"
 		};
 		
-		track_layer = new OpenLayers.Layer.Vector(TRACK);
-		var bounds = redrawTrack();
-		
-		VISU.getMap().addLayer(track_layer);
-		
-		
-		// current point layer
-		curpt_layer = new OpenLayers.Layer.Vector(CURRENT);
-		curpt_vector = new OpenLayers.Feature.Vector(map_track_points[0].clone(),null,
-		arrow_icons[track_points[0].arrow_id]);
-		curpt_layer.addFeatures([curpt_vector]);
-		VISU.getMap().addLayer(curpt_layer);
-		
-		// selection markers layer
-		selmarkers_layer = new OpenLayers.Layer.Vector(SELECTION);
-		VISU.getMap().addLayer(selmarkers_layer);
 		drag = new OpenLayers.Control.DragFeature(selmarkers_layer, {onComplete: onMarkerDrag});
 		VISU.getMap().addControl(drag);
 		drag.activate();
-		
-		// add listener on click on Map event
-		VISU.getMap().events.register("click",
-			VISU.getMap(), function(e) {
-				var pos = VISU.getMap().getLonLatFromViewPortPx(e.xy);
-				if (pos) {
-					pos.transform(VISU.projection, OpenLayers.Projection.CRS84); // GeoPortail -> WGS84
-					refreshCurrentPoint(getCloserPointOfTrack(pos.lat,pos.lon));
-				}
-				focusToMap();
-			}
-		);
-        
-		// set center and zoom
-		VISU.getMap().setCenter(bounds.getCenterLonLat(),VISU.getMap().getZoomForExtent(bounds),true,true);
-        
-		//force redraw
-		iv.zoomIn();
-		iv.zoomOut();
-	}
-}
+*/
 
 /* Recompute selection infos and move markers */
 function refreshSelection(pt1_id, pt2_id) {
-	if ((typeof(selbegin_vector)!="undefined")&&(typeof(selend_vector)!="undefined")) {
-		selmarkers_layer.removeAllFeatures();
-		//selmarkers_layer.removeFeatures([selbegin_vector,selend_vector]);
-	}
-    if(pt1_id >= 0 && pt1_id < nbpts && pt2_id >= 0 && pt2_id < nbpts) {
-        selbegin_vector = new OpenLayers.Feature.Vector(map_track_points[pt1_id].clone(),null,
-            selbegin_icon);
-        selend_vector = new OpenLayers.Feature.Vector(map_track_points[pt2_id].clone(),null,
-            selend_icon);
-        selmarkers_layer.addFeatures([selbegin_vector,selend_vector]);
-    }
-    refreshSelectionInfos(pt1_id, last_point_id, pt2_id);
-	return false;
+  console.log("refreshSelection %o %o",pt1_id,pt2_id);
+  if(pt1_id >= 0 && pt1_id < nbpts && pt2_id >= 0 && pt2_id < nbpts) {
+    sel_layer.setVisible(true);
+    selbegin_feature.setGeometry(new ol.geom.Point(map_track_points[pt1_id]));
+    selend_feature.setGeometry(new ol.geom.Point(map_track_points[pt2_id]));
+  } else {
+    sel_layer.setVisible(false);
+  }
+  refreshSelectionInfos(pt1_id, last_point_id, pt2_id);
+  return false;
 }
 
 /* Recompute current point infos and move marker */
@@ -185,25 +67,18 @@ function refreshCurrentPoint(point_id) {
 			last_point_id = point_id;
 			hasmoved = 1;
 			if (center_map) {
-				var lonlat = new OpenLayers.LonLat(map_track_points[point_id].x,map_track_points[point_id].y);
-				VISU.getMap().updateSize();
-				VISU.getMap().setCenter(lonlat);
+                                  map.getView().setCenter(map_track_points[point_id]);
 			}
 			
-            refreshSnake(point_id);
-            
-			curpt_layer.removeFeatures([curpt_vector]);
-			curpt_vector = new OpenLayers.Feature.Vector(map_track_points[point_id].clone(),null,
-				arrow_icons[track_points[point_id].arrow_id]);
-			curpt_layer.addFeatures([curpt_vector]);
+                        //refreshSnake(point_id);
+                        curpt_feature.setGeometry(new ol.geom.Point(map_track_points[point_id]));
+                        curpt_feature.setStyle(arrow_icons[track_points[point_id].arrow_id]); 
 			
-            refreshCurrentPointInfos(point_id);
+                        refreshCurrentPointInfos(point_id);
 			moveChartMarkerCurrentPoint(point_id);
 			
 			currentpointslider.setValue(point_id);
 		}
-		
-		
 	}
 	return hasmoved;
 }
@@ -246,29 +121,76 @@ snakelengthslider.onchange = function () {
 
 refreshCurrentPoint(0);
 
-var VISU=null;
+console.log('geoportal ol');
 
-console.log("GeoPortalApiKey="+GeoPortalApiKey);
+var map_track_points = [];
+var i;
+for (i=0;i<track_points.length;i++) map_track_points[i]=ol.proj.fromLonLat([track_points[i].lon,track_points[i].lat]);
 
-var iv = Geoportal.load('map',
-                [GeoPortalApiKey],
-                {// map's center :
-                // longitude:
-                lon:track_points[0].lon,
-                // latitude:
-                lat:track_points[0].lat
-                },
-                null,
-                {
-                   //OPTIONS
-                   onView : initGeoportalMap,
-                    language:LANG,
-                    viewerClass:'Geoportal.Viewer.Default',
-                    overlays:{}, //remove blue pin
-                    layers:['ORTHOIMAGERY.ORTHOPHOTOS','GEOGRAPHICALGRIDSYSTEMS.MAPS'],
-                    layersOptions:{
-                        'ORTHOIMAGERY.ORTHOPHOTOS':{ visibility:false, opacity:1.0 }, //aerial photo: hidden by default
-                        'GEOGRAPHICALGRIDSYSTEMS.MAPS':{ visibility:true, opacity:0.85 } //IGN map: visible with high opacity
-                    }
-                }
-    );
+var bounds = new ol.extent.boundingExtent(map_track_points);
+
+var track = new ol.geom.LineString(map_track_points);
+var track_feature = new ol.Feature({
+              geometry: track,
+              name: 'Track'
+          });
+
+
+var arrow_icons = [];
+for (var angle=0;angle<360;angle += 15) {
+  arrow_icons.push(new ol.style.Style({image:new ol.style.Icon({src:'/static/images/Arrow' + angle + '.png'})}));
+}
+
+var curpt_feature = new ol.Feature({
+        geometry: new ol.geom.Point(map_track_points[0]),
+        name:'Current point'
+      });
+
+var curpt_layer = new ol.layer.Vector({
+  source:new ol.source.Vector(
+    {features:[
+      curpt_feature
+    ]}
+  ),
+  style:arrow_icons[track_points[0].arrow_id]
+ });
+
+var track_layer = new ol.layer.Vector({
+    source:new ol.source.Vector({features:[track_feature]}),
+    style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#FFBB00",
+                        width: 2
+                        })}),
+    opacity:0.7
+  });
+
+var selbegin_feature = new ol.Feature();
+var selend_feature = new ol.Feature();
+var sel_layer = new ol.layer.Vector({
+  source:new ol.source.Vector({features:[selbegin_feature,selend_feature]}),
+  style:new ol.style.Style({image:new ol.style.Icon({src:'/static/images/MarkerSelBegin.png'})})
+});
+
+var map = new ol.Map({
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      }),
+      track_layer,
+      sel_layer,
+      curpt_layer
+    ],
+    view: new ol.View({
+      center: map_track_points[0],
+      zoom: 4
+    })
+  });
+
+map.getView().fit(bounds);
+
+map.addEventListener("click",function(e){
+  var lonlat = ol.proj.toLonLat(e.coordinate);
+  console.log(lonlat);
+  refreshCurrentPoint(getCloserPointOfTrack(lonlat[1],lonlat[0]));
+});
+

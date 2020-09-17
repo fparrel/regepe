@@ -6,8 +6,11 @@ Source code of regepe.com
 git clone https://github.com/fparrel/regepe
 cd regepe
 docker build -t regepe .
-docker run -d -p 80:80 regepe
-lynx localhost
+# Prod
+#docker run -d -p 80:80 regepe
+# Dev
+docker run -p 8080:8080 -v $(pwd):/regepe --name regepe0 regepe
+firefox localhost:8080
 ```
 
 ## What is regepe.com
