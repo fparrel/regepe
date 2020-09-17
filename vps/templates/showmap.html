@@ -283,7 +283,7 @@
 {% if type=="GMaps" %}
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 {% elif type=="GeoPortal" %}
-<script type="text/javascript" charset="utf-8" src='https://api.ign.fr/geoportail/api/js/latest/Geoportal.js'></script>
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
 {% endif %}
 <script type="text/javascript" src="/static/javascript/utils{{minify}}.js"></script>
 <script type="text/javascript" src="/static/javascript/chartandpoint{{minify}}.js"></script>
