@@ -139,17 +139,25 @@ def DbBuildWordList(ele):
     DbBuildInvert('maps',ele,lambda value: SplitWords(value.lower()))
 
 
-def DbRebuildAllIfNeeded():
-    if RebuildNeeded('date'):
+def DbRebuildAllIfNeeded(force = [], verbose = False):
+    if RebuildNeeded('date') or 'date' in force:
+        if verbose:
+            print 'Rebuild date...'
         DbBuildInvert('maps','date',lambda value: [value])
         yield('maps/date')
-    if RebuildNeeded('trackdesc'):
+    if RebuildNeeded('trackdesc') or 'trackdesc' in force:
+        if verbose:
+            print 'Rebuild desc...'
         DbBuildWordList('trackdesc')
         yield('maps/trackdesc')
-    if RebuildNeeded('startpoint'):
+    if RebuildNeeded('startpoint') or 'startpoint' in force:
+        if verbose:
+            print 'Rebuild startpoint...'
         DbBuildInvert('maps','startpoint',lambda value: [value])
         yield('maps/startpoint')
-    if RebuildNeeded('trackuser'):
+    if RebuildNeeded('trackuser') or 'trackuser' in force:
+        if verbose:
+            print 'Rebuild user...'
         DbBuildInvert('maps','trackuser',lambda value: [value])
         yield('maps/trackuser')
 
