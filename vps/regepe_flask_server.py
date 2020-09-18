@@ -350,7 +350,10 @@ class MapSeach(SearchQueryParser):
         return Set()
 
 def map_search_result(mapid):
-    (lat,lon) = DbGet(mapid,'startpoint').split(',')
+    try:
+        (lat,lon) = DbGet(mapid,'startpoint').split(',')
+    except:
+        (lat,lon)=(0.0,0.0)
     trackdesc = DbGet(mapid,'trackdesc')
     startdate = DbGet(mapid,'date')
     trackuser = DbGet(mapid,'trackuser')
@@ -358,6 +361,7 @@ def map_search_result(mapid):
         desc = trackdesc.encode('ascii', 'xmlcharrefreplace')
     except:
         desc = trackdesc
+    desc = desc.replace('&','&amp;')
     return('<map mapid="%s" lat="%s" lon="%s" date="%s" user="%s">%s</map>' % (mapid,lat,lon,startdate,trackuser,desc))
 
 @application.route('/search/<search_req>')
