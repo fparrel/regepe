@@ -16,7 +16,7 @@
 <div class="mapbox">
 {% if type=="GMaps" %}
     <div id="map" title="{{_('Click on track to change current point')}}" tabindex="0" onkeydown="onMapKeyDown(event);" onmousewheel="onMapMouseWheel(event);"></div>
-{% elif type=="GeoPortal" %}
+{% else %}
     <div id="map" title="{{_('Click on track to change current point')}}" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
 {% endif %}
     <table class="currpointcontrol"><tbody>
@@ -65,7 +65,11 @@
     </tbody></table>
     <table class="mapfooter"><tbody><tr>
         <td class="mapfooterleft">
-            {{_('Switch to:')}} {% if type=="GeoPortal" %}<a href='/showmap/{{ mapid }}/GMaps'>Google Maps</a>{% else %}<a href='/showmap/{{ mapid }}/GeoPortal'>GeoPortal</a>{% endif %}
+            {{_('Switch to:')}}
+{% if type!="GeoPortal" %}<a href='/showmap/{{ mapid }}/GeoPortal'>IGN France</a>{% endif %}
+{% if type!="OpenTopo" %}<a href='/showmap/{{ mapid }}/OpenTopo'>OpenTopoMap</a>{% endif %}
+{% if type!="GMaps" %}<a href='/showmap/{{ mapid }}/GMaps'>Google Maps</a>{% endif %}
+{% if type!="IGNES" %}<a href='/showmap/{{ mapid }}/IGNES'>IGN Spain</a>{% endif %}
         </td>
         <td class="mapfooterright">{{_('Center map : ')}}<a id="center_map_toogle" href="javascript:void(0);" onclick="toogleCenterMap()">{{_('Yes')}}</a></td>
     </tr></tbody></table>
@@ -282,7 +286,7 @@
 {% endif %}
 {% if type=="GMaps" %}
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
-{% elif type=="GeoPortal" %}
+{% else %}
 <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
 {% endif %}
 <script type="text/javascript" src="/static/javascript/utils{{minify}}.js"></script>
@@ -296,9 +300,12 @@
 <script type="text/javascript" src="/static/javascript/map-flot{{minify}}.js"></script>
 {% if type=="GMaps" %}
 <script type="text/javascript" src="/static/javascript/mapgmaps{{minify}}.js"></script>
-{% elif type=="GeoPortal" %}
+{% else  %}
 <script type="text/javascript">
+{% if type=="GeoPortal" %}
 GeoPortalApiKey="{{ GeoPortalApiKey }}";
+{% endif %}
+map_type='{{type}}';
 </script>
 <script type="text/javascript" src="/static/javascript/mapgeoportal{{minify}}.js"></script>
 {% endif %}
