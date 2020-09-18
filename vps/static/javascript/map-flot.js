@@ -1,5 +1,5 @@
 
-/* 
+/*
 ********************
 * Global variables *
 ********************
@@ -54,23 +54,23 @@ MOUSEWHEEL_EVT
 
 */
 
-/* Called when a selection has changed on a chart. 
+/* Called when a selection has changed on a chart.
    If -1 is passed as chartid, remove current selection. */
 function chartSelChange(chartid) {
-	if (chartid != -1) {
-		selchartid = chartid;
-		refreshSelection(linecharts[chartid].pt1_id,linecharts[chartid].pt2_id);
-	}
-	else {
-		refreshSelection(-1,-1);
-        var i;
-        for (i=0;i<linecharts.length;i++) {
-            moveChartSelection(i,-1,-1);
-        }	
+  //console.log("chartSelChange(%d)",chartid);
+  if (chartid != -1) {
+    selchartid = chartid;
+    refreshSelection(linecharts[chartid].pt1_id,linecharts[chartid].pt2_id);
+  } else {
+    refreshSelection(-1,-1);
+    var i;
+    for (i=0;i<linecharts.length;i++) {
+      moveChartSelection(i,-1,-1);
     }
+  }
 }
 
-/* Move the left marker of a selection on all chart. 
+/* Move the left marker of a selection on all chart.
    DO NOT refresh map markers and infos */
 function moveChartMarkerLeft(pt1_id,chartid) {
     var i;
@@ -79,7 +79,7 @@ function moveChartMarkerLeft(pt1_id,chartid) {
     }
 }
 
-/* Move the left marker of a selection on a chart. 
+/* Move the left marker of a selection on a chart.
    DO NOT refresh map markers and infos */
 function moveChartMarkerLeftOne(pt1_id,chartid) {
     var sel = plot[chartid].getSelection();
@@ -90,7 +90,7 @@ function moveChartMarkerLeftOne(pt1_id,chartid) {
 	linecharts[chartid].pt1_id = pt1_id;
 }
 
-/* Move the right marker of a selection on all chart. 
+/* Move the right marker of a selection on all chart.
    DO NOT refresh map markers and infos */
 function moveChartMarkerRight(pt2_id,chartid) {
     var i;
@@ -99,7 +99,7 @@ function moveChartMarkerRight(pt2_id,chartid) {
     }
 }
 
-/* Move the right marker of a selection on a chart. 
+/* Move the right marker of a selection on a chart.
    DO NOT refresh map markers and infos */
 function moveChartMarkerRightOne(pt2_id,chartid) {
     var sel = plot[chartid].getSelection();
@@ -110,7 +110,7 @@ function moveChartMarkerRightOne(pt2_id,chartid) {
 	linecharts[chartid].pt2_id = pt2_id;
 }
 
-/* Move the current point marker on all charts. 
+/* Move the current point marker on all charts.
    DO NOT refresh map marker and infos */
 function moveChartMarkerCurrentPoint(ptid) {
     var i;
@@ -234,7 +234,6 @@ function updateChartMarkerValue(name,value,title) {
         document.getElementById(name+"chartmarkercurrentpoint").onmousedown = document.getElementById(name+"chartinput").onmousedown; //function(event) { onChartMouseDown(event,this,0); };
         document.getElementById(name+"chartmarkercurrentpoint").onmouseup = document.getElementById(name+"chartinput").onmouseup; //function(event) { onChartMouseUp(event,this,0); };
         document.getElementById(name+"chartmarkercurrentpoint").oncontextmenu = function(event) { return false; };
-        
     }*/
 }
 
@@ -247,7 +246,6 @@ function updateSelChartMarkerValue(name,value,title) {
         }
     }
     else {
-        
         var markervaluediv = document.createElement('div');
         markervaluediv.style.marginTop = "-215px";
         var i;
@@ -264,11 +262,8 @@ function updateSelChartMarkerValue(name,value,title) {
         document.getElementById(name+"chartchartmarkerleft").onmousedown = function(event) { onChartMouseDown(event,this,0); };
         document.getElementById(name+"chartchartmarkerleft").onmouseup = function(event) { onChartMouseUp(event,this,0); };
         document.getElementById(name+"chartchartmarkerleft").oncontextmenu = function(event) { return false; };
-        
         charmarkerdiv[name+'sel'] = markervaluediv;
-        
     }
-    
     var w = (parseInt(document.getElementById(name+"chartchartmarkerright").style.left)+10 - parseInt(document.getElementById(name+"chartchartmarkerleft").style.left) - parseInt(charmarkerdiv[name+'sel'].offsetWidth))/2;
     charmarkerdiv[name+'sel'].style.marginLeft = w + "px";*/
 }
@@ -307,7 +302,7 @@ function refreshCurrentPointInfos(point_id) {
     if(typeof track_points[point_id].cumul_dminus!='undefined') {
         infos += '<br/><b>D-:</b> '+track_points[point_id].cumul_dminus;
     }
-    document.getElementById("current_point_infos").innerHTML = infos;    
+    document.getElementById("current_point_infos").innerHTML = infos;
 }
 
 /* return a string that represents a time delta */
@@ -345,91 +340,87 @@ function tom180p180(deg) {
 
 /* Recompute and refresh selection infos */
 function refreshSelectionInfos(pt1_id, pt_cur, pt2_id) {
-	if ((pt1_id >= 0 && pt1_id < nbpts)&&(pt2_id >= 0 && pt2_id < nbpts)) {
-        
-        selfirstptid = pt1_id;
-        sellastptid = pt2_id;
-        
-		// Compute infos
-		var hdist = geodeticDist(track_points[pt2_id].lat,track_points[pt2_id].lon,
-			track_points[pt1_id].lat,track_points[pt1_id].lon);
-		var vdist = track_points[pt2_id].ele-track_points[pt1_id].ele;
-        var slope = 0.0;
-		if (hdist>0) {
-			slope = vdist * 100.0 / hdist;
-		}
-		
-		// Display infos
-        var timediff = -1;
-        if ((track_points[pt2_id].time!='None')&&(track_points[pt1_id].time!='None')) {
-            timediff = (parseTimeString(track_points[pt2_id].time)-parseTimeString(track_points[pt1_id].time));
-        }
-		var infos = '';
-        //infos = infos + pt1_id+','+pt2_id+'<br/>';
-        var lenpath=computeLengtOnPath(parseInt(pt1_id), parseInt(pt2_id));
-        infos = infos +
+  if ((pt1_id >= 0 && pt1_id < nbpts)&&(pt2_id >= 0 && pt2_id < nbpts)) {
+
+    selfirstptid = pt1_id;
+    sellastptid = pt2_id;
+
+    // Compute infos
+    var hdist = geodeticDist(track_points[pt2_id].lat,track_points[pt2_id].lon,
+                             track_points[pt1_id].lat,track_points[pt1_id].lon);
+    var vdist = track_points[pt2_id].ele-track_points[pt1_id].ele;
+    var slope = 0.0;
+    if (hdist > 0) {
+      slope = vdist * 100.0 / hdist;
+    }
+
+    // Display infos
+    var timediff = -1;
+    if ((track_points[pt2_id].time!='None')&&(track_points[pt1_id].time!='None')) {
+      timediff = (parseTimeString(track_points[pt2_id].time)-parseTimeString(track_points[pt1_id].time));
+    }
+    var infos = '';
+    //infos = infos + pt1_id+','+pt2_id+'<br/>';
+    var lenpath = computeLengtOnPath(parseInt(pt1_id), parseInt(pt2_id));
+    infos = infos +
         //pt1_id+' '+pt2_id+'<br/>'+
-		'<b>'+DIRECT_DISTANCE+':</b> '+Math.round(hdist)+' m<br/>' +
-        '<b>'+PATH_DISTANCE+':</b> '+Math.round(lenpath)+' m';
-        if (timediff>=0) {
-            infos = infos + '<br/><b>'+SPEED+':</b> '+convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit;
-            updateSelChartMarkerValue('spdtime',[convertSpeed(lenpath/timediff,spdunit).toFixed(2)+ ' '+spdunit,convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit],[PATH_SPEED,DIRECT_SPEED]);
+            '<b>'+DIRECT_DISTANCE+':</b> '+Math.round(hdist)+' m<br/>' +
+            '<b>'+PATH_DISTANCE+':</b> '+Math.round(lenpath)+' m';
+    if (timediff >= 0) {
+      infos = infos + '<br/><b>'+SPEED+':</b> '+convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit;
+      updateSelChartMarkerValue('spdtime',[convertSpeed(lenpath/timediff,spdunit).toFixed(2)+ ' '+spdunit,convertSpeed(hdist/timediff,spdunit).toFixed(2)+ ' '+spdunit],[PATH_SPEED,DIRECT_SPEED]);
+    }
+    if (!flat) {
+      var infoselechart = [Math.round(vdist)+' m',Math.round(slope)+'%'];
+      var infoseletitle = [ELE_GAIN,SLOPE];
+      infos = infos +
+              '<br/><b>D:</b> '+Math.round(vdist)+' m<br/>' +
+              '<b>'+SLOPE+':</b> '+Math.round(slope)+' %';
+      if (timediff >= 0) {
+        infos = infos + '<br/><b>'+VERTICAL_SPEED+':</b> '+Math.round(vdist*3600/timediff)+' m/h';
+        infoselechart.push(Math.round(vdist*3600/timediff)+' m/h');
+        infoseletitle[infoseletitle.length] = VERTICAL_SPEED;
+      }
+      updateSelChartMarkerValue('eledist',infoselechart,infoseletitle);
+    }
+    if (wind) {
+      var course = computeCourse( track_points[pt1_id].lat,track_points[pt1_id].lon,
+				  track_points[pt2_id].lat,track_points[pt2_id].lon);
+      infos = infos +
+              '<br/><b>'+COURSE_ABS+':</b> ' + Math.round(course)+'&deg;'+
+              '<br/><b>'+COURSE_REL+':</b> ' + tom180p180(Math.round(course - winddir))+'&deg;';
+      if (timediff >= 0) {
+        if (winddirorbuoy) {
+          infos = infos +
+                  '<br/><b>VMG:</b> ' + convertSpeed(hdist * Math.cos((course - winddir)*Math.PI/180) / timediff,spdunit).toFixed(2)+' '+spdunit;
+        } else {
+          infos = infos +
+                  '<br/><b>VMG:</b> ' + convertSpeed(hdist * computeVmgCosForBuoy(track_points[pt1_id].lat,track_points[pt1_id].lon,course) / timediff,spdunit).toFixed(2)+' '+spdunit;
         }
-		if (!flat) {
-            var infoselechart = [Math.round(vdist)+' m',Math.round(slope)+'%'];
-            var infoseletitle = [ELE_GAIN,SLOPE];
-			infos = infos +
-			'<br/><b>D:</b> '+Math.round(vdist)+' m<br/>' +
-			'<b>'+SLOPE+':</b> '+Math.round(slope)+' %';
-            if (timediff>=0) {
-                infos = infos + '<br/><b>'+VERTICAL_SPEED+':</b> '+Math.round(vdist*3600/timediff)+' m/h';
-                infoselechart.push(Math.round(vdist*3600/timediff)+' m/h');
-                infoseletitle[infoseletitle.length] = VERTICAL_SPEED;
-            }
-            updateSelChartMarkerValue('eledist',infoselechart,infoseletitle);
-		}
-		if (wind) {
-            var course = computeCourse(
-				track_points[pt1_id].lat,track_points[pt1_id].lon,
-				track_points[pt2_id].lat,track_points[pt2_id].lon);
-			infos = infos +
-			'<br/><b>'+COURSE_ABS+':</b> ' + Math.round(course)+'&deg;'+
-            '<br/><b>'+COURSE_REL+':</b> ' + tom180p180(Math.round(course - winddir))+'&deg;';
-            if (timediff>=0) {
-                if(winddirorbuoy) {
-                    infos = infos +
-                        '<br/><b>VMG:</b> ' + convertSpeed(hdist * Math.cos((course - winddir)*Math.PI/180) / timediff,spdunit).toFixed(2)+' '+spdunit;
-                }
-                else {
-                    infos = infos +
-                        '<br/><b>VMG:</b> ' + convertSpeed(hdist * computeVmgCosForBuoy(track_points[pt1_id].lat,track_points[pt1_id].lon,course) / timediff,spdunit).toFixed(2)+' '+spdunit;
-                }
-            }
-            if(pt_cur!=-1) {
-                infos = infos +
+      }
+      if (pt_cur != -1) {
+        infos = infos +
                 '<br/><b>'+ANGLE+':</b> ' + Math.round(computeAngle(
                     track_points[pt1_id].lat,track_points[pt1_id].lon,
                     track_points[pt_cur].lat,track_points[pt_cur].lon,
-                    track_points[pt2_id].lat,track_points[pt2_id].lon))+'&deg;';            
-            }
-            
-		}
-        if (timediff>=0) {
-            infos = infos + '<br/><b>'+TIME_DELTA+':</b> '+secondsToTimeString(timediff);
-        }
-		document.getElementById('selection_infos').innerHTML=infos;
-	}
-	else {
-		document.getElementById('selection_infos').innerHTML = NO_SELECTION;
-	}
+                    track_points[pt2_id].lat,track_points[pt2_id].lon))+'&deg;';
+      }
+    }
+    if (timediff >= 0) {
+      infos = infos + '<br/><b>'+TIME_DELTA+':</b> '+secondsToTimeString(timediff);
+    }
+    document.getElementById('selection_infos').innerHTML=infos;
+  } else {
+    document.getElementById('selection_infos').innerHTML = NO_SELECTION;
+  }
 }
 
 function getSelFirstPtId() {
-    return (selfirstptid);
+    return selfirstptid;
 }
 
 function getSelLastPtId() {
-    return (sellastptid);
+    return sellastptid;
 }
 
 function guessWindDir() {
@@ -487,18 +478,17 @@ function sendComment(comment) {
 }
 
 function onSendCommentAnswer() {
-	if (this.readyState == 4) {
-		if (this.status == 200) {
-            var result;
-            result = this.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
-            if (result=='OK') {
-                fillComments();
-            }
-            else {
-                document.getElementById('comments').innerHTML = '<b>'+ERROR+':</b> '+result;
-            }
-        }
+  if (this.readyState == 4) {
+    if (this.status == 200) {
+      var result;
+      result = this.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
+      if (result == 'OK') {
+        fillComments();
+      } else {
+        document.getElementById('comments').innerHTML = '<b>'+ERROR+':</b> '+result;
+      }
     }
+  }
 }
 
 function fillComments() {
@@ -511,22 +501,22 @@ function fillComments() {
 }
 
 function onGetCommentsAnswer() {
-	if (this.readyState == 4) {
-		if (this.status == 200) {
-            var comments = this.responseXML.getElementsByTagName("comment");
-            var out = '';
-            for (var i=0;i<comments.length;i++) {
-                var d = comments[i].getAttribute("date");
-                var user = comments[i].getAttribute("user");
-                var comment = '';
-                if (comments[i].childNodes[0]) {
-                    comment = comments[i].childNodes[0].nodeValue;
-                }
-                out = out + '<i>'+d+'</i> by <b>' + user + ':</b> ' + comment + '<br/>';
-            }
-            document.getElementById('comments').innerHTML = out + COMMENT_ADD;
+  if (this.readyState == 4) {
+    if (this.status == 200) {
+      var comments = this.responseXML.getElementsByTagName("comment");
+      var out = '';
+      for (var i=0;i<comments.length;i++) {
+        var d = comments[i].getAttribute("date");
+        var user = comments[i].getAttribute("user");
+        var comment = '';
+        if (comments[i].childNodes[0]) {
+          comment = comments[i].childNodes[0].nodeValue;
         }
+        out = out + '<i>'+d+'</i> by <b>' + user + ':</b> ' + comment + '<br/>';
+      }
+      document.getElementById('comments').innerHTML = out + COMMENT_ADD;
     }
+  }
 }
 
 /* When user choose to use buoy instead of winddir slider */
@@ -678,6 +668,7 @@ function toogleTab(e) {
 }
 
 function onChartSelected(chartid,minx,maxx) {
+    //console.log("onChartSelected(%d %d %d)",chartid,minx,maxx);
     var i,mini = -1,maxi=-1;
     for(i=0;i<chartdata[chartid][0].data.length;i++) {
         if ((mini==-1)&&(chartdata[chartid][0].data[i][0]>=minx)) {
@@ -696,12 +687,13 @@ function onChartSelected(chartid,minx,maxx) {
 }
 
 function onChartUnselected(chartid) {
-    //console.log("onChartUnselected %s",chartid);
-    chartzoombtn[chartid].style.display="none";
+  //console.log("onChartUnselected %s",chartid);
+  chartzoombtn[chartid].style.display="none";
+  refreshSelection(-1,-1);
 }
 
 function doChartZoom(chartid,minx,maxx) {
-    plot[chartid] = $.plot(placeholder[chartid], chartdata[chartid], $.extend(true, {}, chartoptions[chartid], 
+    plot[chartid] = $.plot(placeholder[chartid], chartdata[chartid], $.extend(true, {}, chartoptions[chartid],
         {xaxis: {min: minx,max: maxx}}));
 }
 
@@ -777,7 +769,7 @@ var currentpointslider;
 var playingspeedslider;
 var snakelengthslider;
 
-if(wind) {
+if (wind) {
     var winddirslider;
     var winddir = 180;
     var winddirorbuoy = 1;
@@ -787,7 +779,7 @@ if(wind) {
     var polarcanva;
 }
 
-// For flot charts 
+// For flot charts
 var chartdata = [];
 var plot = [];
 var placeholder = [];
@@ -890,7 +882,7 @@ if (wind) {
     // Redraw polar and add line
     refreshWinddirPolar();*/
     //refreshBestVMGs();
-    
+
     winddirslider.setMinimum(0);
     winddirslider.setMaximum(359);
     winddirslider.onchange = function () {
@@ -917,7 +909,6 @@ if (wind) {
     winddirslider.setValue(guessWindDir());
     /*winddirslider.onchange();*/
     loadWindDir();
-   
 }
 
 if(!flat) {
@@ -941,9 +932,9 @@ $(function() {
             chartzoombtn[j] = $("#chartzoombtn"+chart[i]['name'])[0];
             chartzoomresetbtn[j] = $("#chartzoomresetbtn"+chart[i]['name'])[0];
             chartoptions[j] = ((chart[i]['timerange'])?optionstime:options);
-            
+
             chartoptions[j]["grid"]["markings"] = pauseAreas(j);
-            
+
             plot[j] = $.plot(placeholder[j], chartdata[j], chartoptions[j]);
             placeholder[j].bind("plotselected", function (event, ranges) {onChartSelected(event.target.chartid,ranges.xaxis.from,ranges.xaxis.to);});
             placeholder[j].bind("plotunselected", function (event) {onChartUnselected(event.target.chartid);});

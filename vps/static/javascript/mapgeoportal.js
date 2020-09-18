@@ -1,45 +1,7 @@
 
-function onMarkerDrag(e) {
-   var pos = e.geometry;
-    if (pos) {
-        pos.transform(VISU.getMap().getProjection(), OpenLayers.Projection.CRS84); // GeoPortail -> WGS84
-        var ptid = getCloserPointOfTrack(pos.y,pos.x);
-        pos.transform(OpenLayers.Projection.CRS84,VISU.getMap().getProjection());
-        if(e==selbegin_vector) {
-        	// Refresh selection info box
-            refreshSelection(ptid,sellastptid);
-            // Move markers on chart
-            moveChartMarkerLeft(ptid,selchartid);
-        }
-        else {
-        	// Refresh selection info box
-            refreshSelection(selfirstptid,ptid);
-            // Move markers on chart
-            moveChartMarkerRight(ptid,selchartid);
-        }
-    }
-}
-
-/*
-		// create line and markers styles
-		start_icon = {externalGraphic:'/static/images/MarkerStart.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};
-		end_icon = {externalGraphic:'/static/images/MarkerEnd.png',  graphicWidth:12, graphicHeight:20, graphicXOffset:-6, graphicYOffset:-20};
-		
-		trackseg_style = {
-			strokeColor: "#aaaaaa",
-			strokeWidth: 5,
-			strokeOpacity: 0.5,
-			strokeDashstyle: "solid"
-		};
-		
-		drag = new OpenLayers.Control.DragFeature(selmarkers_layer, {onComplete: onMarkerDrag});
-		VISU.getMap().addControl(drag);
-		drag.activate();
-*/
-
 /* Recompute selection infos and move markers */
 function refreshSelection(pt1_id, pt2_id) {
-  console.log("refreshSelection %o %o",pt1_id,pt2_id);
+  //console.log("refreshSelection %o %o",pt1_id,pt2_id);
   if(pt1_id >= 0 && pt1_id < nbpts && pt2_id >= 0 && pt2_id < nbpts) {
     sel_layer.setVisible(true);
     selbegin_feature.setGeometry(new ol.geom.Point(map_track_points[pt1_id]));
@@ -53,91 +15,91 @@ function refreshSelection(pt1_id, pt2_id) {
 
 /* Recompute current point infos and move marker */
 function refreshCurrentPoint(point_id) {
-	
-	hasmoved = 0;
-	
-	if (typeof last_point_id == "undefined") {
-		last_point_id = -1;
-	}
-	
-	if (point_id != last_point_id) { 
-		if (typeof center_map == "undefined") center_map=1;
-		
-		if (point_id >= 0 && point_id < nbpts && typeof map_track_points!='undefined') {
-			last_point_id = point_id;
-			hasmoved = 1;
-			if (center_map) {
-                                  map.getView().setCenter(map_track_points[point_id]);
-			}
-			
-                        //refreshSnake(point_id);
-                        curpt_feature.setGeometry(new ol.geom.Point(map_track_points[point_id]));
-                        curpt_feature.setStyle(arrow_icons[track_points[point_id].arrow_id]); 
-			
-                        refreshCurrentPointInfos(point_id);
-			moveChartMarkerCurrentPoint(point_id);
-			
-			currentpointslider.setValue(point_id);
-		}
-	}
-	return hasmoved;
+
+  hasmoved = 0;
+
+  if (typeof last_point_id == "undefined") {
+    last_point_id = -1;
+  }
+
+  if (point_id != last_point_id) { 
+    if (typeof center_map == "undefined") center_map = 1;
+
+    if (point_id >= 0 && point_id < nbpts && typeof map_track_points!='undefined') {
+      last_point_id = point_id;
+      hasmoved = 1;
+      if (center_map) {
+        map.getView().setCenter(map_track_points[point_id]);
+      }
+
+      refreshSnake(point_id);
+      curpt_feature.setGeometry(new ol.geom.Point(map_track_points[point_id]));
+      curpt_feature.setStyle(arrow_icons[track_points[point_id].arrow_id]); 
+
+      refreshCurrentPointInfos(point_id);
+      moveChartMarkerCurrentPoint(point_id);
+
+      currentpointslider.setValue(point_id);
+    }
+  }
+  return hasmoved;
 }
 
 /* Refresh snake on map givent the current point id */
 function refreshSnake(cur_pt) {
-	if (snakelength>0) {
-		if (typeof curtrackseg != "undefined") {
-			curpt_layer.removeFeatures([curtrackseg]);
-		}
-		var minid = cur_pt-snakelength;
-		if (minid<0) { minid = 0; }
-		var maxid = parseInt(cur_pt)+parseInt(snakelength)*2;
-		if (maxid>map_track_points.length-1) { maxid = map_track_points.length-1; }
-		curtrackseg = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(map_track_points.slice(minid,maxid)), null, trackseg_style);
-		curpt_layer.addFeatures([curtrackseg]);
-	}
-}
-
-function onMoveSelBeginMarker() {
-	var ptid = getCloserPointOfTrack(selbegin_marker.getLatLng().lat(),selbegin_marker.getLatLng().lng());
-	/* ... */
-}
-
-function onMoveSelEndMarker() {
-	var ptid = getCloserPointOfTrack(selend_marker.getLatLng().lat(),selend_marker.getLatLng().lng());	
-	/* ... */
+  if (snakelength > 0) {
+    snake_layer.setVisible(true);
+    let minid = cur_pt-snakelength;
+    if (minid<0) { minid = 0; }
+    let maxid = parseInt(cur_pt)+parseInt(snakelength)*2;
+    if (maxid>map_track_points.length-1) { maxid = map_track_points.length-1; }
+    snake_feature.setGeometry(new ol.geom.LineString(map_track_points.slice(minid,maxid)));
+  } else {
+    snake_layer.setVisible(false);
+  }
 }
 
 snakelengthslider.onchange = function () {
-	snakelength = snakelengthslider.getValue();
-	refreshSnake(last_point_id);
-	if (snakelength==0) {
-		// remove track if no snake
-		if (typeof curtrackseg != "undefined") {
-			curpt_layer.removeFeatures([curtrackseg]);
-		}
-	}
+  snakelength = snakelengthslider.getValue();
+  refreshSnake(last_point_id);
 }
 
 refreshCurrentPoint(0);
 
-console.log('geoportal ol');
-
-var map_track_points = [];
-var i;
-for (i=0;i<track_points.length;i++) map_track_points[i]=ol.proj.fromLonLat([track_points[i].lon,track_points[i].lat]);
-
-var bounds = new ol.extent.boundingExtent(map_track_points);
-
-var track = new ol.geom.LineString(map_track_points);
-var track_feature = new ol.Feature({
-              geometry: track,
-              name: 'Track'
-          });
+// Build track points
+var map_track_points = track_points.map(tp => ol.proj.fromLonLat([tp.lon, tp.lat]));
 
 
+// Track layer
+var track_layer = new ol.layer.Vector(
+  {
+    source: new ol.source.Vector(
+              { features:[new ol.Feature({
+                            geometry: new ol.geom.LineString(map_track_points),
+                            name: 'Track'})
+                         ]
+              }),
+    style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#FFBB00",
+                                                          width: 2
+                                                          })}),
+    opacity:0.7
+  });
+
+
+// Snake layer
+var snake_feature = new ol.Feature({name:'Snake'});
+var snake_layer = new ol.layer.Vector({
+  source:new ol.source.Vector({features:[snake_feature]}),
+  style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#aaaaaa",
+                                                        width: 3
+                                                       })}),
+  opacity:0.7
+});
+
+
+// Current point layer
 var arrow_icons = [];
-for (var angle=0;angle<360;angle += 15) {
+for (let angle=0;angle<360;angle += 15) {
   arrow_icons.push(new ol.style.Style({image:new ol.style.Icon({src:'/static/images/Arrow' + angle + '.png'})}));
 }
 
@@ -155,28 +117,113 @@ var curpt_layer = new ol.layer.Vector({
   style:arrow_icons[track_points[0].arrow_id]
  });
 
-var track_layer = new ol.layer.Vector({
-    source:new ol.source.Vector({features:[track_feature]}),
-    style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#FFBB00",
-                        width: 2
-                        })}),
-    opacity:0.7
-  });
 
+// Selection layer
 var selbegin_feature = new ol.Feature();
 var selend_feature = new ol.Feature();
 var sel_layer = new ol.layer.Vector({
   source:new ol.source.Vector({features:[selbegin_feature,selend_feature]}),
-  style:new ol.style.Style({image:new ol.style.Icon({src:'/static/images/MarkerSelBegin.png'})})
+  style:new ol.style.Style({image:new ol.style.Icon({src:'/static/images/MarkerSelBegin.png',anchor:[0.5,1.0]})})
 });
 
+
+// Begin/end points layer
+var markerbegin = new ol.style.Style({image:new ol.style.Icon({src:'/static/images/MarkerStart.png',anchor:[0.5,1.0]})});
+var markerend = new ol.style.Style({image:new ol.style.Icon({src:'/static/images/MarkerEnd.png',anchor:[0.5,1.0]})});
+var feature_begin = new ol.Feature(
+        {geometry:new ol.geom.Point(map_track_points[0])});
+var feature_end = new ol.Feature(
+        {geometry:new ol.geom.Point(map_track_points[map_track_points.length-1])});
+
+var beginend_layer = new ol.layer.Vector(
+  {source:new ol.source.Vector(
+    {features:[feature_begin,feature_end]
+    }),
+    style:function(feature) { return (feature==feature_begin)?markerbegin:markerend;}
+  });
+
+
+// IGN Source
+function newIGNSource() {
+  let resolutions = [];
+  let matrixIds = [];
+  let maxResolution = ol.extent.getWidth(ol.proj.get('EPSG:3857').getExtent()) / 256;
+  for (let i = 0; i < 18; i++) {
+    matrixIds[i] = i.toString();
+    resolutions[i] = maxResolution / Math.pow(2, i);
+  }
+  return new ol.source.WMTS({
+    url: 'https://wxs.ign.fr/pratique/geoportail/wmts',
+    layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
+    matrixSet: 'PM',
+    format: 'image/jpeg',
+    projection: 'EPSG:3857',
+    tileGrid: new ol.tilegrid.WMTS({
+      origin: [-20037508, 20037508],
+      resolutions: resolutions,
+      matrixIds: matrixIds,
+    }),
+    style: 'normal'
+  });
+}
+
+function newIGNESSource() {
+  let resolutions = [];
+  let matrixIds = [];
+  let projectionExtent = ol.proj.get('EPSG:4326').getExtent();
+  let maxResolution = ol.extent.getWidth(projectionExtent) / 512;
+  for (let i = 0; i < 18; i++) {
+    matrixIds[i] = "EPSG:4326:" + i;
+    resolutions[i] = maxResolution / Math.pow(2, i);
+  }
+  return new ol.source.WMTS({
+    url: 'https://www.ign.es/wmts/mapa-raster',
+    layer: 'MTN',
+    matrixSet: 'EPSG:4326',
+    format: 'image/jpeg',
+    projection: 'EPSG:4326',
+    tileGrid: new ol.tilegrid.WMTS({
+      origin: ol.extent.getTopLeft(projectionExtent),
+      resolutions: resolutions,
+      matrixIds: matrixIds,
+    }),
+    style: 'normal',
+    attributions: '<a href="http://www.ign.es" target="_blank">IGN.es</a>'
+  });
+}
+
+
+// Open topo map source
+function newOpenTopoSource() {
+  return new ol.source.OSM({
+              url: 'https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png'
+            });
+}
+
+
+function newSource(maptype) {
+  if (maptype=='OpenTopo') {
+    return newOpenTopoSource();
+  } else if (maptype=='OSM') {
+    return new ol.source.OSM();
+  } else if (maptype==='GeoPortal') {
+    return newIGNSource();
+  } else if (maptype==='IGNES') {
+    return newIGNESSource();
+  }
+}
+
+
+// Map creation
 var map = new ol.Map({
     target: 'map',
     layers: [
       new ol.layer.Tile({
-        source: new ol.source.OSM()
+        source: newSource(map_type)
       }),
       track_layer,
+      snake_layer,
+      beginend_layer,
       sel_layer,
       curpt_layer
     ],
@@ -186,11 +233,23 @@ var map = new ol.Map({
     })
   });
 
-map.getView().fit(bounds);
+map.getView().fit(new ol.extent.boundingExtent(map_track_points));
 
 map.addEventListener("click",function(e){
   var lonlat = ol.proj.toLonLat(e.coordinate);
-  console.log(lonlat);
   refreshCurrentPoint(getCloserPointOfTrack(lonlat[1],lonlat[0]));
 });
+
+var modify = new ol.interaction.Modify({features:new ol.Collection([selbegin_feature,selend_feature])})
+map.addInteraction(modify);
+function onSelMarkerMove(e) {
+  let lonlat1 = ol.proj.toLonLat(selbegin_feature.getGeometry().getCoordinates());
+  let ptid1 = getCloserPointOfTrack(lonlat1[1],lonlat1[0]);
+  let lonlat2 = ol.proj.toLonLat(selend_feature.getGeometry().getCoordinates());
+  let ptid2 = getCloserPointOfTrack(lonlat2[1],lonlat2[0]);
+  refreshSelection(ptid1,ptid2);
+  moveChartMarkerLeft(ptid1,selchartid);
+  moveChartMarkerRight(ptid2,selchartid);
+}
+modify.on('modifyend',onSelMarkerMove);
 
