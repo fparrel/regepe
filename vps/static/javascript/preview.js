@@ -22,40 +22,34 @@ function showPreview(mapid) {
 	document.getElementById("row"+mapid).style.border ='1px solid ';
 }
 
-var markers=new Array();
+var markers = new Array();
 
-var marker_icon_size = new GIcon();
-marker_icon_size.iconSize = new GSize(12, 20);
-marker_icon_size.shadowSize = new GSize(22, 20);
-marker_icon_size.iconAnchor = new GPoint(6, 20);
-marker_icon_size.infoWindowAnchor = new GPoint(5, 1);
-var marker_icon = new GIcon(marker_icon_size, "/static/images/MarkerSelEnd.png", null, "/static/images/MarkerShade.png");
+var marker_icon = {url: "/static/images/MarkerSelEnd.png", size: {width: 12, height: 20}, anchor: {x: 6, y: 20}};
 
 // Create map
-var map = new GMap2(document.getElementById("map_of_maps"));
-map.addMapType(G_PHYSICAL_MAP);
-map.setMapType(G_PHYSICAL_MAP);
-map.enableScrollWheelZoom();
+var mapOptions = {
+  zoom: 5,
+  center: new google.maps.LatLng(45.0,0.0),
+  mapTypeId: google.maps.MapTypeId.TERRAIN
+};
+var map = new google.maps.Map(document.getElementById("map_of_maps"),mapOptions);
 
-map.setCenter(new GLatLng(45.0,0.0));
-map.setZoom(5);
 
 // create a clickable marker
 function createMarker(mapid,latlon,text) {
-	var marker = new GMarker(latlon, {icon: marker_icon});
-	//marker.openInfoWindowHtml(text);
-	GEvent.addListener(marker, "click", function(){
-		showPreview(mapid);
-		map.setCenter(latlon);
-	});
-	return marker;
+  var marker = new google.maps.Marker({position:latlon, icon: marker_icon, draggable: false, map:map});
+  google.maps.event.addListener(marker, "click", function(){
+      showPreview(mapid);
+      map.setCenter(latlon);
+    });
+  return marker;
 }
 
 function showOnMap(mapid,lat,lon,desc) {
-	var latlon = new GLatLng(lat,lon);
-	if(typeof markers[mapid]=='undefined') {
-		markers[mapid] = createMarker(mapid,latlon,desc);
-		map.addOverlay(markers[mapid]);
-	}
-	map.setCenter(latlon);
+  var latlon = new google.maps.LatLng(lat,lon);
+  if(typeof markers[mapid]=='undefined') {
+    markers[mapid] = createMarker(mapid,latlon,desc);
+  }
+  map.setCenter(latlon);
 }
+

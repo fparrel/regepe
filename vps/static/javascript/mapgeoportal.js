@@ -67,7 +67,7 @@ snakelengthslider.onchange = function () {
 refreshCurrentPoint(0);
 
 // Build track points
-var map_track_points = track_points.map(tp => ol.proj.fromLonLat([tp.lon, tp.lat]));
+var map_track_points = track_points.map(function(tp){return ol.proj.fromLonLat([tp.lon, tp.lat]);}); //tp => ol.proj.fromLonLat([tp.lon, tp.lat]));
 
 
 // Track layer
@@ -153,10 +153,12 @@ function newIGNSource() {
     resolutions[i] = maxResolution / Math.pow(2, i);
   }
   return new ol.source.WMTS({
-    url: 'https://wxs.ign.fr/pratique/geoportail/wmts',
-    layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
+    url: 'https://wxs.ign.fr/choisirgeoportail/geoportail/wmts',
+    //layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
+    layer: 'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2',
     matrixSet: 'PM',
-    format: 'image/jpeg',
+    //format: 'image/jpeg',
+    format: 'image/png',
     projection: 'EPSG:3857',
     tileGrid: new ol.tilegrid.WMTS({
       origin: [-20037508, 20037508],
