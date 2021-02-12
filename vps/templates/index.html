@@ -19,6 +19,6 @@
 			<div id="map_of_maps" style="height:300px;width:400px;right:0; position:absolute; margin-right: 10px; z-index:9;"></div>
 {% endblock %}
 {% block jsext %}
-<script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key={{GMapsApiKey}}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 <script type="text/javascript" src="/static/javascript/preview{{minify}}.js"></script>
 {% endblock %}
