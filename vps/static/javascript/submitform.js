@@ -489,31 +489,25 @@ function refresh_preview(filecontents,track,filetype,reset) {
     else if (filetype==5) {
         result = sbp_parse_trk_for_preview(filecontents);
     }    
-	if (result!=-1) {
-        var pt = new GLatLng(result[1],result[2]);
+    if (result!=-1) {
+        var pt = new google.maps.LatLng(result[1],result[2]);
         if (typeof(marker_icon)=='undefined') {
-            var marker_icon_size = new GIcon();
-            marker_icon_size.iconSize = new GSize(12, 20);
-            marker_icon_size.shadowSize = new GSize(22, 20);
-            marker_icon_size.iconAnchor = new GPoint(6, 20);
-            marker_icon_size.infoWindowAnchor = new GPoint(5, 1);
-            marker_icon = new GIcon(marker_icon_size, "/static/images/MarkerStart.png", null, "/static/images/MarkerShade.png");
+            marker_icon = {url:"/static/images/MarkerStart.png",size:{width:12,height:20},anchor:{x:6,y:20}};
         }
         if (reset) {
             if (typeof(markers)!='undefined') {
                 var i;
                 for(i=0;i<markers.length;i++) {
-                    map.removeOverlay(markers[i]);
+                    markers[i].setMap(null);
                 }
                 markers = new Array();
-                bounds = new GLatLngBounds();
+                bounds = new google.maps.LatLngBounds();
             }
         }
         if (typeof(markers)=='undefined') { markers = new Array(); }
-        if (typeof(bounds)=='undefined') { bounds = new GLatLngBounds(); }
+        if (typeof(bounds)=='undefined') { bounds = new google.maps.LatLngBounds(); }
         var i = markers.length;
-        markers[i] = new GMarker(pt, {icon: marker_icon});
-        map.addOverlay(markers[i]);
+        markers[i] = new google.maps.Marker({position:pt,icon:marker_icon,draggable:false,map:map});
         bounds.extend(pt);
         //alert('bounds.extend '+pt+' '+i);
         if (i<1) {
@@ -566,23 +560,25 @@ var activities = [
 ];
 
 for (i in activities) {
-	document.getElementById("activity_select").innerHTML += '<div><input type="radio" id="activity'+i+'" name="activity" onchange="on_activity_change(this);" value="'+activities[i].name+'"></input><label for="activity'+i+'"><span class="activitytxt">'+activities[i].caption+'</span>'+activities[i].pictureslist.map(function(pict){return '<img src="/static/images/'+pict+'" width="60" height="60" />'}).join('')+'</label><div style="clear:both"></div></div>';
-    //options[i] = new Option(activities[i].caption,activities[i].name);
+  document.getElementById("activity_select").innerHTML += '<div><input type="radio" id="activity'+i+'" name="activity" onchange="on_activity_change(this);" value="'+activities[i].name+'"></input><label for="activity'+i+'"><span class="activitytxt">'+activities[i].caption+'</span>'+activities[i].pictureslist.map(function(pict){return '<img src="/static/images/'+pict+'" width="60" height="60" />'}).join('')+'</label><div style="clear:both"></div></div>';
+  //options[i] = new Option(activities[i].caption,activities[i].name);
 }
 
 for (i in map_types) {
-	document.getElementById("map_type_select").innerHTML += '<div><span><input type="radio" id="map_type_select'+map_types[i].name+'" name="map_type" onchange="on_map_type_change(this);" value="'+map_types[i].name+'">'+map_types[i].caption+'</input></span><img src="/static/images/'+''+map_types[i].pict+'" width="93" height="66" /><div style="clear:both"></div></div>';
-    //options[i] = new Option(map_types[i].caption,map_types[i].name);
+  document.getElementById("map_type_select").innerHTML += '<div><span><input type="radio" id="map_type_select'+map_types[i].name+'" name="map_type" onchange="on_map_type_change(this);" value="'+map_types[i].name+'">'+map_types[i].caption+'</input></span><img src="/static/images/'+''+map_types[i].pict+'" width="93" height="66" /><div style="clear:both"></div></div>';
+  //options[i] = new Option(map_types[i].caption,map_types[i].name);
 }
 
 document.getElementById("activity0").checked="true";
 activity_change(activities[0]);
 
 // Create map
-var map = new GMap2(document.getElementById("preview_map"));
-map.addMapType(G_PHYSICAL_MAP);
-map.setMapType(G_PHYSICAL_MAP);
-map.enableScrollWheelZoom();
+var mapOptions = {
+  zoom: 5,
+  center: new google.maps.LatLng(45.0,0.0),
+  mapTypeId: google.maps.MapTypeId.TERRAIN
+};
+var map = new google.maps.Map(document.getElementById("preview_map"),mapOptions);
 
 // upload progress bar
 $(function() {
@@ -636,14 +632,17 @@ function dechex (number) {
   return parseInt(number, 10)
     .toString(16)
 }
+
 function uniqid() {
-	var micro = (""+(new Date()).getTime()).substr(2, 6);
-    var concat = ""+Math.floor((new Date()).getTime()/1000)+micro;
-    var dec_1 = concat.substr(0, 8) ;
-    var dec_2 = concat.substr(8, 8) ;
-    var hex_1 = dechex (dec_1) ;
-    var hex_2 = dechex (dec_2) ;
-	//console.log(micro,concat,dec_1,dec_2);
-    return hex_1+hex_2;
+  var micro = (""+(new Date()).getTime()).substr(2, 6);
+  var concat = ""+Math.floor((new Date()).getTime()/1000)+micro;
+  var dec_1 = concat.substr(0, 8) ;
+  var dec_2 = concat.substr(8, 8) ;
+  var hex_1 = dechex (dec_1) ;
+  var hex_2 = dechex (dec_2) ;
+  //console.log(micro,concat,dec_1,dec_2);
+  return hex_1+hex_2;
 }
+
 document.getElementById("submit_id").value = uniqid();
+
