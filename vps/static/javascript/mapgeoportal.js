@@ -79,7 +79,7 @@ var track_layer = new ol.layer.Vector(
                             name: 'Track'})
                          ]
               }),
-    style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#FFBB00",
+    style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#FF3333",
                                                           width: 2
                                                           })}),
     opacity:0.7
@@ -90,7 +90,7 @@ var track_layer = new ol.layer.Vector(
 var snake_feature = new ol.Feature({name:'Snake'});
 var snake_layer = new ol.layer.Vector({
   source:new ol.source.Vector({features:[snake_feature]}),
-  style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#aaaaaa",
+  style:new ol.style.Style({stroke:new ol.style.Stroke({color: "#FF0000",
                                                         width: 3
                                                        })}),
   opacity:0.7
@@ -153,7 +153,7 @@ function newIGNSource() {
     resolutions[i] = maxResolution / Math.pow(2, i);
   }
   return new ol.source.WMTS({
-    url: 'https://wxs.ign.fr/choisirgeoportail/geoportail/wmts',
+    url: 'https://wxs.ign.fr/'+GeoPortalApiKey+'/geoportail/wmts',
     //layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
     layer: 'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2',
     matrixSet: 'PM',
