@@ -98,13 +98,29 @@ def index(lang,limit):
 
 ## GPX Export
 
+class GpxToTime:
+    def __init__(self,starttime):
+        self.start = starttime
+    def gpxtime(self,p):
+        if len(p)>2:
+            return "<time>%sT%s+00:00</time>" % (self.start, p[2])
+        else:
+            return ""
+
+def gpxele(p):
+    if len(p)>3:
+        return "<ele>%s</ele>" % p[3]
+    else:
+        return ""
+
 @application.route('/togpx/<mapid>')
 def togpx(mapid):
     # Read map data
     f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
     mapdata=json.load(f)
     f.close()
-    return '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"><trk><trkseg>' + ''.join(map(lambda p:'<trkpt lat="%f" lon="%f"></trkpt>'%(p[0],p[1]),mapdata['points'])) + '</trkseg></trk></gpx>'
+    tt = GpxToTime(DbGet(mapid,"date"))
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"><trk><trkseg>' + ''.join(map(lambda p:'<trkpt lat="%f" lon="%f">%s%s</trkpt>'%(p[0],p[1],gpxele(p),tt.gpxtime(p)),mapdata['points'])) + '</trkseg></trk></gpx>'
 
 ## Thumbnails
 
