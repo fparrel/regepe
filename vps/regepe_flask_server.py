@@ -120,7 +120,9 @@ def togpx(mapid):
     mapdata=json.load(f)
     f.close()
     tt = GpxToTime(DbGet(mapid,"date"))
-    return '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"><trk><trkseg>' + ''.join(map(lambda p:'<trkpt lat="%f" lon="%f">%s%s</trkpt>'%(p[0],p[1],gpxele(p),tt.gpxtime(p)),mapdata['points'])) + '</trkseg></trk></gpx>'
+    r = Response('<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"><trk><trkseg>' + ''.join(map(lambda p:'<trkpt lat="%f" lon="%f">%s%s</trkpt>'%(p[0],p[1],gpxele(p),tt.gpxtime(p)),mapdata['points'])) + '</trkseg></trk></gpx>', mimetype='application/gpx+xml')
+    r.headers['Content-Disposition'] = 'attachment; filename=%s.gpx'%mapid
+    return r
 
 ## Thumbnails
 
