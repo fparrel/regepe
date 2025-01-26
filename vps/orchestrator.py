@@ -24,7 +24,7 @@ from sbpparser import ParseSbpFile
 from fitparser import ParseFitFile
 from igcparser import ParseIgcFile
 from model import Track
-from pagebuilder import BuildPage,MyPolar,MyXYChart,ChartString,ChartStringWithTitle,BuildMaxSpeeds
+from pagebuilder import BuildPage,MyPolar,MyXYChart,ChartString,ChartStringWithTitle,BuildMaxSpeeds,BuildRuns
 from progress import SetProgress
 from db import DbSetPassword,DbPut
 from unzip import unzipOne
@@ -146,6 +146,14 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
             charts.append(ChartStringWithTitle(BuildMaxSpeeds(figures),'maxspd','Max speed analysis',type=type))
         except Exception, e:
             Warn('Cannot BuildMaxSpeeds: %s\n'%e)
+
+    if not track.nospeeds and not options['wind']:
+        Log("ProcessTrkSegWithProgress: BuildRuns",submitid)
+        try:
+            dummy=gettext('Runs analysis') # For allowing translation in jinja2 template
+            charts.append(ChartStringWithTitle(BuildRuns(figures),'runs','Runs analysis',type=type))
+        except Exception, e:
+            Warn('Cannot BuildRuns: %s\n'%e)
 
     if track.hasHeartRate():
         try:

@@ -3,6 +3,7 @@ from log import Log
 from mathutil import FindLocalMaximums,Mean,GeodeticCourse
 from conversions import TimeDeltaToSeconds
 #from options import options
+from mapparser import ParseMap
 
 class MaxSpd:
     def __init__(self,spd,dst,time,ptfrom,ptto,ptfromid,pttoid,course,type):
@@ -207,15 +208,48 @@ class Figures:
             idx+=1
         spd = (dsts[i]-dsts[j])/TimeDeltaToSeconds(tms[i]-tms[j])
         return MaxSpd(spd,(dsts[i]-dsts[j]),TimeDeltaToSeconds(tms[i]-tms[j]),self.trkseg.ptlist[j],self.trkseg.ptlist[i],j,i,GeodeticCourse(self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon,self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon),"dist")
+    def computeRuns(self, threshold, fromspd=True):
+        segments = []
+        start = None
+        for i in range(len(self.trkseg.ptlist)):
+            if self.trkseg.ptlist[i].spd > threshold:
+                if start is None:
+                    start = (self.trkseg.ptlist[i],i)
+            else:
+                if start is not None:
+                    end = (self.trkseg.ptlist[i - 1],i-1)
+                    if start!=end:
+                        segments.append((start, end))
+                    start = None
+        if start is not None and start!=end:
+            segments.append((start, (self.trkseg.ptlist[-1],len(self.trkseg.ptlist)-1)))
+        if fromspd and not self.trkseg.spdcomputed:
+            dsts = self.trkseg.ComputeEqDistancesFromSpd()
+        else:
+            dsts = self.trkseg.ComputeDistances()
+        tms = map(lambda pt:pt.datetime,self.trkseg.ptlist)
+        out = []
+        for (s,j),(e,i) in segments:
+            t = TimeDeltaToSeconds(tms[i]-tms[j]) 
+            spd = (dsts[i]-dsts[j])/t
+            if t > 2:
+                out.append(MaxSpd(spd,(dsts[i]-dsts[j]),t,self.trkseg.ptlist[j],self.trkseg.ptlist[i],j,i,GeodeticCourse(self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon,self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon),"dist"))
+        return out
 
 def unittests():
     from gpxparser import ParseGpxFile
     #ptlist = ParseGpxFile('../../work/testfiles/downwind.gpx',0,0)
-    ptlist = ParseGpxFile('../../lamp-prod/cgi-bin/submit/56d74ad0cb0ec_0.gpx',0,0)
+    #ptlist = ParseGpxFile('../../lamp-prod/cgi-bin/submit/56d74ad0cb0ec_0.gpx',0,0)
+    options, ptlist = ParseMap('10912c62b451c6') 
     print len(ptlist)
     track = Track(ptlist)
-    figures = Figures(track,'knots',False)
-    options['flat']=True
+    figures = Figures(track,options)
+    runs = figures.computeRuns(3.0)
+    for r in runs:
+        print r.tojson()
+        #print 'Run %s from %s to %s' % (e[0].datetime - b[0].datetime, b[0].datetime, e[0].datetime)
+    print 'Total %d' % (len(runs))
+    #options['flat']=True
     (mxspdsdst,mxspdtime) = figures.computeMaxSpeeds(fromspd=True,nbmax=10)
     for i in mxspdsdst:
         print 'Best %s meters'%i
@@ -226,8 +260,9 @@ def unittests():
         for mxspd in mxspdtime[i]:
             print mxspd
     print track.ptlist[0].datetime
-    from datetime import datetime
-    print figures.computeOneSpd(datetime(year=2016,month=1,day=10,hour=11,minute=50,second=15),datetime(year=2016,month=1,day=10,hour=11,minute=50,second=15+11),fromspd=False)
+    #from datetime import datetime
+    #print figures.computeOneSpd(datetime(year=2016,month=1,day=10,hour=11,minute=50,second=15),datetime(year=2016,month=1,day=10,hour=11,minute=50,second=15+11),fromspd=False)
+    print figures.computeRuns(3)
 
 if __name__=='__main__':
     unittests()

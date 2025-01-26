@@ -55,7 +55,10 @@ function refreshSelection(pt1_id, pt2_id) {
         google.maps.event.addListener(selbegin_marker, "dragend", onSelMarkerMove);
         selend_marker = new google.maps.Marker({position: new google.maps.LatLng(track_points[pt2_id].lat, track_points[pt2_id].lon),map:map,icon:selend_icon,draggable:true});
         google.maps.event.addListener(selend_marker, "dragend", onSelMarkerMove);
-		return true;
+        refreshCurrentPoint(pt1_id);
+        //plot[0].setSelection({xaxis:{from:chartdata[0][0].data[pt1_id][0],to:chartdata[0][0].data[pt2_id][0]}});
+        console.log({xaxis:{from:chartdata[0][0].data[pt1_id][0],to:chartdata[0][0].data[pt2_id][0]}});
+        return true;
 	}
 	return false;
 }
