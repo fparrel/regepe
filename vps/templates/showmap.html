@@ -157,7 +157,6 @@
         </div>
 	{% elif chart.type=="title+string" %}
         <div id="{{ chart.name }}" class="chart">
-		{% if chart.name=="maxspd" %}
 {% macro convert_time(value,unit) -%}
     {% if unit=="s" and value>=60 %}
         {% if value>=3600 %}{{ (value/3600)|int }}h{% endif %}{% if value%3600!=0 %}{{ ((value/60)%60)|int }}min{% endif %}{% if value%60!=0 %}{{ (value%60)|int }}s{% endif %}
@@ -179,7 +178,10 @@
 		{% endif %}
 	{% endfor %}
 {%- endmacro %}
-			{% set lasttype = "n/a" %}{% set v={'lasttype':'n/a'} %}
+        {% if chart.name=="runs" %}
+            {{convert_maxspds(chart.contents)}}
+        {% elif chart.name=="maxspd" %}        
+            {% set lasttype = "n/a" %}{% set v={'lasttype':'n/a'} %}
 			{% for content in chart.contents %}
 				{% set lasttype=v['lasttype'] %}
 				{% if content.maxspds|length > 0 %}

@@ -232,6 +232,10 @@ def BuildMaxSpeeds(figures):
 
     return ','.join(out)
 
+def BuildRuns(figures):
+    return ','.join(map(lambda m:m.tojson(), figures.computeRuns(3.0)))
+
+
 def TimeDeltaFormat(t):
     duration_min = (t.seconds/60)%60
     duration_hours = t.seconds/3600
