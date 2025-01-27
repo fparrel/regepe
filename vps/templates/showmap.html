@@ -164,18 +164,25 @@
         {{ value|int }}{{ unit }}
     {% endif %}
 {%- endmacro %}
+{% macro display_spd(maxspd) -%}
+    {% if maxspd.type=="vert" %}
+            <span class="spdnb">{{ "%d"|format(maxspd.dst*3600/maxspd.time) }}</span> m/h
+    {% elif mapdata.spdunit=="knots" %}
+            <span class="spdnb">{{ "%.2f"|format(maxspd.dst*1.94384449/maxspd.time) }}</span> {{_('kts')}}
+    {% elif mapdata.spdunit=="km/h" %}
+            <span class="spdnb">{{ "%.2f"|format(maxspd.dst*3.6/maxspd.time) }}</span> km/h
+    {% elif mapdata.spdunit=="mph" %}
+    {% else %}
+            <span class="spdnb">{{ "%.2f"|format(maxspd.dst/maxspd.time) }}</span> m/s
+    {% endif %}
+{%- endmacro %}
 {% macro convert_maxspds(maxspds) -%}
 	{% for maxspd in maxspds %}
-        {% if maxspd.type=="vert" %}
-            <span class="spdnb">{{ "%d"|format(maxspd.dst*3600/maxspd.time) }}</span> m/h {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
-		{% elif mapdata.spdunit=="knots" %}
-            <span class="spdnb">{{ "%.2f"|format(maxspd.dst*1.94384449/maxspd.time) }}</span> {{_('kts')}} {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
-		{% elif mapdata.spdunit=="km/h" %}
-            <span class="spdnb">{{ "%.2f"|format(maxspd.dst*3.6/maxspd.time) }}</span> km/h {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
-		{% elif mapdata.spdunit=="mph" %}
-		{% else %}
-            <span class="spdnb">{{ "%.2f"|format(maxspd.dst/maxspd.time) }}</span> m/s {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{ maxspd.when_from}}</a><br/>
-		{% endif %}
+        {% if maxspd.type=="run" %}
+        {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} ({{display_spd(maxspd)}} {{ maxspd.dst }})
+        {% else %}
+        {{display_spd(maxspd)}} {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}}
+        {% endif %} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{maxspd.when_from}}</a><br/>
 	{% endfor %}
 {%- endmacro %}
         {% if chart.name=="runs" %}
