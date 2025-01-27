@@ -233,7 +233,7 @@ class Figures:
             t = TimeDeltaToSeconds(tms[i]-tms[j]) 
             spd = (dsts[i]-dsts[j])/t
             if t > 2:
-                out.append(MaxSpd(spd,(dsts[i]-dsts[j]),t,self.trkseg.ptlist[j],self.trkseg.ptlist[i],j,i,GeodeticCourse(self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon,self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon),"dist"))
+                out.append(MaxSpd(spd,(dsts[i]-dsts[j]),t,self.trkseg.ptlist[j],self.trkseg.ptlist[i],j,i,GeodeticCourse(self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon,self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon),"run"))
         return out
 
 def unittests():

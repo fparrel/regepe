@@ -667,6 +667,16 @@ function toogleTab(e) {
   e.className='chartlabelselected';
 }
 
+function displayZoomBtn(chartid,minx,maxx) {
+    chartzoombtn[chartid].minx = minx;
+    chartzoombtn[chartid].maxx = maxx;
+    chartzoombtn[chartid].style.display="inline";
+}
+
+function displayZoomResetBtn(chartid) {
+    chartzoomresetbtn[chartid].style.display="inline";
+}
+
 function onChartSelected(chartid,minx,maxx) {
     //console.log("onChartSelected(%d %d %d)",chartid,minx,maxx);
     var i,mini = -1,maxi=-1;
@@ -681,9 +691,7 @@ function onChartSelected(chartid,minx,maxx) {
     }
     refreshSelection(mini,maxi);
     selchartid = chartid;
-    chartzoombtn[chartid].minx = minx;
-    chartzoombtn[chartid].maxx = maxx;
-    chartzoombtn[chartid].style.display="inline";
+    displayZoomBtn(chartid,minx,maxx);
 }
 
 function onChartUnselected(chartid) {
@@ -702,7 +710,7 @@ function onChartZoom(btn,chartid) {
     chartzoomresetbtn[chartid].minx=btn.minx;
     chartzoomresetbtn[chartid].maxx=btn.maxx;
     chartzoombtn[chartid].style.display="none";
-    chartzoomresetbtn[chartid].style.display="inline";
+    displayZoomResetBtn(chartid);
 }
 
 function onChartZoomReset(btn,chartid) {
