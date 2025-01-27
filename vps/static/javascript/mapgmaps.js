@@ -56,8 +56,23 @@ function refreshSelection(pt1_id, pt2_id) {
         selend_marker = new google.maps.Marker({position: new google.maps.LatLng(track_points[pt2_id].lat, track_points[pt2_id].lon),map:map,icon:selend_icon,draggable:true});
         google.maps.event.addListener(selend_marker, "dragend", onSelMarkerMove);
         refreshCurrentPoint(pt1_id);
-        //plot[0].setSelection({xaxis:{from:chartdata[0][0].data[pt1_id][0],to:chartdata[0][0].data[pt2_id][0]}});
-        console.log({xaxis:{from:chartdata[0][0].data[pt1_id][0],to:chartdata[0][0].data[pt2_id][0]}});
+        var from=chartdata[0][0].data[pt1_id][0];
+        var to=chartdata[0][0].data[pt2_id][0];
+
+        // Zoom if needed
+        var x1=plot[0].getAxes().xaxis.p2c(from);
+        var x2=plot[0].getAxes().xaxis.p2c(to);
+        if (x2 - x1 < plot[0].getOptions().selection.minSize) {
+            // center zoom around future selection
+            var center = (x1 + x2) / 2;
+            var x1zoom = Math.floor(center - plot[0].getOptions().selection.minSize / 2);
+            var x2zoom = Math.ceil(center + plot[0].getOptions().selection.minSize / 2);
+            doChartZoom(0,plot[0].getAxes().xaxis.c2p(x1zoom),plot[0].getAxes().xaxis.c2p(x2zoom));
+            displayZoomResetBtn(0);
+        }
+
+        // Refresh selection on chart, do not trigger event to avoid infinite loop
+        plot[0].setSelection({xaxis:{from:from,to:to}}, true);
         return true;
 	}
 	return false;
