@@ -9,7 +9,10 @@ docker build -t regepe .
 # Prod
 #docker run -d -p 80:80 regepe
 # Dev
-docker run -p 8080:8080 -v $(pwd):/regepe --name regepe0 regepe
+mkdir -p $(pwd)/vps/config/
+cp config-default.json $(pwd)/vps/config/config.json
+cp keysnpwds-default.json $(pwd)/vps/config/keysnpwds.json
+docker run -p 8080:8080 -v $(pwd):/regepe --name regepe_dev regepe
 firefox localhost:8080
 ```
 

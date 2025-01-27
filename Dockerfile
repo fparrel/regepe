@@ -1,13 +1,16 @@
-FROM centos:7
+FROM centos:8
 
-# Add nginx repo
-RUN rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+# Correct the new repo url
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo
+RUN sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo
+RUN sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo
+
 # Install nginx + uwsgi + python + flask
 # Note: gcc and python-devel are needed for pip install uwsgi
 # java is needed for minify tool
-RUN yum install -y nginx python python-devel python-setuptools gcc sudo java
-RUN easy_install pip
-RUN pip install uwsgi flask flask_babel polyline
+RUN dnf install -y nginx python2 python2-devel gcc java-1.8.0-openjdk python2-setuptools
+RUN dnf install -y python2-pip
+RUN pip2 install uwsgi flask flask_babel polyline
 
 VOLUME /regepe
 
@@ -32,7 +35,7 @@ RUN cd /regepe/vps && ./minify.sh && ./translations_compile.sh
 
 # Debug
 EXPOSE 8080
-ENTRYPOINT cd /regepe/vps && python regepe_flask_server.py 0.0.0.0
+ENTRYPOINT cd /regepe/vps && python2 regepe_flask_server.py 0.0.0.0
 
 # Prod
 #EXPOSE 80
