@@ -6,15 +6,18 @@
             <div id="map_of_maps" style="height:500px;width:500px;"></div>
 {% endblock %}
 {% block jsext %}
-<script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key={{GMapsApiKey}}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 <script type="text/javascript">
 //<![CDATA[
 
 // create a clickable marker
 function createMarker(pt, text) {
-	var marker = new GMarker(pt, {icon: marker_icon});
-	GEvent.addListener(marker, "click", function(){
-		marker.openInfoWindowHtml(text);
+    var marker = new google.maps.Marker({position: pt, map: map, icon: marker_icon, draggable: false});
+    google.maps.event.addListener(marker, "click", function(){
+		new google.maps.InfoWindow({
+            content: text
+                  }).open({anchor:marker,map});
+        //marker.openInfoWindowHtml(text);
 	});
 	return marker;
 }
@@ -22,7 +25,7 @@ function createMarker(pt, text) {
 function onReadystatechange() {
 	if (this.readyState == 4) {
 		if (this.status == 200) {
-            var maps = this.responseXML.getElementsByTagName("maps");
+            maps = this.responseXML.getElementsByTagName("maps");
             for (i=0;i<maps.length;i++) {
                 var lat = maps[i].getAttribute('lat');
                 var lon = maps[i].getAttribute('lon');
@@ -30,11 +33,11 @@ function onReadystatechange() {
                 var mytext = '';
                 for (j=0;j<mapslist.length;j++) {
                     var mapid = mapslist[j].getAttribute('mapid');
-                    var mapdesc = mapslist[j].childNodes[0].nodeValue;
+                    var mapdesc = mapslist[j].textContent; //childNodes[0].nodeValue;
                     mytext += '<div><div style="max-width:300px;">' + mapdesc + '</div><div><img src="/thumbnail/'+mapid+'" width="130" height="110"/> <A HREF="/showmap/' + mapid + '">Go</A></div></div>';
                 }
-                var marker = createMarker(new GLatLng(lat,lon),mytext);
-                map.addOverlay(marker);
+                var marker = createMarker(new google.maps.LatLng(lat,lon),mytext);
+                //map.addOverlay(marker);
                 document.getElementById("loading").innerHTML = '';
             }
         }
@@ -49,21 +52,15 @@ function fillMap() {
     client.onreadystatechange = onReadystatechange;
 }
 
-// Create map
-var map = new GMap2(document.getElementById("map_of_maps"));
-map.addMapType(G_PHYSICAL_MAP);
-map.setMapType(G_PHYSICAL_MAP);
-map.enableScrollWheelZoom();
+var mapOptions = {
+  zoom: 5,
+  center: {lat:45.0,lng:0.0},
+  mapTypeId: google.maps.MapTypeId.TERRAIN
+};
 
-map.setCenter(new GLatLng(45.0,0.0));
-map.setZoom(5);
+var map = new google.maps.Map(document.getElementById("map_of_maps"),mapOptions);
 
-var marker_icon_size = new GIcon();
-marker_icon_size.iconSize = new GSize(12, 20);
-marker_icon_size.shadowSize = new GSize(22, 20);
-marker_icon_size.iconAnchor = new GPoint(6, 20);
-marker_icon_size.infoWindowAnchor = new GPoint(5, 1);
-var marker_icon = new GIcon(marker_icon_size, "/static/images/MarkerSelEnd.png", null, "/static/images/MarkerShade.png");
+var marker_icon = "/static/images/MarkerSelEnd.png";
 
 fillMap();
 

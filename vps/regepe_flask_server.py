@@ -430,8 +430,9 @@ def map_search_result2(lat,lon,mapid):
     startdate = DbGet(mapid,'date')
     trackuser = DbGet(mapid,'trackuser')
     try:
-        desc = trackdesc.encode('ascii', 'xmlcharrefreplace').replace('<','&lt;').replace('>','&gt;')
-    except:
+        desc = trackdesc.decode('utf8').encode('ascii', 'xmlcharrefreplace').replace('<','&lt;').replace('>','&gt;').replace('&','&amp;')
+    except Exception, e:
+        Log('xml encode error %s %s'%(mapid,e)) 
         desc = trackdesc
     return('<map mapid="%s" lat="%s" lon="%s" date="%s" user="%s">%s</map>' % (mapid,lat,lon,startdate,trackuser,desc))
 
