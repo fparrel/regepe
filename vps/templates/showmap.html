@@ -177,13 +177,16 @@
     {% endif %}
 {%- endmacro %}
 {% macro convert_maxspds(maxspds) -%}
+    <ol type="1">
 	{% for maxspd in maxspds %}
+        <li>
         {% if maxspd.type=="run" %}
-        {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} ({{display_spd(maxspd)}} {{ maxspd.dst }})
+        {{maxspd.dst}}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} ({{display_spd(maxspd)}})
         {% else %}
         {{display_spd(maxspd)}} {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}}
-        {% endif %} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{maxspd.when_from}}</a><br/>
+        {% endif %} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{maxspd.when_from}}</a></li>
 	{% endfor %}
+    </ol>
 {%- endmacro %}
         {% if chart.name=="runs" %}
             {{convert_maxspds(chart.contents)}}
