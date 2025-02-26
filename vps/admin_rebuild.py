@@ -11,7 +11,7 @@ from options import options_default
 
 if __name__=='__main__':
     if len(sys.argv) not in (2,3) or sys.argv[1] in ('-h','--help'):
-        print 'Usage: %s mapid [kite|rando|baladeplat|snowkite|surf|riviere]' % sys.argv[0]
+        print 'Usage: %s mapid [kite|rando|baladeplat|snowkite|surf|riviere|ds]' % sys.argv[0]
         exit()
     mapid = sys.argv[1]
     if len(sys.argv)==2:
@@ -59,6 +59,12 @@ if __name__=='__main__':
             options['flat']=True
             options['maxspd']=True
             options['map_type']='GeoPortal'
+        elif type=='ds':
+            options['spdunit']='knots'
+            options['wind']=False
+            options['flat']=True
+            options['maxspd']=True
+            options['slowruns']=True
         fname = 'uploads/%s_0.gpx'%mapid
         if not os.path.isfile(fname):
             track = Track(ptlist)

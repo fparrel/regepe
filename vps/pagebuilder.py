@@ -232,8 +232,8 @@ def BuildMaxSpeeds(figures):
 
     return ','.join(out)
 
-def BuildRuns(figures):
-    return ','.join(map(lambda m:m.tojson(), figures.computeRuns(3.0)))
+def BuildRuns(figures,threshold=3.0):
+    return ','.join(map(lambda m:m.tojson(), figures.computeRuns(threshold)))
 
 
 def TimeDeltaFormat(t):

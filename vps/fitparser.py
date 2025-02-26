@@ -251,11 +251,11 @@ def convertDatetimeToGpxFormat(date,datetime):
     return date + 'T' + s[11:] + 'Z'
 
 def main():
-    f = open('ds.fit','rb')
+    f = open('ds97.fit','rb')
     ptlist = ParseFitFile(f,0,0)
     f.close()
     for pt in ptlist:
-        print pt.datetime,pt.lat,pt.lon,pt.ele,
+        print pt.datetime,pt.lat,pt.lon,pt.ele,pt.spd,
         if hasattr(pt,'hr'):
             print pt.hr
         else:

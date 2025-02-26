@@ -8,5 +8,7 @@ options_default = { \
     'wind': False, \
     'usedem': False, \
     'map_type': 'GMaps', \
-    'maxspd': False
+    'maxspd': False, \
+    'slowruns': False
     }
+

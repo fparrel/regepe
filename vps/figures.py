@@ -232,19 +232,47 @@ class Figures:
         for (s,j),(e,i) in segments:
             t = TimeDeltaToSeconds(tms[i]-tms[j]) 
             spd = (dsts[i]-dsts[j])/t
+            if t > 2 and spd > 1.5:
+                out.append(MaxSpd(spd,(dsts[i]-dsts[j]),t,self.trkseg.ptlist[j],self.trkseg.ptlist[i],j,i,GeodeticCourse(self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon,self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon),"run"))
+        return out
+    def computeRuns2(self, start_threshold, end_threshold, fromspd=True):
+        runs = []  # List to store the runs
+        current_run = None  # A variable to keep track of the current run
+    
+        for i,point in enumerate(points):
+            # Start a new run when we cross the start threshold
+            if point.spd >= start_threshold and current_run is None:
+                if i>0:
+                    current_run = (i-1, None)
+                else:
+                    current_run = (i, None)
+        
+            # If a run is already ongoing, check if we've crossed the end threshold
+            if current_run is not None:
+                if point.spd < end_threshold:
+                    current_run[1] = i  # Set the last point of the run
+                    runs.append(current_run)  # Add the run to the list of runs
+                    current_run = None  # Reset current run to None as the run is complete
+        out = []
+        for (j,i) in runs:
+            t = TimeDeltaToSeconds(tms[i]-tms[j])
+            spd = (dsts[i]-dsts[j])/t
             if t > 2:
                 out.append(MaxSpd(spd,(dsts[i]-dsts[j]),t,self.trkseg.ptlist[j],self.trkseg.ptlist[i],j,i,GeodeticCourse(self.trkseg.ptlist[j].lat,self.trkseg.ptlist[j].lon,self.trkseg.ptlist[i].lat,self.trkseg.ptlist[i].lon),"run"))
         return out
+
 
 def unittests():
     from gpxparser import ParseGpxFile
     #ptlist = ParseGpxFile('../../work/testfiles/downwind.gpx',0,0)
     #ptlist = ParseGpxFile('../../lamp-prod/cgi-bin/submit/56d74ad0cb0ec_0.gpx',0,0)
-    options, ptlist = ParseMap('10912c62b451c6') 
+    #options, ptlist = ParseMap('10912c62b451c6') 
+    options, ptlist = ParseMap('109941e277ca1e')
     print len(ptlist)
     track = Track(ptlist)
     figures = Figures(track,options)
-    runs = figures.computeRuns(3.0)
+    #runs = figures.computeRuns(3.0)
+    runs = figures.computeRuns(1.0, 1.0)
     for r in runs:
         print r.tojson()
         #print 'Run %s from %s to %s' % (e[0].datetime - b[0].datetime, b[0].datetime, e[0].datetime)

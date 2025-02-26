@@ -148,10 +148,13 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
             Warn('Cannot BuildMaxSpeeds: %s\n'%e)
 
     if not track.nospeeds and not options['wind']:
+        runs_threshold = 3.0
+        if 'slowruns' in options and options['slowruns']:
+            runs_threshold = 1.0
         Log("ProcessTrkSegWithProgress: BuildRuns",submitid)
         try:
             dummy=gettext('Runs analysis') # For allowing translation in jinja2 template
-            charts.append(ChartStringWithTitle(BuildRuns(figures),'runs','Runs analysis',type=type))
+            charts.append(ChartStringWithTitle(BuildRuns(figures,runs_threshold),'runs','Runs analysis',type=type))
         except Exception, e:
             Warn('Cannot BuildRuns: %s\n'%e)
 
@@ -198,7 +201,7 @@ EMPTY = -1
 def GetFileType(inputfile):
     # Warning: you must do seek(0,0) if you want to parse the file
     fithdr = inputfile.read(14)
-    if fithdr[8:12]=='.FIT':
+    if len(fithdr)>12 and fithdr[8:12]=='.FIT':
         return FIT
     else:
         inputfile.seek(0,0)
@@ -222,7 +225,7 @@ def GetFileType(inputfile):
             return RGP
         if line[:2]=='{"' or line[3:5]=='[{':
             return JSON
-        if line[6]=='\xFD':
+        if len(line)>6 and line[6]=='\xFD':
             return SBP
     return UNKNOWN
 
@@ -295,6 +298,7 @@ def BuildMap(inputfile_single_or_list,mapid,trk_id,trk_seg_id,submitid,desc,user
                 raise Exception(gettext('URL must start with "http[s]://www.kitetracker.com/gps/tracking?r=", "http[s]://connect.garmin.com/modern/activity/", "http[s]://www.movescount.com/[fr/]moves/" or "http[s]://www.strava.com/activities/" or "http[s]://www.sportstracklive.com/track/map#" or "http[s]://www.victorb.fr/visugps/visugps.html?track="'))
         else:
             filetype = GetFileType(inputfile)
+        Log('type is %s'%filetype)
         if (filetype==GPX):
             inputfile.seek(0,0)
             ptlist = ParseGpxFile(inputfile,trk_id,trk_seg_id)

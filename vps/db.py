@@ -192,9 +192,7 @@ def DbBuildInvert(dbtype,ele,invfunc):
     lock = FileLock(dbfileinv,5)
     lock.acquire()
     #Log('DbBuildInvert open db c %s\n'%dbfileinv)
-    dbinv = anydbm.open(dbfileinv,'c')
-    # Clear inv db
-    dbinv.clear()
+    dbinv = anydbm.open(dbfileinv,'n')
     # List dir
     for dbfile in os.listdir('data/'+dbtype):
         id = dbfile[:-3]

@@ -441,7 +441,7 @@ class Track:
             dists_new=[]
             for i in range(1,len(idlistnew)):
                 if idlistnew[i]==idlistnew[i-1]+1:
-                    dists_new.append(self.dists[i])
+                    dists_new.append(self.dists[idlistnew[i]])
                 else:
                     dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
             self.dists = dists_new
@@ -811,7 +811,7 @@ class Track:
         #print('DEBUG: model.py: Track: GetEleFromDEM()')
         # Get from dem
         GetEleFromLatLonList(self.ptlist,True)
-    def ComputeSpeedWhenNeeded(self,force=False):
+    def ComputeSpeedWhenNeededWithFilter(self,force=False):
         self.ComputeDistancesCache()
         self.spdcomputed = False
         # Compute speeds in case it is not provided
@@ -841,15 +841,36 @@ class Track:
                 self.ptlist[len(self.ptlist)-1].spd = self.ptlist[len(self.ptlist)-2].spd
                 self.ptlist[len(self.ptlist)-1].spdunit = self.ptlist[len(self.ptlist)-2].spdunit
                 self.ptlist[len(self.ptlist)-1].spd_converted = {'m/s': self.ptlist[len(self.ptlist)-1].spd}
+        # Apply filter in case of bad signal
         previous = self.ptlist[0].spd
         if self.spdcomputed:
             for pt in self.ptlist:
                 pt.spd = previous + (pt.spd - previous)/5
                 pt.spd_converted = {'m/s': pt.spd}
                 previous = pt.spd
-        #for pt in self.ptlist:
-        #    print 'DEBUG: "%s" "%s"' % (pt.spd,pt.spdunit)
-        #raise ('HERE')
+    def ComputeSpeedWhenNeeded(self,force=False):
+        self.ComputeDistancesCache()
+        self.spdcomputed = False
+        # Compute speeds in case it is not provided
+        i = 0
+        if self.ptlist[i].spd==None or self.ptlist[i].spd<0.0 or force:
+            self.ptlist[i].spd = 0.0
+            self.ptlist[i].spdunit = 'm/s'
+            self.ptlist[i].spd_converted = {'m/s': self.ptlist[i].spd}
+        for i in range(1,len(self.ptlist)):
+            if self.ptlist[i].spd==None or self.ptlist[i].spd<0.0 or force:
+                self.spdcomputed = True
+                if self.ptlist[i].datetime==None or self.ptlist[i-1].datetime==None:
+                    self.ptlist[i].spd = -1.0
+                    self.nospeeds = True
+                else:
+                    t=TimeDeltaToSeconds(self.ptlist[i].datetime-self.ptlist[i-1].datetime)
+                    if t==0.0:
+                        self.ptlist[i].spd = 0.0
+                    else:
+                        self.ptlist[i].spd = self.dists[i]/t
+                    self.ptlist[i].spdunit = 'm/s'
+                    self.ptlist[i].spd_converted = {'m/s': self.ptlist[i].spd}
     def ComputeCourseWhenNeeded(self):
         # Compute course in case it is not provided
         if len(self.ptlist)<2:
@@ -964,7 +985,7 @@ class Track:
             if prevpt!=None and pt.spd!=None:
                 delta=(pt.datetime - prevpt.datetime).seconds
                 if delta > threshold_time and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<prevpt.spd*0.2 and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<pt.spd*0.2:
-                    #print 'poz'
+                    #print 'poz',delta
                     out.append(Point(prevpt.lat,prevpt.lon,prevpt.ele,0,prevpt.course,prevpt.datetime+timedelta(seconds=1)))
                     out_dists.append(0.0)
                     out.append(Point(pt.lat,pt.lon,pt.ele,0,pt.course,pt.datetime-timedelta(seconds=1)))

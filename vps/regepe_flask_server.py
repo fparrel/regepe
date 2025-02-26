@@ -294,7 +294,7 @@ def upload():
         file.save(p)
         Log('File saved',submit_id)
         i+=1
-        inputfile.append(file)
+        inputfile.append(open(p,'rb'))
     # In case of import from URL
     if request.form.has_key('fromurl') and len(request.form['fromurl'])>0:
         inputfile.append(request.form.get('fromurl').encode('ascii'))
