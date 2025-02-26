@@ -13,66 +13,95 @@
 <script type="text/javascript" src="/static/javascript/d3polar{{minify}}.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    function runsHistogram(runsData) {
-        console.log("runsHistogram");
-        const ctx = document.getElementById('runsHistogram').getContext('2d');
-        const data = runsData.map(run => run.time);
-    
-        // Create an array to hold the counts of runs for each second
-        const minTime = Math.min(...data);
-        const maxTime = Math.max(...data);
-        const runCounts = new Array(maxTime - minTime + 1).fill(0);
-    
-        // Count the number of runs that last each number of seconds
-        data.forEach(time => {
-            const roundedTime = Math.round(time);
-            if (roundedTime >= minTime && roundedTime <= maxTime) {
-                runCounts[roundedTime - minTime]++;
-            }
-        });
-    
-        // Prepare the data for the histogram
-        const histogramLabels = Array.from({ length: maxTime - minTime + 1 }, (_, i) => (i + minTime).toString());
-        const histogramValues = runCounts;
-        // Configure the y-axis to display integers
-        const yAxis = {
-            ticks: {
+
+function runsHistogram(runsData) {
+    runsDataGlobal = runsData;
+    console.log("runsHistogram");
+    const ctx = document.getElementById('runsHistogram').getContext('2d');
+    const data = runsData.map(run => run.time);
+
+    // Create an array to hold the counts of runs for each second
+    const minTime = Math.min(...data);
+    const maxTime = Math.max(...data);
+    const runCounts = new Array(maxTime - minTime + 1).fill(0);
+
+    // Count the number of runs that last each number of seconds
+    data.forEach(time => {
+        const roundedTime = Math.round(time);
+        if (roundedTime >= minTime && roundedTime <= maxTime) {
+            runCounts[roundedTime - minTime]++;
+        }
+    });
+
+    const histogramLabels = Array.from({ length: maxTime - minTime + 1 }, (_, i) => (i + minTime).toString());
+
+    // Configure the axis display
+    const yAxis = {
+        ticks: {
             callback: function(value) {
                 return Number.isInteger(value) ? value : null;
             }
-            }
-        };
-        const xAxis = {
-            ticks: {
-                callback: function(value) {
-                    return (minTime+value) + ' s';
-                }
+        }
+    };
+    const xAxis = {
+        ticks: {
+            callback: function(value) {
+                return (minTime+value) + ' s';
             }
         }
-    
-        new Chart(ctx, {
+    }
+    if (typeof runchartGlobal === "undefined") {
+        runchartGlobal = new Chart(ctx, {
             type: 'bar',
             data: {
-            labels: histogramLabels,
-            datasets: [{
-                label: 'Number of runs',
-                data: histogramValues,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
+                labels: histogramLabels,
+                datasets: [{
+                    label: 'Number of runs',
+                    data: runCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
             },
             options: {
-            scales: {
-                y: {
-                beginAtZero: true,
-                ticks: yAxis.ticks
-                },
-                x: {ticks:xAxis.ticks}
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: yAxis.ticks
+                    },
+                    x: {
+                        ticks: xAxis.ticks
+                    }
+                }
             }
-            }
-        }); 
+        });
+    } else {
+        runchartGlobal.data.datasets[0].data = runCounts;
+        runchartGlobal.data.labels = histogramLabels;
+        runchartGlobal.update();
     }
+}
+function removeRunFromServer(when_from) {
+    const pwd = getPwdFromCookie(mapid);
+    var url = "/runs/del/" + encodeURIComponent(mapid) + "/" + encodeURIComponent(pwd) + "/" + encodeURIComponent(when_from);
+    const user_sess = getSessionFromCookie();
+    if (user_sess.length>0) {
+        url = url + '/' + user_sess[0] + '/' + user_sess[1];
+    }
+    const req = new XMLHttpRequest();
+    req.open("GET", url, true);
+    req.send(null);
+}
+function removeRun(liidx,when_from) {
+    console.log("removeRun",liidx,when_from);
+    document.getElementById('run'+liidx).remove();
+    const idx = runsDataGlobal.findIndex(run => run.when_from === when_from);
+    if (idx !== -1) {
+        runsDataGlobal.splice(idx, 1);
+    }
+    runsHistogram(runsDataGlobal);
+    removeRunFromServer(when_from);
+}
 </script>    
 {% endblock %}
 {% block body %}
@@ -242,12 +271,12 @@
 {% macro convert_maxspds(maxspds) -%}
     <ol type="1">
 	{% for maxspd in maxspds %}
-        <li>
+        <li {% if maxspd.type=="run" %}id="run{{loop.index0}}"{% endif %}>
         {% if maxspd.type=="run" %}
         {{maxspd.dst}}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}} ({{display_spd(maxspd)}})
         {% else %}
         {{display_spd(maxspd)}} {{ maxspd.dst }}{{ maxspd.dst_unit}} {{_('in')}} {{convert_time(maxspd.time,maxspd.time_unit)}}
-        {% endif %} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{maxspd.when_from}}</a></li>
+        {% endif %} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{maxspd.when_from}}</a> <button onclick="javascript:removeRun({{loop.index0}},'{{maxspd.when_from}}');return false;">Remove</button></li>
 	{% endfor %}
     </ol>
     {% if maxspds|length>0 and maxspds[0].type=="run" %}

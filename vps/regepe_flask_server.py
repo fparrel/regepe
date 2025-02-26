@@ -266,6 +266,51 @@ def dbput(mapid,pwd,ele,val,user,sess,defaults={'user': None,'sess': -1}):
     out = '<?xml version="1.0" encoding="UTF-8"?>\n<answer><message>%s</message><pageelementid>%s</pageelementid><value>%s</value></answer>' % (message,ele,val)
     return Response(out, mimetype='text/xml')
 
+def delete_run(mapid,when_from):
+    Log('delete_run %s %s' % (mapid,when_from))
+    # open data/mapdata/mapid.json.gz and remove corresponding run
+    try:
+        # Open the gzip file
+        with gzip.open('data/mapdata/%s.json.gz' % mapid, 'rb') as f:
+            mapdata = json.load(f)
+
+        # Remove the corresponding run
+        for run in mapdata['chartdata']:
+            if run['name'] == 'runs':
+                run['contents'] = [r for r in run['contents'] if r['when_from'] != when_from]
+
+        # Write the updated data back to the gzip file
+        with gzip.open('data/mapdata/%s.json.gz' % mapid, 'wb') as f:
+            f.write(json.dumps(mapdata).encode('utf-8'))
+    except Exception as e:
+        Log("Error deleting run from map %s: %s" % (mapid,str(e)))
+        raise
+
+@application.route('/runs/del/<mapid>/<pwd>/<when_from>',defaults={'user':None,'sess':-1})
+@application.route('/runs/del/<mapid>/<pwd>/<when_from>/<user>/<sess>')
+def delrun(mapid,pwd,when_from,user,sess):
+    try:
+        if user!=None and sess!=-1:
+            if CheckSession(user,sess):
+                map_user = DbGet(mapid,'trackuser')
+                if len(map_user)>0 and map_user==user:
+                    delete_run(mapid,when_from)
+                    message = 'OK'
+                else:
+                    raise Exception(gettext('Map %s does not belong to user %s, but to user %s') % (mapid,user,map_user))
+            else:
+                raise Exception(gettext('Invalid session, please re-login'))
+        else:
+            if DbChkPwd(mapid,pwd):
+                delete_run(mapid,when_from)
+                message = 'OK'
+            else:
+                raise Exception(gettext('You do not have the map\'s password in your browser\'s cookies'))
+    except Exception, e:
+        message = 'Error: ' + str(e)
+    out = '<?xml version="1.0" encoding="UTF-8"?>\n<answer><message>%s</message></answer>' % (message)
+    return Response(out, mimetype='text/xml')
+
 
 ## Send map
 
