@@ -11,6 +11,69 @@
 <meta http-equiv="X-UA-Compatible" content="IE=7"/>
 <script type="text/javascript" src="/static/javascript/d3.v3{{minify}}.js"></script>
 <script type="text/javascript" src="/static/javascript/d3polar{{minify}}.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function runsHistogram(runsData) {
+        console.log("runsHistogram");
+        const ctx = document.getElementById('runsHistogram').getContext('2d');
+        const data = runsData.map(run => run.time);
+    
+        // Create an array to hold the counts of runs for each second
+        const minTime = Math.min(...data);
+        const maxTime = Math.max(...data);
+        const runCounts = new Array(maxTime - minTime + 1).fill(0);
+    
+        // Count the number of runs that last each number of seconds
+        data.forEach(time => {
+            const roundedTime = Math.round(time);
+            if (roundedTime >= minTime && roundedTime <= maxTime) {
+                runCounts[roundedTime - minTime]++;
+            }
+        });
+    
+        // Prepare the data for the histogram
+        const histogramLabels = Array.from({ length: maxTime - minTime + 1 }, (_, i) => (i + minTime).toString());
+        const histogramValues = runCounts;
+        // Configure the y-axis to display integers
+        const yAxis = {
+            ticks: {
+            callback: function(value) {
+                return Number.isInteger(value) ? value : null;
+            }
+            }
+        };
+        const xAxis = {
+            ticks: {
+                callback: function(value) {
+                    return (minTime+value) + ' s';
+                }
+            }
+        }
+    
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels: histogramLabels,
+            datasets: [{
+                label: 'Number of runs',
+                data: histogramValues,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+            },
+            options: {
+            scales: {
+                y: {
+                beginAtZero: true,
+                ticks: yAxis.ticks
+                },
+                x: {ticks:xAxis.ticks}
+            }
+            }
+        }); 
+    }
+</script>    
 {% endblock %}
 {% block body %}
 <div class="mapbox">
@@ -187,6 +250,10 @@
         {% endif %} {{_('at')}} <a href="#" onclick="javascript:refreshSelection({{ maxspd.from_id}},{{ maxspd.to_id}});return false;">{{maxspd.when_from}}</a></li>
 	{% endfor %}
     </ol>
+    {% if maxspds|length>0 and maxspds[0].type=="run" %}
+    <canvas id="runsHistogram" width="200" height="150"></canvas>
+    <script>runsHistogram({{ maxspds|tojson|safe }});</script>
+    {% endif %}
 {%- endmacro %}
         {% if chart.name=="runs" %}
             {{convert_maxspds(chart.contents)}}

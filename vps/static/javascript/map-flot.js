@@ -767,7 +767,6 @@ function refreshPauseAreas() {
     }
 }
 
-
 var selfirstptid = -1;
 var sellastptid = -1;
 var last_point_id = -1;

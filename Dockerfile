@@ -10,6 +10,7 @@ RUN sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo
 # java is needed for minify tool
 RUN dnf install -y nginx python2 python2-devel gcc java-1.8.0-openjdk python2-setuptools
 RUN dnf install -y python2-pip
+RUN dnf install -y npm
 RUN pip2 install uwsgi flask flask_babel polyline
 
 VOLUME /regepe
