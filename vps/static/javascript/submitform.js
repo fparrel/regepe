@@ -37,24 +37,28 @@ function submit_click() {
     console.log("submit_click()");
     document.getElementById("progress_status").innerHTML = UPLOADING_FILE;
     progress_timer = setTimeout("getprogress_callback()",500);
-    //getprogress_callback();
 }
 
-function MapType(name,caption,pict) {
-    this.name = name;
-    this.caption = caption;
-    this.pict = pict;
+class MapType {
+    constructor(name, caption, pict) {
+        this.name = name;
+        this.caption = caption;
+        this.pict = pict;
+    }
 }
 
-function Activity(name,caption,spdunit,flat,wind,maxspd,maptype,pictureslist) {
-	this.name = name;
-	this.caption = caption;
-	this.spdunit = spdunit;
-	this.flat = flat;
-	this.wind = wind;
-	this.maxspd = maxspd;
-	this.maptype = maptype;
-    this.pictureslist = pictureslist;
+class Activity {
+    constructor(name, caption, spdunit, flat, wind, maxspd, maptype, pictureslist, slowruns) {
+        this.name = name;
+        this.caption = caption;
+        this.spdunit = spdunit;
+        this.flat = flat;
+        this.wind = wind;
+        this.maxspd = maxspd;
+        this.maptype = maptype;
+        this.pictureslist = pictureslist;
+        this.slowruns = slowruns;
+    }
 }
 
 function on_activity_change(selectbox) {
@@ -72,6 +76,7 @@ function activity_change(activity) {
     document.getElementById("wind").checked = activity.wind;
     document.getElementById("maxspd").checked = activity.maxspd;
     document.getElementById("map_type_select"+activity.maptype).checked = "true";
+    document.getElementById("slowruns").checked = activity.slowruns;
 }
 
 function parse_get_trk_list(contents) {
@@ -275,19 +280,10 @@ function add_to_trkselect(trkselect,trknames) {
 
 function update_trkselect(trknames,reset) {
     if (reset) {
-        /*var mylen = document.getElementById("trk_select").options.length;
-        var i;
-        for (i=0;i<mylen;i++) {
-            document.getElementById("trk_select").remove(0);
-        }
-        for (i=0;i<trknames.length;i++) {
-            document.getElementById("trk_select").options[i] = new Option(trknames[i],i);
-        }*/
         add_to_trkselect(document.getElementById("trk_select"),trknames);
         document.getElementById("trk_select_div").style.display = "inline";
         trkselect_fileid = 0;
-    }
-    else {
+    } else {
         var new_select = document.createElement('div');
         trkselect_fileid++;
         new_select.innerHTML = SELECT_TRACK+'<select id="trk_select'+trkselect_fileid+'" name="trk_select'+trkselect_fileid+'" onchange="trk_select_change(event,this);"></select>';
@@ -308,19 +304,6 @@ function get_file_type(contents) {
         return 2;
     }
     if (contents.substring(0,2)=='PK') {
-        /*var uncompressed = unzip(contents);
-        */
-        /*
-        var unzipper = new JSUnzip(contents);
-        if(unzipper.isZipFile()) {
-            unzipper.readEntries();
-            if (unzipper.entries.length>0) {
-                var entry = unzipper.entries[0];
-                if (entry.compressionMethod==8) {
-                    var uncompressed = JSInflate.inflate(entry.databuf,entry.uncompressedSize);
-                }
-            }
-        }*/
         return 3;
     }
     if (contents.substring(0,3)=='$GP') {
@@ -332,20 +315,10 @@ function get_file_type(contents) {
     return 0;
 }
 
-/* For IE<10.0 */
-if (typeof FileReader == "undefined") {
-    /*FileReader = function() { return new ActiveXObject("Scripting.FileSystemObject"); };*/
-    //oFReader = new ActiveXObject("Scripting.FileSystemObject");
-}
-else {
-
-    oFReader = new FileReader();
-    oFReader.onload = function (oFREvent) {
-        do_input_file_change(oFREvent.target.result);
-    };
-
-}
-
+oFReader = new FileReader();
+oFReader.onload = function (oFREvent) {
+    do_input_file_change(oFREvent.target.result);
+};
 
 function do_input_file_change(contents) {
     var filetype = get_file_type(contents);
@@ -380,7 +353,7 @@ function do_input_file_change(contents) {
     }
 }
 
-function do_input_file_change_add(contents,filename,first) {
+function do_input_file_change_add(contents,first) {
     var filetype = get_file_type(contents);
     var uncompressed;
     if (filetype==1) {
@@ -398,17 +371,7 @@ function do_input_file_change_add(contents,filename,first) {
     }
     if (out.length>1) {
         update_trkselect(out,first);
-        /*var i;
-        for(i=0;i<out.length;i++) {
-            segsel_list[segsel_list.length] = filename+': '+out[i];
-        }*/
     }
-    /*if(segsel_list.length>1) {
-        update_trkselect(segsel_list,first);
-    }
-    else {
-        hide_trkselect();
-    }*/
     if (filetype==3) {
         refresh_preview(uncompressed,0,2,first);
         current_filetype = 2;
@@ -420,20 +383,14 @@ function do_input_file_change_add(contents,filename,first) {
     }
 }
 
-function do_input_file_change_reset(contents) {
+function do_input_file_change_reset() {
     hide_trkselect();
-    /*segsel_list = new Array();*/
 }
 
 function input_file_change(event,element) {
     if (typeof element.files!='undefined') { /* avoid error in IE */
         if (element.files.length==1) {
-            //var contents = element.files[0].getAsBinary(); //deprecated
-            //do_input_file_change(contents);
-            
-            /*var contents = */
             oFReader.readAsBinaryString(element.files[0]);
-            //alert(contents.substring(1,10));
         }
         else {
             do_input_file_change_reset();
@@ -449,12 +406,11 @@ function input_file_change(event,element) {
                 else {
                     name = i;
                 }
-                //alert(name);
                 var oFReaderMultiple = new FileReader();
                 oFReaderMultiple.filename = new String(name);
                 oFReaderMultiple.first = (i==0);
                 oFReaderMultiple.onload = function (event) {
-                    do_input_file_change_add(event.target.result,event.target.filename,event.target.first);
+                    do_input_file_change_add(event.target.result,event.target.first);
                 }
                 oFReaderMultiple.readAsBinaryString(element.files[i]);
             }
@@ -506,10 +462,9 @@ function refresh_preview(filecontents,track,filetype,reset) {
         }
         if (typeof(markers)=='undefined') { markers = new Array(); }
         if (typeof(bounds)=='undefined') { bounds = new google.maps.LatLngBounds(); }
-        var i = markers.length;
+        const i = markers.length;
         markers[i] = new google.maps.Marker({position:pt,icon:marker_icon,draggable:false,map:map});
         bounds.extend(pt);
-        //alert('bounds.extend '+pt+' '+i);
         if (i<1) {
             map.setCenter(pt);
             map.setZoom(10);
@@ -547,26 +502,25 @@ function add_uncompressed_contents_to_form(contents) {
     form.removeChild(out);
 }
 
-var map_types = [
+const map_types = [
 	new MapType("GMaps","Google Maps","gmaps.png"),
 	new MapType("GeoPortal",GEOPORTAL_FRANCEONLY,"geoportal.png")
 ];
 
-var activities = [
-	new Activity("hiking",HIKING,"km/h",false,false,true,"GeoPortal",["Bike-icon.svg","skitouring.svg","hiking.svg"]),
-	new Activity("kayak",KAYAK,"knots",true,false,true,"GMaps",["kayak.svg","surf3.svg"]),
-	new Activity("sailing",KITE,"knots",true,true,true,"GMaps",["kitesurfing.svg","windsurf1.svg"]),
-	new Activity("flying",SNOWKITE,"km/h",false,true,true,"GeoPortal",["Ballooning_pictogram.svg","delta3.svg","skikite.svg"])
+const activities = [
+    new Activity("hiking",HIKING,"km/h",false,false,true,"GeoPortal",["Bike-icon.svg","skitouring.svg","hiking.svg"],false),
+    new Activity("kayak",KAYAK,"knots",true,false,true,"GMaps",["kayak.svg","surf3.svg"],false),
+    new Activity("sailing",KITE,"knots",true,true,true,"GMaps",["kitesurfing.svg","windsurf1.svg"],false),
+    new Activity("flying",SNOWKITE,"km/h",false,true,true,"GeoPortal",["Ballooning_pictogram.svg","delta3.svg","skikite.svg"],false),
+    new Activity("dockstart",DOCKSTART,"knots",true,false,true,"GMaps",["dockstart.svg"],true)
 ];
 
 for (i in activities) {
   document.getElementById("activity_select").innerHTML += '<div><input type="radio" id="activity'+i+'" name="activity" onchange="on_activity_change(this);" value="'+activities[i].name+'"></input><label for="activity'+i+'"><span class="activitytxt">'+activities[i].caption+'</span>'+activities[i].pictureslist.map(function(pict){return '<img src="/static/images/'+pict+'" width="60" height="60" />'}).join('')+'</label><div style="clear:both"></div></div>';
-  //options[i] = new Option(activities[i].caption,activities[i].name);
 }
 
 for (i in map_types) {
   document.getElementById("map_type_select").innerHTML += '<div><span><input type="radio" id="map_type_select'+map_types[i].name+'" name="map_type" onchange="on_map_type_change(this);" value="'+map_types[i].name+'">'+map_types[i].caption+'</input></span><img src="/static/images/'+''+map_types[i].pict+'" width="93" height="66" /><div style="clear:both"></div></div>';
-  //options[i] = new Option(map_types[i].caption,map_types[i].name);
 }
 
 document.getElementById("activity0").checked="true";
@@ -640,9 +594,7 @@ function uniqid() {
   var dec_2 = concat.substr(8, 8) ;
   var hex_1 = dechex (dec_1) ;
   var hex_2 = dechex (dec_2) ;
-  //console.log(micro,concat,dec_1,dec_2);
   return hex_1+hex_2;
 }
 
 document.getElementById("submit_id").value = uniqid();
-

@@ -40,6 +40,7 @@ const HIKING="{{_('Hiking, Skitouring, Ski, Snowboard, Bike')}}";
 const KAYAK="{{_('Surfing, Sea Kayak, Motor boat')}}";
 const KITE="{{_('Windsurf, Kite, Sailing')}}";
 const SNOWKITE="{{_('Snowkite, Free-flying, Air Balloon')}}";
+const DOCKSTART="{{_('Dockstart, Flatstart')}}";
 
 //Userhome
 const CONFIRM_DELETION_OF="{{_('Confirm deletion of ')}}";
