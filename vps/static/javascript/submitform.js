@@ -39,16 +39,13 @@ function submit_click() {
     progress_timer = setTimeout("getprogress_callback()",500);
 }
 
-class MapType {
-    constructor(name, caption, pict) {
+function MapType(name, caption, pict) {
         this.name = name;
         this.caption = caption;
         this.pict = pict;
-    }
 }
 
-class Activity {
-    constructor(name, caption, spdunit, flat, wind, maxspd, maptype, pictureslist, slowruns) {
+function Activity(name, caption, spdunit, flat, wind, maxspd, maptype, pictureslist, slowruns) {
         this.name = name;
         this.caption = caption;
         this.spdunit = spdunit;
@@ -58,7 +55,6 @@ class Activity {
         this.maptype = maptype;
         this.pictureslist = pictureslist;
         this.slowruns = slowruns;
-    }
 }
 
 function on_activity_change(selectbox) {
@@ -462,10 +458,10 @@ function refresh_preview(filecontents,track,filetype,reset) {
         }
         if (typeof(markers)=='undefined') { markers = new Array(); }
         if (typeof(bounds)=='undefined') { bounds = new google.maps.LatLngBounds(); }
-        const i = markers.length;
-        markers[i] = new google.maps.Marker({position:pt,icon:marker_icon,draggable:false,map:map});
+        const last = markers.length;
+        markers[last] = new google.maps.Marker({position:pt,icon:marker_icon,draggable:false,map:map});
         bounds.extend(pt);
-        if (i<1) {
+        if (last<1) {
             map.setCenter(pt);
             map.setZoom(10);
         }
