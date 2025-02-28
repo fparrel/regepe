@@ -1,6 +1,6 @@
 
 from miscranges import frange6,SmartRange
-from mathutil import Mean,GeodeticDistGreatCircle,GeodeticDistVincenty,GeodeticCourse,StrangeFilter
+from mathutil import Mean,GeodeticDistGreatCircle,GeodeticDistVincenty,GeodeticCourse
 from conversions import TimeDeltaToSeconds,MetersPerSecToSpdunit
 from powercomp import BikePower
 from mymath import fsum
@@ -111,7 +111,7 @@ class Point:
         "Convert speed in the given unit"
         if self.spd==None:
             self.spd_converted[unit] = -1.0
-            #raise Exception('Cannot convert speed if speed is not provided')
+            Warn('Cannot convert speed if speed is not provided')
         elif not self.spd_converted.has_key(unit):
             if self.spdunit=='m/s' or self.spdunit==None:
                 self.spd_converted[unit] = self.spd * Point.spd_converter[unit]
@@ -178,13 +178,13 @@ class Track:
         self.ptindexlist = ptindexlist
         self.nospeeds = False
         Log('Track: ComputeSpeed/Course/FillEleWhenNeeded')
-        self.ComputeSpeedWhenNeeded(force=forcespdcomp)
-        self.ComputeCourseWhenNeeded()
-        self.FillEleWhenNeeded()
+        self.__ComputeSpeedWhenNeeded(force=forcespdcomp)
+        self.__ComputeCourseWhenNeeded()
+        self.__FillEleWhenNeeded()
         Log('Track: CheckSpeedUnitAndCorrectIfNeeded')
-        self.CheckSpeedUnitAndCorrectIfNeeded()
+        self.__CheckSpeedUnitAndCorrectIfNeeded()
         if not self.nospeeds:
-            self.AddOruxMapPauses()
+            self.__AddOruxMapPauses()
     def GetSpeeds(self,spdunit):
         "Return the list of speeds in 'spdunit'"
         if spdunit=='m/s':
@@ -195,48 +195,14 @@ class Track:
     def GetElevations(self):
         "Return the list of elevations in meters"
         return [pt.ele for pt in self.ptlist]
-    def CompressPtlistOld(self,nbpts):
-        "Return a list of id built by keeping only 'nbpts' points from the list of points"
-        idlist = map(int, frange6(0,len(self.ptlist),float(len(self.ptlist))/float(nbpts)))
-        return idlist
-    def CompressPtlist2(self,nbpts):
-        "Return a list of points built by keeping only 'nbpts' points from the list of points"
-        idlist = list(SmartRange(0,len(self.ptlist)-1,nbpts))
-        #print('CompressPtlist2: len(idlist)=%d' % len(idlist))
-        return idlist
-    def CompressPtlist(self,nbpts):
+    def __CompressPtlistLinear(self,nbpts):
         "Return a list of points built by keeping only 'nbpts' points from the list of points"
         idlist = list(map(int, frange6(0,len(self.ptlist),float(len(self.ptlist))/float(nbpts))))
         # always include last point
         if idlist[len(idlist)-1]!=len(self.ptlist)-1:
             idlist.append(len(self.ptlist)-1)
         return idlist
-    def MostImportant(self,a,b):
-        maxprio = 0
-        maxprio_i = -1
-        for i in range(a,b):
-            if self.ptlist[i].priority>maxprio:
-                maxprio = self.ptlist[i].priority
-                maxprio_i = i
-        if maxprio>0:
-            #print('MostImportant'+str(i)+': '+str(self.ptlist[i])+' spd='+str(self.ptlist[i].spd))
-            return maxprio_i
-        else:
-            #print('MostImportant'+str(a))
-            return a
-    def CompressPtlistPriority(self,nbpts):
-        "Return a list of points built by keeping only 'nbpts' points from the list of points"
-        idlist = []
-        previ = -1
-        for i in frange6(0,len(self.ptlist),float(len(self.ptlist))/float(nbpts)):
-            if previ>-1:
-                idlist.append(self.MostImportant(int(previ),int(i)))
-            previ = i
-        # always include last point
-        if idlist[len(idlist)-1]!=len(self.ptlist)-1:
-            idlist.append(len(self.ptlist)-1)
-        return idlist
-    def CompressPtlistPriority2(self,nbpts):
+    def __CompressPtlistPriority2(self,nbpts):
         "Return a list of points built by keeping only 'nbpts' points from the list of points"
         nbptsinitial = nbpts
         # decrease total number of points by the number of important points
@@ -244,9 +210,9 @@ class Track:
             if self.ptlist[i].priority>1:
                 nbpts -= 1
         if nbptsinitial - nbpts > nbptsinitial / 2:
-            Warn('WARNING: CompressPtlistPriority2: use standard compression')
+            Warn('CompressPtlistPriority2: use standard compression')
             # If too much important points, use standard compression
-            return self.CompressPtlist(nbptsinitial)
+            return self.__CompressPtlistLinear(nbptsinitial)
         idlist = list(map(int, frange6(0,len(self.ptlist),float(len(self.ptlist))/float(nbpts))))
         # Add important points
         idlistnew = []
@@ -260,17 +226,11 @@ class Track:
         if idlistnew[len(idlistnew)-1]!=len(self.ptlist)-1:
             idlistnew.append(len(self.ptlist)-1)
         assert(len(idlistnew)>=len(idlist))
-        #print('CompressPtlistPriority2 len=%d' % len(idlistnew))
         return idlistnew
-    def CompressCopy(self,nbpts):
-        "Return another Track with only 'nbpts'"
-        ptindexlist = self.CompressPtlist(nbpts)
-        return Track([self.ptlist[i] for i in ptindexlist],self.bounds,ptindexlist)
     def CompressCopyPriority(self,nbpts):
         "Return another Track with only 'nbpts'"
-        ptindexlist = self.CompressPtlistPriority2(nbpts)
-        out = Track([self.ptlist[i] for i in ptindexlist],self.bounds,ptindexlist)
-        return out
+        ptindexlist = self.__CompressPtlistPriority2(nbpts)
+        return Track([self.ptlist[i] for i in ptindexlist],self.bounds,ptindexlist)
     def __len__(self):
         "Return the number of points in list"
         return len(self.ptlist)
@@ -278,104 +238,6 @@ class Track:
         "Convert list of points' speed unit to 'unit'"
         for pt in self.ptlist:
             pt.ConvertSpeed(unit)
-    def RemoveStayingPointsFromDistance(self,threshold):
-        "Remove the points when GPS is staying at the same place"
-        self.ComputeDistancesCache()
-        idlistnew = []
-        for i in range(0,len(self.ptlist)-1):
-            if self.dists[i+1]>threshold:
-                idlistnew.append(i+1)
-        ptlist_new = [self.ptlist[i] for i in idlistnew]
-        if self.dists!=None:
-            dists_new=[]
-            for i in range(1,len(idlistnew)):
-                if idlistnew[i]==idlistnew[i-1]+1:
-                    dists_new.append(self.dists[i])
-                else:
-                    dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
-            self.dists = dists_new
-        self.ptlist = ptlist_new
-    def RemoveStayingPointsFromSpeed(self,threshold):
-        "Remove the points when GPS is staying at the same place"
-        idlistnew = []
-        for i in range(0,len(self.ptlist)):
-            if self.ptlist[i].spd>threshold:
-                idlistnew.append(i+1)
-        ptlist_new = [self.ptlist[i] for i in idlistnew]
-        if self.dists!=None:
-            dists_new=[]
-            for i in range(1,len(idlistnew)):
-                if idlistnew[i]==idlistnew[i-1]+1:
-                    dists_new.append(self.dists[i])
-                else:
-                    dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
-            self.dists = dists_new
-        self.ptlist = ptlist_new
-    def RemoveStayingPoints3(self,thresholddist,thresholdtime,thresholdspeed):
-        "Remove the points when GPS is staying at the same place"
-        if (self.nospeeds):
-            return
-        pauses = []
-        removedptsidlist = []
-        idlist = list(range(0,len(self.ptlist)))
-        j = 0
-        for i in range(0,len(self.ptlist)):
-            if self.ptlist[j].Distance(self.ptlist[i])>thresholddist or self.ptlist[i].spd>thresholdspeed:
-                # Check if the track stayed more than thresholdtime seconds
-                #  under thresholdspeed and not moving farther than thresholddist
-                #  to initial position
-                if TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[j].datetime) > thresholdtime:
-                    #print('DEBUG: RemoveStayingPoints3: pause found: %s %s' % (self.ptlist[j].datetime,self.ptlist[i].datetime))
-                    #print('DEBUG: dist:%dm time=%ds' % (self.ptlist[j].Distance(self.ptlist[i]),TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[j].datetime)))
-                    for k in range(j,i):
-                        idlist.remove(k)
-                        removedptsidlist.append(k)
-                j = i
-        removedptsidlistcpy = removedptsidlist[:]
-        lastid = -2
-        first = True
-        for i in removedptsidlist:
-            if i!=lastid+1:
-                if not first:
-                    #print('end pause:'+str(self.ptlist[lastid]))
-                    pauses.append((curpausebegin,self.ptlist[lastid]))
-                    self.ptlist[lastid].ChangeSpeed(0.0)
-                    self.ptlist[lastid].priority = 2
-                    try:
-                        removedptsidlistcpy.remove(lastid)
-                    except ValueError:
-                        pass
-                #print('begin pause:'+str(self.ptlist[i]))
-                curpausebegin = self.ptlist[i]
-                self.ptlist[i].ChangeSpeed(0.0)
-                self.ptlist[i].priority = 2
-                removedptsidlistcpy.remove(i)
-                first = False
-            lastid = i
-        if not first:
-            #print('end pause:'+str(self.ptlist[i]))
-            pauses.append((curpausebegin,self.ptlist[i]))
-            self.ptlist[i].ChangeSpeed(0.0)
-            self.ptlist[i].priority = 2
-            try:
-                removedptsidlistcpy.remove(i)
-            except ValueError:
-                pass
-        idlistnew = []
-        for i in range(0,len(self.ptlist)):
-            if i not in removedptsidlistcpy:
-                idlistnew.append(i)
-        ptlist_new = [self.ptlist[i] for i in idlistnew]
-        if self.dists!=None:
-            dists_new=[]
-            for i in range(1,len(idlistnew)):
-                if idlistnew[i]==idlistnew[i-1]+1:
-                    dists_new.append(self.dists[i])
-                else:
-                    dists_new.append(GeodeticDistVincenty(self.ptlist[idlistnew[i-1]].lat,self.ptlist[idlistnew[i-1]].lon,self.ptlist[idlistnew[i]].lat,self.ptlist[idlistnew[i]].lon))
-            self.dists = dists_new
-        self.ptlist = ptlist_new
-        return pauses
     def RemoveStayingPoints4(self,thresholddist,thresholdtime,thresholdspeed):
         "Remove the points when GPS is staying at the same place"
         if (self.nospeeds):
@@ -385,7 +247,6 @@ class Track:
         idlist = list(range(0,len(self.ptlist)))
         j = 0
         i = 0
-        #for i in range(0,len(self.ptlist)):
         while i < len(self.ptlist):
             if TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[j].datetime) > thresholdtime:
                 # Check if the track stayed more than thresholdtime seconds
@@ -395,8 +256,7 @@ class Track:
                     while i < len(self.ptlist) and self.ptlist[j].Distance(self.ptlist[i])<thresholddist and self.ptlist[i].spd<thresholdspeed:
                         i += 1
                     i -= 1
-                    #print('DEBUG: RemoveStayingPoints4: pause found: %s %s' % (self.ptlist[j].datetime,self.ptlist[i].datetime))
-                    #print('DEBUG: dist:%dm time=%ds' % (self.ptlist[j].Distance(self.ptlist[i]),TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[j].datetime)))
+                    # Pause found between j and i
                     for k in range(j,i):
                         idlist.remove(k)
                         removedptsidlist.append(k)
@@ -408,7 +268,6 @@ class Track:
         for i in removedptsidlist:
             if i!=lastid+1:
                 if not first:
-                    #print('end pause:'+str(self.ptlist[lastid]))
                     pauses.append((curpausebegin,self.ptlist[lastid]))
                     self.ptlist[lastid].ChangeSpeed(0.0)
                     self.ptlist[lastid].priority = 2
@@ -416,7 +275,6 @@ class Track:
                         removedptsidlistcpy.remove(lastid)
                     except ValueError:
                         pass
-                #print('begin pause:'+str(self.ptlist[i]))
                 curpausebegin = self.ptlist[i]
                 self.ptlist[i].ChangeSpeed(0.0)
                 self.ptlist[i].priority = 2
@@ -424,7 +282,6 @@ class Track:
                 first = False
             lastid = i
         if not first:
-            #print('end pause:'+str(self.ptlist[i]))
             pauses.append((curpausebegin,self.ptlist[i]))
             self.ptlist[i].ChangeSpeed(0.0)
             self.ptlist[i].priority = 2
@@ -454,150 +311,59 @@ class Track:
             if prevpt==None:
                 vertspd = [0.0]
             else:
-                try:
-                    vertspd.append((pt.ele-prevpt.ele)/TimeDeltaToSeconds(pt.datetime-prevpt.datetime))
-                except ZeroDivisionError:
+                t = TimeDeltaToSeconds(pt.datetime-prevpt.datetime)
+                if t>0.0:
+                    vertspd.append((pt.ele-prevpt.ele)/t)
+                else:
                     vertspd.append(0.0)
             prevpt = pt
         return vertspd
-    def ComputeVertSpeeds2(self):
-        "Compute list of instant vertical speeds in m/s"
-        ele = StrangeFilter(self.GetElevations())
-        out = []
-        for i in range(0,len(self)-1):
-            t = TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
-            if t==0.0:
-                vertspd = 0.0
-            else:
-                vertspd = (ele[i+1]-ele[i])/t
-            out.append(vertspd)
-        return out
     def ComputeMeanVertSpeeds(self,threshold):
+        ''''Compute mean vertical speed for each up/down segment (ascent or descent). Put this value for each point of the segment'''	
         out = []
         i = 0
-        #debuglen = 0
-        #print('ComputeMeanVertSpeeds')
-        #for pt in self.ptlist:
-        #    print(pt)
-        #print('first='+str(self.ptlist[0]))
-        for up_down in self.GetUpsAndDowns(threshold):
-            try:
-                vspd = (up_down[1].ele-up_down[0].ele)/TimeDeltaToSeconds(up_down[1].datetime-up_down[0].datetime)
-            except ZeroDivisionError:
+        for first_pt,last_pt,_ in self.__GetUpsAndDowns(threshold):
+            t = TimeDeltaToSeconds(last_pt.datetime - first_pt.datetime)
+            if t > 0.0:
+                vspd = (last_pt.ele - first_pt.ele) / t
+            else:
                 vspd = 0.0
-            #print('up_down=' + str(up_down[0]) + '-->' + str(up_down[1]) + ' vspd=' + str(vspd))
-            buf = []
-            while self.ptlist[i]!=up_down[1]:
-                buf.append(vspd)
+            while self.ptlist[i] != last_pt:
+                out.append(vspd)
                 i += 1
-            #print('len(buf)=%d' % (len(buf)))
-            #debuglen += len(buf)
-            out += buf
-        out.append(out[len(out)-1])
-        #print('debuglen=%d' % (debuglen))
-        #print('last='+str(self.ptlist[len(self.ptlist)-1]))
-        #print('ComputeMeanVertSpeeds: len(self.ptlist)=%d len(out)=%d' % (len(self.ptlist),len(out)))
+        out.append(out[-1])
         assert(len(self.ptlist)==len(out))
-        return out
-    def ComputeSlope(self):
-        "Compute list of slopes"
-        self.ComputeDistancesCache()
-        # Slops already computed, return them
-        if len(self.ptlist)>0 and hasattr(self.ptlist[0],"slope"):
-            return [lambda pt:pt.slope for pt in self.ptlist]
-        # compute slopes
-        prevpt = None
-        i = 0
-        slopes = []
-        for pt in self.ptlist:
-            if prevpt==None:
-                slope = 0.0
-            else:
-                if self.dists[i]<1.0:
-                    slope = 0.0
-                else:
-                    try:
-                        slope = (pt.ele-prevpt.ele)/self.dists[i]
-                    except ZeroDivisionError:
-                        slope = 0.0
-                    # Limit to +-100% (+-45 degrees)
-                    if slope>1.0:
-                        slope = 1.0
-                    elif slope<-1.0:
-                        slope = -1.0
-            slopes.append(slope)
-            pt.slope = slope
-            prevpt = pt
-            i+=1
-        return slopes
-    def ComputeSlope2(self):
-        "Compute list of slopes"
-        self.ComputeDistancesCache()
-        ele = StrangeFilter(self.GetElevations())
-        out = []
-        for i in range(0,len(self)-1):
-            dist = self.dists[i+1]
-            if dist==0.0:
-                slope = 0.0
-            else:
-                slope = ele[i+1]-ele[i]/dist
-            out.append(slope)
         return out
     def ComputeMeanSlope(self,vertthreshold,horithreshold):
+        ''''Compute mean slope for each up/down segment (ascent or descent). Put this value for each point of the segment'''	
         out = []
         i = 0
-        for up_down in self.GetUpsAndDowns(vertthreshold):
-            if up_down[1].Distance(up_down[0])>=horithreshold:
-                try:
-                    slope = (up_down[1].ele-up_down[0].ele)/up_down[1].DistancePrecise(up_down[0])
-                except ZeroDivisionError:
+        for first_pt,last_pt,_ in self.__GetUpsAndDowns(vertthreshold):
+            if last_pt.Distance(first_pt) >= horithreshold:
+                d = last_pt.DistancePrecise(first_pt)
+                if d > 0.0:
+                    slope = (last_pt.ele - first_pt.ele) / d
+                else:
+                    # zero distance is interpreted as flat
                     slope = 0.0
             else:
                 slope = 0.0
-            #if slope>0.1:
-            #    print('here')
-            #    print(up_down[0])
-            #    print(up_down[1])
-            #    print('distance = %f' % up_down[1].Distance(up_down[0]))
-            buf = []
-            while self.ptlist[i]!=up_down[1]:
-                buf.append(slope)
+            while self.ptlist[i] != last_pt:
+                out.append(slope)
                 i += 1
-            out += buf
-        out.append(out[len(out)-1])
+        out.append(out[-1])
         assert(len(self.ptlist)==len(out))
         return out
-    def ComputeBikePower(self,weight):
-        "Comput list of instant power in watts"
-        slope = self.ComputeSlope()
-        return [self.ptlist[i].spd * self.ptlist[i].spd * Track.bike_power_friction + self.ptlist[i].spd * bike_power_climbing * slope[i] for i in range(0,len(self.ptlist))]
     def ComputeDistances(self):
         "Compute list of distances from the begin of track segment"
-        self.ComputeDistancesCache()
+        self.__ComputeDistancesCache()
         out = []
         cptr = 0.0
         for i in range(0,len(self.ptlist)):
             cptr+=self.dists[i]
             out.append(cptr)
         return out
-    def ComputeEleDiffRaw(self):
-        "Compute D+ and D-"
-        up = 0.0
-        down = 0.0
-        prevpt = None
-        for pt in self.ptlist:
-            if prevpt==None:
-                up = 0.0
-                down = 0.0
-            else:
-                d = pt.ele - prevpt.ele
-                if d>0.0:
-                    up += d
-                else:
-                    down += -d
-            prevpt = pt
-        return (up,down)
-    def GetUpsAndDowns(self,threshold):
+    def __GetUpsAndDowns(self,threshold):
         p1down = self.ptlist[0]
         p2down = self.ptlist[0]
         p1up = self.ptlist[0]
@@ -606,9 +372,6 @@ class Track:
         last_up_or_down = 0
         current_up_or_down = 0
         for pt in self.ptlist:
-            #print('   '+str(pt))
-            #print('   current_up_or_down=%d' % (current_up_or_down))
-            #print('   p1down=%s p2down=%s p1up=%s p2up=%s' % (p1down,p2down,p1up,p2up))
             if current_up_or_down==0:
                 if pt.ele - p1down.ele < -threshold:
                     current_up_or_down = 1
@@ -618,7 +381,7 @@ class Track:
                 if pt.ele < p2down.ele:
                     p2down = pt
                 elif pt.ele - p2down.ele > threshold:
-                    #print('down('+str(p1down)+','+str(p2down))
+                    # down detected
                     out.append((p1down,p2down,1))
                     p1up = p2down
                     p2up = p2down
@@ -629,23 +392,23 @@ class Track:
                 if pt.ele > p2up.ele:
                     p2up = pt
                 elif pt.ele - p2up.ele < -threshold:
-                    #print('up('+str(p1up)+','+str(p2up))
+                    # up detected
                     out.append((p1up,p2up,2))
                     p1down = p2up
                     p2down = p2up
                     p1up = p2up
                     last_up_or_down = 2
-                    current_up_or_down = 0   
+                    current_up_or_down = 0
         if last_up_or_down==1:
             p2up = pt
-            #print('up('+str(p1up)+','+str(p2up))
+            # add last up
             out.append((p1up,p2up,2))
         if last_up_or_down==2:
             p2down = pt
-            #print('down('+str(p1down)+','+str(p2down))
+            # add last down
             out.append((p1down,p2down,1))
         if last_up_or_down==0:
-            #print('flat('+str(p1down)+','+str(pt))
+            # add last flat
             out.append((p1down,pt,0))
         return out
     def ComputeEleDiff(self,threshold):
@@ -659,107 +422,51 @@ class Track:
         lastmine = mine
         lastmaxe = maxe
         for pt in self.ptlist:
-            if pt.ele>maxe:
+            if pt.ele > maxe:
                 maxe = pt.ele
-            if pt.ele<mine:
+            if pt.ele < mine:
                 mine = pt.ele
             diff = pt.ele - ele
+            # we consider that we change from ascent/descent only if elevation diff is enough
             if abs(diff) > threshold:
-                if diff<0:
-                    if lastdiff==1:
-                        #print 'up down',lastmine,maxe
+                if diff < 0:
+                    if lastdiff == 1:
+                        # up -> down => add to D+
                         lastmaxe = maxe
                         dplus += maxe - lastmine
-                        #print 'd+: %d' % (maxe - lastmine)
                     lastdiff = -1
                 else:
-                    if lastdiff==-1:
-                        #print 'down up',mine,lastmaxe
+                    if lastdiff == -1:
+                        # down -> up => add to D-
                         lastmine = mine
                         dminus += lastmaxe - mine
-                        #print 'd-: %d' % (lastmaxe - mine)
                     lastdiff = 1
                 ele = pt.ele
                 maxe = ele
                 mine = ele
         if lastdiff==1:
-            #print 'end up',lastmine,pt.ele
+            # finished in up => add to D+
             dplus += pt.ele - lastmine
         if lastdiff==-1:
-            #print 'end down',lastmaxe,pt.ele
+            # finished in down => add to D-
             dminus += lastmaxe - pt.ele
         return (dplus,dminus)
-    def ComputeEleDiffOld(self,threshold):
-        "Compute D+ and D-"
-        p1down = self.ptlist[0]
-        p2down = self.ptlist[0]
-        p1up = self.ptlist[0]
-        p2up = self.ptlist[0]
-        down = 0.0
-        up = 0.0
-        last_up_or_down = 0
-        current_up_or_down = 0
-        for pt in self.ptlist:
-            #print('   '+str(pt))
-            #print('   current_up_or_down=%d' % (current_up_or_down))
-            #print('   p1down=%s p2down=%s p1up=%s p2up=%s' % (p1down,p2down,p1up,p2up))
-            if current_up_or_down==0:
-                if pt.ele - p1down.ele < -threshold:
-                    current_up_or_down = 1
-                elif pt.ele - p1up.ele > threshold:
-                    current_up_or_down = 2
-            elif current_up_or_down==1:
-                if pt.ele < p2down.ele:
-                    p2down = pt
-                elif pt.ele - p2down.ele > threshold:
-                    #print('down('+str(p1down)+','+str(p2down))
-                    down += p1down.ele - p2down.ele
-                    p1up = p2down
-                    p2up = p2down
-                    p1down = p2down
-                    last_up_or_down = 1
-                    current_up_or_down = 0
-            elif current_up_or_down==2:
-                if pt.ele > p2up.ele:
-                    p2up = pt
-                elif pt.ele - p2up.ele < -threshold:
-                    #print('up('+str(p1up)+','+str(p2up))
-                    up += p2up.ele - p1up.ele
-                    p1down = p2up
-                    p2down = p2up
-                    p1up = p2up
-                    last_up_or_down = 2
-                    current_up_or_down = 0   
-        if last_up_or_down==1:
-            p2up = pt
-            #print('up('+str(p1up)+','+str(p2up))
-            down += p1down.ele - p2down.ele
-        if last_up_or_down==2:
-            p2down = pt
-            #print('down('+str(p1down)+','+str(p2down))
-            up += p2up.ele - p1up.ele
-        if last_up_or_down==0:
-            pass
-            #print('flat('+str(p1down)+','+str(pt))
-        return (up,down)
     def ComputeTimes(self):
+        '''For each point, compute time elasped since the first point in seconds'''
         timefirst = self.ptlist[0].datetime
         return map(lambda pt: TimeDeltaToSeconds(pt.datetime-timefirst),self.ptlist)
     def ComputeLengthFromSpd(self):
         "Compute track length by integrating speed"
-        if len(self.ptlist)==0:
+        if len(self.ptlist)<2:
             return 0.0
         if self.ptlist[0].spdunit!='m/s':
             raise ValueError(gettext('Unit of points speed must be m/s'))
-        # if you know how to optimize the following loop (sum,map,list...), send me a mail
-        out = 0.0
-        for i in range(0,len(self.ptlist)-1):
-            out += TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)*self.ptlist[i].spd
-        return out
-    def ComputeDistancesCache(self):
-        if self.dists==None or not(len(self.ptlist)==len(self.dists)):
+        return fsum(TimeDeltaToSeconds(self.ptlist[i+1].datetime - self.ptlist[i].datetime) * self.ptlist[i].spd for i in range(len(self.ptlist) - 1))
+    def __ComputeDistancesCache(self):
+        # If cache is empty or points have been added or removed
+        if self.dists==None or len(self.ptlist)!=len(self.dists):
             self.dists=[0.0]
-            if len(self.ptlist)>5000: #vincenty is too slow for long tracks
+            if len(self.ptlist)>5000: # Vincenty more precise but too slow for long tracks
                 for i in range(1,len(self.ptlist)):
                     self.dists.append(GeodeticDistGreatCircle(self.ptlist[i-1].lat,self.ptlist[i-1].lon,self.ptlist[i].lat,self.ptlist[i].lon))
             else:
@@ -767,14 +474,11 @@ class Track:
                     self.dists.append(GeodeticDistVincenty(self.ptlist[i-1].lat,self.ptlist[i-1].lon,self.ptlist[i].lat,self.ptlist[i].lon))
     def ComputeLengthFromDist(self):
         "Compute track length by summing distances"
-        self.ComputeDistancesCache()
+        self.__ComputeDistancesCache()
         out = fsum(self.dists)
         return out
-        #out = 0.0
-        #for i in range(0,len(self.ptlist)-1):
-        #    out += GeodeticDist(self.ptlist[i+1].lat,self.ptlist[i+1].lon,self.ptlist[i].lat,self.ptlist[i].lon)
-        #return out
     def ComputePolar(self,nbstep,spdthreshold=0.0,spdunit='m/s',nbptsthreshold=1):
+        '''Compute a Polar (speeds by angle) returns a tuple: (angles, mean seepds, max speeds)'''
         maxspds = []
         meanspds = []
         angles = []
@@ -808,39 +512,10 @@ class Track:
             out.append(BikePower(powerintegbuffer,self.ptlist[i].spd, slopes[i], weight))
         return out
     def GetEleFromDEM(self):
-        #print('DEBUG: model.py: Track: GetEleFromDEM()')
+        '''Gets elevations from Digital Elevation Model instead of getting it from GPS input file'''
         # Get from dem
         GetEleFromLatLonList(self.ptlist,True)
-    def ComputeSpeedWhenNeededWithFilter(self,force=False):
-        self.ComputeDistancesCache()
-        self.spdcomputed = False
-        # Compute speeds in case it is not provided
-        for i in range(0,len(self.ptlist)-1):
-            if self.ptlist[i].spd==None or self.ptlist[i].spd<0.0 or force:
-                self.spdcomputed = True
-                if self.ptlist[i].datetime==None or self.ptlist[i+1].datetime==None:
-                    self.ptlist[i].spd = -1.0
-                    self.nospeeds = True
-                    #print('DEBUG: ComputeSpeedWhenNeeded: nospeeds = True')
-                    #raise Exception("Cannot compute speeds if datetime is not provided")
-                else:
-                    try:
-                        self.ptlist[i].spd = self.dists[i+1]/TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
-                        self.ptlist[i].spdunit = 'm/s'
-                        self.ptlist[i].spd_converted = {'m/s': self.ptlist[i].spd}
-                    except ZeroDivisionError:
-                        self.ptlist[i].spd = 0.0
-                        self.ptlist[i].spdunit = 'm/s'
-                        self.ptlist[i].spd_converted = {'m/s': self.ptlist[i].spd}
-                #print 'DEBUG: Compute speed "%s"' % self.ptlist[i].spd
-        # Handle last point
-        if self.ptlist[len(self.ptlist)-1].spd==None:
-            if len(self.ptlist)<2:
-                self.nospeeds = True
-            else:
-                self.ptlist[len(self.ptlist)-1].spd = self.ptlist[len(self.ptlist)-2].spd
-                self.ptlist[len(self.ptlist)-1].spdunit = self.ptlist[len(self.ptlist)-2].spdunit
-                self.ptlist[len(self.ptlist)-1].spd_converted = {'m/s': self.ptlist[len(self.ptlist)-1].spd}
+    def ApplySpeedFilter(self):
         # Apply filter in case of bad signal
         previous = self.ptlist[0].spd
         if self.spdcomputed:
@@ -848,10 +523,12 @@ class Track:
                 pt.spd = previous + (pt.spd - previous)/5
                 pt.spd_converted = {'m/s': pt.spd}
                 previous = pt.spd
-    def ComputeSpeedWhenNeeded(self,force=False):
-        self.ComputeDistancesCache()
+    def __ComputeSpeedWhenNeeded(self, force=False):
+        '''Compute speeds in case it is not provided or if force argument is True'''
+        if self.nospeeds:
+            return	
+        self.__ComputeDistancesCache()
         self.spdcomputed = False
-        # Compute speeds in case it is not provided
         i = 0
         if self.ptlist[i].spd==None or self.ptlist[i].spd<0.0 or force:
             self.ptlist[i].spd = 0.0
@@ -864,42 +541,49 @@ class Track:
                     self.ptlist[i].spd = -1.0
                     self.nospeeds = True
                 else:
-                    t=TimeDeltaToSeconds(self.ptlist[i].datetime-self.ptlist[i-1].datetime)
-                    if t==0.0:
-                        self.ptlist[i].spd = 0.0
+                    t = TimeDeltaToSeconds(self.ptlist[i].datetime - self.ptlist[i-1].datetime)
+                    if t > 0.0:
+                        self.ptlist[i].spd = self.dists[i] / t
                     else:
-                        self.ptlist[i].spd = self.dists[i]/t
+                        # avoid division by zero: infinite speed is set to zero
+                        self.ptlist[i].spd = 0.0
                     self.ptlist[i].spdunit = 'm/s'
                     self.ptlist[i].spd_converted = {'m/s': self.ptlist[i].spd}
-    def ComputeCourseWhenNeeded(self):
-        # Compute course in case it is not provided
-        if len(self.ptlist)<2:
+    def __ComputeCourseWhenNeeded(self):
+        'Compute course in case it is not provided'
+        if len(self.ptlist) < 2:
             self.ptlist[0].course = 0
         all_course_zero = True
         for pt in self.ptlist:
-            if pt.course!=0:
+            if pt.course != 0:
                 all_course_zero = False
         for i in range(0,len(self.ptlist)-1):
             if self.ptlist[i].course==None or all_course_zero:
                 self.ptlist[i].course = GeodeticCourse(self.ptlist[i].lat,self.ptlist[i].lon,self.ptlist[i+1].lat,self.ptlist[i+1].lon)
-        if self.ptlist[len(self.ptlist)-1].course==None:
-            self.ptlist[len(self.ptlist)-1].course = self.ptlist[len(self.ptlist)-2].course
-    def FillEleWhenNeeded(self):
+        if self.ptlist[-1].course==None:
+            if len(self.ptlist) > 1:
+                self.ptlist[-1].course = self.ptlist[-2].course
+            else:
+                self.ptlist[-1].course = 0
+    def __FillEleWhenNeeded(self):
+        # TODO : add interpolation
         prevele = 0
         for pt in self.ptlist:
             if pt.ele==None:
                 pt.ele = prevele
             prevele = pt.ele
-    def ComputedSpeedDontOverWrite(self):
-        self.ComputeDistancesCache()
+    def __ComputedSpeedDontOverWrite(self):
+        self.__ComputeDistancesCache()
         out = []
         for i in range(0,len(self.ptlist)-1):
             if self.ptlist[i].datetime==None or self.ptlist[i+1].datetime==None:
                 return None
             else:
-                try:
-                    spd = self.dists[i+1]/TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
-                except ZeroDivisionError:
+                d = TimeDeltaToSeconds(self.ptlist[i+1].datetime-self.ptlist[i].datetime)
+                if d > 0:
+                    spd = self.dists[i+1] / d
+                else:
+                    # infinite speed is set to zero
                     spd = 0.0
             out.append(spd)
         # Handle last point
@@ -908,54 +592,55 @@ class Track:
         else:
             out.append(spd)
         return out
-    def CheckSpeedUnitAndCorrectIfNeeded(self):
+    def __CheckSpeedUnitAndCorrectIfNeeded(self):
         "Some gpx file contain speed in another unit that standard m/s. Check this"
         spdsfromfile = map(lambda pt: pt.spd,self.ptlist)
-        spdsfromcomputation = self.ComputedSpeedDontOverWrite()
+        spdsfromcomputation = self.__ComputedSpeedDontOverWrite()
         Log('Track::CheckSpeedUnitAndCorrectIfNeeded: after ComputedSpeedDontOverWrite')
         if spdsfromcomputation==None:
             return True
         sumdiff = 0.0
         sumspeed = 0.0
         i = 0
-        for spdfile in spdsfromfile:
-            if spdfile==None:
+        for spdfromfile in spdsfromfile:
+            if spdfromfile == None or spdfromfile == -1.0:
                 return True
-            if spdfile==-1.0:
-                return True
-            sumdiff += abs(spdfile-spdsfromcomputation[i])
+            sumdiff += abs(spdfromfile - spdsfromcomputation[i])
             sumspeed += spdsfromcomputation[i]
             i += 1
-        if sumspeed==0.0:
-            return True
-        #print('DEBUG: CheckSpeedUnit: %s' % (sumdiff/sumspeed))
-        if sumdiff/sumspeed>0.8:
-            # More than 80% diff
+        # first check is to prevent division by zero
+        if sumspeed > 0.0 and sumdiff / sumspeed > 0.8:
+            # More than 80% diff => overwrite speeds by the ones from computation
             for j in range(0,i):
                 self.ptlist[j].spd = spdsfromcomputation[j]
                 self.ptlist[j].spdunit = 'm/s'
             return False
         return True
     def ComputePolarDist(self,nbstep):
+        '''For each angle between 0 and 360, compute the distance covered in this direction.
+           Usefull for computing polar diagrams when we have no time/speed information.
+           Return a tuple of two lists: angles and distances'''
         angles = list(SmartRange(0,360,nbstep))
-        distances = [0 for a in angles]
+        distances = [0 for _ in angles]
         prevpt = None
         for pt in self.ptlist:
             for i in range(0,len(angles)):
-                if angles[i]>pt.course:
-                    if prevpt!=None:
+                if angles[i] > pt.course:
+                    if prevpt != None:
                         distances[i] += pt.Distance(prevpt)
                     break
             prevpt = pt
         return (angles,distances)
     def IsOnSeveralDays(self):
-        try:
+        if len(self.ptlist)>0 and hasattr(self.ptlist[-1],'datetime') and hasattr(self.ptlist[0],'datetime'):
             return (self.ptlist[-1].datetime.day!=self.ptlist[0].datetime.day)or(self.ptlist[-1].datetime.month!=self.ptlist[0].datetime.month)or(self.ptlist[-1].datetime.year!=self.ptlist[0].datetime.year)
-        except:
+        else:
+            # if there is no datetime, we display the track as if it wasn't on several days
             return False
     def hasHeartRate(self):
         return sum(map(lambda pt:hasattr(pt,'hr'),self.ptlist))>len(self.ptlist)/2
     def getHeartRate(self):
+        # TODO replace it by same algorithm as in fitparser
         prev_hr = None
         for pt in self.ptlist:
             if not hasattr(pt,'hr'):
@@ -968,24 +653,30 @@ class Track:
             prev_hr = pt.hr
         return map(lambda pt: pt.hr,self.ptlist)
     def ComputeEqDistancesFromSpd(self):
+        '''Compute distance for each point from the beginning of the track, by integrating speed.
+           Usefull for computations around speed which may be more precise than using distances'''
         out = [0.0]
         dst = 0.0
         for i in range(1,len(self.ptlist)):
             dst += self.ptlist[i].spd * TimeDeltaToSeconds(self.ptlist[i].datetime-self.ptlist[i-1].datetime)
             out.append(dst)
         return out
-    def AddOruxMapPauses(self):
-        out=[]
-        out_dists=[]
+    def __AddOruxMapPauses(self):
+        '''Some devices/applications detect and stop adding corresponding points in the track. 
+           The issue is that it adds next moving point far away from where the pause was, making 
+           the pause interpreted like a slow move to the next moving point. Correct it by adding 
+           two points with zero speed for each detected pause'''
+        out = []
+        out_dists = []
         threshold_time = 2
         prevpt = None
-        i=0
+        i = 0
         for pt in self.ptlist:
-            #print prevpt,pt.spd
-            if prevpt!=None and pt.spd!=None:
-                delta=(pt.datetime - prevpt.datetime).seconds
-                if delta > threshold_time and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<prevpt.spd*0.2 and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta<pt.spd*0.2:
-                    #print 'poz',delta
+            # compute only from the second point
+            if prevpt != None and pt.spd != None:
+                delta = (pt.datetime - prevpt.datetime).seconds
+                # pause detection: must last more than 2 seconds and the computed speed must be less than 20% of the speed of the two points
+                if delta > threshold_time and GeodeticDistGreatCircle(prevpt.lat,prevpt.lon,pt.lat,pt.lon)/delta < min(prevpt.spd*0.2, pt.spd*0.2):
                     out.append(Point(prevpt.lat,prevpt.lon,prevpt.ele,0,prevpt.course,prevpt.datetime+timedelta(seconds=1)))
                     out_dists.append(0.0)
                     out.append(Point(pt.lat,pt.lon,pt.ele,0,pt.course,pt.datetime-timedelta(seconds=1)))
@@ -993,13 +684,41 @@ class Track:
             out.append(pt)
             out_dists.append(self.dists[i])
             prevpt = pt
-            i+=1
+            i += 1
         self.ptlist = out
         self.dists = out_dists
 
-if __name__=='__main__':
+def unittests():
     from gpxparser import ParseGpxFile
-    ptlist = ParseGpxFile('../../lamp-prod/cgi-bin/submit/56d74ad0cb0ec_0.gpx',0,0)
-    print len(ptlist)
+    ptlist = ParseGpxFile('uploads/10998bc80447c_0.gpx', 0, 0)
     track = Track(ptlist)
-    print track.ComputeLengthFromDist()
+    print len(track)
+
+    # Call each method of Track class
+    track.GetSpeeds('m/s')
+    track.GetElevations()
+    track.CompressCopyPriority(10)
+    print len(track)
+    track.ConvertSpeed('km/h')
+    track.RemoveStayingPoints4(10, 10, 1)
+    print len(track)
+    track.ComputeInstantVertSpeeds()
+    track.ComputeMeanVertSpeeds(10)
+    track.ComputeMeanSlope(10, 10)
+    track.ComputeDistances()
+    track.ComputeEleDiff(10)
+    track.ComputeTimes()
+    track.ComputeLengthFromSpd()
+    track.ComputeLengthFromDist()
+    track.ComputePolar(10)
+    track.ComputeBikePower2(10, 10)
+    track.ComputePolarDist(10)
+    track.IsOnSeveralDays()
+    track.hasHeartRate()
+    track.getHeartRate()
+    track.ComputeEqDistancesFromSpd()
+    track.ApplySpeedFilter() #unused
+    #track.GetEleFromDEM()
+
+if __name__=='__main__':
+    unittests()
