@@ -354,6 +354,8 @@ def upload():
     # Get track description
     Log('Get track desc',submit_id)
     desc = request.form['desc'].encode('utf8')
+    if len(desc.strip())==0:
+        desc = 'no description'
     Log('Check session',submit_id)
     # Check session
     user = request.form['user']
