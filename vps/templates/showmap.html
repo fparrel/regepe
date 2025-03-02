@@ -14,22 +14,29 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-function runsHistogram(runsData) {
+function runsHistogram(runsData,cumulative = false) {
     runsDataGlobal = runsData;
     console.log("runsHistogram");
     const ctx = document.getElementById('runsHistogram').getContext('2d');
     const data = runsData.map(run => run.time);
 
     // Create an array to hold the counts of runs for each second
-    const minTime = Math.min(...data);
+    const minTime = cumulative ? 0 : Math.min(...data);
     const maxTime = Math.max(...data);
     const runCounts = new Array(maxTime - minTime + 1).fill(0);
 
     // Count the number of runs that last each number of seconds
     data.forEach(time => {
         const roundedTime = Math.round(time);
-        if (roundedTime >= minTime && roundedTime <= maxTime) {
-            runCounts[roundedTime - minTime]++;
+        if (roundedTime <= maxTime) {
+            const i = roundedTime - minTime;
+            if(cumulative) {
+                for(var j=0;j<=i;j++){
+                    runCounts[j]++;
+                }
+            } else {
+                runCounts[i]++;
+            }
         }
     });
 

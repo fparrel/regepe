@@ -147,7 +147,7 @@ def ProcessTrkSegWithProgress(track,mapid,submitid,light,options):
         except Exception, e:
             Warn('Cannot BuildMaxSpeeds: %s\n'%e)
 
-    if not track.nospeeds and not options['wind']:
+    if not track.nospeeds:
         runs_threshold = 3.0
         if 'slowruns' in options and options['slowruns']:
             runs_threshold = 1.0
