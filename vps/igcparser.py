@@ -27,14 +27,12 @@ def ParseIgcFile(inputfile,trk_id,trk_seg_id):
 def main():
     from orchestrator import GetFileType
     f = open('test.igc','rb')
-    print GetFileType(f)
+    print(GetFileType(f))
     f.seek(0,0)
     ptlist = ParseIgcFile(f,0,0)
-    print len(ptlist)
+    print(len(ptlist))
     for pt in ptlist:
-        print pt.datetime,pt.lat,pt.lon,pt.spd
-    return
+        print(pt.datetime,pt.lat,pt.lon,pt.spd)
 
 if __name__ == '__main__':
    main()
-

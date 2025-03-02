@@ -1,11 +1,8 @@
 
 # Model classes
-from model import Bounds,Point,Track
+from model import Point
 #Datetime
 from datetime import datetime,date
-
-#only for unittests
-import os
 
 from log import Warn
 
@@ -47,7 +44,6 @@ def ParseGgaSentence(sentence,current_date):
     #7: Number of satellites being tracked
     #8: Horizontal dilution of position
     #9,10: ele
-    #print('DEBUG:'+sentence[9])
     try:
         ele = int(round(float(sentence[9])))
     except ValueError:
@@ -158,7 +154,6 @@ def ParseWplSentence(sentence):
 
 def ParseSentence(line,current_date):
     'Parses a NMEA sentence'
-    #checksum = line[:-2]
     try:
         sentence = line[:-3].split(',')
         if sentence[0]=='$GPGGA':
@@ -178,46 +173,27 @@ def ParseSentence(line,current_date):
         else:
             #others are ignored
             return None
-            #raise Exception('NMEA sentence %s not supported' % sentence[0])
-    except Exception,e:
+    except Exception as e:
         Warn('Cannot parse "%s": %s' % (line,str(e)))
         return None
 
 def ParseNmeaFile(inputfile,trk_id,trk_seg_id):
     current_date = Date(1980,1,1)
-    #f = open(inputfile,'r')
     f = inputfile
     ptlist = []
     prevpt = None
-    curday = None
-    curtrkid = 0
     for line in f:
         if line[0]!='$':
             continue
         pt = ParseSentence(line.rstrip(),current_date)
         if pt==None:
             continue
-        #print('DEBUG:ParseNmeaFile:ParseSentence: la=%s lg=%s e=%s s=%s c=%s t=%s' % (pt.lat,pt.lon,pt.ele,pt.spd,pt.course,pt.datetime))
-        #if curday!=None:
-        #    if pt.datetime.date!=curday:
-        #        print('DEBUG: new day')
-        #        # New day
-        #        if curtrkid==trk_id:
-        #            f.close()
-        #            return ptlist
-        #        else:
-        #            ptlist = []
-        #        curtrkid += 1
-        #curday = pt.datetime.date
-        if prevpt!=None:
-            #print('DEBUG:ParseNmeaFile:revpt!=None')
-            if prevpt.lat==pt.lat and prevpt.lon==pt.lon:
-                #print('DEBUG:ParseNmeaFile:prevpt=curpt')
-                if prevpt.ele!=None and pt.ele==None:
-                    pt.ele = prevpt.ele
-                if prevpt.spd!=None and pt.spd==None:
-                    pt.spd = prevpt.spd
-                ptlist = ptlist[:-1]
+        if prevpt!=None and prevpt.lat==pt.lat and prevpt.lon==pt.lon:
+            if prevpt.ele!=None and pt.ele==None:
+                pt.ele = prevpt.ele
+            if prevpt.spd!=None and pt.spd==None:
+                pt.spd = prevpt.spd
+            ptlist = ptlist[:-1]
         prevpt = pt
         ptlist.append(pt)
     f.close()
@@ -246,40 +222,11 @@ def ParseNmeaFile(inputfile,trk_id,trk_seg_id):
 
 ## UNIT TEST CODE ##
 
-def convertDatetimeToGpxFormat(date,datetime):
-    s = str(datetime)
-    return date + 'T' + s[11:] + 'Z'
-
 def main():
-    f = open('C:/Documents and Settings/fparrel/Desktop/temp/GPS_DATA/FPARREL_113300089_20111226_152142.TXT','rb')
+    f = open('NMEA.TXT','rb')
     ptlist = ParseNmeaFile(f,0,0)
     for pt in ptlist:
-        print pt.datetime
-    return
-    path = 'E:/GPS_DATA'
-    dir = os.listdir(path)
-    dir.sort()
-    ptlist = []
-    for fname in dir:
-        if fname.endswith('.TXT') and fname.startswith('FPARREL_113300089_20111226'):
-            print fname
-            ptlist.extend(ParseNmeaFile(open('%s/%s'%(path,fname),'rb'),0,0))
-    track = Track(ptlist)
-    date = '%s-%s-%s' % (ptlist[0].datetime.year,ptlist[0].datetime.month,ptlist[0].datetime.day)
-    f = open('out2.gpx','wb')
-    # Print header
-    f.write('<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.0" creator="www.regepe.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">\n<trk><trkseg>')
-    for pt in ptlist:
-        if pt.datetime==None:
-            f.write('<trkpt lat="%s" lon="%s">\n<ele>%s</ele>\n<course>%s</course>\n<speed>%.4f</speed>\n</trkpt>' % (pt.lat,pt.lon,pt.ele,pt.course,pt.spd))
-        else:
-            f.write('<trkpt lat="%s" lon="%s">\n<time>%s</time><ele>%s</ele>\n<course>%s</course>\n<speed>%.4f</speed>\n</trkpt>' % (pt.lat,pt.lon,convertDatetimeToGpxFormat(date,pt.datetime),pt.ele,pt.course,pt.spd))
-    # Print footer
-    f.write('</trkseg></trk></gpx>\n')
-    f.close()
-    #for pt in ptlist:
-    #    print(pt)
-    #raw_input('Press Enter')
+        print(pt.datetime)
 
 if __name__ == '__main__':
    main()

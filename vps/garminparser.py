@@ -1,22 +1,15 @@
 
-# Model classes
 from model import Point
-#Datetime
 import datetime
-
-#from log import Log
-
 import json
 
 def ParseJsonGarmingFileCourse(inputfile,trk_id,trk_seg_id):
-    ptlist = []
     data = inputfile.read()
     js = json.loads(data)
     return map(lambda pt:Point(pt['latitude'],pt['longitude'],pt['elevation'],None,None,datetime.datetime.fromtimestamp(pt['timestamp']/1000)),js['geoPoints'])
 
 
 def ParseJsonGarminFile(inputfile,trk_id,trk_seg_id):
-    ptlist = []
     data = inputfile.read()
     js = json.loads(data)['com.garmin.activity.details.json.ActivityDetails']
     latidx = -1
@@ -50,13 +43,11 @@ def ParseJsonGarminFile(inputfile,trk_id,trk_seg_id):
 def main():
     from orchestrator import GetFileType
     f = open('601780115.json','rb')
-    print GetFileType(f)
+    print(GetFileType(f))
     f.seek(0,0)
     ptlist = ParseJsonGarminFile(f,0,0)
     for pt in ptlist:
-        print pt.datetime,pt.lat,pt.lon,pt.spd
-    return
+        print(pt.datetime,pt.lat,pt.lon,pt.spd)
 
 if __name__ == '__main__':
    main()
-

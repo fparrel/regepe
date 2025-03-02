@@ -3,7 +3,7 @@ import re
 import os
 from uuid import uuid4
 from mail import sendmail
-from db import RebuildNeeded,TriggerRebuildOfInv,DbBuildInvert,DumpDb
+from db import RebuildNeeded,TriggerRebuildOfInv,DbBuildInvert
 from config import config
 from flask_babel import gettext
 from log import Warn
@@ -94,7 +94,6 @@ def ActivateUser(user,activationid):
 def GetUserFromUserOrEmail(userormail):
     if not (CheckValidUserName(userormail) or CheckValidEmail(userormail)):
         return None,gettext('Invalid user name or email')
-        #raise Exception(gettext('Invalid user name or email'))
     dbfile = 'data/users/%s.db' % userormail
     if os.access(dbfile,os.F_OK):
         user = userormail
@@ -102,7 +101,6 @@ def GetUserFromUserOrEmail(userormail):
         user = GetUserByEmail(userormail)
         if user==None:
             return None,gettext('Cannot found user from email "%s"') % userormail
-            #raise Exception(gettext('Cannot found user from email "%s"') % userormail)
     return user,None
 
 MAX_NB_SESSIONS = 8
@@ -202,19 +200,11 @@ def DumpUser(user,show_password=False):
 def main():
     for userfile in os.listdir('data/users'):
         DumpUser(userfile[:-3])
-    #GetUserByEmail('test')
-    #DumpDb('MAIL_INV.db')
-    #DumpUser('fredi')
-    #return
-    #print CheckValidUserName('fparrel_0')
-    #actid = ReserveUser('fparrel2','mypassword')
-    #print actid
-    #ActivateUser('fparrel2',actid)
-    (user,session_id) = Login('fparrel2','mypassword')
-    (user,session_id2) = Login('fparrel2','mypassword')
-    print CheckSession(user,session_id)
-    print CheckSession(user,session_id2)
-    print CheckSession(user,'lol')
+    (user,session_id) = Login('myser','mypassword')
+    (user,session_id2) = Login('myuser2','mypassword')
+    print(CheckSession(user,session_id))
+    print(CheckSession(user,session_id2))
+    print(CheckSession(user,'lol'))
 
 if __name__=='__main__':
     main()

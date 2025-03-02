@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 
 import anydbm
-import sys
 
 def GetProgress(submitid):
     db = anydbm.open("data/PROGRESS.db", "c")
@@ -12,7 +11,6 @@ def GetProgress(submitid):
     return out
 
 def SetProgress(submitid,progress):
-    #sys.stderr.write('SetProgress(%s,%s)\n'%(submitid,progress.decode('utf8')))
     db = anydbm.open("data/PROGRESS.db", "c")
     db[submitid] = progress.encode('utf8')
     db.close()
@@ -40,7 +38,6 @@ def DumpProgress():
 
 def main():
     SetProgress('e2d97351e3933','In progrès'.decode('utf8'))
-    #print(GetProgress(1234))
     DumpProgress()
 
 if __name__ == '__main__':

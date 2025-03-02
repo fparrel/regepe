@@ -40,12 +40,11 @@ def parsekeyequalvalue(k):
 def parsepoint(s):
     s=s.strip().rstrip(')')
     v = s[10:].split(',')
-    #print v
     return (float(v[0]),float(v[1]),v[2][1:-1],int(v[3]),float(v[4]),int(v[5]),int(v[6]))
 
 for fname in os.listdir('../lamp-prod/www/maps'):
     if fname.endswith('-json.php.gz'):
-        print fname
+        print(fname)
         # Open old file
         f = gzip.open('../lamp-prod/www/maps/'+fname,'rb')
         b = f.read()

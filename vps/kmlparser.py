@@ -6,10 +6,8 @@ except ImportError:
     from xml.etree.ElementTree import ElementTree
 
 # Model classes
-from model import Bounds,Point,Track
-# For unzip .kmz
-from unzip import iszip,unzipOne
-import StringIO
+from model import Point
+
 # For i18n
 from flask_babel import gettext
 
@@ -39,8 +37,6 @@ class KmlCoordinates:
     # tuples
     def __init__(self,text):
         self.tuples = []
-        #for line in text.splitlines():
-        #print 'DEBUG: %s' % text.split()
         for line in text.split():
             self.tuples.append(KmlTuple(line))
     def __str__(self):
@@ -62,7 +58,6 @@ class KmlPlacemark:
         name = xmlelement.findtext(xmlns+'name')
         if name==None:
             name = 'unknown'
-            #raise Exception('No name for Placemark')
         self.name = name.replace('/','-')
         self.geometry = None
         for e in xmlelement:
@@ -136,9 +131,6 @@ class KmlFile:
 
 def ParseKmlFile(inputfile,trk_id,trk_seg_id):
     tree = ElementTree()
-    #print 'DEBUG: ParseKmlFile(%s)' % inputfile
-    #if iszip(inputfile):
-    #    inputfile = StringIO.StringIO(unzipOne(inputfile))
     tree.parse(inputfile)
     xmlns = str(tree.getroot())
     xmlns = xmlns[xmlns.find('{'):xmlns.find('}')+1]
@@ -164,13 +156,9 @@ def ParseKmlFile2(inputfile,path_to_linestring):
 ## UNIT TEST CODE ##
 
 def main():
-    #ptlist = ParseKmlFile2('Test.kml','My Activities 30-06-2009/Route')
-    #ptlist = ParseKmlFile('GUNNN.kmz',0,0)
     ptlist = ParseKmlFile('Test.kml',0,0)
     for pt in ptlist:
         print(pt)
-    #raw_input('Press Enter')
 
 if __name__ == '__main__':
    main()
-

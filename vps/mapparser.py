@@ -17,9 +17,7 @@ from flask_babel import gettext
 def getDate(mapid):
     date = None
     if mapid!=None:
-        #date = datetime.strptime(DbGet(mapid,'date'),'%Y-%m-%d')
         datestr = DbGet(mapid,'date')
-        #print 'date="%s"'%datestr
         if datestr!=None and datestr!='':
             date = datetime.datetime(*(time.strptime(datestr,'%Y-%m-%d')[0:6]))
         else:
@@ -55,26 +53,24 @@ def ParseMap(mapid):
     d = getDate(mapid)
 
     # Parse json
-    f=gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
-    m=json.load(f)
+    f = gzip.open('data/mapdata/%s.json.gz'%mapid,'rb')
+    m = json.load(f)
     f.close()
-    options=options_default
-    for k in ('spdunit','flat','wind','maxspd'):
-        options[k]=m[k]
-    options['map_type']=m['type']
+    options = options_default
+    for k in options_default.keys():
+        if k in m:
+            options[k] = m[k]
+    options['map_type'] = m['type']
     return options,map(lambda pt: convpt(pt,d,options['spdunit']), m['points'])
-  
+
 
 ## UNIT TEST CODE ##
 
 def main():
-    options,ptlist = ParseMap('e23237a52937')
-    print len(ptlist)
-    print options
-    print max(map(lambda pt:pt.spd,ptlist))
-    #for pt in ptlist:
-    #    print('%s %s %s %s %s %s' % (pt.datetime,pt.lat,pt.lon,pt.ele,pt.spd,pt.course))
-    #raw_input('Press Enter')
+    options,ptlist = ParseMap('10998bc80447c')
+    print(len(ptlist))
+    print(options)
+    print(max(map(lambda pt:pt.spd,ptlist)))
 
 if __name__ == '__main__':
    main()

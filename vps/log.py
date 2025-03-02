@@ -8,9 +8,7 @@ def open_mkdir(fname,row):
         import os
         # If error, check directory, then create if needed then open file
         path = os.path.dirname(fname)
-        #print 'path='+path
         if not os.path.exists(path):
-            #print 'mkdir -p '+path
             os.makedirs(path)
         return open(fname,row)
 

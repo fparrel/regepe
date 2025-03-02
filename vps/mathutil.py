@@ -1,5 +1,5 @@
 
-from math import sqrt,cos,sin,atan2,ceil,floor,log10,pi,atan,tan
+from math import sqrt,cos,sin,atan2,pi,atan,tan
 from log import Warn
 
 try:
@@ -45,44 +45,10 @@ def IdentIfPositive(x):
         return 0
 
 
-def sign(x):
-    "Returns x/abs(x)"
-    if x<0:
-        return -1
-    if x>0:
-        return 1
-    return 0
-
-
 def Filter(data,FilterFunc,halfsize):
     "Apply a filter function on a list of data."
     maxid = len(data)-1
     return [FilterFunc(data[InBounds(x-halfsize,0,maxid):InBounds(x+halfsize,0,maxid)]) for x in range(0,len(data))]
-
-
-def MeanXY(datax,datay):
-    "2 dimension Mean for using with a filter"
-    #return (datax[0],Mean(datay))
-    return (Mean(datax),Mean(datay))
-
-
-def FilterXY(datax,datay,FilterFunc,xsize):
-    "Apply 2 dimension filter on data"
-    j = 0
-    outx = []
-    outy = []
-    for i in range(1,len(datax)):
-        if datax[i]-datax[j]>=xsize or i==len(datax)-1:
-            (x,y) = FilterFunc(datax[j:i+1],datay[j:i+1])
-            if j==0:
-                x = datax[0]
-            if i==len(datax)-1:
-                x = datax[len(datax)-1]
-            outx.append(x)
-            outy.append(y)
-            j = i
-    #print((outx,outy))
-    return (outx,outy)
 
 
 def FindLocalExtremums(y):
@@ -110,32 +76,6 @@ def FindLocalExtremums(y):
                 localmaxs.append([x,y[x]])            
             d = 0
     return (localmins,localmaxs)
-
-
-def FindLocalExtremums2(y):
-    "Find local extremums from a list of floats, return two lists of [x,y[x]] (localmins and localmaxs)"
-    d = 0           # variation of function: 0 if stable, +1 if increasing, -1 if decreasing
-    locextremums = [] # list of [id,type] of local extremums found
-    for x in range(0,len(y)-1):
-        if y[x+1]>y[x] and d!=1:
-            # \/ or _/-> local minimum
-            locextremums.append([x,'min'])
-            d = 1
-        if y[x+1]<y[x] and d!=-1:
-            #       _
-            # /\ or  \-> local maximum
-            locextremums.append([x,'max'])
-            d = -1
-        if y[x+1]==y[x] and d!=0:
-            if d==-1:
-                # \_ -> local minimum
-                locextremums.append([x,'min'])
-            if d==1:
-                #  _
-                # /  -> local maximum
-                locextremums.append([x,'max'])            
-            d = 0
-    return locextremums
 
 
 def FindLocalMaximums(points,key,FilterFunc,filterhalfsize):
@@ -167,7 +107,6 @@ def FindLocalMaximums(points,key,FilterFunc,filterhalfsize):
             first = max(len(localmaxs),min(0,first))
             last_plus_1 = max(len(localmaxs),min(0,last_plus_1))
             xys = [[x,y[x]] for x in range(first,last_plus_1)]
-            #xys = [[x,y[x]] for x in range(max(0,localmaxs[i][0]-filterhalfsize),min(localmaxs[i][0]+filterhalfsize+1,len(y_notfiltered)))]
             if len(xys)>0:
                 xys.sort(key=lambda xy: xy[1],reverse=True)
                 localmaxs[i] = xys[0]
@@ -282,22 +221,6 @@ def GeodeticDistVincenty(lat1, lng1, lat2, lng2):
     s = 6356752.3142 * A * (sigma - delta_sigma)
     return s
 
-def GeodeticDistGreatCircleBitSlower(lat1,lon1,lat2,lon2):
-    lat1 = lat1 * 0.0174532925199433
-    lon1 = lon1 * 0.0174532925199433
-    lat2 = lat2 * 0.0174532925199433
-    lon2 = lon2 * 0.0174532925199433
-    sin_lat1, cos_lat1 = sin(lat1), cos(lat1)
-    sin_lat2, cos_lat2 = sin(lat2), cos(lat2)
-
-    delta_lng = lon2 - lon1
-    cos_delta_lng, sin_delta_lng = cos(delta_lng), sin(delta_lng)
-
-    d = atan2(sqrt((cos_lat2 * sin_delta_lng) ** 2 +
-                    (cos_lat1 * sin_lat2 -
-                     sin_lat1 * cos_lat2 * cos_delta_lng) ** 2),
-                sin_lat1 * sin_lat2 + cos_lat1 * cos_lat2 * cos_delta_lng)
-    return 6372795.0 * d
 
 def GeodeticDistGreatCircle(lat1,lon1,lat2,lon2):
     "Compute distance between two points of the earth geoid (approximated to a sphere)"
@@ -325,73 +248,11 @@ def GeodeticCourse(lat1,lon1,lat2,lon2):
     return (((atan2(y, x) * 180 / pi) + 360) % 360)
 
 
-def ComputeDiffAfter(data):
-    "Return derivative of 'data'"
-    return [data[x+1]-data[x] for x in range(0,len(data)-2)]
-
-
-def StrangeFilter(y):
-    "Return a function made of segments linking sucessive extremums from the continuous function 'y'"
-    (localmins,localmaxs) = FindLocalExtremums(y)
-    localextremums = localmins + localmaxs
-    localextremums.append([0,y[0]])
-    localextremums.append([len(y)-1,y[len(y)-1]])
-    localextremums.sort(key=lambda pt: pt[0])
-    val = y[0]
-    out = []
-    j = 0
-    for i in range(0,len(y)):
-        out.append(val)
-        if localextremums[j+1][0]>localextremums[j][0]:
-            val += (localextremums[j+1][1]-localextremums[j][1])/(localextremums[j+1][0]-localextremums[j][0])
-        if i==localextremums[j+1][0]:
-            j = j + 1
-    return out
-
-
-def GetIndexOfClosestFromOrderedList(value,inputlist):
-    "Return the id of the item in 'inputlist' closest to 'value'. 'inputlist' must be ordered"
-    i = 0
-    # loop until inputlist[i] < value < inputlist[i+1] (or end of inputlist)
-    while i<len(inputlist) and inputlist[i] < value:
-        i += 1
-    if i==len(inputlist):
-        # all elements of inputlist are lower than value, return last id
-        out = i-1
-    elif i>0:
-        # if prev item is closer than current, return its id
-        if value-inputlist[i-1]<inputlist[i]-value:
-            out = i-1
-        else:
-            out = i
-    else:
-        out = i
-    assert(out>=0)
-    assert(out<len(inputlist))
-    return out
-
-
-def GetIndexOfClosest(mylist,value):
-    "Return the index of the item of 'mylist' that is the closest to 'value'"
-    if len(mylist)<1:
-        raise IndexError('List is empty')
-    out_index = 0
-    min_dist = abs(mylist[out_index]-value)
-    for current_index in range(0,len(mylist)):
-        dist = abs(mylist[current_index]-value)
-        if dist < min_dist:
-            min_dist = dist
-            out_index = current_index
-    return out_index
-
-
-
 ## UNIT TEST CODE ##
 
 def main():
     from timeit import timeit
     print(Mean([0.6,0.9,0.7]))
-    print("great circle 1",GeodeticDistGreatCircleBitSlower(45.0,0.0,46.0,1.0),timeit("GeodeticDistGreatCircleBitSlower(45.0,0.0,46.0,1.0)",setup="from __main__ import GeodeticDistGreatCircleBitSlower"))
     print("great circle 2",GeodeticDistGreatCircle(45.0,0.0,46.0,1.0),timeit("GeodeticDistGreatCircle(45.0,0.0,46.0,1.0)",setup="from __main__ import GeodeticDistGreatCircle"))
     print("vincenty",GeodeticDistVincenty(45.0,0.0,46.0,1.0),timeit("GeodeticDistVincenty(45.0,0.0,46.0,1.0)",setup="from __main__ import GeodeticDistVincenty"))
     print("GeodeticDist",GeodeticDist(45.0,0.0,46.0,1.0))

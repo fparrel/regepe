@@ -25,7 +25,6 @@ def ParseSbpFile(inputfile,trk_id,trk_seg_id):
     inputfile.read(7)
     username,serial_nb,log_rate,firmware_version = inputfile.read(len).split(',',3)
     firmware_version = firmware_version[:13].strip()
-    #print username,serial_nb,log_rate,firmware_version
     inputfile.read(55-len) #64-7-2
     
     #Log points
@@ -45,15 +44,13 @@ def ParseSbpFile(inputfile,trk_id,trk_seg_id):
         t_year=2000+m/12
         
         t = datetime.datetime(t_year,t_mon,t_mday,t_hour,t_min,t_sec)
-        #t = datetime.datetime(t_year,t_mon,t_mday,t_hour,t_min,t_sec,t_msec)
         
         lat=lati/10000000.0
         lon=loni/10000000.0
         ele=alt_cm/100.0
         spd=spd_x_100/100.0
         course=(course_x_100/100.0) % 360.0
-        #if course<0.0:
-        #    course = (360.0 + course) % 360.0
+
         ptlist.append(Point(lat,lon,ele,spd,course,t))
     return ptlist
 
@@ -61,12 +58,10 @@ def ParseSbpFile(inputfile,trk_id,trk_seg_id):
 ## UNIT TEST CODE ##
 
 def main():
-    f = open('D:/Userfiles/fparrel/Downloads/DJADJA MBAKOP_832004426_20150107_125055_DLG.SBP','rb')
+    f = open('MBAKOP_832004426_20150107_125055_DLG.SBP','rb')
     ptlist = ParseSbpFile(f,0,0)
     for pt in ptlist:
-        print pt.datetime
-    return
+        print(pt.datetime)
 
 if __name__ == '__main__':
    main()
-

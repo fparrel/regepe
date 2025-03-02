@@ -7,7 +7,7 @@ def uniqid():
     return '%x%x' % (dec1,dec2)
 
 def main():
-    print uniqid()
+    print(uniqid())
 
 if __name__=='__main__':
     main()

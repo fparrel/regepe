@@ -1,51 +1,51 @@
 
-# Model classes
-from model import Bounds,Point,Track
-#Datetime
-from datetime import datetime,date
-
+from model import Point
+from datetime import datetime
 import struct
-
-#only for unittests
-import os
-
+from log import Warn, Log
 #i18n
 from flask_babel import gettext
 
 
-fieldDefNbName=[[] for i in range(0,255)]
+fieldDefNbName=[[] for _ in range(0,256)]
 #file_id
 fieldDefNbName[0]=['type','manufacturer','product','serial_number','time_created','number','','','product_name']
 #file_creator
 fieldDefNbName[49]=['software_version','hardware_version']
 #device_info
-fieldDefNbName[23]=['device_index','device_type','manufacturer','serial_number','product','sofware_version','hardware_version','cum_operating_time','','','battery_voltage','battery_status','','','','','','','sensor_position','descriptor','ant_trsm_type','','ant_network','','','source_type','','product_name']+['' for i in range(0,256-27)]
+fieldDefNbName[23]=['device_index','device_type','manufacturer','serial_number','product','sofware_version','hardware_version','cum_operating_time','','','battery_voltage','battery_status','','','','','','','sensor_position','descriptor','ant_trsm_type','','ant_network','','','source_type','','product_name']
+fieldDefNbName[23]+=['' for _ in range(0,256-len(fieldDefNbName[23]))]
 fieldDefNbName[23][253]='datetime'
 #event
-fieldDefNbName[21]=['event','event_type','data16','data','event_group','','','score','opponent_score','front_gear_num','front_gear','rear_gear_num','rear_gear']+['' for i in range(0,256-12)]
+fieldDefNbName[21]=['event','event_type','data16','data','event_group','','','score','opponent_score','front_gear_num','front_gear','rear_gear_num','rear_gear']
+fieldDefNbName[21]+=['' for _ in range(0,256-len(fieldDefNbName[21]))]
 fieldDefNbName[21][253]='datetime'
 #?
-fieldDefNbName[22]=[''for i in range(0,255)]
+fieldDefNbName[22]=[''for _ in range(0,256)]
 fieldDefNbName[22][253]='datetime'
 #record
-fieldDefNbName[20]=['lat','lon','ele','heartrate','cadence','distance','speed','power','compressed_spd_dist','grade','resistance','time_from_course','cycle_length','temperature']+['' for i in range(0,256-13)]
+fieldDefNbName[20]=['lat','lon','ele','heartrate','cadence','distance','speed','power','compressed_spd_dist','grade','resistance','time_from_course','cycle_length','temperature']
+fieldDefNbName[20]+=['' for _ in range(0,256-len(fieldDefNbName[20]))]
 fieldDefNbName[20][253]='datetime'
 #?
-fieldDefNbName[104]=[''for i in range(0,255)]
+fieldDefNbName[104]=['' for _ in range(0,256)]
 fieldDefNbName[104][253]='datetime'
 #lap
-fieldDefNbName[19]=['event','event_type','start_time','start_lat','start_lon','end_lat','end_lon','elapsed_time','timer_time','distance','cycles','total_calories','total_fat_calories','avg_speed','max_speed','avg_hr','max_hr','avg_cadence','max_cadence','avg_power','max_power','total_ascent','total_descent','intensity','lap_trigger','sport','event_group']+[''for i in range(0,255-27)]
+fieldDefNbName[19]=['event','event_type','start_time','start_lat','start_lon','end_lat','end_lon','elapsed_time','timer_time','distance','cycles','total_calories','total_fat_calories','avg_speed','max_speed','avg_hr','max_hr','avg_cadence','max_cadence','avg_power','max_power','total_ascent','total_descent','intensity','lap_trigger','sport','event_group']
+fieldDefNbName[19]+=['' for _ in range(0,256-len(fieldDefNbName[19]))]
 fieldDefNbName[19][253]='datetime'
 fieldDefNbName[19][254]='message_index'
 #session
-fieldDefNbName[18]=['event','event_type','start_lat','start_lon','sport','sub_sport','elapsed_time','timer_time','distance','cycles','total_calories','','total_fat_calories','avg_speed','max_speed','avg_hr','max_hr','avg_cadence','max_cadence','avg_power','max_power','total_ascent','total_descent','','first_lap_index','num_laps','event_group','trigger']+[''for i in range(0,255-28)]
+fieldDefNbName[18]=['event','event_type','start_lat','start_lon','sport','sub_sport','elapsed_time','timer_time','distance','cycles','total_calories','','total_fat_calories','avg_speed','max_speed','avg_hr','max_hr','avg_cadence','max_cadence','avg_power','max_power','total_ascent','total_descent','','first_lap_index','num_laps','event_group','trigger']
+fieldDefNbName[18]+=['' for _ in range(0,256-len(fieldDefNbName[18]))]
 fieldDefNbName[18][253]='datetime'
 #?
-fieldDefNbName[113]=[''for i in range(0,255)]
+fieldDefNbName[113]=['' for _ in range(0,256)]
 fieldDefNbName[113][253]='datetime'
 #activity
-fieldDefNbName[34]=['total_timer_time','num_sessions','type','event','event_type','local_timestamp','event_group']+[''for i in range(0,255-6)]
-fieldDefNbName[113][253]='datetime'
+fieldDefNbName[34]=['total_timer_time','num_sessions','type','event','event_type','local_timestamp','event_group']
+fieldDefNbName[34]+=['' for _ in range(0,256-len(fieldDefNbName[34]))]
+fieldDefNbName[34][253]='datetime'
 
 
 fieldBaseTypeName = ['enum','sint8','uint8','sint16','uint16','sint32','uint32','string','float32','float64','uint8z','uint16z','uint32z','byte']
@@ -54,27 +54,26 @@ fitBaseTypeToStruct = ['B','b','B','h','H','i','I',Exception('not implemented'),
 
 class Field:
     def __init__(self,msgnb,def_nb,size,endianability,base_type_nb):
-        self.definition=fieldDefNbName[msgnb][def_nb]
-        self.base_type=fieldBaseTypeName[base_type_nb]
+        self.definition = fieldDefNbName[msgnb][def_nb]
+        self.base_type = fieldBaseTypeName[base_type_nb]
         self.struct = fitBaseTypeToStruct[base_type_nb]
         if self.definition=='':
-            self.definition='%d-%d'%(msgnb,def_nb)
+            self.definition = '%d-%d'%(msgnb,def_nb)
         if fieldBaseTypeSize[base_type_nb]!=size:
-            print 'warning: bad size for field %d %d' % (fieldBaseTypeSize[base_type_nb],size)
+            Warn('warning: bad size for field %d %d' % (fieldBaseTypeSize[base_type_nb],size))
     def __str__(self):
         return 'Field(%s %s)'%(self.definition,self.base_type)
     def __repr__(self):
         return 'Field(%s %s)'%(self.definition,self.base_type)
 
 def DecodeField(fielddefdata,msgnb):
-    f=struct.unpack('<BBB',fielddefdata)
+    #field definition number, size in bytes, endianability, base type number
+    f = struct.unpack('<BBB',fielddefdata)
     endianability = (f[2] & 0b10000000)>0
     basetypenb = f[2] & 0b00001111
     def_nb = f[0]
     size = f[1]
-    field=Field(msgnb,def_nb,size,endianability,basetypenb)
-    return field
-    #field definition number, size in bytes, endianability, base type number
+    return Field(msgnb,def_nb,size,endianability,basetypenb)
 
 #latitude = (lat / (double)0x7fffffff) * 180
 
@@ -88,13 +87,13 @@ class FitDecoder:
         self.fields = {}
         self.datastruct = {}
         self.datastructlen = {}
-        self.ptlist=[]
-        self.where_are_lat={}
-        self.where_are_lon={}
-        self.where_are_ele={}
-        self.where_are_spd={}
-        self.where_are_time={}
-        self.where_are_hr={}
+        self.ptlist = []
+        self.where_are_lat = {}
+        self.where_are_lon = {}
+        self.where_are_ele = {}
+        self.where_are_spd = {}
+        self.where_are_time = {}
+        self.where_are_hr = {}
     def DecodeRecord(self):
         rechdr = struct.unpack("<B",self.fd.read(1))[0]
         if rechdr=='':
@@ -105,24 +104,23 @@ class FitDecoder:
             locmsgtype = (rechdr & 0b00001111)
             timeoffset = None
         else:
+            # compressed time
             locmsgtype = (rechdr & 0b01100000)>>5
             timeoffset = (rechdr & 0b00011111)
             definition = False
-            #print 'compressed time',timeoffset,locmsgtype
         if definition:
             try:
                 (reserved,archi,msgnb,nbfields) = struct.unpack('<BBHB',self.fd.read(5))
             except:
-                print 'Cannot read more'
+                Warn('Cannot read more')
                 return False
             if archi!=0:
-                #print 'big endian?'
+                # invert endianess of msgnb
                 msgnb = struct.unpack('>H',struct.pack('<H',msgnb))[0]
                 endian = '>'
             else:
                 endian = '<'
-            fields = map(lambda i:DecodeField(self.fd.read(3),msgnb),range(0,nbfields))
-            #print 'fields',msgnb,fitMsgNbName[msgnb],locmsgtype,fields
+            fields = list(map(lambda _ : DecodeField(self.fd.read(3),msgnb), range(0,nbfields)))
             self.fields[locmsgtype] = fields
             self.datastruct[locmsgtype] = endian+''.join(map(lambda field:field.struct,fields))
             self.datastructlen[locmsgtype] = struct.calcsize(self.datastruct[locmsgtype])
@@ -147,48 +145,60 @@ class FitDecoder:
                     self.where_are_hr[locmsgtype]=i
         else:
             if locmsgtype not in self.datastruct:
-                print 'locmsgtype has bad value %d rode %d data recods at %d bytes of file'%(locmsgtype,len(self.data),self.fd.tell())
+                Warn('locmsgtype has bad value %d rode %d data recods at %d bytes of file'%(locmsgtype,len(self.data),self.fd.tell()))
                 return False
             buffer = self.fd.read(self.datastructlen[locmsgtype])
             if len(buffer)<self.datastructlen[locmsgtype]:
                 # end of file reached
-                print 'end of file'
+                Log('end of file')
                 return False
             data = struct.unpack(self.datastruct[locmsgtype],buffer)
             self.data.append(data)
+
+            # decode lat lon
+            lat = None
+            lon = None
             if locmsgtype in self.where_are_lat and locmsgtype in self.where_are_lon:
-                lat=(data[self.where_are_lat[locmsgtype]]/2147483647.000000)*180.0
-                lon=(data[self.where_are_lon[locmsgtype]]/2147483647.000000)*180.0
-            else:
-                lat=None
-            if lat==180.0 and lon==180.0:
-                print 'bad lat lon'
+                if self.where_are_lat[locmsgtype] < len(data):
+                    latint = data[self.where_are_lat[locmsgtype]]
+                    if latint != 2147483647:
+                        lat = (latint/2147483647.000000)*180.0
+                if self.where_are_lon[locmsgtype] < len(data):
+                    lonint = data[self.where_are_lon[locmsgtype]]
+                    if lonint != 2147483647:
+                        lon = (lonint/2147483647.000000)*180.0
+            if lat==None or lon==None:
+                Warn('bad lat lon')
                 return True
+
+            # decode ele
+            ele = None
             if locmsgtype in self.where_are_ele:
-                if self.where_are_ele[locmsgtype]<len(data):
-                    ele=data[self.where_are_ele[locmsgtype]]/5.0-500.0
-                else:
-                    print 'cannot find ele'
-                    ele=None
-            else:
-                ele=None
+                if self.where_are_ele[locmsgtype] < len(data):
+                    ele = data[self.where_are_ele[locmsgtype]]/5.0-500.0
+            if ele==None:
+                Log('cannot find ele')
+            
+            # decode speed
+            spd = None
             if locmsgtype in self.where_are_spd:
-                try:
-                    spd=data[self.where_are_spd[locmsgtype]]/1000.0
-                except:
-                    spd=None
+                if self.where_are_spd[locmsgtype] < len(data):
+                    spd = data[self.where_are_spd[locmsgtype]]/1000.0
+            if ele==None:
+                Log('cannot find spd')
+            
+            # decode datetime
+            if locmsgtype in self.where_are_time and self.where_are_time[locmsgtype] < len(data):
+                tm = datetime.fromtimestamp(data[self.where_are_time[locmsgtype]]+631065600)
             else:
-                spd=None
-            if locmsgtype in self.where_are_time:
-                #print 'here'
-                tm =  datetime.fromtimestamp(data[self.where_are_time[locmsgtype]]+631065600)
+                tm = None
+            
+            # decode hr
+            if locmsgtype in self.where_are_hr and self.where_are_hr[locmsgtype] < len(data) and data[self.where_are_hr[locmsgtype]]!=255:
+                hr = data[self.where_are_hr[locmsgtype]]
             else:
-                tm=None
-            if locmsgtype in self.where_are_hr and data[self.where_are_hr[locmsgtype]]!=255:
-                hr=data[self.where_are_hr[locmsgtype]]
-            else:
-                hr=None
-            if lat!=None:
+                hr = None
+            if lat!=None and lon!=None:
                 pt = Point(lat,lon,ele,spd,None,tm,hr=hr)
                 self.ptlist.append(pt)
         return True
@@ -228,7 +238,6 @@ def linear_approximation(array):
     return array
 
 def ParseFitFile(inputfile,trk_id,trk_seg_id):
-    ptlist=[]
 
     # Parse file header
     hdrsize = ord(inputfile.read(1))
@@ -246,10 +255,6 @@ def ParseFitFile(inputfile,trk_id,trk_seg_id):
 
 ## UNIT TEST CODE ##
 
-def convertDatetimeToGpxFormat(date,datetime):
-    s = str(datetime)
-    return date + 'T' + s[11:] + 'Z'
-
 def main():
     f = open('ds97.fit','rb')
     ptlist = ParseFitFile(f,0,0)
@@ -260,8 +265,6 @@ def main():
             print pt.hr
         else:
             print
-    return
 
 if __name__ == '__main__':
     main()
-

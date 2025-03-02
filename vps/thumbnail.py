@@ -34,8 +34,7 @@ def thumbnailUrlMapbox(ptlist):
 
 def main():
     ptlist = selectPointsForThumbnail('eb95eb23b476b')
-    print thumbnailUrlMapbox(ptlist)
+    print(thumbnailUrlMapbox(ptlist))
 
 if __name__=='__main__':
     main()
-

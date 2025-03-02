@@ -1,7 +1,5 @@
-#!c:/Python27/python.exe
 
 import anydbm
-import cgi
 from urllib import urlopen
 from log import Warn
 from flask_babel import gettext
@@ -19,7 +17,6 @@ def GetTimeZoneWebService(lat,lng):
         except:
             raise Exception(gettext('Cannot parse result from TimeZone server %s, assuming GMT+0')%ret)
     except IOError:
-        #raise Exception('Sorry, outage on TimeZone server, assuming GMT+0')
         Warn('Sorry, outage on TimeZone server, assuming GMT+0')
         return 0.0
     return tz
@@ -37,18 +34,3 @@ def GetTimeZoneCached(lat,lng):
 
 def GetTimeZone(lat,lng):
     return GetTimeZoneCached(lat,lng)
-
-def GetTimeZoneCgi():
-    form = cgi.FieldStorage()
-    lat = float(form.getvalue('lat'))
-    lng = float(form.getvalue('lng'))
-    mapid = form.getvalue('mapid')
-    tz = GetTimeZoneCached(lat,lng)
-    print '%s' % tz
-
-#print('Content-Type: text/html')
-#print
-#try:
-#    GetTimeZoneCgi()
-#except Exception, inst:
-#    print('Error: ' + str(inst))

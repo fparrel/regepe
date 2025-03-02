@@ -1,11 +1,10 @@
 
 from dem import GetEleFromLatLonList
-#from pagebuilder import MyXYChart
 from model import Point
 from mathutil import GeodeticDist
 from flask_babel import gettext
 
-def ComputeProfile(ptlist,nbpts,width,height):
+def ComputeProfile(ptlist,nbpts):
     ptinput2ptoutput = []
     # interpolate ptlist
     period = nbpts/(len(ptlist)-1)
@@ -44,14 +43,11 @@ def ComputeProfile(ptlist,nbpts,width,height):
             prevele = ele[i]
     if min(ele)==None or max(ele)==None:
         raise Exception(gettext('Cannot get elevations: ele=%s') % repr(ele))
-    #chart = MyXYChart([dists,ele],'','Elevation','Elevation Profile','Elevation Profile',nbpts=nbpts)
-    #ptinput2px = map(lambda ptoutput: chart.pt2px[ptoutput],ptinput2ptoutput)
     return [ele,dists,[],[]]
-
 
 def main():
     ptlist = [[1.0,2.0],[2.0,3.0],[4.0,5.0],[5.0,6.0]]
-    ComputeProfile(ptlist,100,100,100)
+    ComputeProfile(ptlist,100)
 
 if __name__=='__main__':
     main()

@@ -1,7 +1,5 @@
 
-# Model classes
-from model import Bounds,Point,Track
-#Datetime
+from model import Point
 import datetime,time
 import json
 #i18n
@@ -9,7 +7,7 @@ from flask_babel import gettext
 
 
 def ConvertDate(datetimestr):
-    if not datetimestr==None:
+    if datetimestr!=None:
         try:
             # Python > 2.4
             d = datetime.strptime(datetimestr,'%Y-%m-%d %H:%M:%S')
@@ -31,14 +29,10 @@ def ConvertPt(pt):
     return ptout
 
 def ParseJsonFile(inputfile,trk_id,trk_seg_id):
-    ptlist = []
     data = inputfile.read()
-    #print data
     begin = data.find('[')
     end = data.rfind(']')
     data = data[begin:end+1]
-    #data = data.replace(',',',\n')
-    #print 'ParseJsonFile data="%s"'%data
     pts = json.loads(data)
     return map(ConvertPt,pts)
 
@@ -48,13 +42,11 @@ def ParseJsonFile(inputfile,trk_id,trk_seg_id):
 def main():
     from orchestrator import GetFileType
     f = open('ksf15_17.json','rb')
-    print GetFileType(f)
+    print(GetFileType(f))
     f.seek(0,0)
     ptlist = ParseJsonFile(f,0,0)
     for pt in ptlist:
-        print pt.datetime,pt.lat,pt.lon,pt.spd
-    return
+        print(pt.datetime,pt.lat,pt.lon,pt.spd)
 
 if __name__ == '__main__':
    main()
-

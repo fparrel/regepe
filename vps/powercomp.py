@@ -36,7 +36,6 @@ def BikePower(powerintegbuffer,speed,slope,weight,aerodynamic_coef=0.9,front_sur
 def CarPower(speed,slope,weight=1200,aerodynamic_coef=0.3,front_surface=2.8,air_density=1.225,roll_coef=0.005):
     return BikePower(speed,slope,weight,aerodynamic_coef,front_surface,air_density,roll_coef)
 
-#running_coef = [0.0585,0.051,0.048,0.042,0.039,0.0345,0.033,0.03,0.0285,0.028,0.027,0.026,0.027,0.0275,0.028,0.029,0.03,0.032,0.034,0.036,0.039,0.042,0.044,0.047,0.049,0.053,0.055,0.058,0.061,0.064]
 running_coef = [4.390658, 4.359548, 4.347104, 4.322216, 4.309772, 4.291106, 4.284884, 4.272440, 4.266218, 4.264144, 4.259996, 4.255848, 4.259996, 4.262070, 4.264144, 4.268292, 4.272440, 4.280736, 4.289032, 4.297328, 4.309772, 4.322216, 4.330512, 4.342956, 4.351252, 4.367844, 4.376140, 4.388584, 4.401028, 4.413472]
 
 def RunningPower(speed,slope,weight):

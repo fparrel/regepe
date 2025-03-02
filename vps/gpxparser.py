@@ -24,29 +24,29 @@ class GpxPoint:
         self.lat = float(trkptxmlelement.get('lat'))
         self.lon = float(trkptxmlelement.get('lon'))
         elestr = trkptxmlelement.findtext(xmlns+'ele')
-        if not elestr==None:
+        if elestr!=None:
             # replace , by . in case bad formating (MobiDream)
             self.ele = float(elestr.replace(',','.'))
         else:
             self.ele = None
         spdstr = trkptxmlelement.findtext(xmlns+'speed')
-        if not spdstr==None:
+        if spdstr!=None:
             self.spd = float(spdstr.replace(',','.'))
         else:
             self.spd = None
         coursestr = trkptxmlelement.findtext(xmlns+'course')
-        if not coursestr==None:
+        if coursestr!=None:
             self.course = float(coursestr.replace(',','.'))
         else:
             self.course = None
         datetimestr = trkptxmlelement.findtext(xmlns+'time')
-        if not datetimestr==None:
+        if datetimestr!=None:
             # date in format YY-mm-dd
             if datetimestr.find('T')==8:
                 datetimestr = '20' + datetimestr
             datetimestr = datetimestr[:19]
             # Fix a GPS Action Replay bug
-            if not datetimestr.find('Z')==-1:
+            if datetimestr.find('Z')!=-1:
                 datetimestr = datetimestr[:datetimestr.find('Z')]
             try:
                 # Python > 2.4
@@ -124,7 +124,7 @@ class GpxRoutePoint:
         self.lat = float(rteptxmlelement.get('lat'))
         self.lon = float(rteptxmlelement.get('lon'))
         elestr = rteptxmlelement.findtext(xmlns+'ele')
-        if not elestr==None:
+        if elestr!=None:
             # replace , by . in case bad formating (MobiDream)
             self.ele = float(elestr.replace(',','.'))
         else:
@@ -204,22 +204,15 @@ def ParseGpxFile(inputfile,trk_id,trk_seg_id):
         else:
             return map(GpxRoutePoint.ToPoint,gpx.routelist[trk_id].ptlist)
     return map(GpxPoint.ToPoint,reduce(lambda x,y:x+y,gpx.tracklist[trk_id].trkseglist).ptlist)
-    #return map(GpxPoint.ToPoint,gpx.tracklist[trk_id].trkseglist[trk_seg_id].ptlist)
 
 
 ## UNIT TEST CODE ##
 
 def main():
-    #ptlist = ParseGpxFile('D:/Documents/Downloads/Racemment_importa_de_JAN0712_181820.GPX',0,0)
-    ptlist = ParseGpxFile('D:/Userfiles/fparrel/Downloads/2015-01-12 1951__20150112_1951.gpx',0,0)
-    #ptlist = ParseGpxFile('gpx/FPARREL_832004951_20091022_172903.gpx',0,0)
-    #ptlist = ParseGpxFile('Test.gpx',0,0)
+    ptlist = ParseGpxFile('uploads/10998bc80447c_0.gpx',0,0)
     for pt in ptlist:
-        print pt
-        if hasattr(pt,'hr'):
-            print pt.hr
-    #raw_input('Press Enter')
+        print(pt)
+
 
 if __name__ == '__main__':
    main()
-

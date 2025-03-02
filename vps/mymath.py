@@ -25,12 +25,10 @@ def fsum(iterable):
     return sum(partials, 0.0)
 
 
-
 ## UNIT TEST CODE ##
 
 def main():
     print(fsum([0.6,0.9,0.7]))
-    #raw_input('Press Enter')
 
 if __name__ == '__main__':
    main()

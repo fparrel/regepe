@@ -25,7 +25,7 @@ def remove_points(mapid, modifyfunction):
 
 def main():
 	if sys.argv[1] in ('-h','--help'):
-		print 'Usage: %s mapid pt1 pt2 crop|clear' % sys.argv[0]
+		print('Usage: %s mapid pt1 pt2 crop|clear' % sys.argv[0])
 		return
 	mapid = sys.argv[1]
 	pt1 = int(sys.argv[2])
@@ -35,10 +35,9 @@ def main():
 	elif sys.argv[4]=='clear':
 		modifyfunc = lambda ptlist: (ptlist[:pt1]+ptlist[pt2:],pt1==0)
 	else:
-		print 'Modify must be crop or clear'
+		print('Modify must be crop or clear')
 		return
 	remove_points(mapid, modifyfunc)
 
 if __name__=='__main__':
 	main()
-

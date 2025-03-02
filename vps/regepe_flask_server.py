@@ -804,7 +804,7 @@ def profile(ptliststr,width,height):
     if(len(ptlist)<2):
         return Response(gettext('Error: Cannot compute profile for only one point'), mimetype='text/plain')
     nbpts = 400
-    return Response('\n'.join(map(str,ComputeProfile(ptlist,nbpts,width,height))), mimetype='text/plain')
+    return Response('\n'.join(map(str,ComputeProfile(ptlist,nbpts))), mimetype='text/plain')
 
 @application.route('/prepare/export/<format>/<ptlist>/<names>')
 def prepare_export(format,ptlist,names):

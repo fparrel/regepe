@@ -26,22 +26,6 @@ def frange6(*args):
         v += step
 
 
-def MyRange(firstval,lastval,step):
-    "Range generator from included firstval to included lastval"
-    if firstval<lastval and step<=0.0:
-        raise ValueError('Bad value for step %s %s %s' % (firstval,lastval,step))
-    elif firstval>lastval and step>=0.0:
-        raise ValueError('Bad value for step %s %s %s' % (firstval,lastval,step))
-    curval = firstval
-    while True:
-        yield curval
-        curval += step
-        if curval==lastval:
-            yield lastval
-        if curval>=lastval:
-            raise StopIteration        
-
-
 def SmartRange(firstval,lastval,nbstep):
     "Range generator going from included firstval to included lastval by approximately nbstep steps"
     assert(type(nbstep)==int)
@@ -61,29 +45,10 @@ def SmartRange(firstval,lastval,nbstep):
             raise StopIteration
 
 
-def SmartRange2(firstval,lastval,nbstep):
-    stepval = int(ceil(float(lastval-firstval)/float(nbstep)))
-    while (lastval-firstval) % stepval != 0 and stepval>1:
-        stepval -= 1
-    print('SmartRange2 firstval=%d lastval=%d -> stepval=%d' % (firstval,lastval,stepval))
-    curval = int(firstval)
-    while True:
-        yield curval
-        curval += stepval
-        if curval>=lastval:
-            yield lastval
-            raise StopIteration
-
-
 def ExtendRange(firstval,lastval):
     "Compute extended bounds and scaling value humain readable. ex: (0.4,2.7) -> (0.0,3.0,0.5)"
-    #print('DEBUG:ExtendRange:%s %s' % (firstval,lastval))
-    #if firstval>lastval:
-    #    tmp = firstval
-    #    firstval = lastval
-    #    lastval = tmp
     # Start with log10 of range minus 1
-    if lastval-firstval==0.0:
+    if lastval - firstval == 0.0:
         return (firstval,lastval,0.0)
     scalingunit = 10**int(floor(log10(lastval-firstval))-1)
     firstval_new = int(floor(float(firstval)/float(scalingunit)))*scalingunit
@@ -125,13 +90,11 @@ def ExtendRange5(firstval,lastval):
     return (firstval_new,lastval_new,scalingunit)
 
 
-
 ## UNIT TEST CODE ##
 
 def main():
     print(list(frange6(0.1,2.3,0.1)))
     print(ExtendRange5(0.0,1593.5))
-    #raw_input('Press Enter')
 
 if __name__ == '__main__':
    main()

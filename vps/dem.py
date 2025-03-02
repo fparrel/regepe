@@ -3,11 +3,9 @@
 # You can download data from http://www.viewfinderpanoramas.org
 # Alternatively, it can request data from geonames.org
 
-import anydbm
 from log import Log
 import zipfile
 import struct
-import datetime
 from urllib import urlopen
 # i18n
 from flask_babel import gettext
@@ -42,23 +40,21 @@ def GetEleFromDem(lat,lon):
         fnamelon = 'E%03d'% (ilon)
     else:
         fnamelon = 'W%03d'% (-ilon)
-    fname1='dem/dem1/%s%s.zip'%(fnamelat,fnamelon)
-    fname3='dem/dem3/%s%s.zip'%(fnamelat,fnamelon)
+    fname1 = 'dem/dem1/%s%s.zip'%(fnamelat,fnamelon)
+    fname3 = 'dem/dem3/%s%s.zip'%(fnamelat,fnamelon)
     if data.has_key(fname1):
-        fname = fname1
         demnb = 1
     elif data.has_key(fname3):
-        fname = fname3
         demnb = 3
     else:
         try:
             zip = zipfile.ZipFile(fname1,'r')
             demnb = 1
-        except Exception,e:
+        except Exception:
             try:
                 zip = zipfile.ZipFile(fname3,'r')
                 demnb = 3
-            except:
+            except Exception:
                 return GetEleFromServer(lat,lon)
         if demnb==1:
             data[fname1] = zip.read(zip.namelist()[0])
@@ -67,13 +63,13 @@ def GetEleFromDem(lat,lon):
         zip.close()
     #1 deg = 60 min = 3600 sec
     if demnb==1:
-        la=int(3600.0-(lat-ilat)*3600.0)
-        lo=int((lon-ilon)*3600.0)
-        b=data[fname1][la*7202+lo*2:la*7202+lo*2+2]
+        la = int(3600.0-(lat-ilat)*3600.0)
+        lo = int((lon-ilon)*3600.0)
+        b = data[fname1][la*7202+lo*2:la*7202+lo*2+2]
     else:
-        la=int(1200.0-(lat-ilat)*1200.0)
-        lo=int((lon-ilon)*1200.0)
-        b=data[fname3][la*2402+lo*2:la*2402+lo*2+2]
+        la = int(1200.0-(lat-ilat)*1200.0)
+        lo = int((lon-ilon)*1200.0)
+        b = data[fname3][la*2402+lo*2:la*2402+lo*2+2]
     ele = struct.unpack('>h',b)[0]
     return ele
 
@@ -109,9 +105,9 @@ def GetEleFromLatLonList(pts,interpolate=True):
 ## UNIT TEST CODE ##
 
 def main():
-    print GetEleFromDem(47.5,6.5)
-    print GetEleFromDem(47.5,6.6)
-    print GetEleFromDem(36.5,-6.2)
+    print(GetEleFromDem(47.5,6.5))
+    print(GetEleFromDem(47.5,6.6))
+    print(GetEleFromDem(36.5,-6.2))
 
 if __name__ == '__main__':
    main()
